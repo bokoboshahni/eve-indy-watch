@@ -1,0 +1,2 @@
+module ESIAuthorizationsHelper
+end

@@ -1,0 +1,13 @@
+<% if flash.any? %>
+  <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+    <div class="px-4 py-4 sm:px-0">
+      <% if flash[:success].present? %>
+        <%= render partial: 'shared/alert', locals: { color: 'green', text: flash[:success] } %>
+      <% elsif flash[:error].present? %>
+        <%= render partial: 'shared/alert', locals: { color: 'red', text: flash[:error] } %>
+      <% elsif flash[:warning].present? %>
+        <%= render partial: 'shared/alert', locals: { color: 'yellow', text: flash[:warning] } %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
