@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class ESIAuthorizationsController < ApplicationController
   before_action :find_esi_authorization, only: %i[destroy]
-  before_action :require_admin!
+  before_action :authorize_admin!
 
   layout 'settings'
 

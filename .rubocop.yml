@@ -5,6 +5,27 @@ AllCops:
     - 'vendor/**/*'
   NewCops: enable
 
+Metrics/AbcSize:
+  Max: 20
+  Exclude:
+    - 'db/migrate/*'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'db/migrate/*'
+
+Metrics/ClassLength:
+  Exclude:
+    - 'db/migrate/*'
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Metrics/MethodLength:
+  Max: 20
+  Exclude:
+    - 'db/migrate/*'
+
 Style/Documentation:
   Enabled: false
 

@@ -3,9 +3,9 @@
 class ApplicationService
   include ServiceHelpers
 
-  def self.call(*args)
-    new(*args).call
+  def self.call(*args, **kwargs)
+    new(*args, **kwargs).call
   end
 
-  def initialize(*args); end
+  def initialize(*); end
 end

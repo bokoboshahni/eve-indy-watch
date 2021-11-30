@@ -1,0 +1,5 @@
+:schedule:
+  sync_all_contracts_from_esi:
+    every: 1 minute
+    class: 'Corporation::SyncAllContractsFromESIWorker'
+    description: "Sync contracts for all corporations with contract sync enabled"

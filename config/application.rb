@@ -37,6 +37,10 @@ module EVEIndyWatch
 
     config.load_defaults 6.1
 
+    config.active_job.queue_adapter = :sidekiq
+
+    config.active_record.schema_format = :sql
+
     config.generators.system_tests = nil
     config.generators.stylesheets = false
     config.generators.javascripts = false

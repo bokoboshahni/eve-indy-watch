@@ -1,0 +1,82 @@
+<% content_for :breadcrumbs do %>
+<li class="flex">
+  <div class="flex items-center">
+    <svg class="flex-shrink-0 w-6 h-full text-gray-200" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+    </svg>
+    <a href="#" class="ml-4 text-sm font-medium text-gray-500 hover:text-gray-700">Administration</a>
+  </div>
+</li>
+<li class="flex">
+  <div class="flex items-center">
+    <svg class="flex-shrink-0 w-6 h-full text-gray-200" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+    </svg>
+    <%= link_to 'Alliances', admin_alliances_path, class: 'ml-4 text-sm font-medium text-gray-500 hover:text-gray-700' %>
+  </div>
+</li>
+<li class="flex">
+  <div class="flex items-center">
+    <svg class="flex-shrink-0 w-6 h-full text-gray-200" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+    </svg>
+    <%= link_to @alliance.name, admin_alliance_path(@alliance), class: 'ml-4 text-sm font-medium text-gray-500 hover:text-gray-700', 'aria-current': :page %>
+  </div>
+</li>
+<% end %>
+
+<div class="max-w-3xl mx-auto px-4 sm:px-6 md:px-8">
+  <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+    <div class="px-4 py-5 sm:px-6">
+      <div class="-ml-4 -mt-4 flex justify-between items-center flex-wrap sm:flex-nowrap">
+        <div class="ml-4 mt-4">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <%= image_tag @alliance.icon_url_128, class: 'h-12 w-12', alt: '' %>
+            </div>
+            <div class="ml-4">
+              <h3 class="text-lg leading-6 font-medium text-gray-900">
+                <%= @alliance.name %>
+              </h3>
+            </div>
+          </div>
+        </div>
+        <div class="ml-4 mt-4 flex-shrink-0 flex">
+        </div>
+      </div>
+    </div>
+    <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+      <%= form_with model: @alliance, url: admin_alliance_path do |f| %>
+        <div class="space-y-8 divide-y divide-gray">
+          <div class="space-y-8 divide-y divide-gray">
+            <div>
+              <div>
+                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                  API Access
+                </h3>
+                <p class="mt-1 text-sm text-gray-500">
+                  Settings used to make API requests to the EVE API on behalf of the alliance.
+                </p>
+              </div>
+              <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                <div class="sm:col-span-3">
+                  <%= f.label :api_corporation_id, 'API corporation', class: 'block text-sm font-medium text-gray-700' %>
+                  <div class="mt-1">
+                    <%= f.collection_select :api_corporation_id, @alliance.corporations.order(:name), :id, :name, { prompt: true }, { class: 'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md' } %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-5">
+            <div class="flex justify-end">
+              <%= link_to 'Cancel', admin_alliance_path(@alliance), class: 'bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
+              <%= f.submit 'Save', class: 'ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -37,3 +37,6 @@ yarn-debug.log*
 .yarn-integrity
 
 .env
+
+tmp/sde
+tmp/sde.zip

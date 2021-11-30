@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # ## Schema Information
 #
 # Table name: `alliances`
@@ -15,9 +17,16 @@
 # **`ticker`**                | `text`             | `not null`
 # **`created_at`**            | `datetime`         | `not null`
 # **`updated_at`**            | `datetime`         | `not null`
+# **`api_corporation_id`**    | `bigint`           |
 #
 class Alliance < ApplicationRecord
+  belongs_to :api_corporation, class_name: 'Corporation', inverse_of: :api_alliance, optional: true
+
+  has_one :esi_authorization, through: :contract_corporation
+
+  has_many :assigned_contracts, class_name: 'Contract', as: :assignee, dependent: :restrict_with_exception
   has_many :characters, inverse_of: :alliance, dependent: :restrict_with_exception
+  has_many :contract_events, inverse_of: :alliance, dependent: :restrict_with_exception
   has_many :corporations, inverse_of: :alliance, dependent: :restrict_with_exception
 
   def sync_from_esi!

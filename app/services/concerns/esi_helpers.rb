@@ -15,4 +15,10 @@ module ESIHelpers
     authorization.refresh_token!
     esi.authorize(authorization.access_token)
   end
+
+  def esi_retriable(&blk)
+    Retriable.retriable on: [ESI::Errors::GatewayTimeoutError, ESI::Errors::ServiceUnavailableError] do
+      blk.call
+    end
+  end
 end

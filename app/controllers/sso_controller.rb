@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SSOController < ApplicationController
   skip_before_action :verify_authenticity_token, only: %i[create]
 
@@ -37,7 +39,7 @@ class SSOController < ApplicationController
 
   def create_esi_authorization
     redirect_to root_path unless logged_in?
-    esi_authorization = ESIAuthorization::CreateFromSSO.call(auth_info, current_user)
+    ESIAuthorization::CreateFromSSO.call(auth_info, current_user)
     flash[:success] = 'Character authorized successfully.'
     redirect_to settings_esi_authorizations_path
   rescue ESIAuthorization::CreateFromSSO::Error => e

@@ -9,6 +9,8 @@ module ServiceHelpers
 
   protected
 
+  delegate :debug, :error, :info, :warn, to: :logger
+
   def cache
     Rails.cache
   end
@@ -27,5 +29,9 @@ module ServiceHelpers
 
   def logger
     Rails.logger
+  end
+
+  def say(msg)
+    $stdout.puts(msg)
   end
 end

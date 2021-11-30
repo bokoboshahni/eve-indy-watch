@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # ## Schema Information
 #
 # Table name: `esi_authorizations`
@@ -34,7 +36,13 @@ class ESIAuthorization < ApplicationRecord
   belongs_to :character, inverse_of: :esi_authorizations
   belongs_to :user, inverse_of: :esi_authorizations
 
+  has_many :structures, inverse_of: :esi_authorization, dependent: :restrict_with_exception
+
+  has_one :corporation, inverse_of: :esi_authorization, dependent: :restrict_with_exception
+
   encrypts :access_token, :refresh_token
+
+  delegate :name, to: :character
 
   validates :access_token, presence: true
   validates :expires_at, presence: true

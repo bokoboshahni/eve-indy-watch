@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # ## Schema Information
 #
 # Table name: `characters`
@@ -37,9 +39,12 @@ class Character < ApplicationRecord
   belongs_to :alliance, inverse_of: :characters, optional: true
   belongs_to :corporation, inverse_of: :characters
 
-  has_one :user, inverse_of: :character
+  has_one :user, inverse_of: :character, dependent: :restrict_with_exception
 
+  has_many :accepted_contracts, class_name: 'Contract', as: :acceptor, dependent: :restrict_with_exception
+  has_many :assigned_contracts, class_name: 'Contract', as: :assignee, dependent: :restrict_with_exception
   has_many :esi_authorizations, inverse_of: :character, dependent: :destroy
+  has_many :issued_contracts, class_name: 'Contract', as: :issuer, dependent: :restrict_with_exception
 
   def sync_from_esi!
     Character::SyncFromESI.call(id)

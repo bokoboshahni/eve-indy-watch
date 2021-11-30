@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # ## Schema Information
 #
 # Table name: `alliances`
@@ -15,6 +17,7 @@
 # **`ticker`**                | `text`             | `not null`
 # **`created_at`**            | `datetime`         | `not null`
 # **`updated_at`**            | `datetime`         | `not null`
+# **`api_corporation_id`**    | `bigint`           |
 #
 require 'rails_helper'
 

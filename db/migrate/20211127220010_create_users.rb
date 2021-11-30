@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateUsers < ActiveRecord::Migration[6.1]
   def change
     create_table :alliances do |t|
@@ -13,8 +15,8 @@ class CreateUsers < ActiveRecord::Migration[6.1]
     create_table :corporations do |t|
       t.references :alliance, foreign_key: true
 
-      t.datetime :esi_expires_at, null: false
-      t.datetime :esi_last_modified_at, null: false
+      t.datetime :esi_expires_at
+      t.datetime :esi_last_modified_at
       t.text :icon_url_128 # rubocop:disable Naming/VariableNumber
       t.text :icon_url_256 # rubocop:disable Naming/VariableNumber
       t.text :icon_url_64 # rubocop:disable Naming/VariableNumber
