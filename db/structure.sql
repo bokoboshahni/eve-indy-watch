@@ -460,6 +460,47 @@ ALTER SEQUENCE public.groups_id_seq OWNED BY public.groups.id;
 
 
 --
+-- Name: industry_index_snapshots; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.industry_index_snapshots (
+    id bigint NOT NULL,
+    solar_system_id bigint NOT NULL,
+    copying numeric,
+    duplicating numeric,
+    invention numeric,
+    manufacturing numeric,
+    "none" numeric,
+    reaction numeric,
+    researching_material_efficiency numeric,
+    researching_technology numeric,
+    researching_time_efficiency numeric,
+    reverse_engineering numeric,
+    esi_expires_at timestamp without time zone NOT NULL,
+    esi_last_modified_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: industry_index_snapshots_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.industry_index_snapshots_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: industry_index_snapshots_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.industry_index_snapshots_id_seq OWNED BY public.industry_index_snapshots.id;
+
+
+--
 -- Name: market_groups; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -492,6 +533,39 @@ CREATE SEQUENCE public.market_groups_id_seq
 --
 
 ALTER SEQUENCE public.market_groups_id_seq OWNED BY public.market_groups.id;
+
+
+--
+-- Name: market_price_snapshots; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.market_price_snapshots (
+    id bigint NOT NULL,
+    type_id bigint NOT NULL,
+    adjusted_price numeric,
+    average_price numeric,
+    esi_expires_at timestamp without time zone NOT NULL,
+    esi_last_modified_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: market_price_snapshots_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.market_price_snapshots_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: market_price_snapshots_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.market_price_snapshots_id_seq OWNED BY public.market_price_snapshots.id;
 
 
 --
@@ -889,10 +963,24 @@ ALTER TABLE ONLY public.groups ALTER COLUMN id SET DEFAULT nextval('public.group
 
 
 --
+-- Name: industry_index_snapshots id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.industry_index_snapshots ALTER COLUMN id SET DEFAULT nextval('public.industry_index_snapshots_id_seq'::regclass);
+
+
+--
 -- Name: market_groups id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.market_groups ALTER COLUMN id SET DEFAULT nextval('public.market_groups_id_seq'::regclass);
+
+
+--
+-- Name: market_price_snapshots id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.market_price_snapshots ALTER COLUMN id SET DEFAULT nextval('public.market_price_snapshots_id_seq'::regclass);
 
 
 --
@@ -1055,11 +1143,27 @@ ALTER TABLE ONLY public.groups
 
 
 --
+-- Name: industry_index_snapshots industry_index_snapshots_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.industry_index_snapshots
+    ADD CONSTRAINT industry_index_snapshots_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: market_groups market_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.market_groups
     ADD CONSTRAINT market_groups_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: market_price_snapshots market_price_snapshots_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.market_price_snapshots
+    ADD CONSTRAINT market_price_snapshots_pkey PRIMARY KEY (id);
 
 
 --
@@ -1304,10 +1408,24 @@ CREATE INDEX index_groups_on_category_id ON public.groups USING btree (category_
 
 
 --
+-- Name: index_industry_index_snapshots_on_solar_system_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_industry_index_snapshots_on_solar_system_id ON public.industry_index_snapshots USING btree (solar_system_id);
+
+
+--
 -- Name: index_market_groups_on_ancestry; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_market_groups_on_ancestry ON public.market_groups USING btree (ancestry text_pattern_ops);
+
+
+--
+-- Name: index_market_price_snapshots_on_type_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_market_price_snapshots_on_type_id ON public.market_price_snapshots USING btree (type_id);
 
 
 --
@@ -1385,6 +1503,20 @@ CREATE INDEX index_types_on_group_id ON public.types USING btree (group_id);
 --
 
 CREATE INDEX index_types_on_market_group_id ON public.types USING btree (market_group_id);
+
+
+--
+-- Name: index_unique_industry_index_snapshots; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_unique_industry_index_snapshots ON public.industry_index_snapshots USING btree (solar_system_id, esi_last_modified_at);
+
+
+--
+-- Name: index_unique_market_price_snapshots; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_unique_market_price_snapshots ON public.market_price_snapshots USING btree (type_id, esi_last_modified_at);
 
 
 --
@@ -1473,6 +1605,14 @@ ALTER TABLE ONLY public.structures
 
 
 --
+-- Name: industry_index_snapshots fk_rails_63155c1e83; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.industry_index_snapshots
+    ADD CONSTRAINT fk_rails_63155c1e83 FOREIGN KEY (solar_system_id) REFERENCES public.solar_systems(id);
+
+
+--
 -- Name: contract_events fk_rails_6766670cd1; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1542,6 +1682,14 @@ ALTER TABLE ONLY public.structures
 
 ALTER TABLE ONLY public.stations
     ADD CONSTRAINT fk_rails_b996120a6f FOREIGN KEY (solar_system_id) REFERENCES public.solar_systems(id);
+
+
+--
+-- Name: market_price_snapshots fk_rails_bf2e47c3f4; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.market_price_snapshots
+    ADD CONSTRAINT fk_rails_bf2e47c3f4 FOREIGN KEY (type_id) REFERENCES public.types(id);
 
 
 --
@@ -1632,6 +1780,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211205013222'),
 ('20211205224232'),
 ('20211206161823'),
-('20211206162335');
+('20211206162335'),
+('20211206164300'),
+('20211206171053');
 
 

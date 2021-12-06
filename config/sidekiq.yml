@@ -3,3 +3,13 @@
     every: 1 minute
     class: 'Corporation::SyncAllContractsFromESIWorker'
     description: "Sync contracts for all corporations with contract sync enabled"
+
+  sync_industry_indices_from_esi:
+    every: 15 minutes
+    class: 'IndustryIndexSnapshot::SyncFromESIWorker'
+    description: "Create a snapshot of industry indices"
+
+  sync_market_prices_from_esi:
+    every: 15 minutes
+    class: 'MarketPriceSnapshot::SyncFromESIWorker'
+    description: "Create a snapshot of market prices"

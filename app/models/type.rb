@@ -39,12 +39,16 @@ class Type < ApplicationRecord
   belongs_to :market_group, inverse_of: :types, optional: true
 
   has_one :category, through: :group
+  has_one :latest_market_price_snapshot, -> { order esi_last_modified_at: :desc }, class_name: 'MarketPriceSnapshot', foreign_key: :type_id
 
   has_many :contract_items, inverse_of: :type, dependent: :restrict_with_exception
+  has_many :market_price_snapshots, inverse_of: :type, dependent: :destroy
   has_many :stations, inverse_of: :type, dependent: :restrict_with_exception
   has_many :structures, inverse_of: :type, dependent: :restrict_with_exception
 
   delegate :name, to: :category, prefix: true
+
+  delegate :adjusted_price, :average_price, to: :latest_market_price_snapshot
 
   def charge?
     category_name == Category::CHARGE_CATEGORY_NAME

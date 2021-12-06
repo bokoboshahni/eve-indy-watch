@@ -70,6 +70,6 @@ class CreateContracts < ActiveRecord::Migration[6.1]
     add_column :corporations, :esi_contracts_last_modified_at, :datetime
     add_column :corporations, :contract_sync_enabled, :boolean
 
-    add_column :alliances, :contract_corporation_id, :bigint, index: true
+    add_column :alliances, :api_corporation_id, :bigint, index: true
   end
 end

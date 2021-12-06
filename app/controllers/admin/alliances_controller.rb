@@ -28,7 +28,7 @@ module Admin
     end
 
     def alliance_params
-      params.require(:alliance).permit(:contract_corporation_id)
+      params.require(:alliance).permit(:api_corporation_id)
     end
   end
 end

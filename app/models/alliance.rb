@@ -22,7 +22,7 @@
 class Alliance < ApplicationRecord
   belongs_to :api_corporation, class_name: 'Corporation', inverse_of: :api_alliance, optional: true
 
-  has_one :esi_authorization, through: :contract_corporation
+  has_one :esi_authorization, through: :api_corporation
 
   has_many :assigned_contracts, class_name: 'Contract', as: :assignee, dependent: :restrict_with_exception
   has_many :characters, inverse_of: :alliance, dependent: :restrict_with_exception
