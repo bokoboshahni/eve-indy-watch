@@ -31,6 +31,7 @@ class SolarSystem < ApplicationRecord
   has_one :latest_industry_index_snapshot, -> { order esi_last_modified_at: :desc }, class_name: 'IndustryIndexSnapshot', foreign_key: :solar_system_id
 
   has_many :industry_index_snapshots, inverse_of: :solar_system, dependent: :destroy
+  has_many :market_order_snapshots, inverse_of: :solar_system, dependent: :destroy
   has_many :stations, inverse_of: :solar_system, dependent: :restrict_with_exception
   has_many :structures, inverse_of: :solar_system, dependent: :restrict_with_exception
 

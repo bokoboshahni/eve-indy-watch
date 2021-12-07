@@ -55,7 +55,7 @@ class Structure < ApplicationRecord
           type_id: data['type_id']
         }
       end
-    rescue ESI::Errors::UnauthorizedError
+    rescue ESI::Errors::ForbiddenError, ESI::Errors::UnauthorizedError
       logger.error("Authorization for character #{authorization.character_id} is not allowed to read structure #{structure_id}")
 
       {

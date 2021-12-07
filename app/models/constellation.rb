@@ -27,5 +27,6 @@
 class Constellation < ApplicationRecord
   belongs_to :region, inverse_of: :constellations
 
+  has_many :market_order_snapshots, through: :solar_systems
   has_many :solar_systems, inverse_of: :constellation
 end

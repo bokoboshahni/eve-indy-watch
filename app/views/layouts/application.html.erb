@@ -126,6 +126,11 @@
                       <%= heroicon 'library', variant: :outline, options: { class: "#{sidebar_item_icon_class('structures')} mr-3 flex-shrink-0 h-6 w-6" } %>
                       Structures
                     <% end %>
+
+                    <%= link_to admin_regions_path, class: "#{sidebar_item_text_class('regions')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
+                      <%= heroicon 'map', variant: :outline, options: { class: "#{sidebar_item_icon_class('regions')} mr-3 flex-shrink-0 h-6 w-6" } %>
+                      Regions
+                    <% end %>
                   <% end %>
                 </div>
               </nav>
@@ -183,6 +188,11 @@
                     <%= link_to admin_structures_path, class: "#{sidebar_item_text_class('structures')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
                       <%= heroicon 'library', variant: :outline, options: { class: "#{sidebar_item_icon_class('structures')} mr-3 flex-shrink-0 h-6 w-6" } %>
                       Structures
+                    <% end %>
+
+                    <%= link_to admin_regions_path, class: "#{sidebar_item_text_class('regions')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
+                      <%= heroicon 'map', variant: :outline, options: { class: "#{sidebar_item_icon_class('regions')} mr-3 flex-shrink-0 h-6 w-6" } %>
+                      Regions
                     <% end %>
                   <% end %>
                 </div>

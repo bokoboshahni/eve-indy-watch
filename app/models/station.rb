@@ -38,4 +38,6 @@ class Station < ApplicationRecord
   belongs_to :owner, class_name: 'Corporation', inverse_of: :stations
   belongs_to :solar_system, inverse_of: :stations
   belongs_to :type, inverse_of: :stations
+
+  has_many :market_order_snapshots, as: :location, dependent: :destroy
 end

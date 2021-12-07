@@ -5,7 +5,9 @@ class Corporation < ApplicationRecord
     sidekiq_options retry: 5, lock: :until_and_while_executing, on_conflict: { client: :log, server: :reject }
 
     def perform
-      Corporation.where(contract_sync_enabled: true).each(&:sync_contracts_from_esi_async)
+      Corporation.where(contract_sync_enabled: true).where('esi_contracts_expires_at <= ?', Time.zone.now)
+                 .or(Corporation.where(contract_sync_enabled: true, esi_contracts_last_modified_at: nil))
+                 .each(&:sync_contracts_from_esi_async)
     end
   end
 end

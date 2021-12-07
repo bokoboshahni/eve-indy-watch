@@ -536,6 +536,29 @@ ALTER SEQUENCE public.market_groups_id_seq OWNED BY public.market_groups.id;
 
 
 --
+-- Name: market_order_snapshots; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.market_order_snapshots (
+    location_type character varying NOT NULL,
+    location_id bigint NOT NULL,
+    solar_system_id bigint NOT NULL,
+    type_id bigint NOT NULL,
+    duration integer NOT NULL,
+    esi_expires_at timestamp without time zone NOT NULL,
+    esi_last_modified_at timestamp without time zone NOT NULL,
+    issued_at timestamp without time zone NOT NULL,
+    kind text NOT NULL,
+    min_volume integer NOT NULL,
+    order_id bigint NOT NULL,
+    price numeric NOT NULL,
+    range text NOT NULL,
+    volume_remain integer NOT NULL,
+    volume_total integer NOT NULL
+);
+
+
+--
 -- Name: market_price_snapshots; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -611,7 +634,11 @@ CREATE TABLE public.regions (
     id bigint NOT NULL,
     name text NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    esi_authorization_id bigint,
+    esi_market_orders_expires_at timestamp without time zone,
+    esi_market_orders_last_modified_at timestamp without time zone,
+    market_order_sync_enabled boolean
 );
 
 
@@ -757,7 +784,10 @@ CREATE TABLE public.structures (
     name text NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    esi_authorization_id bigint
+    esi_authorization_id bigint,
+    esi_market_orders_expires_at timestamp without time zone,
+    esi_market_orders_last_modified_at timestamp without time zone,
+    market_order_sync_enabled boolean
 );
 
 
@@ -1422,6 +1452,27 @@ CREATE INDEX index_market_groups_on_ancestry ON public.market_groups USING btree
 
 
 --
+-- Name: index_market_order_snapshots_on_location; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_market_order_snapshots_on_location ON public.market_order_snapshots USING btree (location_type, location_id);
+
+
+--
+-- Name: index_market_order_snapshots_on_solar_system_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_market_order_snapshots_on_solar_system_id ON public.market_order_snapshots USING btree (solar_system_id);
+
+
+--
+-- Name: index_market_order_snapshots_on_type_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_market_order_snapshots_on_type_id ON public.market_order_snapshots USING btree (type_id);
+
+
+--
 -- Name: index_market_price_snapshots_on_type_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1433,6 +1484,13 @@ CREATE INDEX index_market_price_snapshots_on_type_id ON public.market_price_snap
 --
 
 CREATE INDEX index_pghero_query_stats_on_database_and_captured_at ON public.pghero_query_stats USING btree (database, captured_at);
+
+
+--
+-- Name: index_regions_on_esi_authorization_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_regions_on_esi_authorization_id ON public.regions USING btree (esi_authorization_id);
 
 
 --
@@ -1510,6 +1568,13 @@ CREATE INDEX index_types_on_market_group_id ON public.types USING btree (market_
 --
 
 CREATE UNIQUE INDEX index_unique_industry_index_snapshots ON public.industry_index_snapshots USING btree (solar_system_id, esi_last_modified_at);
+
+
+--
+-- Name: index_unique_market_order_snapshots; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_unique_market_order_snapshots ON public.market_order_snapshots USING btree (location_id, order_id, esi_last_modified_at);
 
 
 --
@@ -1626,6 +1691,14 @@ ALTER TABLE ONLY public.contract_events
 
 ALTER TABLE ONLY public.stations
     ADD CONSTRAINT fk_rails_6ea166210e FOREIGN KEY (owner_id) REFERENCES public.corporations(id);
+
+
+--
+-- Name: regions fk_rails_8739326a99; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.regions
+    ADD CONSTRAINT fk_rails_8739326a99 FOREIGN KEY (esi_authorization_id) REFERENCES public.esi_authorizations(id);
 
 
 --
@@ -1782,6 +1855,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211206161823'),
 ('20211206162335'),
 ('20211206164300'),
-('20211206171053');
+('20211206171053'),
+('20211206183208');
 
 

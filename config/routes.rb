@@ -18,6 +18,7 @@ Rails.application.routes.draw do
     resources :contracts, only: %i[index show]
     resources :corporations, only: %i[index show edit update]
     resources :esi_authorizations
+    resources :regions, only: %i[index show edit update]
     resources :structures, only: %i[index show edit update]
     resources :users
   end

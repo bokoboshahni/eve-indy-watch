@@ -67,7 +67,7 @@ class Corporation < ApplicationRecord
         location_ids.to_a.compact.in_groups(16, false) do |batch|
           workers << Thread.new do
             batch.each do |id|
-              locations[id] = find_and_sync_location(id)
+              locations[id] = find_and_sync_location(id, corporation.esi_authorization)
             end
           end
         end
@@ -206,7 +206,7 @@ class Corporation < ApplicationRecord
       end
     end
 
-    def find_and_sync_location(id)
+    def find_and_sync_location(id, authorization)
       case id
       when 60_000_000..64_000_000
         begin
@@ -215,7 +215,7 @@ class Corporation < ApplicationRecord
           Station::SyncFromESI.call(id)
         end
       else
-        Structure::SyncFromESI.call(id, corporation.esi_authorization)
+        Structure::SyncFromESI.call(id, authorization)
       end
     end
   end

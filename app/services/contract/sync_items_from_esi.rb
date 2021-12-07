@@ -59,7 +59,7 @@ class Contract < ApplicationRecord
         end
 
         contract.transaction do
-          ContractItem.import(items, track_validation_failures: true,
+          ContractItem.import!(items, track_validation_failures: true,
                                      on_duplicate_key_update: { conflict_target: %i[id], columns: :all })
           contract.update!(esi_items_expires_at: expires, esi_items_last_modified_at: last_modified,
                            esi_items_exception: nil)

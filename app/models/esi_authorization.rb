@@ -36,6 +36,7 @@ class ESIAuthorization < ApplicationRecord
   belongs_to :character, inverse_of: :esi_authorizations
   belongs_to :user, inverse_of: :esi_authorizations
 
+  has_many :regions, inverse_of: :esi_authorization, dependent: :restrict_with_exception
   has_many :structures, inverse_of: :esi_authorization, dependent: :restrict_with_exception
 
   has_one :corporation, inverse_of: :esi_authorization, dependent: :restrict_with_exception
@@ -49,6 +50,6 @@ class ESIAuthorization < ApplicationRecord
   validates :refresh_token, presence: true
 
   def refresh_token!
-    RefreshToken.call(self)
+    ESIAuthorization::RefreshToken.call(self)
   end
 end

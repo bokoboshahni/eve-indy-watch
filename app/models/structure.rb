@@ -6,18 +6,21 @@
 #
 # ### Columns
 #
-# Name                        | Type               | Attributes
-# --------------------------- | ------------------ | ---------------------------
-# **`id`**                    | `bigint`           | `not null, primary key`
-# **`esi_expires_at`**        | `datetime`         |
-# **`esi_last_modified_at`**  | `datetime`         |
-# **`name`**                  | `text`             | `not null`
-# **`created_at`**            | `datetime`         | `not null`
-# **`updated_at`**            | `datetime`         | `not null`
-# **`esi_authorization_id`**  | `bigint`           |
-# **`owner_id`**              | `bigint`           |
-# **`solar_system_id`**       | `bigint`           |
-# **`type_id`**               | `bigint`           |
+# Name                                      | Type               | Attributes
+# ----------------------------------------- | ------------------ | ---------------------------
+# **`id`**                                  | `bigint`           | `not null, primary key`
+# **`esi_expires_at`**                      | `datetime`         |
+# **`esi_last_modified_at`**                | `datetime`         |
+# **`esi_market_orders_expires_at`**        | `datetime`         |
+# **`esi_market_orders_last_modified_at`**  | `datetime`         |
+# **`market_order_sync_enabled`**           | `boolean`          |
+# **`name`**                                | `text`             | `not null`
+# **`created_at`**                          | `datetime`         | `not null`
+# **`updated_at`**                          | `datetime`         | `not null`
+# **`esi_authorization_id`**                | `bigint`           |
+# **`owner_id`**                            | `bigint`           |
+# **`solar_system_id`**                     | `bigint`           |
+# **`type_id`**                             | `bigint`           |
 #
 # ### Indexes
 #
@@ -43,13 +46,25 @@
 #
 class Structure < ApplicationRecord
   belongs_to :esi_authorization, inverse_of: :structures, optional: true
-  belongs_to :owner, class_name: 'Corporation', inverse_of: :structures
-  belongs_to :solar_system, inverse_of: :structures
+  belongs_to :owner, class_name: 'Corporation', inverse_of: :structures, optional: true
+  belongs_to :solar_system, inverse_of: :structures, optional: true
   belongs_to :type, inverse_of: :structures, optional: true
+
+  has_many :market_order_snapshots, as: :location, dependent: :destroy
 
   def available_esi_authorizations
     rel = ESIAuthorization.includes(:character).joins(character: :corporation)
     rel.where('corporation_id IN (?)', [owner_id, owner&.alliance&.api_corporation_id].compact)
     rel.order('characters.name')
+  end
+
+  def esi_authorized?
+    esi_authorization.present?
+  end
+
+  def esi_market_orders_expired?
+    return true unless esi_market_orders_expires_at
+
+    esi_market_orders_expires_at <= Time.zone.now
   end
 end

@@ -21,4 +21,13 @@ module ESIHelpers
       blk.call
     end
   end
+
+  def location_type(id)
+    case id
+    when 60_000_000..64_000_000
+      'Station'
+    else
+      'Structure'
+    end
+  end
 end

@@ -32,4 +32,10 @@ class Alliance < ApplicationRecord
   def sync_from_esi!
     Alliance::SyncFromESI.call(id)
   end
+
+  def available_esi_authorizations
+    rel = ESIAuthorization.includes(:character).joins(character: :corporation)
+    rel.where('corporation_id = ?', api_corporation_id)
+    rel.order('characters.name')
+  end
 end

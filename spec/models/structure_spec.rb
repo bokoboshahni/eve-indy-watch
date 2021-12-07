@@ -6,18 +6,21 @@
 #
 # ### Columns
 #
-# Name                        | Type               | Attributes
-# --------------------------- | ------------------ | ---------------------------
-# **`id`**                    | `bigint`           | `not null, primary key`
-# **`esi_expires_at`**        | `datetime`         |
-# **`esi_last_modified_at`**  | `datetime`         |
-# **`name`**                  | `text`             | `not null`
-# **`created_at`**            | `datetime`         | `not null`
-# **`updated_at`**            | `datetime`         | `not null`
-# **`esi_authorization_id`**  | `bigint`           |
-# **`owner_id`**              | `bigint`           |
-# **`solar_system_id`**       | `bigint`           |
-# **`type_id`**               | `bigint`           |
+# Name                                      | Type               | Attributes
+# ----------------------------------------- | ------------------ | ---------------------------
+# **`id`**                                  | `bigint`           | `not null, primary key`
+# **`esi_expires_at`**                      | `datetime`         |
+# **`esi_last_modified_at`**                | `datetime`         |
+# **`esi_market_orders_expires_at`**        | `datetime`         |
+# **`esi_market_orders_last_modified_at`**  | `datetime`         |
+# **`market_order_sync_enabled`**           | `boolean`          |
+# **`name`**                                | `text`             | `not null`
+# **`created_at`**                          | `datetime`         | `not null`
+# **`updated_at`**                          | `datetime`         | `not null`
+# **`esi_authorization_id`**                | `bigint`           |
+# **`owner_id`**                            | `bigint`           |
+# **`solar_system_id`**                     | `bigint`           |
+# **`type_id`**                             | `bigint`           |
 #
 # ### Indexes
 #

@@ -13,13 +13,13 @@
     <svg class="flex-shrink-0 w-6 h-full text-gray-200" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
     </svg>
-    <%= link_to 'Structures', admin_structures_path, class: 'ml-4 text-sm font-medium text-gray-500 hover:text-gray-700', 'aria-current': :page %>
+    <%= link_to 'Regions', admin_regions_path, class: 'ml-4 text-sm font-medium text-gray-500 hover:text-gray-700', 'aria-current': :page %>
   </div>
 </li>
 <% end %>
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-  <h1 class="text-2xl font-semibold text-gray-900">Structures</h1>
+  <h1 class="text-2xl font-semibold text-gray-900">Regions</h1>
 </div>
 <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
   <div class="py-4">
@@ -34,12 +34,6 @@
                     Name
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Owner
-                  </th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Location
-                  </th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Market Orders
                   </th>
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -48,31 +42,18 @@
                   <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Next Market Update
                   </th>
-                  <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Last Update
-                  </th>
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
-                <% @structures.each do |structure| %>
+                <% @regions.each do |region| %>
                   <tr>
                     <td class="px-6 py-4 whitespace-nowrap">
                       <div class="text-xs font-medium text-gray-900">
-                        <%= link_to structure.name, admin_structure_path(structure), class: "text-indigo-600 hover:text-indigo-900" %>
+                        <%= link_to region.name, admin_region_path(region), class: "text-indigo-600 hover:text-indigo-900" %>
                       </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="text-xs font-medium text-gray-900">
-                        <%= link_to structure.owner.name, admin_corporation_path(structure.owner), class: "text-indigo-600 hover:text-indigo-900" if structure.owner %>
-                      </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="text-xs font-medium text-gray-900">
-                        <%= structure.solar_system&.name %>
-                      </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                      <% if structure.market_order_sync_enabled %>
+                      <% if region.market_order_sync_enabled %>
                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                           Enabled
                         </span>
@@ -84,17 +65,12 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                       <div class="text-xs font-medium text-gray-900">
-                        <%= local_time(structure.esi_market_orders_last_modified_at, format: :db) if structure.esi_market_orders_last_modified_at %>
+                        <%= local_time(region.esi_market_orders_last_modified_at, format: :db) if region.esi_market_orders_last_modified_at %>
                       </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap">
                       <div class="text-xs font-medium text-gray-900">
-                        <%= local_time(structure.esi_market_orders_expires_at, format: :db) if structure.esi_market_orders_expires_at %>
-                      </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="text-xs font-medium text-gray-900">
-                        <%= local_time structure.esi_last_modified_at, format: :db if structure.esi_last_modified_at %>
+                        <%= local_time(region.esi_market_orders_expires_at, format: :db) if region.esi_market_orders_expires_at %>
                       </div>
                     </td>
                   </tr>

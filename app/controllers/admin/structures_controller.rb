@@ -28,7 +28,7 @@ module Admin
     end
 
     def structure_params
-      params.require(:structure).permit(:contract_sync_enabled, :esi_authorization_id)
+      params.require(:structure).permit(:market_order_sync_enabled, :esi_authorization_id)
     end
   end
 end

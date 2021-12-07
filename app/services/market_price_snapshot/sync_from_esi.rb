@@ -19,9 +19,11 @@ class MarketPriceSnapshot < ApplicationRecord
         last_modified = resp.headers['last-modified']
         data = resp.json
 
+        type_ids = Type.pluck(:id)
+
         snapshot_attrs = { esi_last_modified_at: last_modified, esi_expires_at: expires }
         snapshots = data.map do |price|
-          next unless Type.exists?(price['type_id'])
+          next unless type_ids.include?(price['type_id'])
 
           snapshot = snapshot_attrs.merge(price)
           %w[average_price adjusted_price].each { |k| snapshot[k] = nil unless snapshot[k] }
