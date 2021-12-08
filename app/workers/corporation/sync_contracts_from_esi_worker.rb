@@ -12,7 +12,7 @@ class Corporation < ApplicationRecord
 
       return unless item_contracts.count.positive?
 
-      args = item_contracts.map { |c| [c.id, c.issuer_id] }
+      args = item_contracts.map { |c| [c.id] }
       Sidekiq::Client.push_bulk('class' => 'Contract::SyncItemsFromESIWorker', 'args' => args)
     end
   end
