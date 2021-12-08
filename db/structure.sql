@@ -9,6 +9,19 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+--
+-- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION pg_stat_statements IS 'track planning and execution statistics of all SQL statements executed';
+
 
 SET default_tablespace = '';
 
@@ -1617,14 +1630,6 @@ ALTER TABLE ONLY public.corporations
 
 
 --
--- Name: contracts fk_rails_2fdcb8e44c; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.contracts
-    ADD CONSTRAINT fk_rails_2fdcb8e44c FOREIGN KEY (issuer_id) REFERENCES public.characters(id);
-
-
---
 -- Name: contract_items fk_rails_34a4a66de8; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1777,14 +1782,6 @@ ALTER TABLE ONLY public.structures
 
 
 --
--- Name: contracts fk_rails_d2319c45a8; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.contracts
-    ADD CONSTRAINT fk_rails_d2319c45a8 FOREIGN KEY (issuer_corporation_id) REFERENCES public.corporations(id);
-
-
---
 -- Name: esi_authorizations fk_rails_d62a030c54; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1843,6 +1840,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211206162335'),
 ('20211206164300'),
 ('20211206171053'),
-('20211206183208');
+('20211206183208'),
+('20211208211830');
 
 

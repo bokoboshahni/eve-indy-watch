@@ -67,13 +67,6 @@
 # * `index_contracts_on_type`:
 #     * **`type`**
 #
-# ### Foreign Keys
-#
-# * `fk_rails_...`:
-#     * **`issuer_corporation_id => corporations.id`**
-# * `fk_rails_...`:
-#     * **`issuer_id => characters.id`**
-#
 class Contract < ApplicationRecord
   self.inheritance_column = nil
 
