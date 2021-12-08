@@ -3,6 +3,9 @@ lock "~> 3.16.0"
 
 Rake::Task["deploy:assets:backup_manifest"].clear_actions
 
+SSHKit.config.command_map[:sidekiq] = "bundle exec sidekiq"
+SSHKit.config.command_map[:sidekiqctl] = "bundle exec sidekiqctl"
+
 set :application, ENV.fetch('DEPLOY_APPLICATION', 'eve-indy-watch')
 set :repo_url, ENV.fetch('DEPLOY_REPO_URL', 'https://github.com/bokoboshahni/eve-indy-watch.git')
 set :branch, ENV.fetch('DEPLOY_BRANCH', 'main')
@@ -17,6 +20,11 @@ set :puma_phased_restart, true
 set :puma_systemctl_user, :user
 set :puma_preload_app, true
 set :puma_init_active_record, true
+
+set :sidekiq_service_unit_user, :user
+set :sidekiq_processes, ENV.fetch('SIDEKIQ_PROCESSES', 4).to_i
+set :sidekiq_concurrency, ENV.fetch('SIDEKIQ_CONCURRENCY', 25).to_i
+set :sidekiq_config, 'config/sidekiq.yml'
 
 namespace :deploy do
   desc "Load database schema from structure.sql"

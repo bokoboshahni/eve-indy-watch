@@ -61,7 +61,7 @@ group :development do
   gem 'capistrano', '~> 3.16'
   gem 'capistrano-bundler', '~> 2.0'
   gem 'capistrano-rails', '~> 1.6'
-  gem 'capistrano-sidekiq', '~> 2.0'
+  gem 'capistrano-sidekiq', github: 'seuros/capistrano-sidekiq'
   gem 'capistrano3-puma', '~> 5.2'
   gem 'ed25519', '~> 1.2'
   gem 'listen', '~> 3.3'
