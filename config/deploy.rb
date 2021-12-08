@@ -31,7 +31,7 @@ namespace :deploy do
   task :db_schema_load do
     on roles(:db) do
       within release_path do
-        with rails_env: fetch(:rails_env) do
+        with rails_env: fetch(:rails_env), 'DISABLE_DATABASE_ENVIRONMENT_CHECK': '1' do
           execute :rake, 'db:schema:load'
         end
       end

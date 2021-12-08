@@ -50,7 +50,6 @@ class Corporation < ApplicationRecord
   has_many :accepted_contractors, class_name: 'Contract', as: :acceptor, dependent: :restrict_with_exception
   has_many :characters, inverse_of: :corporation, dependent: :restrict_with_exception
   has_many :contract_events, inverse_of: :corporation, dependent: :restrict_with_exception
-  has_many :fittings, as: :owner, dependent: :destroy
   has_many :issued_contracts, class_name: 'Contract', inverse_of: :issuer_corporation,
                               foreign_key: :issuer_corporation_id, dependent: :restrict_with_exception
   has_many :stations, inverse_of: :owner, dependent: :restrict_with_exception
