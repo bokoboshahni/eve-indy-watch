@@ -9,20 +9,6 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
---
--- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
-
-
---
--- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION pg_stat_statements IS 'track planning and execution statistics of all SQL statements executed';
-
-
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -1841,6 +1827,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211206164300'),
 ('20211206171053'),
 ('20211206183208'),
-('20211208211830');
+('20211208211830'),
+('20211208232318');
 
 
