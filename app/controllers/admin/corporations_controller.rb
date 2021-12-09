@@ -5,7 +5,7 @@ module Admin
     before_action :find_corporation, only: %i[show edit update]
 
     def index
-      @corporations = Corporation.player.order(:name)
+      @pagy, @corporations = pagy(Corporation.player.order(:name))
     end
 
     def show; end
