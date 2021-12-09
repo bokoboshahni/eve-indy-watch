@@ -413,6 +413,74 @@ ALTER SEQUENCE public.esi_authorizations_id_seq OWNED BY public.esi_authorizatio
 
 
 --
+-- Name: fitting_items; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.fitting_items (
+    id bigint NOT NULL,
+    fitting_id bigint NOT NULL,
+    type_id bigint NOT NULL,
+    quantity integer NOT NULL
+);
+
+
+--
+-- Name: fitting_items_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.fitting_items_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: fitting_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.fitting_items_id_seq OWNED BY public.fitting_items.id;
+
+
+--
+-- Name: fittings; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.fittings (
+    id bigint NOT NULL,
+    owner_type character varying NOT NULL,
+    owner_id bigint NOT NULL,
+    type_id bigint NOT NULL,
+    discarded_at timestamp without time zone,
+    imported_at timestamp without time zone,
+    name text NOT NULL,
+    original text,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: fittings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.fittings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: fittings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.fittings_id_seq OWNED BY public.fittings.id;
+
+
+--
 -- Name: groups; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -972,6 +1040,20 @@ ALTER TABLE ONLY public.esi_authorizations ALTER COLUMN id SET DEFAULT nextval('
 
 
 --
+-- Name: fitting_items id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.fitting_items ALTER COLUMN id SET DEFAULT nextval('public.fitting_items_id_seq'::regclass);
+
+
+--
+-- Name: fittings id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.fittings ALTER COLUMN id SET DEFAULT nextval('public.fittings_id_seq'::regclass);
+
+
+--
 -- Name: groups id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1148,6 +1230,22 @@ ALTER TABLE ONLY public.corporations
 
 ALTER TABLE ONLY public.esi_authorizations
     ADD CONSTRAINT esi_authorizations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: fitting_items fitting_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.fitting_items
+    ADD CONSTRAINT fitting_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: fittings fittings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.fittings
+    ADD CONSTRAINT fittings_pkey PRIMARY KEY (id);
 
 
 --
@@ -1417,6 +1515,41 @@ CREATE INDEX index_esi_authorizations_on_user_id ON public.esi_authorizations US
 
 
 --
+-- Name: index_fitting_items_on_fitting_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_fitting_items_on_fitting_id ON public.fitting_items USING btree (fitting_id);
+
+
+--
+-- Name: index_fitting_items_on_type_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_fitting_items_on_type_id ON public.fitting_items USING btree (type_id);
+
+
+--
+-- Name: index_fittings_on_discarded_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_fittings_on_discarded_at ON public.fittings USING btree (discarded_at);
+
+
+--
+-- Name: index_fittings_on_owner; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_fittings_on_owner ON public.fittings USING btree (owner_type, owner_id);
+
+
+--
+-- Name: index_fittings_on_type_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_fittings_on_type_id ON public.fittings USING btree (type_id);
+
+
+--
 -- Name: index_groups_on_category_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1624,6 +1757,14 @@ ALTER TABLE ONLY public.contract_items
 
 
 --
+-- Name: fitting_items fk_rails_39bd8308da; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.fitting_items
+    ADD CONSTRAINT fk_rails_39bd8308da FOREIGN KEY (fitting_id) REFERENCES public.fittings(id);
+
+
+--
 -- Name: stations fk_rails_579e8e9070; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1688,6 +1829,14 @@ ALTER TABLE ONLY public.types
 
 
 --
+-- Name: fittings fk_rails_8f60a789b9; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.fittings
+    ADD CONSTRAINT fk_rails_8f60a789b9 FOREIGN KEY (type_id) REFERENCES public.types(id);
+
+
+--
 -- Name: characters fk_rails_9603b90279; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1749,6 +1898,14 @@ ALTER TABLE ONLY public.market_price_snapshots
 
 ALTER TABLE ONLY public.contract_events
     ADD CONSTRAINT fk_rails_bfffa663f5 FOREIGN KEY (corporation_id) REFERENCES public.corporations(id);
+
+
+--
+-- Name: fitting_items fk_rails_c3a47fab2b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.fitting_items
+    ADD CONSTRAINT fk_rails_c3a47fab2b FOREIGN KEY (type_id) REFERENCES public.types(id);
 
 
 --
@@ -1828,6 +1985,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211206171053'),
 ('20211206183208'),
 ('20211208211830'),
-('20211208232318');
+('20211208232318'),
+('20211209144910');
 
 

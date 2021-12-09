@@ -1,0 +1,2 @@
+module Admin::FittingsHelper
+end

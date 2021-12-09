@@ -26,4 +26,6 @@
 #     * **`type_id => types.id`**
 #
 class FittingItem < ApplicationRecord
+  belongs_to :fitting, inverse_of: :items
+  belongs_to :type, inverse_of: :fitting_items
 end

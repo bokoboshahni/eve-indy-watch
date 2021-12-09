@@ -8,6 +8,7 @@
 # ------------------- | ------------------ | ---------------------------
 # **`id`**            | `bigint`           | `not null, primary key`
 # **`discarded_at`**  | `datetime`         |
+# **`imported_at`**   | `datetime`         |
 # **`name`**          | `text`             | `not null`
 # **`original`**      | `text`             |
 # **`owner_type`**    | `string`           | `not null`

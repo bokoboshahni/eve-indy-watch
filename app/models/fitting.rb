@@ -8,6 +8,7 @@
 # ------------------- | ------------------ | ---------------------------
 # **`id`**            | `bigint`           | `not null, primary key`
 # **`discarded_at`**  | `datetime`         |
+# **`imported_at`**   | `datetime`         |
 # **`name`**          | `text`             | `not null`
 # **`original`**      | `text`             |
 # **`owner_type`**    | `string`           | `not null`
@@ -36,4 +37,14 @@ class Fitting < ApplicationRecord
 
   belongs_to :owner, polymorphic: true
   belongs_to :type, inverse_of: :fittings
+
+  has_many :items, class_name: 'FittingItem', inverse_of: :fitting, dependent: :destroy
+
+  accepts_nested_attributes_for :items
+
+  def self.create_from_eft!(text, owner)
+    attributes = ParseEFT.call(text).merge(owner: owner)
+    errors = attributes.delete('errors')
+    create!(attributes)
+  end
 end

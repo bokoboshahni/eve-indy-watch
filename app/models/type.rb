@@ -42,6 +42,8 @@ class Type < ApplicationRecord
   has_one :latest_market_price_snapshot, -> { order esi_last_modified_at: :desc }, class_name: 'MarketPriceSnapshot', foreign_key: :type_id
 
   has_many :contract_items, inverse_of: :type, dependent: :restrict_with_exception
+  has_many :fitting_items, inverse_of: :type, dependent: :restrict_with_exception
+  has_many :fittings, inverse_of: :type, dependent: :restrict_with_exception
   has_many :market_price_snapshots, inverse_of: :type, dependent: :destroy
   has_many :stations, inverse_of: :type, dependent: :restrict_with_exception
   has_many :structures, inverse_of: :type, dependent: :restrict_with_exception
