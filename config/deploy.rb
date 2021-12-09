@@ -5,6 +5,7 @@ Rake::Task["deploy:assets:backup_manifest"].clear_actions
 
 SSHKit.config.command_map[:sidekiq] = "bundle exec sidekiq"
 SSHKit.config.command_map[:sidekiqctl] = "bundle exec sidekiqctl"
+SSHKit.config.umask = '022'
 
 set :application, ENV.fetch('DEPLOY_APPLICATION', 'eve-indy-watch')
 set :repo_url, ENV.fetch('DEPLOY_REPO_URL', 'https://github.com/bokoboshahni/eve-indy-watch.git')
@@ -12,9 +13,9 @@ set :branch, ENV.fetch('DEPLOY_BRANCH', 'main')
 set :deploy_to, ENV.fetch('DEPLOY_DIR', '/var/www/eve-indy-watch')
 
 append :linked_files, '.env'
-append :linked_dirs, 'log', 'node_modules', 'public/system', 'tmp', 'vendor/bundle'
+append :linked_dirs, 'log', 'node_modules', 'tmp', 'vendor/bundle'
 
-set :keep_releases, ENV.fetch('DEPLOY_KEEP_RELEASES', 5).to_i
+set :keep_releases, ENV.fetch('DEPLOY_KEEP_RELEASES', 1).to_i
 
 set :puma_phased_restart, true
 set :puma_systemctl_user, :user

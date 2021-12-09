@@ -24,7 +24,7 @@ namespace :sde do # rubocop:disable Metrics/BlockLength
     end
 
     task constellations: :setup do
-      SDE::LoadConstellations.call(source_path: @sde_path.join('fsd/universe/eve'), names: @names)
+      SDE::LoadConstellations.call(source_path: @sde_path.join('fsd/universe'), names: @names)
     end
 
     task corporations: :setup do
@@ -40,11 +40,11 @@ namespace :sde do # rubocop:disable Metrics/BlockLength
     end
 
     task regions: :setup do
-      SDE::LoadRegions.call(source_path: @sde_path.join('fsd/universe/eve'), names: @names)
+      SDE::LoadRegions.call(source_path: @sde_path.join('fsd/universe'), names: @names)
     end
 
     task solar_systems: :setup do
-      SDE::LoadSolarSystems.call(source_path: @sde_path.join('fsd/universe/eve'), names: @names)
+      SDE::LoadSolarSystems.call(source_path: @sde_path.join('fsd/universe'), names: @names)
     end
 
     task stations: :setup do
