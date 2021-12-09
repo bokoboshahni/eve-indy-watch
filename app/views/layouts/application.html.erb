@@ -201,6 +201,19 @@
           </div>
         </div>
         <div class="md:pl-64 flex flex-col">
+          <% unless Rails.env.production? %>
+            <div class="sticky top-0 z-10 h-16 <%= Rails.env.development? ? 'bg-blue-400' : 'bg-yellow-400' %> flex items-center">
+              <div class="max-w-7xl mx-auto py-3 px-3 sm:px-6 lg:px-8">
+                <div class="pr-16 sm:text-center sm:px-16">
+                  <p class="uppercase font-bold text-white">
+                    <span class="inline">
+                      <%= Rails.env.titleize %> environment
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          <% end %>
           <div class="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white shadow">
             <button type="button" class="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden" data-action='click->toggle#toggle touch->toggle#toggle'>
               <span class="sr-only">Open sidebar</span>
