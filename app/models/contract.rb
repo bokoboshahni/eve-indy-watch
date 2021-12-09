@@ -101,11 +101,27 @@ class Contract < ApplicationRecord
     type == 'item_exchange'
   end
 
+  def deleted?
+    status == 'deleted'
+  end
+
+  def finished?
+    status == 'finished'
+  end
+
+  def done?
+    deleted? || finished?
+  end
+
   def sync_items_from_esi!
+    return unless esi_items_unsynced?
+
     Contract::SyncItemsFromESI.call(self)
   end
 
   def sync_items_from_esi_async
+    return unless esi_items_unsynced?
+
     Contract::SyncItemsFromESIWorker.perform_async(id, issuer_id)
   end
 

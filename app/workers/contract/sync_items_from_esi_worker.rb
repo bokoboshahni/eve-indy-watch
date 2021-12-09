@@ -10,9 +10,7 @@ class Contract < ApplicationRecord
 
     def perform(contract_id)
       contract = Contract.find(contract_id)
-      # Retriable.retriable on: [ESI::Errors::EveServerError], tries: 5, max_elapsed_time: 180, base_interval: 10.0 do
-        Contract::SyncItemsFromESI.call(contract)
-      # end
+      Contract::SyncItemsFromESI.call(contract)
     rescue ActiveRecord::RecordNotFound
       debug "Contract #{contract_id} no longer exists"
     end

@@ -61,15 +61,15 @@ class Corporation < ApplicationRecord
     ESIAuthorization.includes(:character).joins(character: :corporation).where('corporation_id = ?', id).order('characters.name')
   end
 
-  def sync_from_esi!
-    Corporation::SyncFromESI.call(id)
+  def esi_contracts_expired?
+    esi_contracts_expires_at.present? && esi_contracts_expires_at <= Time.zone.now
   end
 
-  def sync_contracts_from_esi!
-    Corporation::SyncContractsFromESI.call(id)
+  def fetch_contracts_from_esi!
+    Corporation::FetchContractsFromESI.call(self)
   end
 
-  def sync_contracts_from_esi_async
-    Corporation::SyncContractsFromESIWorker.perform_async(id)
+  def fetch_contracts_from_esi_async
+    Corporation::FetchContractsFromESIWorker.perform_async(id)
   end
 end

@@ -7,7 +7,7 @@ class Corporation < ApplicationRecord
     def perform
       Corporation.where(contract_sync_enabled: true).where('esi_contracts_expires_at <= ?', Time.zone.now)
                  .or(Corporation.where(contract_sync_enabled: true, esi_contracts_last_modified_at: nil))
-                 .each(&:sync_contracts_from_esi_async)
+                 .each(&:fetch_contracts_from_esi_async)
     end
   end
 end

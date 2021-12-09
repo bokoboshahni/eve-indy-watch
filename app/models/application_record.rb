@@ -3,6 +3,10 @@
 class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
+  def log_name
+    "#{name} (#{id})"
+  end
+
   protected
 
   def main_alliance
