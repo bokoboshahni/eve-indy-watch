@@ -37,7 +37,7 @@ class MarketOrderSnapshot < ApplicationRecord
       order[:issued_at] = order.delete(:issued)
       order[:esi_expires_at] = expires
       order[:esi_last_modified_at] = last_modified
-      order[:solar_system_id] = order.delete(:system_id)
+      order[:solar_system_id] = location.is_a?(Structure) ? location.solar_system_id : order.delete(:system_id)
       order
     end
   end
