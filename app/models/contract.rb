@@ -83,7 +83,9 @@ class Contract < ApplicationRecord
   has_one :end_solar_system, through: :end_location, source: :solar_system
   has_one :start_solar_system, through: :start_location, source: :solar_system
 
+  has_many :contract_fittings, inverse_of: :contract, dependent: :destroy
   has_many :events, class_name: 'ContractEvent', inverse_of: :contract, dependent: :destroy
+  has_many :fittings, through: :contract_fittings
   has_many :items, class_name: 'ContractItem', inverse_of: :contract, dependent: :destroy
 
   scope :courier, -> { where(type: 'courier') }
@@ -147,5 +149,16 @@ class Contract < ApplicationRecord
 
   def esi_items_unavailable?
     esi_items_exception_class_name == 'ESI::Errors::NotFoundError'
+  end
+
+  def compact_items
+    items.select(:type_id, :quantity).each_with_object({}) do |item, h|
+      type_id = item.type_id
+      if h.key?(type_id)
+        h[type_id] += item.quantity
+      else
+        h[type_id] = item.quantity
+      end
+    end
   end
 end

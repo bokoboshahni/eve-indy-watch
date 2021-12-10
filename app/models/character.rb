@@ -44,6 +44,7 @@ class Character < ApplicationRecord
   has_many :accepted_contracts, class_name: 'Contract', as: :acceptor, dependent: :restrict_with_exception
   has_many :assigned_contracts, class_name: 'Contract', as: :assignee, dependent: :restrict_with_exception
   has_many :esi_authorizations, inverse_of: :character, dependent: :destroy
+  has_many :fittings, as: :owner, dependent: :destroy
   has_many :issued_contracts, class_name: 'Contract', as: :issuer, dependent: :restrict_with_exception
 
   def sync_from_esi!

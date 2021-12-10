@@ -64,4 +64,17 @@ namespace :sde do
   end
 end
 
+namespace :fittings do
+  desc "Import fittings from shared/tmp/fittings"
+  task :import_eft_files do
+    on roles(:db) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, 'fittings:import_eft_files'
+        end
+      end
+    end
+  end
+end
+
 before "deploy:migrate", "deploy:db_schema_load" if ENV["DB_SCHEMA_LOAD"]

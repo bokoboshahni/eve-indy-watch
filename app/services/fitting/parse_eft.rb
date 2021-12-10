@@ -1,6 +1,6 @@
 class Fitting < ApplicationRecord
   class ParseEFT < ApplicationService
-    class Error < StandardError; end
+    class Error < RuntimeError; end
 
     class InvalidHeaderError < Error; end
 
@@ -8,29 +8,34 @@ class Fitting < ApplicationRecord
       super
 
       @raw = raw
+      @errors = []
     end
 
     def call
       lines = prepare_lines
       type, name = process_header(lines.shift)
-      items = process_items(lines)
+      items = parse_lines(lines)
 
-      {
+      fitting = {
         type_id: type.id,
         name: name,
         original: raw,
         items_attributes: items
       }
+
+      debug fitting[:items_attributes].inspect
+
+      [fitting, errors]
     end
 
     private
 
     NAME_CHARS = '[^,/\[\]]'
-    MODULE_PATTERN = %r{\A(?<type>#{NAME_CHARS}+?)(,\s*(?<charge>#{NAME_CHARS}+?))?\z}
+    MODULE_PATTERN = %r{\A(?<type>#{NAME_CHARS}+?)(,\s*(?<charge>#{NAME_CHARS}+?))?(\s+(?<offline>/OFFLINE))?\z}
     CARGO_PATTERN = %r{\A(?<type>#{NAME_CHARS}+?)\s+x(?<amount>\d+?)\z}
     STUB_PATTERN = %r{\A\[.+?\]\z}
 
-    attr_reader :raw, :fitting
+    attr_reader :errors, :raw
 
     def prepare_lines
       raw.strip.encode(universal_newline: true).split("\n").map(&:strip)
@@ -47,34 +52,42 @@ class Fitting < ApplicationRecord
       [type, name]
     end
 
-    def process_items(lines)
+    def parse_lines(lines)
       lines.each_with_object([]) do |line, a|
         next if line.blank? || line =~ STUB_PATTERN
 
         match = line.match(CARGO_PATTERN)
         if match
           type = find_type(match[:type])
-          a << { type_id: type.id, quantity: match[:amount].to_i }
+
+          (errors << { line: line, message: :invalid_type } && next) unless type
+
+          item = { type: type, quantity: match[:amount].to_i }
+          a << item
+          debug "Added item: #{item}"
           next
         end
 
         match = line.match(MODULE_PATTERN)
         if match
           type = find_type(match[:type])
-          a << { type_id: type.id, quantity: 1 }
+
+          (errors << { line: line, message: :invalid_type } && next) unless type
+
+          item = { type: type, quantity: 1, offline: match[:offline] }
+          a << item
+          debug "Added item: #{item}"
           next
         end
 
-        warn "Line cannot be parsed: #{line}"
+        errors << { line: line, message: :parse_error }
+        debug("Parse error: #{line}")
+        return
       end
     end
 
     def find_type(name)
-      type = Type.find_by(name: name)
-
-      raise ParseError.new("Type not found: #{name}") unless type
-
-      type
+      Type.find_by(name: name)
     end
   end
 end

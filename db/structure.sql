@@ -202,6 +202,19 @@ ALTER SEQUENCE public.contract_events_id_seq OWNED BY public.contract_events.id;
 
 
 --
+-- Name: contract_fittings; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.contract_fittings (
+    contract_id bigint NOT NULL,
+    fitting_id bigint NOT NULL,
+    quantity integer NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: contract_items; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -420,7 +433,8 @@ CREATE TABLE public.fitting_items (
     id bigint NOT NULL,
     fitting_id bigint NOT NULL,
     type_id bigint NOT NULL,
-    quantity integer NOT NULL
+    quantity integer NOT NULL,
+    offline boolean
 );
 
 
@@ -1403,6 +1417,20 @@ CREATE INDEX index_contract_events_on_corporation_id ON public.contract_events U
 
 
 --
+-- Name: index_contract_fittings_on_contract_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_contract_fittings_on_contract_id ON public.contract_fittings USING btree (contract_id);
+
+
+--
+-- Name: index_contract_fittings_on_fitting_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_contract_fittings_on_fitting_id ON public.contract_fittings USING btree (fitting_id);
+
+
+--
 -- Name: index_contract_items_on_contract_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1683,6 +1711,13 @@ CREATE INDEX index_types_on_market_group_id ON public.types USING btree (market_
 
 
 --
+-- Name: index_unique_contract_fittings; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_unique_contract_fittings ON public.contract_fittings USING btree (contract_id, fitting_id);
+
+
+--
 -- Name: index_unique_industry_index_snapshots; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1845,6 +1880,14 @@ ALTER TABLE ONLY public.characters
 
 
 --
+-- Name: contract_fittings fk_rails_9bf253a179; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.contract_fittings
+    ADD CONSTRAINT fk_rails_9bf253a179 FOREIGN KEY (contract_id) REFERENCES public.contracts(id);
+
+
+--
 -- Name: constellations fk_rails_a5ca49dbf7; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1874,6 +1917,14 @@ ALTER TABLE ONLY public.solar_systems
 
 ALTER TABLE ONLY public.structures
     ADD CONSTRAINT fk_rails_afe2496c94 FOREIGN KEY (owner_id) REFERENCES public.corporations(id);
+
+
+--
+-- Name: contract_fittings fk_rails_b5056d2fe0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.contract_fittings
+    ADD CONSTRAINT fk_rails_b5056d2fe0 FOREIGN KEY (fitting_id) REFERENCES public.fittings(id);
 
 
 --
@@ -1986,6 +2037,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211206183208'),
 ('20211208211830'),
 ('20211208232318'),
-('20211209144910');
+('20211209144910'),
+('20211210142245'),
+('20211210181844');
 
 

@@ -7,6 +7,7 @@
 # Name              | Type               | Attributes
 # ----------------- | ------------------ | ---------------------------
 # **`id`**          | `bigint`           | `not null, primary key`
+# **`offline`**     | `boolean`          |
 # **`quantity`**    | `integer`          | `not null`
 # **`fitting_id`**  | `bigint`           | `not null`
 # **`type_id`**     | `bigint`           | `not null`

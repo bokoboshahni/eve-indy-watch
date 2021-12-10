@@ -28,6 +28,7 @@ class Alliance < ApplicationRecord
   has_many :characters, inverse_of: :alliance, dependent: :restrict_with_exception
   has_many :contract_events, inverse_of: :alliance, dependent: :restrict_with_exception
   has_many :corporations, inverse_of: :alliance, dependent: :restrict_with_exception
+  has_many :fittings, as: :owner, dependent: :destroy
 
   def sync_from_esi!
     Alliance::SyncFromESI.call(id)

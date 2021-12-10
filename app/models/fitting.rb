@@ -40,13 +40,20 @@ class Fitting < ApplicationRecord
   belongs_to :owner, polymorphic: true
   belongs_to :type, inverse_of: :fittings
 
+  has_many :contract_fittings, inverse_of: :fitting, dependent: :destroy
+  has_many :contracts, through: :contract_fittings
   has_many :items, class_name: 'FittingItem', inverse_of: :fitting, dependent: :destroy
 
-  accepts_nested_attributes_for :items
+  accepts_nested_attributes_for :items, allow_destroy: true
 
-  def self.create_from_eft!(text, owner)
-    attributes = ParseEFT.call(text).merge(owner: owner)
-    errors = attributes.delete('errors')
-    create!(attributes)
+  def compact_items
+    items.select(:type_id, :quantity).each_with_object({}) do |item, h|
+      type_id = item.type_id
+      if h.key?(type_id)
+        h[type_id] += item.quantity
+      else
+        h[type_id] = item.quantity
+      end
+    end
   end
 end
