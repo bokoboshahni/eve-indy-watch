@@ -1,4 +1,6 @@
-  class FittingsController < AdminController
+  class FittingsController < ApplicationController
+    before_action :authenticate_user!
+
     def index
       @pagy, @fittings = pagy(Fitting.kept.where(owner_id: main_alliance_id).order(:name))
     end
