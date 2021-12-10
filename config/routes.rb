@@ -15,7 +15,6 @@ Rails.application.routes.draw do
 
   namespace :admin do
     resources :alliances, only: %i[index show edit update]
-    resources :contracts, only: %i[index show]
     resources :corporations, only: %i[index show edit update]
     resources :esi_authorizations
     resources :regions, only: %i[index show edit update]
@@ -28,6 +27,7 @@ Rails.application.routes.draw do
 
   resource :dashboard, only: :show
   resources :contracts, only: %i[index show]
+  resources :fittings, only: %i[index show]
 
   resource :settings, only: %i[show update destroy] do
     resources :esi_authorizations, path: 'authorizations', only: %i[create index destroy]

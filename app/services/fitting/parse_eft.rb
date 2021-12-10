@@ -37,7 +37,7 @@ class Fitting < ApplicationRecord
     end
 
     def process_header(line)
-      match = line.match(%r{\A\[(?<type>[^,]+),\s*(?<name>[^,/\[\]]+)\]\z})
+      match = line.match(%r{\A\[(?<type>[^,]+),\s*(?<name>[^,]+)\]\z})
 
       raise InvalidHeaderError.new(line) unless match
 

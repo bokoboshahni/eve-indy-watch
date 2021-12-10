@@ -4,18 +4,18 @@
 #
 # ### Columns
 #
-# Name                | Type               | Attributes
-# ------------------- | ------------------ | ---------------------------
-# **`id`**            | `bigint`           | `not null, primary key`
-# **`discarded_at`**  | `datetime`         |
-# **`imported_at`**   | `datetime`         |
-# **`name`**          | `text`             | `not null`
-# **`original`**      | `text`             |
-# **`owner_type`**    | `string`           | `not null`
-# **`created_at`**    | `datetime`         | `not null`
-# **`updated_at`**    | `datetime`         | `not null`
-# **`owner_id`**      | `bigint`           | `not null`
-# **`type_id`**       | `bigint`           | `not null`
+# Name                             | Type               | Attributes
+# -------------------------------- | ------------------ | ---------------------------
+# **`id`**                         | `bigint`           | `not null, primary key`
+# **`contract_matching_enabled`**  | `boolean`          |
+# **`discarded_at`**               | `datetime`         |
+# **`name`**                       | `text`             | `not null`
+# **`original`**                   | `text`             |
+# **`owner_type`**                 | `string`           | `not null`
+# **`created_at`**                 | `datetime`         | `not null`
+# **`updated_at`**                 | `datetime`         | `not null`
+# **`owner_id`**                   | `bigint`           | `not null`
+# **`type_id`**                    | `bigint`           | `not null`
 #
 # ### Indexes
 #
@@ -33,6 +33,8 @@
 #     * **`type_id => types.id`**
 #
 class Fitting < ApplicationRecord
+  include Discard::Model
+
   has_paper_trail
 
   belongs_to :owner, polymorphic: true
