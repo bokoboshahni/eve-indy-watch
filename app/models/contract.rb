@@ -122,7 +122,7 @@ class Contract < ApplicationRecord
   def sync_items_from_esi_async
     return unless esi_items_unsynced?
 
-    Contract::SyncItemsFromESIWorker.perform_async(id, issuer_id)
+    Contract::SyncItemsFromESIWorker.perform_async(id)
   end
 
   def esi_items_exception_class_name
