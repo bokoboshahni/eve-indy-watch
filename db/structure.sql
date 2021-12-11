@@ -466,12 +466,12 @@ CREATE TABLE public.fittings (
     owner_type character varying NOT NULL,
     owner_id bigint NOT NULL,
     type_id bigint NOT NULL,
-    contract_matching_enabled boolean,
     discarded_at timestamp without time zone,
     name text NOT NULL,
     original text,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    pinned boolean
 );
 
 
@@ -2039,6 +2039,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211208232318'),
 ('20211209144910'),
 ('20211210142245'),
-('20211210181844');
+('20211210181844'),
+('20211210214817'),
+('20211211022126');
 
 

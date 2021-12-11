@@ -18,7 +18,7 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_user
   def current_user
-    @current_user ||= User.find(session[:current_user_id]) if session[:current_user_id].present?
+    @current_user ||= User.includes(:alliance).find(session[:current_user_id]) if session[:current_user_id].present?
   end
 
   helper_method :logged_in?
@@ -44,5 +44,10 @@ class ApplicationController < ActionController::Base
   helper_method :app_config
   def app_config
     Rails.application.config.x.app
+  end
+
+  helper_method :current_alliance
+  def current_alliance
+    current_user.alliance
   end
 end

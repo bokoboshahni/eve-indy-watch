@@ -10,7 +10,7 @@ class Contract < ApplicationRecord
 
     def call
       ship_ids = contract.items.joins(type: :group).where('groups.category_id = ?', SHIP_CATEGORY_ID).pluck(:type_id)
-      candidates = fittings.includes(:items).where(type_id: ship_ids, contract_matching_enabled: true)
+      candidates = fittings.includes(:items).where(type_id: ship_ids)
       contract.transaction do
         matches = candidates.map do |fitting, a|
           match_count = Fitting::MatchContract.call(fitting, contract)
