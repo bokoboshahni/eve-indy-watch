@@ -25,6 +25,9 @@
                     Name
                   </th>
                   <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Ship
+                  </th>
+                  <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     On Hand
                   </th>
                   <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -40,6 +43,9 @@
                   <tr>
                     <td class="px-3 py-2 whitespace-nowrap">
                       <%= link_to fitting.name, fitting_path(fitting), class: 'text-xs text-indigo-600 hover:text-indigo-900' %>
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                      <div class="text-xs text-gray-900"><%= fitting.type.name %></div>
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap">
                       <div class="text-xs text-gray-900"><%= fitting.contracts_on_hand.count %></div>
