@@ -471,7 +471,8 @@ CREATE TABLE public.fittings (
     original text,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    pinned boolean
+    pinned boolean,
+    desired_count integer
 );
 
 
@@ -2041,6 +2042,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211210142245'),
 ('20211210181844'),
 ('20211210214817'),
-('20211211022126');
+('20211211022126'),
+('20211211200628');
 
 
