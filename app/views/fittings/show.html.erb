@@ -69,6 +69,14 @@
                     </tr>
                   </thead>
                   <tbody class="bg-white divide-y divide-gray-200">
+                    <tr>
+                      <td class="px-4 py-2 whitespace-nowrap text-xs font-medium text-gray-900">
+                        <%= @fitting.type.name %>
+                      </td>
+                      <td class="px-4 py-2 whitespace-nowrap text-right text-xs font-medium">
+                        1
+                      </td>
+                    </tr>
                     <% @fitting.items.includes(:type).each do |item| %>
                       <tr>
                         <td class="px-4 py-2 whitespace-nowrap text-xs font-medium text-gray-900">
