@@ -39,6 +39,7 @@
 class MarketOrderSnapshot < ApplicationRecord
   self.inheritance_column = nil
   self.primary_keys = :location_id, :order_id, :esi_last_modified_at
+  self.rollup_column = :esi_last_modified_at
 
   belongs_to :location, polymorphic: true
   belongs_to :solar_system, inverse_of: :market_order_snapshots
@@ -47,11 +48,7 @@ class MarketOrderSnapshot < ApplicationRecord
   has_one :constellation, through: :solar_system
   has_one :region, through: :constellation
 
-  def self.sync_location_from_esi!(location)
-    MarketOrderSnapshot::SyncLocationOrdersFromESI.call(location)
-  end
-
-  def self.sync_location_from_esi_async(location)
-    MarketOrderSnapshot::SyncLocationOrdersFromESIWorker.perform_async(location.class.name, location.id)
+  def self.import_from_esi!(location, expires, last_modified, data)
+    MarketOrderSnapshot::ImportFromESI.call(location, expires, last_modified, data)
   end
 end

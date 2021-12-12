@@ -50,7 +50,9 @@ class Structure < ApplicationRecord
   belongs_to :solar_system, inverse_of: :structures, optional: true
   belongs_to :type, inverse_of: :structures, optional: true
 
+  has_many :market_locations, as: :location, dependent: :destroy
   has_many :market_order_snapshots, as: :location, dependent: :destroy
+  has_many :markets, through: :market_locations
 
   def available_esi_authorizations
     rel = ESIAuthorization.includes(:character).joins(character: :corporation)
@@ -66,5 +68,13 @@ class Structure < ApplicationRecord
     return true unless esi_market_orders_expires_at
 
     esi_market_orders_expires_at <= Time.zone.now
+  end
+
+  def fetch_market_orders
+    MarketOrderSnapshot::FetchFromESI.call(self)
+  end
+
+  def fetch_market_orders_async
+    MarketOrderSnapshot::FetchFromESIWorker.perform_async(self.class.name, id)
   end
 end

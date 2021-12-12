@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class MarketOrderSnapshot < ApplicationRecord
-  class FetchLocationFromESI < ApplicationService
+  class FetchFromESI < ApplicationService
     include ESIHelpers
 
     def initialize(location)
@@ -13,11 +13,11 @@ class MarketOrderSnapshot < ApplicationRecord
     def call # rubocop:disable Metrics/AbcSize
       unless location.esi_market_orders_expired?
         debug("ESI response for market orders at #{location.name} (#{location.id}) is not expired: #{location.esi_market_orders_expires_at.iso8601}")
-        return
+        return []
       end
 
-      Retriable.retriable(tries: 10) do
-        if location.is_a?(Region)
+      if location.is_a?(Region)
+        Retriable.retriable(tries: 10) do
           url = "https://esi.evetech.net/latest/markets/#{location.id}/orders"
           hydra = Typhoeus::Hydra.new
           requests = []
@@ -43,21 +43,23 @@ class MarketOrderSnapshot < ApplicationRecord
           expires = requests.first.response.headers['expires']
           last_modified = requests.first.response.headers['last-modified']
 
-          responses = requests.reject { |request| request.response.body =~ /502 Bad Gateway/ }.map { |request| request.response.body }
+          responses = requests.reject { |request| request.response.body =~ /502 Bad Gateway/ }
+                              .map { |request| request.response.body }
 
-          raise "Something is missing" if pages != responses.count
+          raise "Page is missing" if pages != responses.count
 
-          [responses, last_modified, expires]
-        elsif location.is_a?(Structure)
-          raise Error.new("#{location.class.name} #{location.name} (#{location.id}) has no ESI authorization") unless location.esi_authorized?
-
-          esi_authorize!(location.esi_authorization)
-          auth = { Authorization: "Bearer #{location.esi_authorization.access_token}" }
-          responses = esi.get_markets_structure_raw(structure_id: location.id, headers: auth)
-          expires = responses.first.headers['expires']
-          last_modified = responses.first.headers['last-modified']
-          [responses.map(&:body), last_modified, expires]
+          [expires, last_modified, responses]
         end
+      elsif location.is_a?(Structure)
+        raise Error.new("#{location.class.name} #{location.name} (#{location.id}) has no ESI authorization") unless location.esi_authorized?
+
+        esi_authorize!(location.esi_authorization)
+        auth = { Authorization: "Bearer #{location.esi_authorization.access_token}" }
+        responses = esi.get_markets_structure_raw(structure_id: location.id, headers: auth)
+        expires = responses.first.headers['expires']
+        last_modified = responses.first.headers['last-modified']
+
+        [expires, last_modified, responses.map(&:body)]
       end
     end
 

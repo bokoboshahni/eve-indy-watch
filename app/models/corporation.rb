@@ -66,7 +66,7 @@ class Corporation < ApplicationRecord
     esi_contracts_expires_at.present? && esi_contracts_expires_at <= Time.zone.now
   end
 
-  def fetch_contracts_from_esi!
+  def fetch_contracts_from_esi
     Corporation::FetchContractsFromESI.call(self)
   end
 

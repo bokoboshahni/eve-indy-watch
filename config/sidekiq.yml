@@ -4,10 +4,10 @@
     class: 'Corporation::SyncAllContractsFromESIWorker'
     description: "Sync contracts for all corporations with contract sync enabled"
 
-  sync_all_market_orders_from_esi:
+  import_all_market_orders_from_esi:
     cron: '*/3 * * * *'
-    class: 'MarketOrderSnapshot::SyncAllLocationsFromESIWorker'
-    description: "Sync market orders for all regions/structures with market order sync enabled"
+    class: 'MarketOrderSnapshot::FetchAllFromESIWorker'
+    description: "Import market orders for all regions/structures with market order sync enabled"
 
   sync_industry_indices_from_esi:
     cron: '0 * * * *'
@@ -18,3 +18,44 @@
     cron: '0 * * * *'
     class: 'MarketPriceSnapshot::SyncFromESIWorker'
     description: "Create a snapshot of market prices"
+
+  aggregate_market_types_5m:
+    cron: '*/5 * * * *'
+    class: 'Market::AggregateAllWorker'
+    description: "Run all aggregations for all markets for the 5 minute interval"
+    args: ['5m']
+
+  aggregate_market_types_hourly:
+    cron: '0 * * * *'
+    class: 'Market::AggregateAllWorker'
+    description: "Run all aggregations for all markets for the 1 hour interval"
+    args: ['hour']
+
+  aggregate_market_types_daily:
+    cron: '0 0 * * *'
+    class: 'Market::AggregateAllWorker'
+    description: "Run all aggregations for all markets for the 1 hour interval"
+    args: ['day']
+
+  prune_market_order_snapshots_5m:
+    cron: '0 1 * * *'
+    class: 'MarketOrderSnapshot::PruneAllWorker'
+    description: "Prune all market order snapshots from the previous day"
+
+  prune_market_type_aggregations_5m:
+    cron: '0 1 * * *'
+    class: 'Market::PruneAllTypeAggregationsWorker'
+    description: "Prune all 5m interval type aggregations from the previous day"
+    args: ['5m']
+
+  aggregate_market_types_weekly:
+    cron: '0 0 * * 0'
+    class: 'Market::AggregateAllWorker'
+    description: "Run all aggregations for all markets for the 1 hour interval"
+    args: ['week']
+
+  aggregate_market_types_monthly:
+    cron: '0 0 1 * *'
+    class: 'Market::AggregateAllWorker'
+    description: "Run all aggregations for all markets for the 1 hour interval"
+    args: ['month']

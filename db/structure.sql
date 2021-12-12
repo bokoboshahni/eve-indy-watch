@@ -605,6 +605,19 @@ ALTER SEQUENCE public.market_groups_id_seq OWNED BY public.market_groups.id;
 
 
 --
+-- Name: market_locations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.market_locations (
+    market_id bigint NOT NULL,
+    location_type character varying NOT NULL,
+    location_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: market_order_snapshots; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -658,6 +671,39 @@ CREATE SEQUENCE public.market_price_snapshots_id_seq
 --
 
 ALTER SEQUENCE public.market_price_snapshots_id_seq OWNED BY public.market_price_snapshots.id;
+
+
+--
+-- Name: markets; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.markets (
+    id bigint NOT NULL,
+    owner_type character varying,
+    owner_id bigint,
+    name text NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: markets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.markets_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: markets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.markets_id_seq OWNED BY public.markets.id;
 
 
 --
@@ -1098,6 +1144,13 @@ ALTER TABLE ONLY public.market_price_snapshots ALTER COLUMN id SET DEFAULT nextv
 
 
 --
+-- Name: markets id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.markets ALTER COLUMN id SET DEFAULT nextval('public.markets_id_seq'::regclass);
+
+
+--
 -- Name: pghero_query_stats id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1294,6 +1347,14 @@ ALTER TABLE ONLY public.market_groups
 
 ALTER TABLE ONLY public.market_price_snapshots
     ADD CONSTRAINT market_price_snapshots_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: markets markets_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.markets
+    ADD CONSTRAINT markets_pkey PRIMARY KEY (id);
 
 
 --
@@ -1601,6 +1662,20 @@ CREATE INDEX index_market_groups_on_ancestry ON public.market_groups USING btree
 
 
 --
+-- Name: index_market_locations_on_location; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_market_locations_on_location ON public.market_locations USING btree (location_type, location_id);
+
+
+--
+-- Name: index_market_locations_on_market_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_market_locations_on_market_id ON public.market_locations USING btree (market_id);
+
+
+--
 -- Name: index_market_order_snapshots_on_location; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1626,6 +1701,13 @@ CREATE INDEX index_market_order_snapshots_on_type_id ON public.market_order_snap
 --
 
 CREATE INDEX index_market_price_snapshots_on_type_id ON public.market_price_snapshots USING btree (type_id);
+
+
+--
+-- Name: index_markets_on_owner; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_markets_on_owner ON public.markets USING btree (owner_type, owner_id);
 
 
 --
@@ -1783,6 +1865,14 @@ ALTER TABLE ONLY public.contract_events
 
 ALTER TABLE ONLY public.corporations
     ADD CONSTRAINT fk_rails_25cac28994 FOREIGN KEY (esi_authorization_id) REFERENCES public.esi_authorizations(id);
+
+
+--
+-- Name: market_locations fk_rails_2c79e89ad9; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.market_locations
+    ADD CONSTRAINT fk_rails_2c79e89ad9 FOREIGN KEY (market_id) REFERENCES public.markets(id);
 
 
 --
@@ -2045,6 +2135,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211210214817'),
 ('20211211022126'),
 ('20211211200628'),
-('20211211201222');
+('20211211201222'),
+('20211212020439');
 
 

@@ -33,7 +33,9 @@ class Region < ApplicationRecord
   has_many :constellations, inverse_of: :region, dependent: :restrict_with_exception
 
   has_many :contracts, through: :solar_systems
+  has_many :market_locations, as: :location, dependent: :destroy
   has_many :market_order_snapshots, through: :constellations
+  has_many :markets, through: :market_locations
   has_many :solar_systems, through: :constellations
   has_many :stations, through: :solar_systems
   has_many :structures, through: :solar_systems
@@ -50,5 +52,13 @@ class Region < ApplicationRecord
     return true unless esi_market_orders_expires_at
 
     esi_market_orders_expires_at <= Time.zone.now
+  end
+
+  def fetch_market_orders
+    MarketOrderSnapshot::FetchFromESI.call(self)
+  end
+
+  def fetch_market_orders_async
+    MarketOrderSnapshot::FetchFromESIWorker.perform_async(self.class.name, id)
   end
 end

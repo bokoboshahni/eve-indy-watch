@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 class MarketOrderSnapshot < ApplicationRecord
-  class ProcessESIResponse < ApplicationService
+  class ImportFromESI < ApplicationService
     include ESIHelpers
 
-    def initialize(location, last_modified, expires, data)
+    def initialize(location, expires, last_modified, data)
       super
 
       @location = location
