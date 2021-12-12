@@ -926,7 +926,8 @@ CREATE TABLE public.users (
     character_id bigint NOT NULL,
     admin boolean DEFAULT false NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    roles text[] DEFAULT '{}'::text[]
 );
 
 
@@ -2043,6 +2044,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211210181844'),
 ('20211210214817'),
 ('20211211022126'),
-('20211211200628');
+('20211211200628'),
+('20211211201222');
 
 

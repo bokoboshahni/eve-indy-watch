@@ -10,6 +10,7 @@
 # ------------------- | ------------------ | ---------------------------
 # **`id`**            | `bigint`           | `not null, primary key`
 # **`admin`**         | `boolean`          | `default(FALSE), not null`
+# **`roles`**         | `text`             | `default([]), is an Array`
 # **`created_at`**    | `datetime`         | `not null`
 # **`updated_at`**    | `datetime`         | `not null`
 # **`character_id`**  | `bigint`           | `not null`
@@ -25,6 +26,10 @@
 #     * **`character_id => characters.id`**
 #
 class User < ApplicationRecord
+  ROLES = %w[
+    alliance.fittings.admin
+    corporation.fitting.admin
+  ]
   belongs_to :character, inverse_of: :user
 
   has_one :alliance, through: :character
@@ -35,4 +40,8 @@ class User < ApplicationRecord
   delegate :portrait_url_256, :name, to: :character # rubocop:disable Naming/VariableNumber
   delegate :icon_url_256, :name, to: :corporation, prefix: true # rubocop:disable Naming/VariableNumber
   delegate :icon_url_128, :name, to: :alliance, prefix: true, allow_nil: true # rubocop:disable Naming/VariableNumber
+
+  def role?(name)
+    roles.include?(name)
+  end
 end

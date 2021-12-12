@@ -17,92 +17,177 @@
 </li>
 <% end %>
 
-<div class="max-w-3xl mx-auto px-4 sm:px-6 md:px-8">
-  <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-    <div class="px-4 py-5 sm:px-6">
-      <h3 class="text-lg leading-6 font-medium text-gray-900">
-        Fitting Information
-      </h3>
+<!-- Page header -->
+<div class="max-w-3xl mx-auto px-4 sm:px-6 md:flex md:items-center md:justify-between md:space-x-5 lg:max-w-7xl lg:px-8">
+  <div class="flex items-center space-x-5">
+    <div class="flex-shrink-0">
+      <div class="relative">
+        <%= image_tag "https://images.evetech.net/types/#{@fitting.type_id}/render", class: 'h-16 h-16 rounded-md' %>
+        <span class="absolute inset-0 shadow-inner rounded-md" aria-hidden="true"></span>
+      </div>
     </div>
-    <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
-      <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
-        <div class="sm:col-span-1">
-          <dt class="text-sm font-medium text-gray-500">
-            Name
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900"><%= @fitting.name %></h1>
+      <p class="text-sm font-medium text-gray-500"><%= @fitting.type.name %> (<%= @fitting.type.group.name %>)</p>
+    </div>
+  </div>
+  <div class="mt-6 flex flex-col-reverse justify-stretch space-y-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-x-reverse sm:space-y-0 sm:space-x-3 md:mt-0 md:flex-row md:space-x-3">
+    <%= link_to 'Edit', edit_fitting_path, class: "inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-blue-500" if policy(@fitting).update? %>
+  </div>
+</div>
+
+<div class="mt-8 max-w-3xl mx-auto grid grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
+  <div class="space-y-6 lg:col-start-1 lg:col-span-2">
+    <!-- Description list-->
+    <section>
+      <dl class="grid grid-cols-1 gap-5 sm:grid-cols-3">
+        <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+          <dt class="text-sm font-medium text-gray-500 truncate">
+            On Hand
           </dt>
-          <dd class="mt-1 text-sm text-gray-900">
-            <%= @fitting.name %>
+          <dd class="mt-1 text-3xl font-semibold text-gray-900">
+            <%= @fitting.contracts_on_hand.count %>
           </dd>
         </div>
-        <div class="sm:col-span-1">
-          <dt class="text-sm font-medium text-gray-500">
-            Owner
+
+        <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+          <dt class="text-sm font-medium text-gray-500 truncate">
+            Received (7 days)
           </dt>
-          <dd class="mt-1 text-sm text-gray-900">
-            <%= @fitting.owner.name %>
+          <dd class="mt-1 text-3xl font-semibold text-gray-900">
+            <%= @fitting.contracts_received.count %>
           </dd>
         </div>
-        <div class="sm:col-span-1">
-          <dt class="text-sm font-medium text-gray-500">
-            Last Updated
+
+        <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+          <dt class="text-sm font-medium text-gray-500 truncate">
+            Sold (7 days)
           </dt>
-          <dd class="mt-1 text-sm text-gray-900">
-            <%= local_time @fitting.updated_at, format: :db %>
-          </dd>
-        </div>
-        <div class="sm:col-span-2">
-          <dt class="text-sm font-medium text-gray-500 sr-only">
-            Items
-          </dt>
-          <dd class="mt-1 text-sm text-gray-900">
-            <% if @fitting.items.any? %>
-              <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                <table class="min-w-full divide-y divide-gray-200">
-                  <thead class="bg-gray-50">
-                    <tr>
-                      <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Item
-                      </th>
-                      <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Quantity
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody class="bg-white divide-y divide-gray-200">
-                    <tr>
-                      <td class="px-4 py-2 whitespace-nowrap text-xs font-medium text-gray-900">
-                        <%= @fitting.type.name %>
-                      </td>
-                      <td class="px-4 py-2 whitespace-nowrap text-right text-xs font-medium">
-                        1
-                      </td>
-                    </tr>
-                    <% @fitting.items.includes(:type).each do |item| %>
-                      <tr>
-                        <td class="px-4 py-2 whitespace-nowrap text-xs font-medium text-gray-900">
-                          <%= item.type.name %>
-                        </td>
-                        <td class="px-4 py-2 whitespace-nowrap text-right text-xs font-medium">
-                          <%= number_with_delimiter item.quantity %>
-                        </td>
-                      </tr>
-                    <% end %>
-                  </tbody>
-                </table>
-              </div>
-            <% else %>
-              <div class="relative block w-full border-2 border-gray-300 border-dashed rounded-lg p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                <svg class="mx-auto h-12 w-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v20c0 4.418 7.163 8 16 8 1.381 0 2.721-.087 4-.252M8 14c0 4.418 7.163 8 16 8s16-3.582 16-8M8 14c0-4.418 7.163-8 16-8s16 3.582 16 8m0 0v14m0-4c0 4.418-7.163 8-16 8S8 28.418 8 24m32 10v6m0 0v6m0-6h6m-6 0h-6" />
-                </svg>
-                <span class="mt-2 block text-sm font-medium text-gray-900">
-                  Fitting has no items.
-                </span>
-              </div>
-            <% end %>
+          <dd class="mt-1 text-3xl font-semibold text-gray-900">
+            <%= @fitting.contracts_sold.count %>
           </dd>
         </div>
       </dl>
-    </div>
+    </section>
+    <section aria-labelledby="fitting-information-title">
+      <div class="bg-white shadow sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6">
+          <h2 id="fitting-information-title" class="text-lg leading-6 font-medium text-gray-900">
+            Fitting Information
+          </h2>
+        </div>
+        <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+          <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+            <div class="sm:col-span-1">
+              <dt class="text-sm font-medium text-gray-500">
+                Owner
+              </dt>
+              <dd class="mt-1 text-sm text-gray-900">
+                <%= @fitting.owner.name %>
+              </dd>
+            </div>
+            <div class="sm:col-span-1">
+              <dt class="text-sm font-medium text-gray-500">
+                Last updated
+              </dt>
+              <dd class="mt-1 text-sm text-gray-900">
+                <%= local_time @fitting.updated_at, format: :db %>
+              </dd>
+            </div>
+          </dl>
+        </div>
+        <!--
+        <div>
+          <a href="#" class="block bg-gray-50 text-sm font-medium text-gray-500 text-center px-4 py-4 hover:text-gray-700 sm:rounded-b-lg">View on wiki</a>
+        </div>
+        -->
+      </div>
+    </section>
+
+    <section aria-labelledby="contracts-title">
+      <div class="bg-white shadow sm:rounded-lg sm:overflow-hidden">
+        <div class="divide-y divide-gray-200">
+          <div class="px-4 py-5 sm:px-6">
+            <h2 id="contracts-title" class="text-lg font-medium text-gray-900">Outstanding Contracts</h2>
+          </div>
+          <div>
+            <table class="table-auto min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Title
+                  </th>
+                  <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Price (ISK)
+                  </th>
+                  <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Location
+                  </th>
+                  <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Issuer
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <% @fitting.contracts_on_hand.each do |contract| %>
+                  <tr>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                      <%= link_to contract.title.strip.present? ? contract.title.strip : '(No title)', contract_path(contract), class: 'text-xs text-indigo-600 hover:text-indigo-900' %>
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                      <div class="text-xs text-gray-900"><%= number_with_precision contract.price, precision: 2, delimiter: ',' %></div>
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                      <div class="text-xs text-gray-900"><%= contract.end_location.name %></div>
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
+                      <div class="text-xs text-gray-900">
+                        <%= contract.issuer.name %>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
+
+  <section aria-labelledby="contents-title" class="lg:col-start-3 lg:col-span-1">
+    <div class="bg-white shadow sm:rounded-lg sm:overflow-hidden">
+      <div class="divide-y divide-gray-200">
+        <div class="px-4 py-5 sm:px-6">
+          <h2 id="contents-title" class="text-lg font-medium text-gray-900">Contents</h2>
+        </div>
+        <div>
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Item
+                </th>
+                <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Qty
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <% @fitting.items.includes(:type).each do |item| %>
+                <tr>
+                  <td class="px-4 py-2 whitespace-nowrap text-xs font-medium text-gray-900">
+                    <%= item.type.name %>
+                  </td>
+                  <td class="px-4 py-2 whitespace-nowrap text-right text-xs font-medium">
+                    <%= number_with_delimiter item.quantity %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
 </div>

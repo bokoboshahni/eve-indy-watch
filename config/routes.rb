@@ -27,7 +27,7 @@ Rails.application.routes.draw do
 
   resource :dashboard, only: :show
   resources :contracts, only: %i[index show]
-  resources :fittings, only: %i[index show]
+  resources :fittings
 
   resource :settings, only: %i[show update destroy] do
     resources :esi_authorizations, path: 'authorizations', only: %i[create index destroy]

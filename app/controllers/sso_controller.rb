@@ -27,6 +27,7 @@ class SSOController < ApplicationController
   def authenticate
     user = User::AuthenticateFromSSO.call(auth_info)
     session[:current_user_id] = user.id
+    flash[:success] = "Welcome back, #{user.name}"
     redirect_to dashboard_path
   rescue Character::SyncFromESI::Error => e
     Rails.logger.error e
