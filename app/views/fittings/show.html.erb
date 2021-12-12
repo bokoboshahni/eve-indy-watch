@@ -297,7 +297,7 @@
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
-                <% @fitting.contract_fittings.joins(:contract).includes(:contract).where("contracts.status = 'outstanding'").each do |contract_fitting| %>
+                <% @fitting.contract_fittings.joins(:contract).includes(:contract).where("similarity < 1.0").where("contracts.status = 'outstanding'").each do |contract_fitting| %>
                   <% contract = contract_fitting.contract%>
                   <tr>
                     <td class="px-3 py-2 whitespace-nowrap">
