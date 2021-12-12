@@ -65,8 +65,6 @@ class Contract < ApplicationRecord
                            esi_items_exception: nil)
         end
 
-        Contract::DiscoverFittingsWorker.perform_async(contract.id)
-
         debug("Synced #{items.count} items for contract #{contract_id} from ESI")
       end
     rescue ESI::Errors::NotFoundError, ESI::Errors::ForbiddenError => e

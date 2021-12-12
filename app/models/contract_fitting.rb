@@ -6,7 +6,9 @@
 #
 # Name               | Type               | Attributes
 # ------------------ | ------------------ | ---------------------------
+# **`items`**        | `jsonb`            |
 # **`quantity`**     | `integer`          | `not null`
+# **`similarity`**   | `decimal(, )`      |
 # **`created_at`**   | `datetime`         | `not null`
 # **`updated_at`**   | `datetime`         | `not null`
 # **`contract_id`**  | `bigint`           | `not null, primary key`
@@ -34,4 +36,6 @@ class ContractFitting < ApplicationRecord
 
   belongs_to :contract, inverse_of: :contract_fittings
   belongs_to :fitting, inverse_of: :contract_fittings
+
+  scope :fully_matching, -> { where('quantity > 0') }
 end

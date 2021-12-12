@@ -151,6 +151,10 @@ class Contract < ApplicationRecord
     esi_items_exception_class_name == 'ESI::Errors::NotFoundError'
   end
 
+  def discover_fittings!
+    DiscoverFittings.call(self)
+  end
+
   def compact_items
     items.select(:type_id, :quantity).each_with_object({}) do |item, h|
       type_id = item.type_id

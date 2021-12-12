@@ -18,6 +18,22 @@
 # **`created_at`**            | `datetime`         | `not null`
 # **`updated_at`**            | `datetime`         | `not null`
 # **`api_corporation_id`**    | `bigint`           |
+# **`appraisal_market_id`**   | `bigint`           |
+# **`main_market_id`**        | `bigint`           |
+#
+# ### Indexes
+#
+# * `index_alliances_on_appraisal_market_id`:
+#     * **`appraisal_market_id`**
+# * `index_alliances_on_main_market_id`:
+#     * **`main_market_id`**
+#
+# ### Foreign Keys
+#
+# * `fk_rails_...`:
+#     * **`appraisal_market_id => markets.id`**
+# * `fk_rails_...`:
+#     * **`main_market_id => markets.id`**
 #
 require 'rails_helper'
 

@@ -4,7 +4,7 @@ class Contract < ApplicationRecord
 
     def perform(contract_id)
       contract = Contract.find(contract_id)
-      Contract::DiscoverFittings.call(contract)
+      contract.discover_fittings!
     end
   end
 end

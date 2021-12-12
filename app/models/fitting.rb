@@ -41,16 +41,30 @@ class Fitting < ApplicationRecord
   belongs_to :owner, polymorphic: true
   belongs_to :type, inverse_of: :fittings
 
-  has_many :contract_fittings, -> { where('quantity > 0') }, inverse_of: :fitting, dependent: :destroy
-  has_many :contracts, through: :contract_fittings
+  has_many :contract_fittings, inverse_of: :fitting, dependent: :destroy
   has_many :items, class_name: 'FittingItem', inverse_of: :fitting, dependent: :destroy
+  has_many :market_fitting_snapshots, inverse_of: :market, dependent: :destroy
+
+  has_many :contracts, through: :contract_fittings do
+    def matching
+      where('contract_fittings.quantity > 0')
+    end
+
+    def partially_matching
+      where('contract_fittings.similarity >= 0.95 AND contract_fittings.similarity < 1.0')
+    end
+
+    def problematic
+      where('contract_fittings.similarity >= 0.75 AND contract_fittings.similarity < 1.0')
+    end
+  end
 
   accepts_nested_attributes_for :items, allow_destroy: true
 
   scope :pinned, -> { where(pinned: true) }
 
   def compact_items
-    items.select(:type_id, :quantity).each_with_object({}) do |item, h|
+    all_items = items.select(:type_id, :quantity).each_with_object({}) do |item, h|
       type_id = item.type_id
       if h.key?(type_id)
         h[type_id] += item.quantity
@@ -58,10 +72,12 @@ class Fitting < ApplicationRecord
         h[type_id] = item.quantity
       end
     end
+    all_items[type_id] = 1
+    all_items
   end
 
   def contracts_on_hand
-    contracts.outstanding
+    contracts.matching.outstanding
   end
 
   def contracts_received(period = nil)
@@ -91,5 +107,25 @@ class Fitting < ApplicationRecord
 
   def default_period
     30.days.ago.beginning_of_day..Time.zone.now
+  end
+
+  def market_on_hand(market)
+    market_fitting_snapshots.order(time: :desc).find_by(market_id: market.id)
+  end
+
+  def match_contract(contract)
+    MatchContract.call(self, contract)
+  end
+
+  def match_market(market)
+    MatchMarket.call(self, market)
+  end
+
+  def create_market_snapshot!(market, time)
+    MarketFittingSnapshot::CreateFromFittingAndMarket.call(self, market, time)
+  end
+
+  def target_on_hand
+    desired_count || 9
   end
 end

@@ -13,12 +13,10 @@ class Contract < ApplicationRecord
       candidates = fittings.includes(:items).where(type_id: ship_ids)
       contract.transaction do
         matches = candidates.map do |fitting, a|
-          match_count = Fitting::MatchContract.call(fitting, contract)
-
-          next unless match_count > 0
+          match_info = Fitting::MatchContract.call(fitting, contract)
 
           cf = contract.contract_fittings.find_or_initialize_by(fitting_id: fitting.id)
-          cf.quantity = match_count
+          cf.attributes = cf.attributes.merge(match_info)
           cf.save!
         end
 

@@ -28,13 +28,10 @@
                     Ship
                   </th>
                   <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    On Hand
+                    On Contract
                   </th>
                   <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Received (7d)
-                  </th>
-                  <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Sold (7d)
+                    On Market
                   </th>
                 </tr>
               </thead>
@@ -48,13 +45,12 @@
                       <div class="text-xs text-gray-900"><%= fitting.type.name %></div>
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap">
-                      <div class="text-xs text-gray-900"><%= fitting.contracts_on_hand.count %></div>
+                      <div class="text-xs text-gray-900">
+                        <%= fitting.contracts_on_hand.count %>
+                      </div>
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap">
-                      <div class="text-xs text-gray-900"><%= fitting.contracts_received(:week).count %></div>
-                    </td>
-                    <td class="px-3 py-2 whitespace-nowrap">
-                      <div class="text-xs text-gray-900"><%= fitting.contracts_sold(:week).count %></div>
+                      <% if fitting.owner.main_market %><div class="text-xs text-gray-900"><%= fitting.market_on_hand(fitting.owner.main_market).quantity %></div><% end %>
                     </td>
                   </tr>
                 <% end %>

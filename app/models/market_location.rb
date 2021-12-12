@@ -6,11 +6,11 @@
 #
 # Name                 | Type               | Attributes
 # -------------------- | ------------------ | ---------------------------
-# **`location_type`**  | `string`           | `not null`
+# **`location_type`**  | `string`           | `not null, primary key`
 # **`created_at`**     | `datetime`         | `not null`
 # **`updated_at`**     | `datetime`         | `not null`
-# **`location_id`**    | `bigint`           | `not null`
-# **`market_id`**      | `bigint`           | `not null`
+# **`location_id`**    | `bigint`           | `not null, primary key`
+# **`market_id`**      | `bigint`           | `not null, primary key`
 #
 # ### Indexes
 #

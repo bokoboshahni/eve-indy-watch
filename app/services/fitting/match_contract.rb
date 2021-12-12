@@ -12,13 +12,12 @@ class Fitting < ApplicationRecord
       debug "Contract items: #{contract_item_ids.sort}"
       debug "Missing items: #{fitting_item_ids - contract_item_ids}"
 
-      return 0 unless (fitting_item_ids - contract_item_ids).empty?
-
       match_items = fitting_items.each_with_object({}) do |(fit_item, fit_qty), h|
-        h[fit_item] = fit_qty / contract_items[fit_item]
+        contract_qty = contract_items.fetch(fit_item, 0)
+        h[fit_item] = contract_qty == 0 ? 0 : fit_qty / contract_qty
       end
 
-      debug(match_items)
+      similarity = match_items.values.select { |i| i > 0 }.count.to_d / match_items.count.to_d
 
       match_quantities = match_items.values
       full_matches = match_quantities.uniq.each_with_object([]) do |n, a|
@@ -26,6 +25,12 @@ class Fitting < ApplicationRecord
       end
 
       full_matches.max
+
+      {
+        items: match_items,
+        quantity: full_matches.max,
+        similarity: similarity
+      }
     end
 
     private

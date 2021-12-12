@@ -18,9 +18,27 @@
 # **`created_at`**            | `datetime`         | `not null`
 # **`updated_at`**            | `datetime`         | `not null`
 # **`api_corporation_id`**    | `bigint`           |
+# **`appraisal_market_id`**   | `bigint`           |
+# **`main_market_id`**        | `bigint`           |
+#
+# ### Indexes
+#
+# * `index_alliances_on_appraisal_market_id`:
+#     * **`appraisal_market_id`**
+# * `index_alliances_on_main_market_id`:
+#     * **`main_market_id`**
+#
+# ### Foreign Keys
+#
+# * `fk_rails_...`:
+#     * **`appraisal_market_id => markets.id`**
+# * `fk_rails_...`:
+#     * **`main_market_id => markets.id`**
 #
 class Alliance < ApplicationRecord
   belongs_to :api_corporation, class_name: 'Corporation', inverse_of: :api_alliance, optional: true
+  belongs_to :main_market, class_name: 'Market', inverse_of: :alliances_as_main_market, optional: true
+  belongs_to :appraisal_market, class_name: 'Market', inverse_of: :alliances_as_appraisal_market, optional: true
 
   has_one :esi_authorization, through: :api_corporation
 

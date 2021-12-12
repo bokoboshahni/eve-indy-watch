@@ -67,6 +67,28 @@
             <%= @fitting.contracts_sold.count %>
           </dd>
         </div>
+
+        <% if @fitting.owner.main_market %>
+          <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+            <dt class="text-sm font-medium text-gray-500 truncate">
+              <%= @fitting.owner.main_market.name %> Market
+            </dt>
+            <dd class="mt-1 text-3xl font-semibold text-gray-900">
+              <%= @fitting.market_on_hand(@fitting.owner.main_market).quantity %>
+            </dd>
+          </div>
+        <% end %>
+
+        <% if @fitting.owner.appraisal_market %>
+          <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+            <dt class="text-sm font-medium text-gray-500 truncate">
+              <%= @fitting.owner.appraisal_market.name %> Market
+            </dt>
+            <dd class="mt-1 text-3xl font-semibold text-gray-900">
+              <%= @fitting.market_on_hand(@fitting.owner.appraisal_market).quantity %>
+            </dd>
+          </div>
+        <% end %>
       </dl>
     </section>
     <section aria-labelledby="fitting-information-title">
@@ -101,6 +123,99 @@
           <a href="#" class="block bg-gray-50 text-sm font-medium text-gray-500 text-center px-4 py-4 hover:text-gray-700 sm:rounded-b-lg">View on wiki</a>
         </div>
         -->
+      </div>
+    </section>
+
+    <section aria-labelledby="market-availability-title">
+      <div class="bg-white shadow sm:rounded-lg sm:overflow-hidden">
+        <div class="divide-y divide-gray-200">
+          <div class="px-4 py-5 sm:px-6">
+            <h2 id="market-availability-title" class="text-lg font-medium text-gray-900">Market Availability</h2>
+          </div>
+          <div>
+            <table class="table-auto min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Market
+                  </th>
+                  <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    On Hand
+                  </th>
+                  <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Price (Buy)
+                  </th>
+                  <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Price (Sell)
+                  </th>
+                  <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Price (Split)
+                  </th>
+                  <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Limiting Items
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <% if @fitting.owner.main_market %>
+                  <tr>
+                    <%
+                      main_market_on_hand = @fitting.market_on_hand(@fitting.owner.main_market)
+                    %>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                      <div class="text-xs text-gray-900"><%= @fitting.owner.main_market.name %></div>
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                      <div class="text-xs text-gray-900"><%= main_market_on_hand.quantity %></div>
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                      <div class="text-xs text-gray-900"><%= number_with_precision main_market_on_hand.price_buy, precision: 2, delimiter: ',' %></div>
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                      <div class="text-xs text-gray-900"><%= number_with_precision main_market_on_hand.price_sell, precision: 2, delimiter: ',' %></div>
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                      <div class="text-xs text-gray-900"><%= number_with_precision main_market_on_hand.price_split, precision: 2, delimiter: ',' %></div>
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                      <% if main_market_on_hand.quantity.zero? %>
+                        <ul>
+                        <% main_market_on_hand.limiting_items.each do |type| %>
+                          <li><a title="<%= type.name %>"><%= image_tag "https://images.evetech.net/types/#{type.id}/icon", alt: type.name, class: 'h-4 h-4 rounded-md' %> <span class="sr-only"><%= type.name %></span></a></li>
+                        <% end %>
+                        </ul>
+                      <% end %>
+                    </td>
+                  </tr>
+                <% end %>
+                <% if @fitting.owner.appraisal_market %>
+                  <tr>
+                    <%
+                      appraisal_market_on_hand = @fitting.market_on_hand(@fitting.owner.appraisal_market)
+                    %>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                      <div class="text-xs text-gray-900"><%= @fitting.owner.appraisal_market.name %></div>
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                      <div class="text-xs text-gray-900"><%= appraisal_market_on_hand.quantity %></div>
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                      <div class="text-xs text-gray-900"><%= number_with_precision appraisal_market_on_hand.price_buy, precision: 2, delimiter: ',' %></div>
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                      <div class="text-xs text-gray-900"><%= number_with_precision appraisal_market_on_hand.price_sell, precision: 2, delimiter: ',' %></div>
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                      <div class="text-xs text-gray-900"><%= number_with_precision appraisal_market_on_hand.price_split, precision: 2, delimiter: ',' %></div>
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -153,6 +268,63 @@
         </div>
       </div>
     </section>
+
+    <section aria-labelledby="problematic-contracts-title">
+      <div class="bg-white shadow sm:rounded-lg sm:overflow-hidden">
+        <div class="divide-y divide-gray-200">
+          <div class="px-4 py-5 sm:px-6">
+            <h2 id="problematic-contracts-title" class="text-lg font-medium text-gray-900">Problematic Contracts</h2>
+          </div>
+          <div>
+            <table class="table-auto min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Title
+                  </th>
+                  <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Similarity
+                  </th>
+                  <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Price (ISK)
+                  </th>
+                  <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Location
+                  </th>
+                  <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Issuer
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <% @fitting.contract_fittings.joins(:contract).includes(:contract).where("contracts.status = 'outstanding'").each do |contract_fitting| %>
+                  <% contract = contract_fitting.contract%>
+                  <tr>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                      <%= link_to contract.title.strip.present? ? contract.title.strip : '(No title)', contract_path(contract), class: 'text-xs text-indigo-600 hover:text-indigo-900' %>
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                      <div class="text-xs text-gray-900"><%= number_with_precision contract_fitting.similarity, precision: 2, delimiter: ',' %>%</div>
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                      <div class="text-xs text-gray-900"><%= number_with_precision contract.price, precision: 2, delimiter: ',' %></div>
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                      <div class="text-xs text-gray-900"><%= contract.end_location.name %></div>
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap text-sm text-gray-500">
+                      <div class="text-xs text-gray-900">
+                        <%= contract.issuer.name %>
+                      </div>
+                    </td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 
   <section aria-labelledby="contents-title" class="lg:col-start-3 lg:col-span-1">
@@ -162,13 +334,13 @@
           <h2 id="contents-title" class="text-lg font-medium text-gray-900">Contents</h2>
         </div>
         <div>
-          <table class="min-w-full divide-y divide-gray-200">
+          <table class="table-fixed divide-y divide-gray-200">
             <thead class="bg-gray-50">
               <tr>
-                <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th scope="col" class="w-5/6 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Item
                 </th>
-                <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th scope="col" class="w-1/6 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Qty
                 </th>
               </tr>

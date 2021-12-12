@@ -6,7 +6,9 @@
 #
 # Name               | Type               | Attributes
 # ------------------ | ------------------ | ---------------------------
+# **`items`**        | `jsonb`            |
 # **`quantity`**     | `integer`          | `not null`
+# **`similarity`**   | `decimal(, )`      |
 # **`created_at`**   | `datetime`         | `not null`
 # **`updated_at`**   | `datetime`         | `not null`
 # **`contract_id`**  | `bigint`           | `not null, primary key`

@@ -27,7 +27,9 @@ CREATE TABLE public.alliances (
     ticker text NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    api_corporation_id bigint
+    api_corporation_id bigint,
+    appraisal_market_id bigint,
+    main_market_id bigint
 );
 
 
@@ -210,7 +212,9 @@ CREATE TABLE public.contract_fittings (
     fitting_id bigint NOT NULL,
     quantity integer NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    items jsonb,
+    similarity numeric
 );
 
 
@@ -567,6 +571,22 @@ CREATE SEQUENCE public.industry_index_snapshots_id_seq
 --
 
 ALTER SEQUENCE public.industry_index_snapshots_id_seq OWNED BY public.industry_index_snapshots.id;
+
+
+--
+-- Name: market_fitting_snapshots; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.market_fitting_snapshots (
+    market_id bigint NOT NULL,
+    fitting_id bigint NOT NULL,
+    quantity integer NOT NULL,
+    items jsonb NOT NULL,
+    price_buy numeric,
+    price_sell numeric,
+    price_split numeric,
+    "time" timestamp without time zone NOT NULL
+);
 
 
 --
@@ -1438,6 +1458,20 @@ ALTER TABLE ONLY public.versions
 
 
 --
+-- Name: index_alliances_on_appraisal_market_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_alliances_on_appraisal_market_id ON public.alliances USING btree (appraisal_market_id);
+
+
+--
+-- Name: index_alliances_on_main_market_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_alliances_on_main_market_id ON public.alliances USING btree (main_market_id);
+
+
+--
 -- Name: index_characters_on_alliance_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1655,6 +1689,20 @@ CREATE INDEX index_industry_index_snapshots_on_solar_system_id ON public.industr
 
 
 --
+-- Name: index_market_fitting_snapshots_on_fitting_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_market_fitting_snapshots_on_fitting_id ON public.market_fitting_snapshots USING btree (fitting_id);
+
+
+--
+-- Name: index_market_fitting_snapshots_on_market_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_market_fitting_snapshots_on_market_id ON public.market_fitting_snapshots USING btree (market_id);
+
+
+--
 -- Name: index_market_groups_on_ancestry; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1809,6 +1857,13 @@ CREATE UNIQUE INDEX index_unique_industry_index_snapshots ON public.industry_ind
 
 
 --
+-- Name: index_unique_market_fitting_snapshots; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_unique_market_fitting_snapshots ON public.market_fitting_snapshots USING btree (market_id, fitting_id, "time");
+
+
+--
 -- Name: index_unique_market_order_snapshots; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1865,6 +1920,14 @@ ALTER TABLE ONLY public.contract_events
 
 ALTER TABLE ONLY public.corporations
     ADD CONSTRAINT fk_rails_25cac28994 FOREIGN KEY (esi_authorization_id) REFERENCES public.esi_authorizations(id);
+
+
+--
+-- Name: alliances fk_rails_29023e5cc0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.alliances
+    ADD CONSTRAINT fk_rails_29023e5cc0 FOREIGN KEY (main_market_id) REFERENCES public.markets(id);
 
 
 --
@@ -1937,6 +2000,22 @@ ALTER TABLE ONLY public.contract_events
 
 ALTER TABLE ONLY public.stations
     ADD CONSTRAINT fk_rails_6ea166210e FOREIGN KEY (owner_id) REFERENCES public.corporations(id);
+
+
+--
+-- Name: alliances fk_rails_6f7443e553; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.alliances
+    ADD CONSTRAINT fk_rails_6f7443e553 FOREIGN KEY (appraisal_market_id) REFERENCES public.markets(id);
+
+
+--
+-- Name: market_fitting_snapshots fk_rails_72488bcbd3; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.market_fitting_snapshots
+    ADD CONSTRAINT fk_rails_72488bcbd3 FOREIGN KEY (market_id) REFERENCES public.markets(id);
 
 
 --
@@ -2052,6 +2131,14 @@ ALTER TABLE ONLY public.fitting_items
 
 
 --
+-- Name: market_fitting_snapshots fk_rails_ccd9e028ca; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.market_fitting_snapshots
+    ADD CONSTRAINT fk_rails_ccd9e028ca FOREIGN KEY (fitting_id) REFERENCES public.fittings(id);
+
+
+--
 -- Name: esi_authorizations fk_rails_cd77e5d142; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2136,6 +2223,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211211022126'),
 ('20211211200628'),
 ('20211211201222'),
-('20211212020439');
+('20211212020439'),
+('20211212153301'),
+('20211212165403'),
+('20211212191721'),
+('20211212191909');
 
 

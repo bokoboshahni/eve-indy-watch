@@ -50,8 +50,17 @@
                     <td class="px-3 py-2 whitespace-nowrap">
                       <div class="text-xs text-gray-900">
                         <ul class="list-none">
-                          <% contract.fittings.each do |fitting| %>
-                            <li><%= link_to fitting.name, fitting_path(fitting), class: 'text-xs text-indigo-600 hover:text-indigo-900' %></li>
+                          <% contract.contract_fittings.where('similarity > 0.9').order(similarity: :desc).each do |contract_fitting| %>
+                            <%
+                              fitting = contract_fitting.fitting
+                              similarity_color = contract_fitting.similarity == 1.0 ? 'green' : 'red'
+                            %>
+                            <li>
+                              <%= link_to fitting_path(fitting), class: "text-xs text-#{similarity_color}-500 hover:text-#{similarity_color}-500" do %>
+                                <%= fitting.name %>
+                                <% if contract_fitting.similarity < 1.0 %>(<%= number_to_percentage contract_fitting.similarity, precision: 2 %> Match)<% end %>
+                              <% end %>
+                            </li>
                           <% end %>
                         </ul>
                       </div>
