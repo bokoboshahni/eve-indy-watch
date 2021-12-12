@@ -68,25 +68,25 @@ class Type < ApplicationRecord
     Category::MODULE_CATEGORY_NAMES.include?(category_name)
   end
 
-  def market_price(market, interval: '5m', kind:, stat:)
+  def market_price(market, interval: '15m', kind:, stat:)
     Rollup.where(name: "mkt_#{market.id}_types.price_#{stat}", interval: interval)
           .where("dimensions->>'kind' = ? AND (dimensions->'type_id')::bigint = ?", kind, id)
           .order(time: :desc).limit(1)&.first&.value || BigDecimal(0)
   end
 
-  def market_buy_price(market, interval: '5m', stat: :max)
+  def market_buy_price(market, interval: '15m', stat: :max)
     market_price(market, interval: interval, stat: stat, kind: 'buy')
   end
 
-  def market_sell_price(market, interval: '5m', stat: :min)
+  def market_sell_price(market, interval: '15m', stat: :min)
     market_price(market, interval: interval, stat: stat, kind: 'sell')
   end
 
-  def market_split_price(market, interval: '5m')
+  def market_split_price(market, interval: '15m')
     (market_buy_price(market, interval: interval) + market_sell_price(market, interval: interval)) / 2.0
   end
 
-  def market_volume(market_id, interval: '5m')
+  def market_volume(market_id, interval: '15m')
     Rollup.where(name: "mkt_#{market_id}_types.volume_sum", interval: interval)
           .where("dimensions->>'kind' = 'sell' AND (dimensions->'type_id')::bigint = ?", id)
           .order(time: :desc).limit(1)&.first&.value&.to_i || 0

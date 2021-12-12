@@ -5,8 +5,8 @@ class Market < ApplicationRecord
     def perform(interval)
       Market.all.each do |market|
         case interval
-        when '5m'
-          Market::PruneTypeAggregationsWorker.perform_async(market.id, '5m', 1.day.ago.end_of_day)
+        when '15m'
+          Market::PruneTypeAggregationsWorker.perform_async(market.id, '15m', 1.day.ago.end_of_day)
         when 'hour'
           Market::PruneTypeAggregationsWorker.perform_async(market.id, 'hour', 8.days.ago.end_of_day)
         end

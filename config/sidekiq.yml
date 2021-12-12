@@ -1,11 +1,11 @@
 :schedule:
   sync_all_contracts_from_esi:
-    cron: '*/3 * * * *'
+    cron: '*/5 * * * *'
     class: 'Corporation::SyncAllContractsFromESIWorker'
     description: "Sync contracts for all corporations with contract sync enabled"
 
   import_all_market_orders_from_esi:
-    cron: '*/3 * * * *'
+    cron: '*/5 * * * *'
     class: 'MarketOrderSnapshot::FetchAllFromESIWorker'
     description: "Import market orders for all regions/structures with market order sync enabled"
 
@@ -24,11 +24,11 @@
     class: 'MarketFittingSnapshot::CreateForAllFittingsAndMarkets'
     description: "Create snapshots for all markets/fittings"
 
-  aggregate_market_types_5m:
-    cron: '*/5 * * * *'
+  aggregate_market_types_15m:
+    cron: '*/15 * * * *'
     class: 'Market::AggregateAllWorker'
-    description: "Run all aggregations for all markets for the 5 minute interval"
-    args: ['5m']
+    description: "Run all aggregations for all markets for the 15 minute interval"
+    args: ['15m']
 
   aggregate_market_types_hourly:
     cron: '0 * * * *'
@@ -42,16 +42,16 @@
     description: "Run all aggregations for all markets for the 1 hour interval"
     args: ['day']
 
-  prune_market_order_snapshots_5m:
+  prune_market_order_snapshots_15m:
     cron: '0 1 * * *'
     class: 'MarketOrderSnapshot::PruneAllWorker'
     description: "Prune all market order snapshots from the previous day"
 
-  prune_market_type_aggregations_5m:
+  prune_market_type_aggregations_15m:
     cron: '0 1 * * *'
     class: 'Market::PruneAllTypeAggregationsWorker'
-    description: "Prune all 5m interval type aggregations from the previous day"
-    args: ['5m']
+    description: "Prune all 15m interval type aggregations from the previous day"
+    args: ['15m']
 
   aggregate_market_types_weekly:
     cron: '0 0 * * 0'

@@ -25,7 +25,7 @@ class Market < ApplicationRecord
     def call
       location_ids = market.market_locations.pluck(:location_id)
 
-      if interval == '5m'
+      if interval == '15m'
         snapshots = MarketOrderSnapshot.where(location_id: location_ids).group(:kind, :type_id)
         snapshots.rollup(name, interval: interval, &AGGREGATIONS[aggregation])
       else
@@ -37,8 +37,8 @@ class Market < ApplicationRecord
     private
 
     ROLLUPS = {
-      'hour' => '5m',
-      'day' => '5m',
+      'hour' => '15m',
+      'day' => 'hour',
       'week' => 'day',
       'month' => 'day',
       'quarter' => 'month'
