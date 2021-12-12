@@ -68,18 +68,18 @@ class Type < ApplicationRecord
     Category::MODULE_CATEGORY_NAMES.include?(category_name)
   end
 
-  def market_price(market_id, interval: '5m', kind:)
-    Rollup.where(name: "mkt_#{market_id}_types.price_min", interval: interval)
+  def market_price(market_id, interval: '5m', kind:, stat:)
+    Rollup.where(name: "mkt_#{market_id}_types.price_#{stat}", interval: interval)
           .where("dimensions->>'kind' = ? AND (dimensions->'type_id')::bigint = ?", kind, id)
           .order(time: :desc).limit(1)&.first&.value || BigDecimal(0)
   end
 
   def market_buy_price(market_id, interval: '5m')
-    market_price(market_id, interval: interval, kind: 'buy')
+    market_price(market_id, interval: interval, stat: :max, kind: 'buy')
   end
 
   def market_sell_price(market_id, interval: '5m')
-    market_price(market_id, interval: interval, kind: 'sell')
+    market_price(market_id, interval: interval, stat: :min, kind: 'sell')
   end
 
   def market_volume(market_id, interval: '5m')

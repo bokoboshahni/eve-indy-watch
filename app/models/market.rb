@@ -22,7 +22,7 @@
 class Market < ApplicationRecord
   belongs_to :owner, polymorphic: true, optional: true
 
-  has_many :market_locations, inverse_of: :market
+  has_many :market_locations, inverse_of: :market, dependent: :destroy
   has_many :locations, through: :market_locations
 
   validates :name, presence: true

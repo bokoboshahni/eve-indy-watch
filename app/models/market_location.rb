@@ -26,6 +26,8 @@
 #     * **`market_id => markets.id`**
 #
 class MarketLocation < ApplicationRecord
+  self.primary_keys = :market_id, :location_type, :location_id
+
   belongs_to :location, polymorphic: true
   belongs_to :market, inverse_of: :market_locations
 end
