@@ -28,12 +28,15 @@
 class SolarSystem < ApplicationRecord
   belongs_to :constellation, inverse_of: :solar_systems
 
-  has_one :latest_industry_index_snapshot, -> { order esi_last_modified_at: :desc }, class_name: 'IndustryIndexSnapshot', foreign_key: :solar_system_id
+  has_one :latest_industry_index_snapshot, lambda {
+                                             order esi_last_modified_at: :desc
+                                           }, class_name: 'IndustryIndexSnapshot', foreign_key: :solar_system_id
 
   has_many :industry_index_snapshots, inverse_of: :solar_system, dependent: :destroy
   has_many :market_order_snapshots, inverse_of: :solar_system, dependent: :destroy
   has_many :stations, inverse_of: :solar_system, dependent: :restrict_with_exception
   has_many :structures, inverse_of: :solar_system, dependent: :restrict_with_exception
 
-  delegate :copying, :duplicating, :invention, :manufacturing, :none, :reaction, :researching_material_efficiency, :researching_technology, :researching_time_efficiency, :reverse_engineering, to: :latest_industry_index_snapshot, prefix: :industry_index
+  delegate :copying, :duplicating, :invention, :manufacturing, :none, :reaction, :researching_material_efficiency,
+           :researching_technology, :researching_time_efficiency, :reverse_engineering, to: :latest_industry_index_snapshot, prefix: :industry_index
 end

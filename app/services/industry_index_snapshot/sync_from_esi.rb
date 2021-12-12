@@ -25,7 +25,7 @@ class IndustryIndexSnapshot < ApplicationRecord
 
           snapshot = snapshot_attrs.merge('solar_system_id' => system['solar_system_id'])
           system['cost_indices'].each do |index|
-            snapshot["#{index['activity']}"] = index['cost_index']
+            snapshot[(index['activity']).to_s] = index['cost_index']
           end
 
           %w[
@@ -37,7 +37,7 @@ class IndustryIndexSnapshot < ApplicationRecord
         end
 
         IndustryIndexSnapshot.import!(snapshots.compact, track_validation_failures: true,
-                                      on_duplicate_key_update: { conflict_target: %i[id], columns: :all })
+                                                         on_duplicate_key_update: { conflict_target: %i[id], columns: :all })
 
         debug("Synced #{snapshots.count} industry index snapshots from ESI")
       end

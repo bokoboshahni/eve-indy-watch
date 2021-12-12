@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Market < ApplicationRecord
   class AggregateTypes < ApplicationService
     AGGREGATIONS = {
@@ -12,7 +14,7 @@ class Market < ApplicationRecord
       volume_med: ->(r) { r.median(:volume_remain) },
       volume_min: ->(r) { r.minimum(:volume_remain) },
       volume_sum: ->(r) { r.sum(:volume_remain) }
-    }
+    }.freeze
 
     def initialize(market, aggregation, interval)
       super
@@ -29,7 +31,8 @@ class Market < ApplicationRecord
         snapshots = MarketOrderSnapshot.where(location_id: location_ids).group(:kind, :type_id)
         snapshots.rollup(name, interval: interval, &AGGREGATIONS[aggregation])
       else
-        rollups = Rollup.where(name: name, interval: ROLLUPS[interval]).group("dimensions->'kind'", "dimensions->'type_id'")
+        rollups = Rollup.where(name: name, interval: ROLLUPS[interval]).group("dimensions->'kind'",
+                                                                              "dimensions->'type_id'")
         rollups.rollup(name, interval: interval, &ROLLUP_AGGREGATIONS[aggregation])
       end
     end
@@ -42,7 +45,7 @@ class Market < ApplicationRecord
       'week' => 'day',
       'month' => 'day',
       'quarter' => 'month'
-    }
+    }.freeze
 
     ROLLUP_AGGREGATIONS = {
       order_count: ->(r) { r.average(:value) },
@@ -56,7 +59,7 @@ class Market < ApplicationRecord
       volume_med: ->(r) { r.median(:value) },
       volume_min: ->(r) { r.minimum(:value) },
       volume_sum: ->(r) { r.average(:value) }
-    }
+    }.freeze
 
     attr_reader :aggregation, :interval, :market
 

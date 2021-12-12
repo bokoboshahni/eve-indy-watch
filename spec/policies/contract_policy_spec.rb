@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe ContractPolicy, type: :policy do
@@ -5,7 +7,7 @@ RSpec.describe ContractPolicy, type: :policy do
 
   subject { described_class }
 
-  permissions ".scope" do
+  permissions '.scope' do
     pending "add some examples to (or delete) #{__FILE__}"
   end
 

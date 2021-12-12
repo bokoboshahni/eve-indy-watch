@@ -32,12 +32,12 @@ class Contract < ApplicationRecord
       end
 
       if contract.esi_items_rate_limited?
-        debug("Last request for items was rate limited, waiting 10s")
+        debug('Last request for items was rate limited, waiting 10s')
         sleep 10
       end
 
       if contract.courier?
-        debug("Items are not available for courier contracts")
+        debug('Items are not available for courier contracts')
         return
       end
 
@@ -60,7 +60,7 @@ class Contract < ApplicationRecord
 
         contract.transaction do
           ContractItem.import!(items, track_validation_failures: true,
-                                     on_duplicate_key_update: { conflict_target: %i[id], columns: :all })
+                                      on_duplicate_key_update: { conflict_target: %i[id], columns: :all })
           contract.update!(esi_items_expires_at: expires, esi_items_last_modified_at: last_modified,
                            esi_items_exception: nil)
         end

@@ -8,9 +8,7 @@ class MarketOrderSnapshot < ApplicationRecord
       [
         Structure.where(market_order_sync_enabled: true),
         Region.where(market_order_sync_enabled: true)
-      ].flatten.each do |location|
-        location.fetch_market_orders_async
-      end
+      ].flatten.each(&:fetch_market_orders_async)
     end
   end
 end

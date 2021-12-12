@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateIndustryIndexSnapshots < ActiveRecord::Migration[6.1]
   def change
     create_table :industry_index_snapshots do |t|

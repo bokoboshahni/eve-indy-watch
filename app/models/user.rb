@@ -29,7 +29,7 @@ class User < ApplicationRecord
   ROLES = %w[
     alliance.fittings.admin
     corporation.fitting.admin
-  ]
+  ].freeze
   belongs_to :character, inverse_of: :user
 
   has_one :alliance, through: :character

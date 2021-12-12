@@ -13,7 +13,7 @@ class MarketOrderSnapshot < ApplicationRecord
       @data = data
     end
 
-    def call # rubocop:disable Metrics/AbcSize
+    def call
       orders = data.each_with_object([]) { |o, a| a << map_order(o) }
       orders.uniq! { |o| [o[:location_id], o[:order_id]] }
 

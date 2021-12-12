@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :fittings do
   task import_eft_files: :environment do
     owner_type = ENV.fetch('OWNER_TYPE', 'Alliance')

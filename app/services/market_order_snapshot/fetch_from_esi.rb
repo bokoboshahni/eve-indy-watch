@@ -16,7 +16,8 @@ class MarketOrderSnapshot < ApplicationRecord
         return []
       end
 
-      if location.is_a?(Region)
+      case location
+      when Region
         Retriable.retriable(tries: 10) do
           url = "https://esi.evetech.net/latest/markets/#{location.id}/orders"
           hydra = Typhoeus::Hydra.new
@@ -28,9 +29,7 @@ class MarketOrderSnapshot < ApplicationRecord
             (2..pages).each do |n|
               page_request = Typhoeus::Request.new(url, params: { page: n })
               page_request.on_complete do |response|
-                if response.body =~ /502 Bad Gateway/
-                  hydra.queue(page_request)
-                end
+                hydra.queue(page_request) if response.body =~ /502 Bad Gateway/
               end
               requests << page_request
               hydra.queue(page_request)
@@ -46,12 +45,14 @@ class MarketOrderSnapshot < ApplicationRecord
           responses = requests.reject { |request| request.response.body =~ /502 Bad Gateway/ }
                               .map { |request| request.response.body }
 
-          raise "Page is missing" if pages != responses.count
+          raise 'Page is missing' if pages != responses.count
 
           [expires, last_modified, responses]
         end
-      elsif location.is_a?(Structure)
-        raise Error.new("#{location.class.name} #{location.name} (#{location.id}) has no ESI authorization") unless location.esi_authorized?
+      when Structure
+        unless location.esi_authorized?
+          raise Error, "#{location.class.name} #{location.name} (#{location.id}) has no ESI authorization"
+        end
 
         esi_authorize!(location.esi_authorization)
         auth = { Authorization: "Bearer #{location.esi_authorization.access_token}" }

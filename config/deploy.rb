@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 # config valid for current version and patch releases of Capistrano
-lock "~> 3.16.0"
+lock '~> 3.16.0'
 
-Rake::Task["deploy:assets:backup_manifest"].clear_actions
+Rake::Task['deploy:assets:backup_manifest'].clear_actions
 
-SSHKit.config.command_map[:sidekiq] = "bundle exec sidekiq"
-SSHKit.config.command_map[:sidekiqctl] = "bundle exec sidekiqctl"
+SSHKit.config.command_map[:sidekiq] = 'bundle exec sidekiq'
+SSHKit.config.command_map[:sidekiqctl] = 'bundle exec sidekiqctl'
 SSHKit.config.umask = '022'
 
 set :application, ENV.fetch('DEPLOY_APPLICATION', 'eve-indy-watch')
@@ -28,11 +30,11 @@ set :sidekiq_concurrency, ENV.fetch('SIDEKIQ_CONCURRENCY', 25).to_i
 set :sidekiq_config, 'config/sidekiq.yml'
 
 namespace :deploy do
-  desc "Load database schema from structure.sql"
+  desc 'Load database schema from structure.sql'
   task :db_schema_load do
     on roles(:db) do
       within release_path do
-        with rails_env: fetch(:rails_env), 'DISABLE_DATABASE_ENVIRONMENT_CHECK': '1' do
+        with rails_env: fetch(:rails_env), DISABLE_DATABASE_ENVIRONMENT_CHECK: '1' do
           execute :rake, 'db:schema:load'
         end
       end
@@ -41,7 +43,7 @@ namespace :deploy do
 end
 
 namespace :sde do
-  desc "Download the latest SDE"
+  desc 'Download the latest SDE'
   task :download do
     on roles(:db) do
       within release_path do
@@ -52,7 +54,7 @@ namespace :sde do
     end
   end
 
-  desc "Load the SDE"
+  desc 'Load the SDE'
   task :load do
     on roles(:db) do
       within release_path do
@@ -65,7 +67,7 @@ namespace :sde do
 end
 
 namespace :fittings do
-  desc "Import fittings from shared/tmp/fittings"
+  desc 'Import fittings from shared/tmp/fittings'
   task :import_eft_files do
     on roles(:db) do
       within release_path do
@@ -77,4 +79,4 @@ namespace :fittings do
   end
 end
 
-before "deploy:migrate", "deploy:db_schema_load" if ENV["DB_SCHEMA_LOAD"]
+before 'deploy:migrate', 'deploy:db_schema_load' if ENV['DB_SCHEMA_LOAD']

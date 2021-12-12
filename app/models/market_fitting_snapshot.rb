@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # ## Schema Information
 #
 # Table name: `market_fitting_snapshots`
@@ -43,7 +45,7 @@ class MarketFittingSnapshot < ApplicationRecord
   def limiting_items
     @limiting_items ||=
       begin
-        ids = items.each_with_object([]) { |(i, q), a| a << i if q == 0 }
+        ids = items.each_with_object([]) { |(i, q), a| a << i if q.zero? }
         Type.find(ids)
       end
   end

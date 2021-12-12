@@ -8,7 +8,7 @@ class MarketOrderSnapshot < ApplicationRecord
       location = Object.const_get(location_type).find(location_id)
       expires, last_modified, responses = location.fetch_market_orders
 
-      if responses && responses.count.positive?
+      if responses&.count&.positive?
         args = responses.map { |data| [location_type, location_id, expires, last_modified, data] }
         Sidekiq::Client.push_bulk('class' => 'MarketOrderSnapshot::ImportFromESIWorker', 'args' => args)
       end

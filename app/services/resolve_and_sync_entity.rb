@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ResolveAndSyncEntity < ApplicationService
   def initialize(id)
     super
@@ -7,7 +9,7 @@ class ResolveAndSyncEntity < ApplicationService
 
   def call
     Retriable.retriable on: [Character::SyncFromESI::Error, Corporation::SyncFromESI::Error,
-                              Alliance::SyncFromESI::Error] do
+                             Alliance::SyncFromESI::Error] do
       case id
       when 0
         nil

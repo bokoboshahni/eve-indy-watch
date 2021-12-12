@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ResolveAndSyncLocation < ApplicationService
   def initialize(id, authorization)
     super

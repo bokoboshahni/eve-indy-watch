@@ -45,7 +45,7 @@ class Corporation < ApplicationRecord
   belongs_to :esi_authorization, inverse_of: :corporation, optional: true
 
   has_one :api_alliance, class_name: 'Alliance', inverse_of: :api_corporation,
-                              foreign_key: :api_corporation_id
+                         foreign_key: :api_corporation_id
 
   has_many :accepted_contractors, class_name: 'Contract', as: :acceptor, dependent: :restrict_with_exception
   has_many :characters, inverse_of: :corporation, dependent: :restrict_with_exception
@@ -59,7 +59,8 @@ class Corporation < ApplicationRecord
   scope :player, -> { where(npc: nil) }
 
   def available_esi_authorizations
-    ESIAuthorization.includes(:character).joins(character: :corporation).where('corporation_id = ?', id).order('characters.name')
+    ESIAuthorization.includes(:character).joins(character: :corporation).where('corporation_id = ?',
+                                                                               id).order('characters.name')
   end
 
   def esi_contracts_expired?

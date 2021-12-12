@@ -31,7 +31,7 @@ class MarketPriceSnapshot < ApplicationRecord
         end
 
         MarketPriceSnapshot.import!(snapshots.compact, track_validation_failures: true,
-                                    on_duplicate_key_update: { conflict_target: %i[id], columns: :all })
+                                                       on_duplicate_key_update: { conflict_target: %i[id], columns: :all })
 
         debug("Synced #{snapshots.count} market price snapshots from ESI")
       end

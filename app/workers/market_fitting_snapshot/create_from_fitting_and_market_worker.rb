@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MarketFittingSnapshot < ApplicationRecord
   class CreateFromFittingAndMarketWorker < ApplicationWorker
     def perform(market_id, fitting_id, time)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Fitting < ApplicationRecord
   class ParseEFT < ApplicationService
     class Error < RuntimeError; end
@@ -32,8 +34,8 @@ class Fitting < ApplicationRecord
 
     NAME_CHARS = '[^,/\[\]]'
     MODULE_PATTERN = %r{\A(?<type>#{NAME_CHARS}+?)(,\s*(?<charge>#{NAME_CHARS}+?))?(\s+(?<offline>/OFFLINE))?\z}
-    CARGO_PATTERN = %r{\A(?<type>#{NAME_CHARS}+?)\s+x(?<amount>\d+?)\z}
-    STUB_PATTERN = %r{\A\[.+?\]\z}
+    CARGO_PATTERN = /\A(?<type>#{NAME_CHARS}+?)\s+x(?<amount>\d+?)\z/
+    STUB_PATTERN = /\A\[.+?\]\z/
 
     attr_reader :errors, :raw
 
@@ -42,9 +44,9 @@ class Fitting < ApplicationRecord
     end
 
     def process_header(line)
-      match = line.match(%r{\A\[(?<type>[^,]+),\s*(?<name>[^,]+)\]\z})
+      match = line.match(/\A\[(?<type>[^,]+),\s*(?<name>[^,]+)\]\z/)
 
-      raise InvalidHeaderError.new(line) unless match
+      raise InvalidHeaderError, line unless match
 
       type = Type.find_by!(name: match[:type].strip)
       name = match[:name].strip
@@ -60,7 +62,7 @@ class Fitting < ApplicationRecord
         if match
           type = find_type(match[:type])
 
-          (errors << { line: line, message: :invalid_type } && next) unless type
+          ((errors << { line: line, message: :invalid_type }) && next) unless type
 
           item = { type: type, quantity: match[:amount].to_i }
           a << item
@@ -72,7 +74,7 @@ class Fitting < ApplicationRecord
         if match
           type = find_type(match[:type])
 
-          (errors << { line: line, message: :invalid_type } && next) unless type
+          ((errors << { line: line, message: :invalid_type }) && next) unless type
 
           item = { type: type, quantity: 1, offline: match[:offline] }
           a << item

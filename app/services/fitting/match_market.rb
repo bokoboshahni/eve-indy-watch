@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Fitting < ApplicationRecord
   class MatchMarket < ApplicationService
     def initialize(fitting, market)

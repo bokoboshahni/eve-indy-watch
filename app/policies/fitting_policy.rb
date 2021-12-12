@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FittingPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
@@ -37,7 +39,7 @@ class FittingPolicy < ApplicationPolicy
 
   def record_admin?
     (record.owner_id == user.corporation_id && corporation_fittings_admin?) ||
-    (record.owner_id == user.alliance_id && alliance_fittings_admin?)
+      (record.owner_id == user.alliance_id && alliance_fittings_admin?)
   end
 
   def corporation_fittings_admin?

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MarketFittingSnapshot < ApplicationRecord
   class CreateFromFittingAndMarket < ApplicationService
     def initialize(fitting, market, time)
@@ -12,7 +14,7 @@ class MarketFittingSnapshot < ApplicationRecord
       match = fitting.match_market(market)
       snapshot = match.merge(fitting_id: fitting_id, market_id: market_id, time: time)
 
-      if match[:quantity] > 0
+      if (match[:quantity]).positive?
         item_prices = fitting.compact_items.each_with_object({}) do |(item, qty), h|
           type = Type.find(item)
 

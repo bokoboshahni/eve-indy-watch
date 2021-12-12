@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 set :stage, :production
 
 role :app, ENV.fetch('DEPLOY_PRODUCTION_ROLES_APP', '').split(',')

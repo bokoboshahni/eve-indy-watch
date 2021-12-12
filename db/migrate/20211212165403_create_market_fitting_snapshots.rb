@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateMarketFittingSnapshots < ActiveRecord::Migration[6.1]
   def change
     create_table :market_fitting_snapshots, id: false, primary_key: %i[market_id fitting_id time] do |t|

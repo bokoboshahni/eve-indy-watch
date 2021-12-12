@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateMarketOrderSnapshots < ActiveRecord::Migration[6.1]
   def change
     add_reference :regions, :esi_authorization, foreign_key: true

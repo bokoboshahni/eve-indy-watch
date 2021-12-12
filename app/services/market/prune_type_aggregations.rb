@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Market < ApplicationRecord
   class PruneTypeAggregations < ApplicationService
     def initialize(market, interval, prune_before)

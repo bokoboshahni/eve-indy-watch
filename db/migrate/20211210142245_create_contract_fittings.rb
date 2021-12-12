@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateContractFittings < ActiveRecord::Migration[6.1]
   def change
     create_table :contract_fittings, id: false, primary_key: %i[contract_id fitting_id] do |t|

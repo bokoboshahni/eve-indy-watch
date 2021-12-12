@@ -8,8 +8,10 @@ class Corporation < ApplicationRecord
       corporation = Corporation.find(corporation_id)
       expires, last_modified, data = corporation.fetch_contracts_from_esi
 
-      if data && data.count.positive?
-        args = data.map { |c| [corporation_id, c.merge(esi_expires_at: expires, esi_last_modified_at: last_modified).to_json] }
+      if data&.count&.positive?
+        args = data.map do |c|
+          [corporation_id, c.merge(esi_expires_at: expires, esi_last_modified_at: last_modified).to_json]
+        end
         Sidekiq::Client.push_bulk('class' => 'Contract::SyncFromESIWorker', 'args' => args)
       end
 

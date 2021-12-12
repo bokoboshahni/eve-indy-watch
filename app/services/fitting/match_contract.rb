@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Fitting < ApplicationRecord
   class MatchContract < ApplicationService
     def initialize(fitting, contract)
@@ -14,10 +16,10 @@ class Fitting < ApplicationRecord
 
       match_items = fitting_items.each_with_object({}) do |(fit_item, fit_qty), h|
         contract_qty = contract_items.fetch(fit_item, 0)
-        h[fit_item] = contract_qty == 0 ? 0 : fit_qty / contract_qty
+        h[fit_item] = contract_qty.zero? ? 0 : fit_qty / contract_qty
       end
 
-      similarity = match_items.values.select { |i| i > 0 }.count.to_d / match_items.count.to_d
+      similarity = match_items.values.select(&:positive?).count.to_d / match_items.count.to_d
 
       match_quantities = match_items.values
       full_matches = match_quantities.uniq.each_with_object([]) do |n, a|
