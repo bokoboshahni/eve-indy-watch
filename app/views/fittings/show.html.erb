@@ -181,7 +181,7 @@
                       <% if main_market_on_hand.quantity.zero? %>
                         <ul>
                         <% main_market_on_hand.limiting_items.each do |type| %>
-                          <li><a title="<%= type.name %>"><%= image_tag "https://images.evetech.net/types/#{type.id}/icon", alt: type.name, class: 'h-4 h-4 rounded-md' %> <span class="sr-only"><%= type.name %></span></a></li>
+                          <li class="inline-block"><a title="<%= type.name %>"><%= image_tag "https://images.evetech.net/types/#{type.id}/icon", alt: type.name, class: 'h-4 h-4 rounded-md' %> <span class="sr-only"><%= type.name %></span></a></li>
                         <% end %>
                         </ul>
                       <% end %>
