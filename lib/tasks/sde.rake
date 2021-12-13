@@ -35,6 +35,10 @@ namespace :sde do # rubocop:disable Metrics/BlockLength
       SDE::LoadGroups.call(source_path: @sde_path.join('fsd/groupIDs.yaml'), names: @names)
     end
 
+    task inventory_flags: :setup do
+      SDE::LoadInventoryFlags.call(source_path: @sde_path.join('bsd/invFlags.yaml'))
+    end
+
     task market_groups: :setup do
       SDE::LoadMarketGroups.call(source_path: @sde_path.join('fsd/marketGroups.yaml'))
     end

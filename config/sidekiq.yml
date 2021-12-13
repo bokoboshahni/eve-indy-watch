@@ -4,6 +4,11 @@
     class: 'Corporation::SyncAllContractsFromESIWorker'
     description: "Sync contracts for all corporations with contract sync enabled"
 
+  import_all_killmails_from_zkb:
+    cron: '*/5 * * * *'
+    class: 'Alliance::FetchAllKillmailsFromZKBWorker'
+    description: "Import killmails for all alliances with killmail sync enabled"
+
   import_all_market_orders_from_esi:
     cron: '*/5 * * * *'
     class: 'MarketOrderSnapshot::FetchAllFromESIWorker'

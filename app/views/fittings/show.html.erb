@@ -89,6 +89,15 @@
             </dd>
           </div>
         <% end %>
+
+        <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+          <dt class="text-sm font-medium text-gray-500 truncate">
+            Lost (7 days)
+          </dt>
+          <dd class="mt-1 text-3xl font-semibold text-gray-900">
+            <%= @fitting.killmails.where(time: 7.days.ago.beginning_of_day..Time.zone.now).count %>
+          </dd>
+        </div>
       </dl>
     </section>
     <section aria-labelledby="fitting-information-title">

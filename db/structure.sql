@@ -28,6 +28,45 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
+-- Name: market_type_stats; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.market_type_stats (
+    market_id bigint NOT NULL,
+    type_id bigint NOT NULL,
+    buy_order_count bigint,
+    buy_price_avg numeric,
+    buy_price_max numeric,
+    buy_price_min numeric,
+    buy_price_sum numeric,
+    buy_volume_avg numeric,
+    buy_volume_max bigint,
+    buy_volume_min bigint,
+    buy_volume_sum bigint,
+    sell_order_count bigint,
+    sell_price_avg numeric,
+    sell_price_max numeric,
+    sell_price_min numeric,
+    sell_price_sum numeric,
+    sell_volume_avg numeric,
+    sell_volume_max bigint,
+    sell_volume_min bigint,
+    sell_volume_sum bigint,
+    "time" timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: _hyper_1_1_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_1_1_chunk (
+    CONSTRAINT constraint_1 CHECK ((("time" >= '2021-12-09 00:00:00'::timestamp without time zone) AND ("time" < '2021-12-16 00:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
 -- Name: alliances; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -43,7 +82,9 @@ CREATE TABLE public.alliances (
     updated_at timestamp(6) without time zone NOT NULL,
     api_corporation_id bigint,
     appraisal_market_id bigint,
-    main_market_id bigint
+    main_market_id bigint,
+    zkb_fetched_at timestamp without time zone,
+    zkb_sync_enabled boolean
 );
 
 
@@ -588,6 +629,177 @@ ALTER SEQUENCE public.industry_index_snapshots_id_seq OWNED BY public.industry_i
 
 
 --
+-- Name: inventory_flags; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.inventory_flags (
+    id bigint NOT NULL,
+    name text NOT NULL,
+    text text NOT NULL,
+    "order" integer NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: inventory_flags_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.inventory_flags_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: inventory_flags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.inventory_flags_id_seq OWNED BY public.inventory_flags.id;
+
+
+--
+-- Name: killmail_attackers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.killmail_attackers (
+    id bigint NOT NULL,
+    alliance_id bigint,
+    character_id bigint,
+    corporation_id bigint,
+    killmail_id bigint NOT NULL,
+    ship_type_id bigint,
+    weapon_type_id bigint,
+    damage_done integer NOT NULL,
+    faction_id bigint,
+    final_blow boolean NOT NULL,
+    security_status numeric NOT NULL
+);
+
+
+--
+-- Name: killmail_attackers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.killmail_attackers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: killmail_attackers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.killmail_attackers_id_seq OWNED BY public.killmail_attackers.id;
+
+
+--
+-- Name: killmail_fittings; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.killmail_fittings (
+    fitting_id bigint NOT NULL,
+    killmail_id bigint NOT NULL,
+    items jsonb,
+    similarity numeric NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: killmail_items; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.killmail_items (
+    id bigint NOT NULL,
+    killmail_id bigint NOT NULL,
+    type_id bigint,
+    ancestry text,
+    ancestry_depth integer,
+    quantity_destroyed bigint,
+    quantity_dropped bigint,
+    singleton integer NOT NULL,
+    flag_id bigint
+);
+
+
+--
+-- Name: killmail_items_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.killmail_items_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: killmail_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.killmail_items_id_seq OWNED BY public.killmail_items.id;
+
+
+--
+-- Name: killmails; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.killmails (
+    id bigint NOT NULL,
+    alliance_id bigint,
+    character_id bigint,
+    corporation_id bigint,
+    ship_type_id bigint NOT NULL,
+    solar_system_id bigint,
+    awox boolean NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    damage_taken integer NOT NULL,
+    faction_id bigint,
+    killmail_hash text NOT NULL,
+    moon_id bigint,
+    npc boolean NOT NULL,
+    points integer NOT NULL,
+    position_x numeric NOT NULL,
+    position_y numeric NOT NULL,
+    position_z numeric NOT NULL,
+    solo boolean NOT NULL,
+    "time" timestamp without time zone NOT NULL,
+    war_id bigint,
+    zkb_dropped_value numeric NOT NULL,
+    zkb_destroyed_value numeric NOT NULL,
+    zkb_total_value numeric NOT NULL
+);
+
+
+--
+-- Name: killmails_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.killmails_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: killmails_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.killmails_id_seq OWNED BY public.killmails.id;
+
+
+--
 -- Name: market_fitting_snapshots; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -705,35 +917,6 @@ CREATE SEQUENCE public.market_price_snapshots_id_seq
 --
 
 ALTER SEQUENCE public.market_price_snapshots_id_seq OWNED BY public.market_price_snapshots.id;
-
-
---
--- Name: market_type_stats; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.market_type_stats (
-    market_id bigint NOT NULL,
-    type_id bigint NOT NULL,
-    buy_order_count bigint,
-    buy_price_avg numeric,
-    buy_price_max numeric,
-    buy_price_min numeric,
-    buy_price_sum numeric,
-    buy_volume_avg numeric,
-    buy_volume_max bigint,
-    buy_volume_min bigint,
-    buy_volume_sum bigint,
-    sell_order_count bigint,
-    sell_price_avg numeric,
-    sell_price_max numeric,
-    sell_price_min numeric,
-    sell_price_sum numeric,
-    sell_volume_avg numeric,
-    sell_volume_max bigint,
-    sell_volume_min bigint,
-    sell_volume_sum bigint,
-    "time" timestamp without time zone NOT NULL
-);
 
 
 --
@@ -1193,6 +1376,34 @@ ALTER TABLE ONLY public.industry_index_snapshots ALTER COLUMN id SET DEFAULT nex
 
 
 --
+-- Name: inventory_flags id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.inventory_flags ALTER COLUMN id SET DEFAULT nextval('public.inventory_flags_id_seq'::regclass);
+
+
+--
+-- Name: killmail_attackers id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.killmail_attackers ALTER COLUMN id SET DEFAULT nextval('public.killmail_attackers_id_seq'::regclass);
+
+
+--
+-- Name: killmail_items id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.killmail_items ALTER COLUMN id SET DEFAULT nextval('public.killmail_items_id_seq'::regclass);
+
+
+--
+-- Name: killmails id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.killmails ALTER COLUMN id SET DEFAULT nextval('public.killmails_id_seq'::regclass);
+
+
+--
 -- Name: market_groups id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1397,6 +1608,38 @@ ALTER TABLE ONLY public.industry_index_snapshots
 
 
 --
+-- Name: inventory_flags inventory_flags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.inventory_flags
+    ADD CONSTRAINT inventory_flags_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: killmail_attackers killmail_attackers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.killmail_attackers
+    ADD CONSTRAINT killmail_attackers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: killmail_items killmail_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.killmail_items
+    ADD CONSTRAINT killmail_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: killmails killmails_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.killmails
+    ADD CONSTRAINT killmails_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: market_groups market_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1498,6 +1741,34 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.versions
     ADD CONSTRAINT versions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: _hyper_1_1_chunk_index_market_type_stats_on_market_id; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_1_chunk_index_market_type_stats_on_market_id ON _timescaledb_internal._hyper_1_1_chunk USING btree (market_id);
+
+
+--
+-- Name: _hyper_1_1_chunk_index_market_type_stats_on_type_id; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_1_chunk_index_market_type_stats_on_type_id ON _timescaledb_internal._hyper_1_1_chunk USING btree (type_id);
+
+
+--
+-- Name: _hyper_1_1_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_1_1_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_1_1_chunk USING btree (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_1_1_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_1_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_1_1_chunk USING btree ("time" DESC);
 
 
 --
@@ -1729,6 +2000,132 @@ CREATE INDEX index_groups_on_category_id ON public.groups USING btree (category_
 --
 
 CREATE INDEX index_industry_index_snapshots_on_solar_system_id ON public.industry_index_snapshots USING btree (solar_system_id);
+
+
+--
+-- Name: index_inventory_flags_on_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_inventory_flags_on_name ON public.inventory_flags USING btree (name);
+
+
+--
+-- Name: index_killmail_attackers_on_alliance_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_killmail_attackers_on_alliance_id ON public.killmail_attackers USING btree (alliance_id);
+
+
+--
+-- Name: index_killmail_attackers_on_character_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_killmail_attackers_on_character_id ON public.killmail_attackers USING btree (character_id);
+
+
+--
+-- Name: index_killmail_attackers_on_corporation_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_killmail_attackers_on_corporation_id ON public.killmail_attackers USING btree (corporation_id);
+
+
+--
+-- Name: index_killmail_attackers_on_killmail_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_killmail_attackers_on_killmail_id ON public.killmail_attackers USING btree (killmail_id);
+
+
+--
+-- Name: index_killmail_attackers_on_ship_type_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_killmail_attackers_on_ship_type_id ON public.killmail_attackers USING btree (ship_type_id);
+
+
+--
+-- Name: index_killmail_attackers_on_weapon_type_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_killmail_attackers_on_weapon_type_id ON public.killmail_attackers USING btree (weapon_type_id);
+
+
+--
+-- Name: index_killmail_fittings_on_fitting_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_killmail_fittings_on_fitting_id ON public.killmail_fittings USING btree (fitting_id);
+
+
+--
+-- Name: index_killmail_fittings_on_killmail_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_killmail_fittings_on_killmail_id ON public.killmail_fittings USING btree (killmail_id);
+
+
+--
+-- Name: index_killmail_items_on_ancestry; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_killmail_items_on_ancestry ON public.killmail_items USING btree (ancestry text_pattern_ops);
+
+
+--
+-- Name: index_killmail_items_on_flag_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_killmail_items_on_flag_id ON public.killmail_items USING btree (flag_id);
+
+
+--
+-- Name: index_killmail_items_on_killmail_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_killmail_items_on_killmail_id ON public.killmail_items USING btree (killmail_id);
+
+
+--
+-- Name: index_killmail_items_on_type_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_killmail_items_on_type_id ON public.killmail_items USING btree (type_id);
+
+
+--
+-- Name: index_killmails_on_alliance_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_killmails_on_alliance_id ON public.killmails USING btree (alliance_id);
+
+
+--
+-- Name: index_killmails_on_character_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_killmails_on_character_id ON public.killmails USING btree (character_id);
+
+
+--
+-- Name: index_killmails_on_corporation_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_killmails_on_corporation_id ON public.killmails USING btree (corporation_id);
+
+
+--
+-- Name: index_killmails_on_ship_type_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_killmails_on_ship_type_id ON public.killmails USING btree (ship_type_id);
+
+
+--
+-- Name: index_killmails_on_solar_system_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_killmails_on_solar_system_id ON public.killmails USING btree (solar_system_id);
 
 
 --
@@ -1977,6 +2374,22 @@ CREATE TRIGGER ts_insert_blocker BEFORE INSERT ON public.market_type_stats FOR E
 
 
 --
+-- Name: _hyper_1_1_chunk 1_1_fk_rails_8ae0916104; Type: FK CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_1_chunk
+    ADD CONSTRAINT "1_1_fk_rails_8ae0916104" FOREIGN KEY (market_id) REFERENCES public.markets(id);
+
+
+--
+-- Name: _hyper_1_1_chunk 1_2_fk_rails_ab10873f6b; Type: FK CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_1_chunk
+    ADD CONSTRAINT "1_2_fk_rails_ab10873f6b" FOREIGN KEY (type_id) REFERENCES public.types(id);
+
+
+--
 -- Name: corporations fk_rails_0551373140; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2017,6 +2430,14 @@ ALTER TABLE ONLY public.market_locations
 
 
 --
+-- Name: killmail_fittings fk_rails_2dd8f83885; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.killmail_fittings
+    ADD CONSTRAINT fk_rails_2dd8f83885 FOREIGN KEY (fitting_id) REFERENCES public.fittings(id);
+
+
+--
 -- Name: contract_items fk_rails_34a4a66de8; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2033,6 +2454,38 @@ ALTER TABLE ONLY public.fitting_items
 
 
 --
+-- Name: killmails fk_rails_3d9efa89e3; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.killmails
+    ADD CONSTRAINT fk_rails_3d9efa89e3 FOREIGN KEY (solar_system_id) REFERENCES public.solar_systems(id);
+
+
+--
+-- Name: killmail_items fk_rails_4726c84c13; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.killmail_items
+    ADD CONSTRAINT fk_rails_4726c84c13 FOREIGN KEY (type_id) REFERENCES public.types(id);
+
+
+--
+-- Name: killmails fk_rails_473a7434be; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.killmails
+    ADD CONSTRAINT fk_rails_473a7434be FOREIGN KEY (ship_type_id) REFERENCES public.types(id);
+
+
+--
+-- Name: killmail_attackers fk_rails_5387666c4c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.killmail_attackers
+    ADD CONSTRAINT fk_rails_5387666c4c FOREIGN KEY (weapon_type_id) REFERENCES public.types(id);
+
+
+--
 -- Name: stations fk_rails_579e8e9070; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2046,6 +2499,14 @@ ALTER TABLE ONLY public.stations
 
 ALTER TABLE ONLY public.characters
     ADD CONSTRAINT fk_rails_5ed7aa5594 FOREIGN KEY (corporation_id) REFERENCES public.corporations(id);
+
+
+--
+-- Name: killmail_attackers fk_rails_611319d6fe; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.killmail_attackers
+    ADD CONSTRAINT fk_rails_611319d6fe FOREIGN KEY (killmail_id) REFERENCES public.killmails(id);
 
 
 --
@@ -2185,6 +2646,14 @@ ALTER TABLE ONLY public.structures
 
 
 --
+-- Name: killmail_fittings fk_rails_b15e60a0f8; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.killmail_fittings
+    ADD CONSTRAINT fk_rails_b15e60a0f8 FOREIGN KEY (killmail_id) REFERENCES public.killmails(id);
+
+
+--
 -- Name: contract_fittings fk_rails_b5056d2fe0; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2198,6 +2667,14 @@ ALTER TABLE ONLY public.contract_fittings
 
 ALTER TABLE ONLY public.stations
     ADD CONSTRAINT fk_rails_b996120a6f FOREIGN KEY (solar_system_id) REFERENCES public.solar_systems(id);
+
+
+--
+-- Name: killmail_items fk_rails_ba99391406; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.killmail_items
+    ADD CONSTRAINT fk_rails_ba99391406 FOREIGN KEY (killmail_id) REFERENCES public.killmails(id);
 
 
 --
@@ -2254,6 +2731,14 @@ ALTER TABLE ONLY public.structures
 
 ALTER TABLE ONLY public.esi_authorizations
     ADD CONSTRAINT fk_rails_d62a030c54 FOREIGN KEY (character_id) REFERENCES public.characters(id);
+
+
+--
+-- Name: killmail_attackers fk_rails_dcd40cdd2d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.killmail_attackers
+    ADD CONSTRAINT fk_rails_dcd40cdd2d FOREIGN KEY (ship_type_id) REFERENCES public.types(id);
 
 
 --
@@ -2322,6 +2807,13 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211212165403'),
 ('20211212191721'),
 ('20211212191909'),
-('20211213021729');
+('20211213021729'),
+('20211213165724'),
+('20211213204305'),
+('20211213204858'),
+('20211213205324'),
+('20211213213206'),
+('20211213221851'),
+('20211213222209');
 
 

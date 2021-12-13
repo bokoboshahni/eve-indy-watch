@@ -13,18 +13,20 @@ class Alliance < ApplicationRecord
     end
 
     def call # rubocop:disable Metrics/AbcSize
-      alliance = Alliance.find_by(id: alliance_id)
-      if alliance&.esi_expires_at&.>= Time.zone.now
-        logger.debug("ESI response for alliance (#{alliance.name}) #{alliance.id} is not expired: #{alliance.esi_expires_at.iso8601}") # rubocop:disable Metrics/LineLength
-        return alliance
+      Retriable.retriable on: [ActiveRecord::RecordNotUnique], tries: 10 do
+        alliance = Alliance.find_by(id: alliance_id)
+        if alliance&.esi_expires_at&.>= Time.zone.now
+          logger.debug("ESI response for alliance (#{alliance.name}) #{alliance.id} is not expired: #{alliance.esi_expires_at.iso8601}") # rubocop:disable Metrics/LineLength
+          return alliance
+        end
+
+        alliance_attrs = alliance_attrs_from_esi
+        alliance_attrs.merge!(alliance_icon_attrs_from_esi)
+        alliance.present? ? alliance.update!(alliance_attrs) : alliance = Alliance.create!(alliance_attrs.merge(id: alliance_id)) # rubocop:disable Metrics/LineLength
+
+        debug("Synced alliance #{alliance_id} from ESI")
+        alliance
       end
-
-      alliance_attrs = alliance_attrs_from_esi
-      alliance_attrs.merge!(alliance_icon_attrs_from_esi)
-      alliance.present? ? alliance.update!(alliance_attrs) : alliance = Alliance.create!(alliance_attrs.merge(id: alliance_id)) # rubocop:disable Metrics/LineLength
-
-      debug("Synced alliance #{alliance_id} from ESI")
-      alliance
     rescue ESI::Errors::ClientError => e
       msg = "Unable to sync alliance #{alliance_id} from ESI: #{e.message}"
       raise Error, msg, cause: e

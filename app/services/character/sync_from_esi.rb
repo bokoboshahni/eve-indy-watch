@@ -13,21 +13,23 @@ class Character < ApplicationRecord
     end
 
     def call # rubocop:disable Metrics/AbcSize
-      char = Character.find_by(id: character_id)
-      if char&.esi_expires_at&.>= Time.zone.now
-        logger.debug("ESI response for character (#{char.name}) #{char.id} is not expired: #{char.esi_expires_at.iso8601}") # rubocop:disable Metrics/LineLength
-        return char
+      Retriable.retriable on: [ActiveRecord::RecordNotUnique], tries: 10 do
+        char = Character.find_by(id: character_id)
+        if char&.esi_expires_at&.>= Time.zone.now
+          logger.debug("ESI response for character (#{char.name}) #{char.id} is not expired: #{char.esi_expires_at.iso8601}") # rubocop:disable Metrics/LineLength
+          return char
+        end
+
+        char_attrs = character_attrs_from_esi
+        char_attrs.merge!(portrait_attrs_from_esi)
+        sync_alliance!(char_attrs[:alliance_id])
+        sync_corporation!(char_attrs[:corporation_id])
+
+        char ? char.update!(char_attrs) : char = Character.create!(char_attrs.merge(id: character_id))
+
+        debug("Synced character #{character_id} from ESI")
+        char
       end
-
-      char_attrs = character_attrs_from_esi
-      char_attrs.merge!(portrait_attrs_from_esi)
-      sync_alliance!(char_attrs[:alliance_id])
-      sync_corporation!(char_attrs[:corporation_id])
-
-      char ? char.update!(char_attrs) : char = Character.create!(char_attrs.merge(id: character_id))
-
-      debug("Synced character #{character_id} from ESI")
-      char
     rescue ESI::Errors::ClientError => e
       msg = "Unable to sync character #{character_id} from ESI: #{e.message}"
       raise Error, msg, cause: e

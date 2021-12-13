@@ -46,6 +46,10 @@ class Type < ApplicationRecord
   has_many :contract_items, inverse_of: :type, dependent: :restrict_with_exception
   has_many :fitting_items, inverse_of: :type, dependent: :restrict_with_exception
   has_many :fittings, inverse_of: :type, dependent: :restrict_with_exception
+  has_many :killmail_attacker_ships, inverse_of: :ship_type, dependent: :restrict_with_exception
+  has_many :killmail_attacker_weapons, inverse_of: :weapon_type, dependent: :restrict_with_exception
+  has_many :killmail_items, inverse_of: :type, dependent: :restrict_with_exception
+  has_many :lossmails, class_name: 'Killmail', inverse_of: :ship_type, dependent: :restrict_with_exception
   has_many :market_price_snapshots, inverse_of: :type, dependent: :destroy
   has_many :stations, inverse_of: :type, dependent: :restrict_with_exception
   has_many :structures, inverse_of: :type, dependent: :restrict_with_exception

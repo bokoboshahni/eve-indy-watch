@@ -152,7 +152,11 @@ class Contract < ApplicationRecord
   end
 
   def discover_fittings!
-    DiscoverFittings.call(self)
+    Contract::DiscoverFittings.call(self)
+  end
+
+  def discover_fittings_async
+    Contract::DiscoverFittingsWorker.perform_async(id)
   end
 
   def compact_items

@@ -15,6 +15,8 @@
 # **`icon_url_64`**           | `text`             |
 # **`name`**                  | `text`             | `not null`
 # **`ticker`**                | `text`             | `not null`
+# **`zkb_fetched_at`**        | `datetime`         |
+# **`zkb_sync_enabled`**      | `boolean`          |
 # **`created_at`**            | `datetime`         | `not null`
 # **`updated_at`**            | `datetime`         | `not null`
 # **`api_corporation_id`**    | `bigint`           |

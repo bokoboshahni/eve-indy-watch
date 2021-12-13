@@ -46,6 +46,9 @@ class Character < ApplicationRecord
   has_many :esi_authorizations, inverse_of: :character, dependent: :destroy
   has_many :fittings, as: :owner, dependent: :destroy
   has_many :issued_contracts, class_name: 'Contract', as: :issuer, dependent: :restrict_with_exception
+  has_many :killmail_attackers, inverse_of: :character, dependent: :restrict_with_exception
+  has_many :killmails, through: :killmail_attackers
+  has_many :lossmails, class_name: 'Killmail', inverse_of: :character, dependent: :restrict_with_exception
 
   def sync_from_esi!
     Character::SyncFromESI.call(id)

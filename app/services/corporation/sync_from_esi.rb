@@ -13,19 +13,21 @@ class Corporation < ApplicationRecord
     end
 
     def call # rubocop:disable Metrics/AbcSize
-      corp = Corporation.find_or_initialize_by(id: corporation_id)
-      if corp&.esi_expires_at&.>= Time.zone.now
-        logger.debug("ESI response for corporation (#{corp.name}) #{corp.id} is not expired: #{corp.esi_expires_at.iso8601}") # rubocop:disable Metrics/LineLength
-        return corp
+      Retriable.retriable on: [ActiveRecord::RecordNotUnique], tries: 10 do
+        corp = Corporation.find_or_initialize_by(id: corporation_id)
+        if corp&.esi_expires_at&.>= Time.zone.now
+          logger.debug("ESI response for corporation (#{corp.name}) #{corp.id} is not expired: #{corp.esi_expires_at.iso8601}") # rubocop:disable Metrics/LineLength
+          return corp
+        end
+
+        corp_attrs = corporation_attrs_from_esi
+        corp_attrs.merge!(corporation_icon_attrs_from_esi)
+        corp.attributes = corp_attrs
+        corp.save!
+
+        debug("Synced corporation #{corporation_id} from ESI")
+        corp
       end
-
-      corp_attrs = corporation_attrs_from_esi
-      corp_attrs.merge!(corporation_icon_attrs_from_esi)
-      corp.attributes = corp_attrs
-      corp.save!
-
-      debug("Synced corporation #{corporation_id} from ESI")
-      corp
     rescue ESI::Errors::ClientError => e
       msg = "Unable to sync corporation #{corporation_id} from ESI: #{e.message}"
       raise Error, msg, cause: e

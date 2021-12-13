@@ -22,4 +22,5 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
   inflect.acronym 'SDE'
   inflect.acronym 'SSO'
   inflect.acronym 'YAML'
+  inflect.acronym 'ZKB'
 end

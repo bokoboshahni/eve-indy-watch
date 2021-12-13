@@ -15,6 +15,8 @@
 # **`icon_url_64`**           | `text`             |
 # **`name`**                  | `text`             | `not null`
 # **`ticker`**                | `text`             | `not null`
+# **`zkb_fetched_at`**        | `datetime`         |
+# **`zkb_sync_enabled`**      | `boolean`          |
 # **`created_at`**            | `datetime`         | `not null`
 # **`updated_at`**            | `datetime`         | `not null`
 # **`api_corporation_id`**    | `bigint`           |
@@ -47,6 +49,9 @@ class Alliance < ApplicationRecord
   has_many :contract_events, inverse_of: :alliance, dependent: :restrict_with_exception
   has_many :corporations, inverse_of: :alliance, dependent: :restrict_with_exception
   has_many :fittings, as: :owner, dependent: :destroy
+  has_many :killmail_attackers, inverse_of: :alliance, dependent: :restrict_with_exception
+  has_many :killmails, through: :killmail_attackers
+  has_many :lossmails, class_name: 'Killmail', inverse_of: :alliance, dependent: :restrict_with_exception
   has_many :markets, as: :owner, dependent: :destroy
 
   def sync_from_esi!
@@ -57,5 +62,23 @@ class Alliance < ApplicationRecord
     rel = ESIAuthorization.includes(:character).joins(character: :corporation)
     rel.where('corporation_id = ?', api_corporation_id)
     rel.order('characters.name')
+  end
+
+  def log_name
+    "#{name} (#{id})"
+  end
+
+  def zkb_killmails_expired?
+    return true if zkb_expires_at.blank?
+
+    zkb_expires_at <= Time.zone.now
+  end
+
+  def fetch_killmails_from_zkb(year: nil, month: nil)
+    Alliance::FetchKillmailsFromZKB.call(self, year: year, month: month)
+  end
+
+  def fetch_killmails_from_zkb_async(year: nil, month: nil)
+    Alliance::FetchKillmailsFromZKBWorker.perform_async(id, year, month)
   end
 end

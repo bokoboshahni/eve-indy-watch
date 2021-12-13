@@ -45,6 +45,7 @@ class Fitting < ApplicationRecord
 
   has_many :contract_fittings, inverse_of: :fitting, dependent: :destroy
   has_many :items, class_name: 'FittingItem', inverse_of: :fitting, dependent: :destroy
+  has_many :killmail_fittings, inverse_of: :fitting, dependent: :destroy
   has_many :market_fitting_snapshots, inverse_of: :market, dependent: :destroy
 
   has_many :contracts, through: :contract_fittings do
@@ -58,6 +59,16 @@ class Fitting < ApplicationRecord
 
     def problematic
       where('contract_fittings.similarity >= 0.75 AND contract_fittings.similarity < 1.0')
+    end
+  end
+
+  has_many :killmails, through: :killmail_fittings do
+    def matching
+      where('killmail_fittings.similarity = 1.0')
+    end
+
+    def likely_matching
+      where('killmail_fittings.similarity >= 0.95 AND killmail_fittings.similarity < 1.0')
     end
   end
 
