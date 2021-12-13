@@ -50,7 +50,7 @@ class Fitting < ApplicationRecord
         begin
           ids = market_item_ids.select { |id| fitting_item_ids.include?(id) }
           types = Type.find(ids)
-          types.each_with_object({}) { |t, h| h[t.id] = t.market_volume(market_id) }
+          types.each_with_object({}) { |t, h| h[t.id] = t.market_volume(market) }
         end
     end
 
