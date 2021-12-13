@@ -9,6 +9,20 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+--
+-- Name: timescaledb; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS timescaledb WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION timescaledb; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION timescaledb IS 'Enables scalable inserts and complex queries for time-series data';
+
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -691,6 +705,35 @@ CREATE SEQUENCE public.market_price_snapshots_id_seq
 --
 
 ALTER SEQUENCE public.market_price_snapshots_id_seq OWNED BY public.market_price_snapshots.id;
+
+
+--
+-- Name: market_type_stats; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.market_type_stats (
+    market_id bigint NOT NULL,
+    type_id bigint NOT NULL,
+    buy_order_count bigint,
+    buy_price_avg numeric,
+    buy_price_max numeric,
+    buy_price_min numeric,
+    buy_price_sum numeric,
+    buy_volume_avg numeric,
+    buy_volume_max bigint,
+    buy_volume_min bigint,
+    buy_volume_sum bigint,
+    sell_order_count bigint,
+    sell_price_avg numeric,
+    sell_price_max numeric,
+    sell_price_min numeric,
+    sell_price_sum numeric,
+    sell_volume_avg numeric,
+    sell_volume_max bigint,
+    sell_volume_min bigint,
+    sell_volume_sum bigint,
+    "time" timestamp without time zone NOT NULL
+);
 
 
 --
@@ -1752,6 +1795,20 @@ CREATE INDEX index_market_price_snapshots_on_type_id ON public.market_price_snap
 
 
 --
+-- Name: index_market_type_stats_on_market_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_market_type_stats_on_market_id ON public.market_type_stats USING btree (market_id);
+
+
+--
+-- Name: index_market_type_stats_on_type_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_market_type_stats_on_type_id ON public.market_type_stats USING btree (type_id);
+
+
+--
 -- Name: index_markets_on_owner; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1878,6 +1935,13 @@ CREATE UNIQUE INDEX index_unique_market_price_snapshots ON public.market_price_s
 
 
 --
+-- Name: index_unique_market_type_stats; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_unique_market_type_stats ON public.market_type_stats USING btree (market_id, type_id, "time");
+
+
+--
 -- Name: index_unique_rollups; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1896,6 +1960,20 @@ CREATE INDEX index_users_on_character_id ON public.users USING btree (character_
 --
 
 CREATE INDEX index_versions_on_item ON public.versions USING btree (item_type, item_id);
+
+
+--
+-- Name: market_type_stats_time_idx; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX market_type_stats_time_idx ON public.market_type_stats USING btree ("time" DESC);
+
+
+--
+-- Name: market_type_stats ts_insert_blocker; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER ts_insert_blocker BEFORE INSERT ON public.market_type_stats FOR EACH ROW EXECUTE FUNCTION _timescaledb_internal.insert_blocker();
 
 
 --
@@ -2035,6 +2113,14 @@ ALTER TABLE ONLY public.types
 
 
 --
+-- Name: market_type_stats fk_rails_8ae0916104; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.market_type_stats
+    ADD CONSTRAINT fk_rails_8ae0916104 FOREIGN KEY (market_id) REFERENCES public.markets(id);
+
+
+--
 -- Name: fittings fk_rails_8f60a789b9; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2080,6 +2166,14 @@ ALTER TABLE ONLY public.groups
 
 ALTER TABLE ONLY public.solar_systems
     ADD CONSTRAINT fk_rails_a8b206bb7b FOREIGN KEY (constellation_id) REFERENCES public.constellations(id);
+
+
+--
+-- Name: market_type_stats fk_rails_ab10873f6b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.market_type_stats
+    ADD CONSTRAINT fk_rails_ab10873f6b FOREIGN KEY (type_id) REFERENCES public.types(id);
 
 
 --
@@ -2227,6 +2321,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211212153301'),
 ('20211212165403'),
 ('20211212191721'),
-('20211212191909');
+('20211212191909'),
+('20211213021729');
 
 

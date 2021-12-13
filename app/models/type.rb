@@ -70,27 +70,24 @@ class Type < ApplicationRecord
     Category::MODULE_CATEGORY_NAMES.include?(category_name)
   end
 
-  def market_price(market, kind:, stat:, interval: '15m')
-    Rollup.where(name: "mkt_#{market.id}_types.price_#{stat}", interval: interval)
-          .where("dimensions->>'kind' = ? AND (dimensions->'type_id')::bigint = ?", kind, id)
-          .order(time: :desc).limit(1)&.first&.value || BigDecimal(0)
+  def market_stat(market, stat)
+    time = MarketTypeStat.where(market_id: market.id).maximum(:time)
+    MarketTypeStat.find_by(market_id: market.id, type_id: id, time: time).send(stat)
   end
 
-  def market_buy_price(market, interval: '15m', stat: :max)
-    market_price(market, interval: interval, stat: stat, kind: 'buy')
+  def market_buy_price(market)
+    market_stat(market, :buy_price_max)
   end
 
-  def market_sell_price(market, interval: '15m', stat: :min)
-    market_price(market, interval: interval, stat: stat, kind: 'sell')
+  def market_sell_price(market)
+    market_stat(market, :sell_price_min)
   end
 
-  def market_split_price(market, interval: '15m')
-    (market_buy_price(market, interval: interval) + market_sell_price(market, interval: interval)) / 2.0
+  def market_split_price(market)
+    (market_buy_price(market) + market_sell_price(market)) / 2.0
   end
 
-  def market_volume(market_id, interval: '15m')
-    Rollup.where(name: "mkt_#{market_id}_types.volume_sum", interval: interval)
-          .where("dimensions->>'kind' = 'sell' AND (dimensions->'type_id')::bigint = ?", id)
-          .order(time: :desc).limit(1)&.first&.value&.to_i || 0
+  def market_volume(market)
+    market_stat(market, :sell_volume_sum)
   end
 end

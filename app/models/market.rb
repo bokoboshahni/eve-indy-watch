@@ -33,21 +33,16 @@ class Market < ApplicationRecord
 
   validates :name, presence: true
 
-  def aggregate_types!(aggregation, interval)
-    Market::AggregateTypes.call(self, aggregation, interval)
-  end
-
-  def aggregate_types_async(aggregation, interval)
-    Market::AggregateTypesWorker.perform_async(id, aggregation, interval)
-  end
-
-  def prune_type_aggregations!(interval, before)
-    Market::PruneTypeAggregations.call(self, interval, before)
-  end
-
   def type_ids_for_sale
-    Rollup.select("DISTINCT (dimensions->>'type_id')::bigint type_id")
-          .where("time = (SELECT MAX(time) FROM rollups WHERE name = 'mkt_#{id}_types.order_count')")
-          .map(&:type_id)
+    time = MarketTypeStat.where(market_id: id).maximum(:time)
+    MarketTypeStat.distinct(:type_id).where(market_id: id).pluck(:type_id)
+  end
+
+  def create_stats!(time)
+    MarketOrderSnapshot::CreateStats.call(self, time)
+  end
+
+  def create_stats_async(time)
+    MarketOrderSnapshot::CreateStatsWorker.perform_async(id, time)
   end
 end

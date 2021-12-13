@@ -64,7 +64,9 @@ class Corporation < ApplicationRecord
   end
 
   def esi_contracts_expired?
-    esi_contracts_expires_at.present? && esi_contracts_expires_at <= Time.zone.now
+    return true if esi_contracts_expires_at.blank?
+
+    esi_contracts_expires_at <= Time.zone.now
   end
 
   def fetch_contracts_from_esi

@@ -131,7 +131,7 @@ class Contract < ApplicationRecord
               begin
                 Corporation::SyncFromESI.call(id)
               rescue Corporation::SyncFromESI::Error => e
-                Alliance::SyncFromESI.call(id) if e.cause_is_a?(ESI::Errors::NotFoundError)
+                Alliance::SyncFromESI.call(id) if e.cause.is_a?(ESI::Errors::NotFoundError)
               end
             end
           end
