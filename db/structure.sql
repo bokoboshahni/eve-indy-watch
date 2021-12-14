@@ -2138,6 +2138,13 @@ CREATE INDEX index_market_locations_on_market_id ON public.market_locations USIN
 
 
 --
+-- Name: index_market_order_snapshots_on_location_id_and_time; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_market_order_snapshots_on_location_id_and_time ON public.market_order_snapshots USING btree (location_id, esi_last_modified_at);
+
+
+--
 -- Name: index_market_type_stats_on_type_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2254,13 +2261,6 @@ CREATE UNIQUE INDEX index_unique_industry_index_snapshots ON public.industry_ind
 --
 
 CREATE UNIQUE INDEX index_unique_market_fitting_snapshots ON public.market_fitting_snapshots USING btree (market_id, fitting_id, "time");
-
-
---
--- Name: index_unique_market_order_snapshots; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_unique_market_order_snapshots ON public.market_order_snapshots USING btree (location_id, order_id, esi_last_modified_at);
 
 
 --
@@ -2756,6 +2756,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211213222209'),
 ('20211213235254'),
 ('20211214023347'),
-('20211214024615');
+('20211214024615'),
+('20211214031054');
 
 

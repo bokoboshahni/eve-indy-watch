@@ -26,9 +26,8 @@
 #
 # ### Indexes
 #
-# * `index_unique_market_order_snapshots` (_unique_):
+# * `index_market_order_snapshots_on_location_id_and_time`:
 #     * **`location_id`**
-#     * **`order_id`**
 #     * **`esi_last_modified_at`**
 #
 class MarketOrderSnapshot < ApplicationRecord
