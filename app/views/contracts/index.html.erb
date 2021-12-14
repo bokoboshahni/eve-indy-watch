@@ -68,7 +68,7 @@
                               <li>
                                 <%= link_to fitting_path(fitting), class: "text-xs text-#{similarity_color}-500 hover:text-#{similarity_color}-500" do %>
                                   <%= fitting.name %>
-                                  <% if contract_fitting.similarity < 1.0 %>(<%= number_to_percentage contract_fitting.similarity, precision: 2 %> Match)<% end %>
+                                  <% if contract_fitting.similarity < 1.0 %>(<%= number_to_percentage contract_fitting.similarity * 100, precision: 0 %> Match)<% end %>
                                 <% end %>
                               </li>
                             <% end %>
