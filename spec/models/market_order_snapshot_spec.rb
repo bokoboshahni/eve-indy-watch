@@ -29,6 +29,9 @@
 # * `index_market_order_snapshots_on_location_id_and_time`:
 #     * **`location_id`**
 #     * **`esi_last_modified_at`**
+# * `index_unique_market_order_snapshots` (_unique_):
+#     * **`esi_last_modified_at`**
+#     * **`order_id`**
 #
 require 'rails_helper'
 

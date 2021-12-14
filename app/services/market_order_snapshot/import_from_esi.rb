@@ -20,7 +20,7 @@ class MarketOrderSnapshot < ApplicationRecord
       MarketOrderSnapshot.import!(
         orders,
         track_validation_failures: true,
-        on_duplicate_key_update: { conflict_target: %i[location_id order_id esi_last_modified_at], columns: :all }
+        on_duplicate_key_update: { conflict_target: %i[esi_last_modified_at order_id], columns: :all }
       )
 
       debug("Processed #{orders.count} market orders(s) for #{location.name} (#{location.id})")

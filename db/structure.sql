@@ -2264,6 +2264,13 @@ CREATE UNIQUE INDEX index_unique_market_fitting_snapshots ON public.market_fitti
 
 
 --
+-- Name: index_unique_market_order_snapshots; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_unique_market_order_snapshots ON public.market_order_snapshots USING btree (esi_last_modified_at, order_id);
+
+
+--
 -- Name: index_unique_market_price_snapshots; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2757,6 +2764,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211213235254'),
 ('20211214023347'),
 ('20211214024615'),
-('20211214031054');
+('20211214031054'),
+('20211214032124');
 
 
