@@ -3,6 +3,8 @@
 class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
+  connects_to database: { reading: :primary, writing: :primary }
+
   def log_name
     "#{name} (#{id})"
   end
