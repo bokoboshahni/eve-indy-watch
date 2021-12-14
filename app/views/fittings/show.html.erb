@@ -95,7 +95,7 @@
             Lost (7 days)
           </dt>
           <dd class="mt-1 text-3xl font-semibold text-gray-900">
-            <%= @fitting.killmails.where(time: 7.days.ago.beginning_of_day..Time.zone.now).count %>
+            <%= @fitting.killmails.where('similarity >= ?', @fitting.killmail_match_threshold || 1.0).where(time: 7.days.ago.beginning_of_day..Time.zone.now).count %>
           </dd>
         </div>
       </dl>

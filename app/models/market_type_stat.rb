@@ -49,4 +49,6 @@
 #     * **`type_id => types.id`**
 #
 class MarketTypeStat < ApplicationRecord
+  belongs_to :market, inverse_of: :market_type_stats
+  belongs_to :type, inverse_of: :market_type_stats
 end

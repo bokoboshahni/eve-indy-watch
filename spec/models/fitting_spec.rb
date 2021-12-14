@@ -6,19 +6,21 @@
 #
 # ### Columns
 #
-# Name                 | Type               | Attributes
-# -------------------- | ------------------ | ---------------------------
-# **`id`**             | `bigint`           | `not null, primary key`
-# **`desired_count`**  | `integer`          |
-# **`discarded_at`**   | `datetime`         |
-# **`name`**           | `text`             | `not null`
-# **`original`**       | `text`             |
-# **`owner_type`**     | `string`           | `not null`
-# **`pinned`**         | `boolean`          |
-# **`created_at`**     | `datetime`         | `not null`
-# **`updated_at`**     | `datetime`         | `not null`
-# **`owner_id`**       | `bigint`           | `not null`
-# **`type_id`**        | `bigint`           | `not null`
+# Name                            | Type               | Attributes
+# ------------------------------- | ------------------ | ---------------------------
+# **`id`**                        | `bigint`           | `not null, primary key`
+# **`contract_match_threshold`**  | `decimal(, )`      |
+# **`desired_count`**             | `integer`          |
+# **`discarded_at`**              | `datetime`         |
+# **`killmail_match_threshold`**  | `decimal(, )`      |
+# **`name`**                      | `text`             | `not null`
+# **`original`**                  | `text`             |
+# **`owner_type`**                | `string`           | `not null`
+# **`pinned`**                    | `boolean`          |
+# **`created_at`**                | `datetime`         | `not null`
+# **`updated_at`**                | `datetime`         | `not null`
+# **`owner_id`**                  | `bigint`           | `not null`
+# **`type_id`**                   | `bigint`           | `not null`
 #
 # ### Indexes
 #

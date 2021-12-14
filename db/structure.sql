@@ -531,7 +531,9 @@ CREATE TABLE public.fittings (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     pinned boolean,
-    desired_count integer
+    desired_count integer,
+    contract_match_threshold numeric,
+    killmail_match_threshold numeric
 );
 
 
@@ -2814,6 +2816,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211213205324'),
 ('20211213213206'),
 ('20211213221851'),
-('20211213222209');
+('20211213222209'),
+('20211213235254');
 
 
