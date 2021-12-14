@@ -5,13 +5,15 @@ class MarketOrderSnapshot < ApplicationRecord
     def perform(before)
       time =
         case before
-        when 'today'
+        when 'hour'
+          Time.zone.now.beginning_of_hour
+        when 'day'
           Time.zone.now.beginning_of_day
         else
           DateTime.parse(before)
         end
 
-      MarketOrderSnapshot.prune(time)
+      MarketOrderSnapshot.prune!(time)
     end
   end
 end
