@@ -30,8 +30,6 @@
 #
 # ### Indexes
 #
-# * `index_market_type_stats_on_market_id`:
-#     * **`market_id`**
 # * `index_market_type_stats_on_type_id`:
 #     * **`type_id`**
 # * `index_unique_market_type_stats` (_unique_):

@@ -25,8 +25,6 @@
 #
 # ### Indexes
 #
-# * `index_industry_index_snapshots_on_solar_system_id`:
-#     * **`solar_system_id`**
 # * `index_unique_industry_index_snapshots` (_unique_):
 #     * **`solar_system_id`**
 #     * **`esi_last_modified_at`**

@@ -21,8 +21,6 @@
 #
 # * `index_market_fitting_snapshots_on_fitting_id`:
 #     * **`fitting_id`**
-# * `index_market_fitting_snapshots_on_market_id`:
-#     * **`market_id`**
 # * `index_unique_market_fitting_snapshots` (_unique_):
 #     * **`market_id`**
 #     * **`fitting_id`**

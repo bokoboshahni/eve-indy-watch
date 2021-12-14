@@ -1746,13 +1746,6 @@ ALTER TABLE ONLY public.versions
 
 
 --
--- Name: _hyper_1_1_chunk_index_market_type_stats_on_market_id; Type: INDEX; Schema: _timescaledb_internal; Owner: -
---
-
-CREATE INDEX _hyper_1_1_chunk_index_market_type_stats_on_market_id ON _timescaledb_internal._hyper_1_1_chunk USING btree (market_id);
-
-
---
 -- Name: _hyper_1_1_chunk_index_market_type_stats_on_type_id; Type: INDEX; Schema: _timescaledb_internal; Owner: -
 --
 
@@ -1827,13 +1820,6 @@ CREATE INDEX index_contract_events_on_contract_id ON public.contract_events USIN
 --
 
 CREATE INDEX index_contract_events_on_corporation_id ON public.contract_events USING btree (corporation_id);
-
-
---
--- Name: index_contract_fittings_on_contract_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_contract_fittings_on_contract_id ON public.contract_fittings USING btree (contract_id);
 
 
 --
@@ -1998,13 +1984,6 @@ CREATE INDEX index_groups_on_category_id ON public.groups USING btree (category_
 
 
 --
--- Name: index_industry_index_snapshots_on_solar_system_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_industry_index_snapshots_on_solar_system_id ON public.industry_index_snapshots USING btree (solar_system_id);
-
-
---
 -- Name: index_inventory_flags_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2138,13 +2117,6 @@ CREATE INDEX index_market_fitting_snapshots_on_fitting_id ON public.market_fitti
 
 
 --
--- Name: index_market_fitting_snapshots_on_market_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_market_fitting_snapshots_on_market_id ON public.market_fitting_snapshots USING btree (market_id);
-
-
---
 -- Name: index_market_groups_on_ancestry; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2163,20 +2135,6 @@ CREATE INDEX index_market_locations_on_location ON public.market_locations USING
 --
 
 CREATE INDEX index_market_locations_on_market_id ON public.market_locations USING btree (market_id);
-
-
---
--- Name: index_market_price_snapshots_on_type_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_market_price_snapshots_on_type_id ON public.market_price_snapshots USING btree (type_id);
-
-
---
--- Name: index_market_type_stats_on_market_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_market_type_stats_on_market_id ON public.market_type_stats USING btree (market_id);
 
 
 --
@@ -2797,6 +2755,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211213221851'),
 ('20211213222209'),
 ('20211213235254'),
-('20211214023347');
+('20211214023347'),
+('20211214024615');
 
 

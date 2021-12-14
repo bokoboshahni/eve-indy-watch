@@ -18,8 +18,6 @@
 #
 # ### Indexes
 #
-# * `index_contract_fittings_on_contract_id`:
-#     * **`contract_id`**
 # * `index_contract_fittings_on_fitting_id`:
 #     * **`fitting_id`**
 # * `index_unique_contract_fittings` (_unique_):

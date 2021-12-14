@@ -17,8 +17,6 @@
 #
 # ### Indexes
 #
-# * `index_market_price_snapshots_on_type_id`:
-#     * **`type_id`**
 # * `index_unique_market_price_snapshots` (_unique_):
 #     * **`type_id`**
 #     * **`esi_last_modified_at`**
