@@ -54,6 +54,9 @@ class Alliance < ApplicationRecord
   has_many :lossmails, class_name: 'Killmail', inverse_of: :alliance, dependent: :restrict_with_exception
   has_many :markets, as: :owner, dependent: :destroy
 
+  delegate :name, to: :main_market, prefix: true, allow_nil: true
+  delegate :name, to: :appraisal_market, prefix: true, allow_nil: true
+
   def sync_from_esi!
     Alliance::SyncFromESI.call(id)
   end

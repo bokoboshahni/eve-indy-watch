@@ -1,0 +1,33 @@
+<%= turbo_frame_tag 'fittings' do %>
+  <%= render(CardComponent.new(body_class_names: '')) do |c| %>
+    <% c.header do %>
+      <%= render(PaginatorComponent.new(pagy: paginator)) %>
+    <% end %>
+
+    <% c.body do %>
+      <%= render(TableComponent.new) do |t| %>
+        <% t.header width: '1/3' do %>Name<% end %>
+        <% t.header width: '1/3' do %>Ship<% end %>
+        <% t.header width: '1/6' do %>On Contract<% end %>
+        <% t.header width: '1/6' do %>On Market<% end %>
+
+        <% fittings.each do |fitting| %>
+          <% t.row do |tr| %>
+            <% tr.cell do %><%= link_to fitting.name, fitting_path(fitting), class: 'text-xs text-indigo-600 hover:text-indigo-900', data: { turbo_frame: '_top' } %><% end %>
+            <% tr.cell do %><%= fitting.type.name %><% end %>
+            <% tr.cell do %><%= fitting.contracts_on_hand.count %><% end %>
+            <% tr.cell do %>
+              <% if fitting.owner.main_market %>
+                <%= fitting.market_on_hand(fitting.owner.main_market).quantity %>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <% c.footer do %>
+      <%= render(PaginatorComponent.new(pagy: paginator)) %>
+    <% end %>
+  <% end %>
+<% end %>

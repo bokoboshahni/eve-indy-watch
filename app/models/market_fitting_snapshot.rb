@@ -44,7 +44,7 @@ class MarketFittingSnapshot < ApplicationRecord
     @limiting_items ||=
       begin
         ids = items.each_with_object([]) { |(i, q), a| a << i if q.zero? }
-        Type.find(ids)
+        ids.empty? ? [] : Type.find(ids)
       end
   end
 end

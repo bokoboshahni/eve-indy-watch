@@ -14,4 +14,12 @@ module ApplicationHelper
   def site_name
     app_config.site_name
   end
+
+  def number_to_isk(value)
+    number_with_precision value, precision: 2, delimiter: ','
+  end
+
+  def number_to_m3(value)
+    number_with_delimiter value
+  end
 end

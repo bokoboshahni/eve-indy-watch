@@ -1,0 +1,5 @@
+<% content_for :breadcrumbs do %>
+  <%= render(BreadcrumbsComponent.new) do |c| %>
+    <%= c.item href: admin_root_path do %>Administration<% end %>
+  <% end %>
+<% end %>

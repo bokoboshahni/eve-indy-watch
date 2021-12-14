@@ -1,20 +1,8 @@
 <% content_for :breadcrumbs do %>
-<li class="flex">
-  <div class="flex items-center">
-    <svg class="flex-shrink-0 w-6 h-full text-gray-200" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
-    </svg>
-    <%= link_to 'Contracts', contracts_path, class: 'ml-4 text-sm font-medium text-gray-500 hover:text-gray-700' %>
-  </div>
-</li>
-<li class="flex">
-  <div class="flex items-center">
-    <svg class="flex-shrink-0 w-6 h-full text-gray-200" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
-    </svg>
-    <%= link_to @contract.title.strip.present? ? @contract.title.strip : '(No Title)', contract_path(@contract), class: 'ml-4 text-sm font-medium text-gray-500 hover:text-gray-700', 'aria-current': :page %>
-  </div>
-</li>
+  <%= render(BreadcrumbsComponent.new) do |c| %>
+    <%= c.item href: contracts_path do %>Contracts<% end %>
+    <%= c.item href: contract_path(@contract) do %><%= @contract.description %><% end %>
+  <% end %>
 <% end %>
 
 <div class="max-w-3xl mx-auto px-4 sm:px-6 md:px-8">
@@ -28,10 +16,10 @@
       <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
         <div class="sm:col-span-1">
           <dt class="text-sm font-medium text-gray-500">
-            Name
+            Description
           </dt>
           <dd class="mt-1 text-sm text-gray-900">
-            <%= @contract.title.strip.present? ? @contract.title.strip : '(No Title)' %>
+            <%= @contract.description %>
           </dd>
         </div>
         <div class="sm:col-span-1">

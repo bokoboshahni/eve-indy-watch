@@ -169,4 +169,19 @@ class Contract < ApplicationRecord
       end
     end
   end
+
+  def compact_types
+    items.select(:type_id, :quantity).each_with_object({}) do |item, h|
+      type_id = item.type_id
+      if h.key?(type_id)
+        h[type_id] += item.quantity
+      else
+        h[type_id] = item.quantity
+      end
+    end
+  end
+
+  def description
+    title.strip.present? ? title : '[No description]'
+  end
 end

@@ -1,0 +1,38 @@
+# frozen_string_literal: true
+
+class LinkButtonComponent < ViewComponent::Base
+  def initialize(href:, size: :md, color: 'indigo')
+    @href = href
+    @size = size
+    @color = color
+  end
+
+  def call
+    link_to(content, @href, class: class_names)
+  end
+
+  def class_names
+    "#{base_class_names} #{size_class_names}"
+  end
+
+  def base_class_names
+    "inline-flex items-center border border-transparent font-medium rounded shadow-sm text-white " \
+    "bg-#{@color}-600 hover:bg-#{@color}-700 " \
+    "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-#{@color}-500"
+  end
+
+  def size_class_names
+    case @size
+    when :xs
+      'px-2.5 py-1.5 text-xs'
+    when :sm
+      'px-3 py-2 text-sm'
+    when :md
+      'px-4 py-2 text-sm'
+    when :lg
+      'px-4 py-2 text-base'
+    when :xl
+      'px-6 py-3 text-base'
+    end
+  end
+end

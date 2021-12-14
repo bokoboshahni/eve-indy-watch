@@ -1,67 +1,33 @@
-<% content_for :breadcrumbs do %>
-<li class="flex">
-  <div class="flex items-center">
-    <svg class="flex-shrink-0 w-6 h-full text-gray-200" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
-    </svg>
-    <%= link_to 'Dashboard', dashboard_path, class: 'ml-4 text-sm font-medium text-gray-500 hover:text-gray-700', 'aria-current': :page %>
-  </div>
-</li>
-<% end %>
+<%= render PageHeadingComponent.new(title: 'Dashboard') %>
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-  <h1 class="text-2xl font-semibold text-gray-900">Priority Doctrine Seeding</h1>
-</div>
-<div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-  <div class="py-4">
-    <div class="flex flex-col">
-      <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-          <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-            <table class="min-w-full divide-y divide-gray-200">
-              <thead class="bg-gray-50">
-                <tr>
-                  <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Name
-                  </th>
-                  <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Ship
-                  </th>
-                  <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    On Contract
-                  </th>
-                  <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    On Market
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="bg-white divide-y divide-gray-200">
-                <% @fittings.each do |fitting| %>
-                  <tr>
-                    <td class="px-3 py-2 whitespace-nowrap">
-                      <%= link_to fitting.name, fitting_path(fitting), class: 'text-xs text-indigo-600 hover:text-indigo-900' %>
-                    </td>
-                    <td class="px-3 py-2 whitespace-nowrap">
-                      <div class="text-xs text-gray-900"><%= fitting.type.name %></div>
-                    </td>
-                    <td class="px-3 py-2 whitespace-nowrap">
-                      <div class="text-xs text-gray-900">
-                        <%= fitting.contracts_on_hand.count %>
-                      </div>
-                    </td>
-                    <td class="px-3 py-2 whitespace-nowrap">
-                      <% if fitting.owner.main_market %><div class="text-xs text-gray-900"><%= fitting.market_on_hand(fitting.owner.main_market).quantity %></div><% end %>
-                    </td>
-                  </tr>
-                <% end %>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-          <%= link_to 'View all', fittings_path, class: 'block text-sm font-semibold text-gray-900 text-center' %>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="max-w-7xl mt-4 mx-auto px-4 sm:px-6 md:px-8">
+  <%= render(CardComponent.new(title: 'Priority Doctrine Fittings', body_class_names: '')) do |c| %>
+    <% c.body do %>
+      <%= render(TableComponent.new) do |t| %>
+        <% t.header width: '1/3' do %>Name<% end %>
+        <% t.header width: '1/3' do %>Ship<% end %>
+        <% t.header width: '1/6' do %>On Contract<% end %>
+        <% t.header width: '1/6' do %><%= current_alliance.main_market_name %><% end %>
+        <% t.header width: '1/6' do %><%= current_alliance.appraisal_market_name %><% end %>
+
+        <% @fittings.each do |fitting| %>
+          <% t.row do |tr| %>
+            <% tr.cell do %><%= link_to fitting.name, fitting_path(fitting), class: 'text-xs text-indigo-600 hover:text-indigo-900' %><% end %>
+            <% tr.cell do %><%= fitting.type.name %><% end %>
+            <% tr.cell do %><%= fitting.contracts_on_hand.count %><% end %>
+            <% tr.cell do %>
+              <% if fitting.main_market %>
+                <%= fitting.market_on_hand(fitting.main_market) %>
+              <% end %>
+            <% end %>
+            <% tr.cell do %>
+              <% if fitting.appraisal_market %>
+                <%= fitting.market_on_hand(fitting.appraisal_market) %>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
 </div>

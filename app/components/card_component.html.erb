@@ -1,0 +1,21 @@
+<div class="bg-white overflow-hidden shadow rounded-lg divide-y divide-gray-200">
+  <% if header %>
+    <%= content_tag :div, header, class: header_class_names %>
+  <% elsif title %>
+    <div class="px-4 py-5 sm:px-6">
+      <div class="-ml-4 -mt-4 flex justify-between items-center flex-wrap sm:flex-nowrap">
+        <div class="ml-4 mt-4">
+          <h3 class="text-lg leading-6 font-medium text-gray-900">
+            <%= title %>
+          </h3>
+          <% if description %><p class="mt-1 text-sm text-gray-500"><%= description %></p><% end %>
+        </div>
+        <div class="ml-4 mt-4 flex-shrink-0">
+          <% actions.each do |action| %><%= action %><% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+  <%= content_tag :div, body, class: body_class_names if body %>
+  <%= content_tag :div, footer, class: footer_class_names if footer %>
+</div>

@@ -6,6 +6,12 @@ class FittingsController < ApplicationController
 
   def index
     @pagy, @fittings = pagy(Fitting.kept.where(owner_id: main_alliance_id).order(:name))
+
+    if turbo_frame_request?
+      render partial: 'fittings', locals: { fittings: @fittings, paginator: @pagy }
+    else
+      render :index
+    end
   end
 
   def show

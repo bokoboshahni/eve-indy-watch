@@ -1,0 +1,59 @@
+<%= turbo_frame_tag 'contracts' do %>
+  <%= render(CardComponent.new(body_class_names: '')) do |c| %>
+    <% c.header do %>
+      <%= render(PaginatorComponent.new(pagy: paginator)) %>
+    <% end %>
+
+    <% c.body do %>
+      <%= render(TableComponent.new) do |t| %>
+        <% t.header width: '3/12' do %>Description<% end %>
+        <% t.header width: '3/12' do %>Fittings<% end %>
+        <% t.header width: '2/12' do %>Location<% end %>
+        <% t.header width: '2/12' do %>Price<% end %>
+        <% t.header width: '2/12' do %>Volume<% end %>
+
+        <% contracts.each do |contract| %>
+          <% t.row do |tr| %>
+            <% tr.cell do %>
+              <%= link_to contract.description, contract_path(contract), class: 'text-indigo-600 hover:text-indigo-900', data: { turbo_frame: '_top' } %>
+            <% end %>
+            <% tr.cell do %>
+              <ul class="list-none">
+                <% matches = contract.contract_fittings.where('similarity > 0.5').order(similarity: :desc) %>
+                <% if matches.any? { |m| m.similarity == 1.0 } %>
+                  <% matches.select { |m| m.similarity == 1.0 }.each do |contract_fitting| %>
+                    <li>
+                      <%= link_to fitting_path(contract_fitting.fitting), class: "text-xs text-green-500 hover:text-green-500" do %>
+                        <%= contract_fitting.fitting.name %>
+                      <% end %>
+                    </li>
+                  <% end %>
+                <% else %>
+                  <% contract.contract_fittings.where('similarity > 0.5').order(similarity: :desc).each do |contract_fitting| %>
+                    <%
+                      fitting = contract_fitting.fitting
+                      similarity_color = contract_fitting.similarity == 1.0 ? 'green' : 'red'
+                    %>
+                    <li>
+                      <%= link_to fitting_path(fitting), class: "text-xs text-#{similarity_color}-500 hover:text-#{similarity_color}-500" do %>
+                        <%= fitting.name %>
+                        <% if contract_fitting.similarity < 1.0 %>(<%= number_to_percentage contract_fitting.similarity * 100, precision: 0 %>)<% end %>
+                      <% end %>
+                    </li>
+                  <% end %>
+                <% end %>
+              </ul>
+            <% end %>
+            <% tr.cell do %><%= contract.end_location.name %><% end %>
+            <% tr.cell do %><%= number_to_isk contract.price %><% end %>
+            <% tr.cell do %><%= number_to_m3 contract.volume %><% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <% c.footer do %>
+      <%= render(PaginatorComponent.new(pagy: paginator)) %>
+    <% end %>
+  <% end %>
+<% end %>

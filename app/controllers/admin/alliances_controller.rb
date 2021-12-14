@@ -28,7 +28,7 @@ module Admin
     end
 
     def alliance_params
-      params.require(:alliance).permit(:api_corporation_id)
+      params.require(:alliance).permit(:api_corporation_id, :zkb_sync_enabled, :main_market_id, :appraisal_market_id)
     end
   end
 end

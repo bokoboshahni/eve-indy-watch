@@ -7,6 +7,12 @@ class ContractsController < ApplicationController
     @pagy, @contracts = pagy(Contract.includes(:fittings).where(assignee_id: main_alliance_id, status: 'outstanding', type: 'item_exchange', esi_items_exception: nil).order(
                                :title, :issued_at
                              ))
+
+    if turbo_frame_request?
+      render partial: 'contracts', locals: { contracts: @contracts, paginator: @pagy }
+    else
+      render :index
+    end
   end
 
   def show

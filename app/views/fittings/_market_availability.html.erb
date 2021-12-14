@@ -1,0 +1,41 @@
+<%= turbo_frame_tag 'market_statistics' do %>
+  <%= render(CardComponent.new(title: 'Market Availability', body_class_names: '')) do |c| %>
+    <% c.description do %><p class="text-gray-900 text-xs font-italic">Data refreshed every 5 minutes.<% end %>
+    <% c.body do %>
+      <%= render(TableComponent.new) do |t| %>
+        <% t.header width: '3/12' do %>Market<% end %>
+        <% t.header width: '3/12' do %>On Hand<% end %>
+        <% t.header width: '3/12' do %>Price (Buy)<% end %>
+        <% t.header width: '2/12' do %>Price (Sell)<% end %>
+        <% t.header width: '2/12' do %>Price (Split)<% end %>
+        <% t.header width: '2/12' do %>Limiting Items<% end %>
+
+        <% if fitting.main_market %>
+          <% market = fitting.main_market %>
+          <% t.row do |tr| %>
+            <%= tr.cell do %><%= market.name %><% end %>
+            <%= tr.cell do %><%= fitting.market_on_hand(market) || 'N/A' %><% end %>
+            <%= tr.cell do %><%= fitting.market_price_buy(market) || 'N/A' %><% end %>
+            <%= tr.cell do %><%= fitting.market_price_sell(market) || 'N/A' %><% end %>
+            <%= tr.cell do %><%= fitting.market_price_split(market) || 'N/A' %><% end %>
+            <%= tr.cell do %>
+              <% if fitting.market_on_hand(market).limiting_items.any? %>
+                <ul>
+                  <% fitting.market_on_hand(market).limiting_items.each do |type| %>
+                    <li class="inline-block">
+                      <a title="<%= type.name %>">
+                        <%= image_tag "https://images.evetech.net/types/#{type.id}/icon", alt: type.name, class: 'h-4 h-4 rounded-md' %>
+                        <span class="sr-only"><%= type.name %></span>
+                      </a>
+                    </li>
+                  <% end %>
+                </ul>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
+
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

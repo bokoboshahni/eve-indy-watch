@@ -21,13 +21,17 @@ Rails.application.routes.draw do
     resources :regions, only: %i[index show edit update]
     resources :structures, only: %i[index show edit update]
     resources :users
+
+    root to: 'dashboards#show'
   end
 
   match 'auth/eve/callback' => 'sso#create', via: %i[get post]
   post 'auth/logout' => 'sso#destroy', as: :log_out
 
   resource :dashboard, only: :show
+
   resources :contracts, only: %i[index show]
+
   resources :fittings
 
   resource :settings, only: %i[show update destroy] do

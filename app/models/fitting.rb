@@ -78,6 +78,33 @@ class Fitting < ApplicationRecord
 
   scope :pinned, -> { where(pinned: true) }
 
+  delegate :appraisal_market, :main_market, to: :owner
+
+  def latest_market_snapshot(market)
+    @latest_market_snapshots ||= {}
+    @latest_market_snapshots[market.id] ||= market_fitting_snapshots.includes(:market).order(time: :desc).find_by(market_id: market.id)
+  end
+
+  def market_on_hand(market)
+    latest_market_snapshot(market).quantity
+  end
+
+  def market_price_buy(market)
+    latest_market_snapshot(market).price_buy
+  end
+
+  def market_price_sell(market)
+    latest_market_snapshot(market).price_sell
+  end
+
+  def market_price_split(market)
+    latest_market_snapshot(market).price_split
+  end
+
+  def market_limiting_items(market)
+    latest_market_snapshot(market).limiting_items
+  end
+
   def compact_items
     all_items = items.select(:type_id, :quantity).each_with_object({}) do |item, h|
       type_id = item.type_id
@@ -122,10 +149,6 @@ class Fitting < ApplicationRecord
 
   def default_period
     30.days.ago.beginning_of_day..Time.zone.now
-  end
-
-  def market_on_hand(market)
-    market_fitting_snapshots.order(time: :desc).find_by(market_id: market.id)
   end
 
   def match_contract(contract)
