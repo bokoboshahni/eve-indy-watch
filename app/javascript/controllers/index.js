@@ -12,6 +12,3 @@ application.register('tabs', Tabs)
 application.register('popover', Popover)
 application.register('toggle', Toggle)
 application.register('slideover', Slideover)
-
-import HelloController from "./hello_controller"
-application.register("hello", HelloController)
