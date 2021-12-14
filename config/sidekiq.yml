@@ -28,3 +28,9 @@
     cron: '*/15 * * * *'
     class: 'MarketFittingSnapshot::CreateForAllFittingsAndMarkets'
     description: "Create snapshots for all markets/fittings"
+
+  prune_market_order_snapshots:
+    cron: '0 1 * * *'
+    class: 'MarketOrderSnapshot::PruneWorker'
+    args: ['today']
+    description: "Prune snapshots before today"

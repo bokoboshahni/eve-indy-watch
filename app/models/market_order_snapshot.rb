@@ -53,4 +53,8 @@ class MarketOrderSnapshot < ApplicationRecord
   def self.import_from_esi!(location, expires, last_modified, data)
     MarketOrderSnapshot::ImportFromESI.call(location, expires, last_modified, data)
   end
+
+  def self.prune(before)
+    MarketOrderSnapshot::Prune.call(before)
+  end
 end
