@@ -28,8 +28,10 @@ class Market < ApplicationRecord
   has_many :alliances_as_main_market, class_name: 'Alliance', inverse_of: :main_market
   has_many :market_fitting_snapshots, inverse_of: :market, dependent: :destroy
   has_many :market_locations, inverse_of: :market, dependent: :destroy
+  has_many :market_type_stats, inverse_of: :market, dependent: :destroy
   has_many :stations, through: :market_locations, source: :location, source_type: 'Station'
   has_many :structures, through: :market_locations, source: :location, source_type: 'Structure'
+  has_many :types, through: :market_type_stats
 
   validates :name, presence: true
 

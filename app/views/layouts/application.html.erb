@@ -112,6 +112,11 @@
                       Administration
                     </p>
 
+                    <%= link_to admin_markets_path, class: "#{sidebar_item_text_class('markets')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
+                      <%= heroicon 'scale', variant: :outline, options: { class: "#{sidebar_item_icon_class('markets')} mr-3 flex-shrink-0 h-6 w-6" } %>
+                      Markets
+                    <% end %>
+
                     <%= link_to admin_users_path, class: "#{sidebar_item_text_class('users')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
                       <%= heroicon 'users', variant: :outline, options: { class: "#{sidebar_item_icon_class('users')} mr-3 flex-shrink-0 h-6 w-6" } %>
                       Users
@@ -179,6 +184,11 @@
                     <p class="px-3 pb-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">
                       Administration
                     </p>
+
+                    <%= link_to admin_markets_path, class: "#{sidebar_item_text_class('markets')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
+                      <%= heroicon 'scale', variant: :outline, options: { class: "#{sidebar_item_icon_class('markets')} mr-3 flex-shrink-0 h-6 w-6" } %>
+                      Markets
+                    <% end %>
 
                     <%= link_to admin_users_path, class: "#{sidebar_item_text_class('users')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
                       <%= heroicon 'users', variant: :outline, options: { class: "#{sidebar_item_icon_class('users')} mr-3 flex-shrink-0 h-6 w-6" } %>

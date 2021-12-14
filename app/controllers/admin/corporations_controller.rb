@@ -14,7 +14,7 @@ module Admin
 
     def update
       if @corporation.update(corporation_params)
-        flash[:success] = 'Alliance settings updated sucessfully.'
+        flash[:success] = 'Corporation settings updated sucessfully.'
         redirect_to admin_corporation_path(@corporation)
       else
         render :edit
