@@ -2166,27 +2166,6 @@ CREATE INDEX index_market_locations_on_market_id ON public.market_locations USIN
 
 
 --
--- Name: index_market_order_snapshots_on_location; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_market_order_snapshots_on_location ON public.market_order_snapshots USING btree (location_type, location_id);
-
-
---
--- Name: index_market_order_snapshots_on_solar_system_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_market_order_snapshots_on_solar_system_id ON public.market_order_snapshots USING btree (solar_system_id);
-
-
---
--- Name: index_market_order_snapshots_on_type_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_market_order_snapshots_on_type_id ON public.market_order_snapshots USING btree (type_id);
-
-
---
 -- Name: index_market_price_snapshots_on_type_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2817,6 +2796,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211213213206'),
 ('20211213221851'),
 ('20211213222209'),
-('20211213235254');
+('20211213235254'),
+('20211214023347');
 
 

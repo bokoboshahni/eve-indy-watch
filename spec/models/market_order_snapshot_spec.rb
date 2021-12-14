@@ -26,13 +26,6 @@
 #
 # ### Indexes
 #
-# * `index_market_order_snapshots_on_location`:
-#     * **`location_type`**
-#     * **`location_id`**
-# * `index_market_order_snapshots_on_solar_system_id`:
-#     * **`solar_system_id`**
-# * `index_market_order_snapshots_on_type_id`:
-#     * **`type_id`**
 # * `index_unique_market_order_snapshots` (_unique_):
 #     * **`location_id`**
 #     * **`order_id`**
