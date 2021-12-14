@@ -7,7 +7,7 @@ namespace :sde do # rubocop:disable Metrics/BlockLength
   end
 
   desc 'Loads the EVE static data export into the database'
-  task load: %w[sde:load:corporations sde:load:items sde:load:map]
+  task load: %w[sde:load:corporations sde:load:items sde:load:map sde:load:inventory_flags]
 
   namespace :load do # rubocop:disable Metrics/BlockLength
     task map: %i[regions constellations solar_systems stations]
