@@ -62,7 +62,7 @@
               <%= @fitting.owner.main_market.name %> Market
             </dt>
             <dd class="mt-1 text-3xl font-semibold text-gray-900">
-              <%= @fitting.market_on_hand(@fitting.owner.main_market).quantity %>
+              <%= @fitting.market_on_hand(@fitting.owner.main_market) %>
             </dd>
           </div>
         <% end %>
@@ -73,7 +73,7 @@
               <%= @fitting.owner.appraisal_market.name %> Market
             </dt>
             <dd class="mt-1 text-3xl font-semibold text-gray-900">
-              <%= @fitting.market_on_hand(@fitting.owner.appraisal_market).quantity %>
+              <%= @fitting.market_on_hand(@fitting.owner.appraisal_market) %>
             </dd>
           </div>
         <% end %>
