@@ -212,7 +212,7 @@
                       <%= link_to contract.title.strip.present? ? contract.title.strip : '(No title)', contract_path(contract), class: 'text-xs text-indigo-600 hover:text-indigo-900' %>
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap">
-                      <div class="text-xs text-gray-900"><%= number_with_precision contract_fitting.similarity, precision: 2, delimiter: ',' %>%</div>
+                      <div class="text-xs text-gray-900"><%= number_to_percentage contract_fitting.similarity * 100.0, precision: 0, delimiter: ',' %></div>
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap">
                       <div class="text-xs text-gray-900"><%= number_with_precision contract.price, precision: 2, delimiter: ',' %></div>
