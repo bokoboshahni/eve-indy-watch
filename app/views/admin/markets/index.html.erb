@@ -54,6 +54,11 @@
                         <%= local_time market.market_type_stats.maximum(:time), format: :db %>
                       </div>
                     </td>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                      <div class="text-xs font-medium text-gray-900">
+                        <%= MarketOrderSnapshot.where(location_id: market.market_locations.pluck(:location_id), esi_last_modified_at: market.market_type_stats.maximum(:time)).count %>
+                      </div>
+                    </td>
                   </tr>
                 <% end %>
               </tbody>
