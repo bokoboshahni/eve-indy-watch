@@ -14,15 +14,15 @@
           <% t.row do |tr| %>
             <% tr.cell do %><%= link_to fitting.name, fitting_path(fitting), class: 'text-xs text-indigo-600 hover:text-indigo-900' %><% end %>
             <% tr.cell do %><%= fitting.type.name %><% end %>
-            <% tr.cell do %><%= fitting.contracts_on_hand.count %><% end %>
+            <% tr.cell do %><%= fitting.contracts_on_hand&.count || 'N/A' %><% end %>
             <% tr.cell do %>
               <% if fitting.main_market %>
-                <%= fitting.market_on_hand(fitting.main_market) %>
+                <%= fitting.market_on_hand(fitting.main_market) || 'N/A' %>
               <% end %>
             <% end %>
             <% tr.cell do %>
               <% if fitting.appraisal_market %>
-                <%= fitting.market_on_hand(fitting.appraisal_market) %>
+                <%= fitting.market_on_hand(fitting.appraisal_market) || 'N/A' %>
               <% end %>
             <% end %>
           <% end %>

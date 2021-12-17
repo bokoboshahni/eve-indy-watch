@@ -86,23 +86,23 @@ class Fitting < ApplicationRecord
   end
 
   def market_on_hand(market)
-    latest_market_snapshot(market).quantity
+    latest_market_snapshot(market)&.quantity
   end
 
   def market_price_buy(market)
-    latest_market_snapshot(market).price_buy
+    latest_market_snapshot(market)&.price_buy
   end
 
   def market_price_sell(market)
-    latest_market_snapshot(market).price_sell
+    latest_market_snapshot(market)&.price_sell
   end
 
   def market_price_split(market)
-    latest_market_snapshot(market).price_split
+    latest_market_snapshot(market)&.price_split
   end
 
   def market_limiting_items(market)
-    latest_market_snapshot(market).limiting_items
+    latest_market_snapshot(market)&.limiting_items
   end
 
   def compact_items
