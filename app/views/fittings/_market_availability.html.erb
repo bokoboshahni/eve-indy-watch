@@ -12,7 +12,7 @@
 
         <% render 'market_availability_market', fitting: fitting, market: fitting.main_market, t: t if fitting.main_market %>
 
-        <% fitting.markets.where(trade_hub: true).order(:name).each do |market| %>
+        <% fitting.markets.distinct.where(trade_hub: true).order(:name).each do |market| %>
           <% render 'market_availability_market', fitting: fitting, market: market, t: t if market %>
         <% end %>
       <% end %>
