@@ -37,9 +37,9 @@
 # **`sell_volume_med`**            | `bigint`           |
 # **`sell_volume_min`**            | `bigint`           |
 # **`sell_volume_sum`**            | `bigint`           |
-# **`time`**                       | `datetime`         | `not null`
-# **`market_id`**                  | `bigint`           | `not null`
-# **`type_id`**                    | `bigint`           | `not null`
+# **`time`**                       | `datetime`         | `not null, primary key`
+# **`market_id`**                  | `bigint`           | `not null, primary key`
+# **`type_id`**                    | `bigint`           | `not null, primary key`
 #
 # ### Indexes
 #

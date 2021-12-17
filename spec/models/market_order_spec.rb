@@ -24,6 +24,8 @@
 #
 # ### Indexes
 #
+# * `index_market_orders_on_time`:
+#     * **`time`**
 # * `index_unique_market_orders` (_unique_):
 #     * **`location_id`**
 #     * **`order_id`**

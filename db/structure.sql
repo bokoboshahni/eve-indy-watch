@@ -2164,6 +2164,13 @@ CREATE INDEX index_market_order_batches_on_location ON public.market_order_batch
 
 
 --
+-- Name: index_market_orders_on_time; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_market_orders_on_time ON public.market_orders USING btree ("time");
+
+
+--
 -- Name: index_markets_on_owner; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2743,6 +2750,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211217142639'),
 ('20211217142859'),
 ('20211217150832'),
-('20211217182152');
+('20211217182152'),
+('20211217201626');
 
 

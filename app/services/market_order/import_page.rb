@@ -21,7 +21,7 @@ class MarketOrder < ApplicationRecord
       page.update!(order_count: orders.count)
 
       page.transaction do
-        results = MarketOrder.import!(orders, on_duplicate_key_ignore: true)
+        results = MarketOrder.import!(orders, on_duplicate_key_update: { conflict_target: %i[location_id order_id time], columns: :all })
         raise "Failed to load market orders from batch #{batch.id}/#{page.page}" if results.failed_instances.any?
 
         page.update!(imported_at: Time.zone.now, import_count: results.ids.count)
