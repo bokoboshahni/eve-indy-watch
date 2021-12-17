@@ -5,7 +5,7 @@
   <%= tr.cell do %><%= number_to_isk(fitting.market_price_sell(market)) || 'N/A' %><% end %>
   <%= tr.cell do %><%= number_to_isk(fitting.market_price_split(market)) || 'N/A' %><% end %>
   <%= tr.cell do %>
-    <% if fitting.market_limiting_items(market).any? %>
+    <% if fitting.market_limiting_items(market)&.any? %>
       <ul>
         <% fitting.market_limiting_items(market).each do |type| %>
           <li class="inline-block">
