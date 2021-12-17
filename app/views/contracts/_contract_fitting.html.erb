@@ -1,0 +1,34 @@
+<p class="font-medium text-center">Compared with <%= link_to @contract_fitting.fitting.name, fittings_path(@contract_fitting.fitting), class: 'underline' %> (<%= number_to_percentage @contract_fitting.similarity * 100, precision: 2 %> match)</p>
+
+<div class="mt-4 shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+  <table class="min-w-full divide-y divide-gray-200">
+    <thead class="bg-gray-50">
+      <tr>
+        <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          Item
+        </th>
+        <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          Fitting Quantity
+        </th>
+        <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          Contract Quantity
+        </th>
+      </tr>
+    </thead>
+    <tbody class="bg-white divide-y divide-gray-200">
+      <% @contract_fitting.items_comparison.each do |item| %>
+        <tr>
+          <td class="px-4 py-2 whitespace-nowrap text-xs font-medium text-gray-900">
+            <%= item[:type].name %>
+          </td>
+          <td class="px-4 py-2 whitespace-nowrap text-right text-xs font-medium">
+            <%= number_with_delimiter item[:fitting_quantity] %>
+          </td>
+          <td class="<%= item[:contract_quantity].to_i >= item[:fitting_quantity] ? 'bg-green-300' : 'bg-red-300' %> px-4 py-2 whitespace-nowrap text-right text-xs font-medium">
+            <%= number_with_delimiter item[:contract_quantity].to_i %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -38,4 +38,22 @@ class ContractFitting < ApplicationRecord
   belongs_to :fitting, inverse_of: :contract_fittings
 
   scope :fully_matching, -> { where('quantity > 0') }
+
+  def types
+    Type.find(items.keys).each_with_object({}) { |t, h| h[t.id] = t }
+  end
+
+  def items_comparison
+    contract_items = contract.compact_items
+    fitting_items = fitting.compact_items
+
+    items = fitting_items.transform_keys(&:to_i).each_with_object([]) do |(type_id, contract_qty), a|
+      a << {
+        type: types[type_id],
+        contract_quantity: contract_items[type_id],
+        fitting_quantity: fitting_items[type_id]
+      }
+    end
+    items.sort_by { |i| i[:type].name }
+  end
 end
