@@ -121,6 +121,19 @@ class Fitting < ApplicationRecord
     all_items
   end
 
+  def compact_items_with_types
+    grouped = items.includes(:type).order('types.name').each_with_object({}) do |item, h|
+      type_id = item.type_id
+
+      if h.key?(type_id)
+        h[type_id][:quantity] += item.quantity
+      else
+        h[type_id] = { type: item.type, quantity: item.quantity }
+      end
+    end
+    grouped.values
+  end
+
   def contracts_on_hand
     contracts.matching.outstanding
   end
@@ -168,5 +181,9 @@ class Fitting < ApplicationRecord
 
   def target_on_hand
     desired_count || 9
+  end
+
+  def reorder_point
+    safety_stock
   end
 end

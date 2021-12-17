@@ -97,4 +97,12 @@ class Type < ApplicationRecord
   def market_volume(market)
     market_stat(market, :sell_volume_sum)
   end
+
+  def icon_url
+    "https://images.evetech.net/types/#{id}/icon"
+  end
+
+  def render_url
+    "https://images.evetech.net/types/#{id}/render"
+  end
 end
