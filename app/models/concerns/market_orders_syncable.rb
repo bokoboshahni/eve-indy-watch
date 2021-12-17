@@ -2,7 +2,7 @@ module MarketOrdersSyncable
   extend ActiveSupport::Concern
 
   included do
-    has_many :market_order_batches, as: :location
+    has_many :market_order_batches, 'MarketOrder::Batch', as: :location
   end
 
   def esi_market_orders_expired?
