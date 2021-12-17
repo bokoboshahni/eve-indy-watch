@@ -48,6 +48,8 @@ class MarketOrder < ApplicationRecord
   end
 
   def self.purge!
+    raise 'Only allowed in development environment' unless Rails.env.development?
+
     MarketOrder.delete_all
     MarketOrder::Batch.destroy_all
     Statistics::MarketType.delete_all
