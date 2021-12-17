@@ -12,6 +12,10 @@
 
         <% render 'market_availability_market', fitting: fitting, market: fitting.main_market, t: t if fitting.main_market %>
         <% render 'market_availability_market', fitting: fitting, market: fitting.appraisal_market, t: t if fitting.appraisal_market %>
+
+        <% fitting.markets.where.not(id: [fitting.main_market.id, fitting.appraisal_market.id]).order(:name).each do |market| %>
+          <% render 'market_availability_market', fitting: fitting, market: fitting.market, t: t if fitting.market %>
+        <% end %>
       <% end %>
     <% end %>
   <% end %>

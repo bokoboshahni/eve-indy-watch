@@ -49,6 +49,7 @@ class Fitting < ApplicationRecord
   has_many :items, class_name: 'FittingItem', inverse_of: :fitting, dependent: :destroy
   has_many :killmail_fittings, inverse_of: :fitting, dependent: :destroy
   has_many :market_fitting_snapshots, inverse_of: :market, dependent: :destroy
+  has_many :markets, through: :market_fitting_snapshots
 
   has_many :contracts, through: :contract_fittings do
     def matching
