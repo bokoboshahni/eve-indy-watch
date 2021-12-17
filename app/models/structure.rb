@@ -54,6 +54,7 @@ class Structure < ApplicationRecord
   belongs_to :type, inverse_of: :structures, optional: true
 
   has_many :market_locations, as: :location, dependent: :destroy
+  has_many :market_orders, as: :location
   has_many :markets, through: :market_locations
 
   def available_esi_authorizations
