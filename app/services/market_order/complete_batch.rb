@@ -34,6 +34,7 @@ class MarketOrder < ApplicationRecord
         end
 
         args = fitting_markets.each_with_object([]) do |market, a|
+          time = Statistics::MarketType.where(market_id: market.id).maximum(:time)
           scope = market.owner ? market.owner.fittings.kept : Fitting.kept
           scope.find_each do |fitting|
             a << [market.id, fitting.id, time]
