@@ -51,4 +51,11 @@ class ApplicationController < ActionController::Base
   def current_alliance
     current_user.alliance
   end
+
+  def append_info_to_payload(payload)
+    super
+
+    payload[:host] = request.host
+    paylod[:x_forwarded_for] = request.env['HTTP_X_FORWARDED_FOR']
+  end
 end
