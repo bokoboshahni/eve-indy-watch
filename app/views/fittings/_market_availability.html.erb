@@ -11,9 +11,8 @@
         <% t.header width: '2/12' do %>Limiting Items<% end %>
 
         <% render 'market_availability_market', fitting: fitting, market: fitting.main_market, t: t if fitting.main_market %>
-        <% render 'market_availability_market', fitting: fitting, market: fitting.appraisal_market, t: t if fitting.appraisal_market %>
 
-        <% fitting.markets.distinct.where.not(id: [fitting.main_market.id, fitting.appraisal_market.id]).order(:name).each do |market| %>
+        <% fitting.markets.where(trade_hub: true).order(:name).each do |market| %>
           <% render 'market_availability_market', fitting: fitting, market: market, t: t if market %>
         <% end %>
       <% end %>
