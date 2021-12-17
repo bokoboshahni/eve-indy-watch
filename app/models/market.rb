@@ -38,7 +38,7 @@ class Market < ApplicationRecord
   validates :name, presence: true
 
   def latest_orders
-    MarketOrder.where(location_id: market_locations.pluck(:location_id), time: orders_updated_at)
+    orders.where(time: orders.maximum(:time))
   end
 
   def type_ids_for_sale
