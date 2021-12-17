@@ -175,10 +175,6 @@ class Fitting < ApplicationRecord
     MatchMarket.call(self, market)
   end
 
-  def create_market_snapshot!(market, time)
-    MarketFittingSnapshot::CreateFromFittingAndMarket.call(self, market, time)
-  end
-
   def target_on_hand
     desired_count || 9
   end
