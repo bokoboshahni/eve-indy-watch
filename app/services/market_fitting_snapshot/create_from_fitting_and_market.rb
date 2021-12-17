@@ -16,6 +16,11 @@ class MarketFittingSnapshot < ApplicationRecord
         return
       end
 
+      unless market.type_stats_updated_at
+        debug("No type statistics available for #{market.log_name}")
+        return
+      end
+
       match = fitting.match_market(market)
       snapshot = match.merge(fitting_id: fitting_id, market_id: market_id, time: time)
 
