@@ -15,6 +15,7 @@
 # **`esi_market_orders_last_modified_at`**  | `datetime`         |
 # **`market_order_sync_enabled`**           | `boolean`          |
 # **`name`**                                | `text`             | `not null`
+# **`orders_updated_at`**                   | `datetime`         |
 # **`created_at`**                          | `datetime`         | `not null`
 # **`updated_at`**                          | `datetime`         | `not null`
 # **`esi_authorization_id`**                | `bigint`           |
@@ -45,13 +46,14 @@
 #     * **`type_id => types.id`**
 #
 class Structure < ApplicationRecord
+  include MarketOrdersSyncable
+
   belongs_to :esi_authorization, inverse_of: :structures, optional: true
   belongs_to :owner, class_name: 'Corporation', inverse_of: :structures, optional: true
   belongs_to :solar_system, inverse_of: :structures, optional: true
   belongs_to :type, inverse_of: :structures, optional: true
 
   has_many :market_locations, as: :location, dependent: :destroy
-  has_many :market_order_snapshots, as: :location, dependent: :destroy
   has_many :markets, through: :market_locations
 
   def available_esi_authorizations
@@ -62,19 +64,5 @@ class Structure < ApplicationRecord
 
   def esi_authorized?
     esi_authorization.present?
-  end
-
-  def esi_market_orders_expired?
-    return true unless esi_market_orders_expires_at
-
-    esi_market_orders_expires_at <= Time.zone.now
-  end
-
-  def fetch_market_orders
-    MarketOrderSnapshot::FetchFromESI.call(self)
-  end
-
-  def fetch_market_orders_async
-    MarketOrderSnapshot::FetchFromESIWorker.perform_async(self.class.name, id)
   end
 end

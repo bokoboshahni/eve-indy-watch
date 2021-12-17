@@ -32,4 +32,6 @@ class MarketLocation < ApplicationRecord
 
   belongs_to :location, polymorphic: true
   belongs_to :market, inverse_of: :market_locations
+
+  has_many :orders, class_name: 'MarketOrder', inverse_of: :market_locations, primary_key: :location_id, foreign_key: :location_id
 end

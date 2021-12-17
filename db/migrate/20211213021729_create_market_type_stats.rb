@@ -1,4 +1,4 @@
-class CreateMarketTypeStats < ActiveRecord::Migration[6.1]
+class CreateMarketType < ActiveRecord::Migration[6.1]
   def up
     enable_extension 'timescaledb'
 

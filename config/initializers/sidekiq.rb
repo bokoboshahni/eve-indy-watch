@@ -3,6 +3,8 @@
 require 'sidekiq/throttled'
 Sidekiq::Throttled.setup!
 
+SidekiqUniqueJobs.config.lock_info = true
+
 Sidekiq.configure_server do |config|
   config.redis = { url: ENV.fetch('SIDEKIQ_REDIS_URL', 'redis://localhost:6379/1'), driver: :hiredis }
 

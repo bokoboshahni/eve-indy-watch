@@ -10,61 +10,22 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: timescaledb; Type: EXTENSION; Schema: -; Owner: -
+-- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
 --
 
-CREATE EXTENSION IF NOT EXISTS timescaledb WITH SCHEMA public;
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
 
 
 --
--- Name: EXTENSION timescaledb; Type: COMMENT; Schema: -; Owner: -
+-- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
 --
 
-COMMENT ON EXTENSION timescaledb IS 'Enables scalable inserts and complex queries for time-series data';
+COMMENT ON EXTENSION pg_stat_statements IS 'track planning and execution statistics of all SQL statements executed';
 
 
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
-
---
--- Name: market_type_stats; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.market_type_stats (
-    market_id bigint NOT NULL,
-    type_id bigint NOT NULL,
-    buy_order_count bigint,
-    buy_price_avg numeric,
-    buy_price_max numeric,
-    buy_price_min numeric,
-    buy_price_sum numeric,
-    buy_volume_avg numeric,
-    buy_volume_max bigint,
-    buy_volume_min bigint,
-    buy_volume_sum bigint,
-    sell_order_count bigint,
-    sell_price_avg numeric,
-    sell_price_max numeric,
-    sell_price_min numeric,
-    sell_price_sum numeric,
-    sell_volume_avg numeric,
-    sell_volume_max bigint,
-    sell_volume_min bigint,
-    sell_volume_sum bigint,
-    "time" timestamp without time zone NOT NULL
-);
-
-
---
--- Name: _hyper_1_1_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
---
-
-CREATE TABLE _timescaledb_internal._hyper_1_1_chunk (
-    CONSTRAINT constraint_1 CHECK ((("time" >= '2021-12-09 00:00:00'::timestamp without time zone) AND ("time" < '2021-12-16 00:00:00'::timestamp without time zone)))
-)
-INHERITS (public.market_type_stats);
-
 
 --
 -- Name: alliances; Type: TABLE; Schema: public; Owner: -
@@ -866,17 +827,68 @@ CREATE TABLE public.market_locations (
 
 
 --
--- Name: market_order_snapshots; Type: TABLE; Schema: public; Owner: -
+-- Name: market_order_batch_pages; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.market_order_snapshots (
+CREATE TABLE public.market_order_batch_pages (
+    batch_id bigint NOT NULL,
+    imported_at timestamp without time zone,
+    orders text NOT NULL,
+    page integer NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    started_at timestamp without time zone,
+    order_count integer,
+    import_count integer
+);
+
+
+--
+-- Name: market_order_batches; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.market_order_batches (
+    id bigint NOT NULL,
+    location_type character varying NOT NULL,
+    location_id bigint NOT NULL,
+    completed_at timestamp without time zone,
+    fetched_at timestamp without time zone,
+    "time" timestamp without time zone NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: market_order_batches_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.market_order_batches_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: market_order_batches_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.market_order_batches_id_seq OWNED BY public.market_order_batches.id;
+
+
+--
+-- Name: market_orders; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.market_orders (
     location_type character varying NOT NULL,
     location_id bigint NOT NULL,
     solar_system_id bigint NOT NULL,
     type_id bigint NOT NULL,
     duration integer NOT NULL,
-    esi_expires_at timestamp without time zone NOT NULL,
-    esi_last_modified_at timestamp without time zone NOT NULL,
+    "time" timestamp without time zone NOT NULL,
     issued_at timestamp without time zone NOT NULL,
     kind text NOT NULL,
     min_volume integer NOT NULL,
@@ -884,7 +896,8 @@ CREATE TABLE public.market_order_snapshots (
     price numeric NOT NULL,
     range text NOT NULL,
     volume_remain integer NOT NULL,
-    volume_total integer NOT NULL
+    volume_total integer NOT NULL,
+    batch_page_id bigint[]
 );
 
 
@@ -931,7 +944,9 @@ CREATE TABLE public.markets (
     owner_id bigint,
     name text NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    type_stats_updated_at timestamp without time zone,
+    orders_updated_at timestamp without time zone
 );
 
 
@@ -1001,7 +1016,8 @@ CREATE TABLE public.regions (
     esi_authorization_id bigint,
     esi_market_orders_expires_at timestamp without time zone,
     esi_market_orders_last_modified_at timestamp without time zone,
-    market_order_sync_enabled boolean
+    market_order_sync_enabled boolean,
+    orders_updated_at timestamp without time zone
 );
 
 
@@ -1150,7 +1166,8 @@ CREATE TABLE public.structures (
     esi_authorization_id bigint,
     esi_market_orders_expires_at timestamp without time zone,
     esi_market_orders_last_modified_at timestamp without time zone,
-    market_order_sync_enabled boolean
+    market_order_sync_enabled boolean,
+    orders_updated_at timestamp without time zone
 );
 
 
@@ -1413,6 +1430,13 @@ ALTER TABLE ONLY public.market_groups ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
+-- Name: market_order_batches id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.market_order_batches ALTER COLUMN id SET DEFAULT nextval('public.market_order_batches_id_seq'::regclass);
+
+
+--
 -- Name: market_price_snapshots id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1650,6 +1674,14 @@ ALTER TABLE ONLY public.market_groups
 
 
 --
+-- Name: market_order_batches market_order_batches_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.market_order_batches
+    ADD CONSTRAINT market_order_batches_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: market_price_snapshots market_price_snapshots_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1743,27 +1775,6 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.versions
     ADD CONSTRAINT versions_pkey PRIMARY KEY (id);
-
-
---
--- Name: _hyper_1_1_chunk_index_market_type_stats_on_type_id; Type: INDEX; Schema: _timescaledb_internal; Owner: -
---
-
-CREATE INDEX _hyper_1_1_chunk_index_market_type_stats_on_type_id ON _timescaledb_internal._hyper_1_1_chunk USING btree (type_id);
-
-
---
--- Name: _hyper_1_1_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
---
-
-CREATE UNIQUE INDEX _hyper_1_1_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_1_1_chunk USING btree (market_id, type_id, "time");
-
-
---
--- Name: _hyper_1_1_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
---
-
-CREATE INDEX _hyper_1_1_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_1_1_chunk USING btree ("time" DESC);
 
 
 --
@@ -2138,17 +2149,17 @@ CREATE INDEX index_market_locations_on_market_id ON public.market_locations USIN
 
 
 --
--- Name: index_market_order_snapshots_on_location_id_and_time; Type: INDEX; Schema: public; Owner: -
+-- Name: index_market_order_batch_pages_on_batch_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_market_order_snapshots_on_location_id_and_time ON public.market_order_snapshots USING btree (location_id, esi_last_modified_at);
+CREATE INDEX index_market_order_batch_pages_on_batch_id ON public.market_order_batch_pages USING btree (batch_id);
 
 
 --
--- Name: index_market_type_stats_on_type_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_market_order_batches_on_location; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_market_type_stats_on_type_id ON public.market_type_stats USING btree (type_id);
+CREATE INDEX index_market_order_batches_on_location ON public.market_order_batches USING btree (location_type, location_id);
 
 
 --
@@ -2264,10 +2275,17 @@ CREATE UNIQUE INDEX index_unique_market_fitting_snapshots ON public.market_fitti
 
 
 --
--- Name: index_unique_market_order_snapshots; Type: INDEX; Schema: public; Owner: -
+-- Name: index_unique_market_order_batches; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_unique_market_order_snapshots ON public.market_order_snapshots USING btree (esi_last_modified_at, order_id);
+CREATE UNIQUE INDEX index_unique_market_order_batches ON public.market_order_batches USING btree (location_id, location_type, "time");
+
+
+--
+-- Name: index_unique_market_orders; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_unique_market_orders ON public.market_orders USING btree (location_id, order_id, "time");
 
 
 --
@@ -2275,13 +2293,6 @@ CREATE UNIQUE INDEX index_unique_market_order_snapshots ON public.market_order_s
 --
 
 CREATE UNIQUE INDEX index_unique_market_price_snapshots ON public.market_price_snapshots USING btree (type_id, esi_last_modified_at);
-
-
---
--- Name: index_unique_market_type_stats; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_unique_market_type_stats ON public.market_type_stats USING btree (market_id, type_id, "time");
 
 
 --
@@ -2303,36 +2314,6 @@ CREATE INDEX index_users_on_character_id ON public.users USING btree (character_
 --
 
 CREATE INDEX index_versions_on_item ON public.versions USING btree (item_type, item_id);
-
-
---
--- Name: market_type_stats_time_idx; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX market_type_stats_time_idx ON public.market_type_stats USING btree ("time" DESC);
-
-
---
--- Name: market_type_stats ts_insert_blocker; Type: TRIGGER; Schema: public; Owner: -
---
-
-CREATE TRIGGER ts_insert_blocker BEFORE INSERT ON public.market_type_stats FOR EACH ROW EXECUTE FUNCTION _timescaledb_internal.insert_blocker();
-
-
---
--- Name: _hyper_1_1_chunk 1_1_fk_rails_8ae0916104; Type: FK CONSTRAINT; Schema: _timescaledb_internal; Owner: -
---
-
-ALTER TABLE ONLY _timescaledb_internal._hyper_1_1_chunk
-    ADD CONSTRAINT "1_1_fk_rails_8ae0916104" FOREIGN KEY (market_id) REFERENCES public.markets(id);
-
-
---
--- Name: _hyper_1_1_chunk 1_2_fk_rails_ab10873f6b; Type: FK CONSTRAINT; Schema: _timescaledb_internal; Owner: -
---
-
-ALTER TABLE ONLY _timescaledb_internal._hyper_1_1_chunk
-    ADD CONSTRAINT "1_2_fk_rails_ab10873f6b" FOREIGN KEY (type_id) REFERENCES public.types(id);
 
 
 --
@@ -2520,14 +2501,6 @@ ALTER TABLE ONLY public.types
 
 
 --
--- Name: market_type_stats fk_rails_8ae0916104; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.market_type_stats
-    ADD CONSTRAINT fk_rails_8ae0916104 FOREIGN KEY (market_id) REFERENCES public.markets(id);
-
-
---
 -- Name: fittings fk_rails_8f60a789b9; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2573,14 +2546,6 @@ ALTER TABLE ONLY public.groups
 
 ALTER TABLE ONLY public.solar_systems
     ADD CONSTRAINT fk_rails_a8b206bb7b FOREIGN KEY (constellation_id) REFERENCES public.constellations(id);
-
-
---
--- Name: market_type_stats fk_rails_ab10873f6b; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.market_type_stats
-    ADD CONSTRAINT fk_rails_ab10873f6b FOREIGN KEY (type_id) REFERENCES public.types(id);
 
 
 --
@@ -2766,6 +2731,16 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211214024615'),
 ('20211214031054'),
 ('20211214032124'),
-('20211215204337');
+('20211215204337'),
+('20211216022937'),
+('20211216152719'),
+('20211216171551'),
+('20211216171904'),
+('20211216182257'),
+('20211216230017'),
+('20211217005226'),
+('20211217142639'),
+('20211217142859'),
+('20211217150832');
 
 

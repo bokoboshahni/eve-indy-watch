@@ -55,4 +55,8 @@ if Rails.env.development?
   end
 
   Annotate.load_tasks
+
+  %w[db:migrate:primary db:migrate:statistics db:rollback:primary db:rollback:statistics].each do |task|
+    Rake::Task[task].enhance { Rake::Task['annotate_models'].invoke }
+  end
 end

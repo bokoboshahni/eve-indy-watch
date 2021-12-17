@@ -11,6 +11,11 @@ class MarketFittingSnapshot < ApplicationRecord
     end
 
     def call
+      if fitting.market_fitting_snapshots.exists?(market_id: market_id, time: time)
+        debug("Market fitting snapshot already exists for #{market.log_name} at #{time}")
+        return
+      end
+
       match = fitting.match_market(market)
       snapshot = match.merge(fitting_id: fitting_id, market_id: market_id, time: time)
 

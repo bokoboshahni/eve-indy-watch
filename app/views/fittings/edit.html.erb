@@ -1,0 +1,6 @@
+<% content_for :breadcrumbs do %>
+  <%= render(BreadcrumbsComponent.new) do |c| %>
+    <%= c.item href: fittings_path do %>Fittings<% end %>
+    <%= c.item href: fitting_path(@fitting) do %><%= @fitting.name %><% end %>
+  <% end %>
+<% end %>

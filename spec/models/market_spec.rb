@@ -6,14 +6,16 @@
 #
 # ### Columns
 #
-# Name              | Type               | Attributes
-# ----------------- | ------------------ | ---------------------------
-# **`id`**          | `bigint`           | `not null, primary key`
-# **`name`**        | `text`             | `not null`
-# **`owner_type`**  | `string`           |
-# **`created_at`**  | `datetime`         | `not null`
-# **`updated_at`**  | `datetime`         | `not null`
-# **`owner_id`**    | `bigint`           |
+# Name                         | Type               | Attributes
+# ---------------------------- | ------------------ | ---------------------------
+# **`id`**                     | `bigint`           | `not null, primary key`
+# **`name`**                   | `text`             | `not null`
+# **`orders_updated_at`**      | `datetime`         |
+# **`owner_type`**             | `string`           |
+# **`type_stats_updated_at`**  | `datetime`         |
+# **`created_at`**             | `datetime`         | `not null`
+# **`updated_at`**             | `datetime`         | `not null`
+# **`owner_id`**               | `bigint`           |
 #
 # ### Indexes
 #

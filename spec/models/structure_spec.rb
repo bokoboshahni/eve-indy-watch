@@ -15,6 +15,7 @@
 # **`esi_market_orders_last_modified_at`**  | `datetime`         |
 # **`market_order_sync_enabled`**           | `boolean`          |
 # **`name`**                                | `text`             | `not null`
+# **`orders_updated_at`**                   | `datetime`         |
 # **`created_at`**                          | `datetime`         | `not null`
 # **`updated_at`**                          | `datetime`         | `not null`
 # **`esi_authorization_id`**                | `bigint`           |

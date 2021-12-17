@@ -6,14 +6,16 @@
 #
 # ### Columns
 #
-# Name              | Type               | Attributes
-# ----------------- | ------------------ | ---------------------------
-# **`id`**          | `bigint`           | `not null, primary key`
-# **`name`**        | `text`             | `not null`
-# **`owner_type`**  | `string`           |
-# **`created_at`**  | `datetime`         | `not null`
-# **`updated_at`**  | `datetime`         | `not null`
-# **`owner_id`**    | `bigint`           |
+# Name                         | Type               | Attributes
+# ---------------------------- | ------------------ | ---------------------------
+# **`id`**                     | `bigint`           | `not null, primary key`
+# **`name`**                   | `text`             | `not null`
+# **`orders_updated_at`**      | `datetime`         |
+# **`owner_type`**             | `string`           |
+# **`type_stats_updated_at`**  | `datetime`         |
+# **`created_at`**             | `datetime`         | `not null`
+# **`updated_at`**             | `datetime`         | `not null`
+# **`owner_id`**               | `bigint`           |
 #
 # ### Indexes
 #
@@ -29,22 +31,28 @@ class Market < ApplicationRecord
   has_many :market_fitting_snapshots, inverse_of: :market, dependent: :destroy
   has_many :market_locations, inverse_of: :market, dependent: :destroy
   has_many :market_type_stats, inverse_of: :market, dependent: :destroy
+  has_many :orders, class_name: 'MarketOrder', through: :market_locations
   has_many :stations, through: :market_locations, source: :location, source_type: 'Station'
   has_many :structures, through: :market_locations, source: :location, source_type: 'Structure'
-  has_many :types, through: :market_type_stats
+  has_many :types, through: :orders
 
   validates :name, presence: true
 
+  def latest_orders
+    time = orders.maximum(:time)
+    orders.where(time: time)
+  end
+
   def type_ids_for_sale
-    time = MarketTypeStat.where(market_id: id).maximum(:time)
-    MarketTypeStat.distinct(:type_id).where(market_id: id).pluck(:type_id)
+    time = Statistics::MarketType.where(market_id: id).maximum(:time)
+    Statistics::MarketType.distinct(:type_id).where(market_id: id).pluck(:type_id)
   end
 
-  def create_stats!(time)
-    MarketOrderSnapshot::CreateStats.call(self, time)
+  def aggregate_type_stats!(time)
+    AggregateTypeStats.call(self, time)
   end
 
-  def create_stats_async(time)
-    MarketOrderSnapshot::CreateStatsWorker.perform_async(id, time)
+  def aggregate_type_stats_async(time)
+    AggregateTypeStatsWorker.perform_async(id, time)
   end
 end

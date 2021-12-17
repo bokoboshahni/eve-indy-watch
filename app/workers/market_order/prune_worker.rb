@@ -1,4 +1,4 @@
-class MarketOrderSnapshot < ApplicationRecord
+class MarketOrder < ApplicationRecord
   class PruneWorker < ApplicationWorker
     sidekiq_options lock: :until_and_while_executing, on_conflict: :log
 
@@ -13,7 +13,7 @@ class MarketOrderSnapshot < ApplicationRecord
           DateTime.parse(before)
         end
 
-      MarketOrderSnapshot.prune!(time)
+      MarketOrder.prune!(time)
     end
   end
 end
