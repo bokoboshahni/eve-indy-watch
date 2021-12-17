@@ -115,13 +115,13 @@
                     </tr>
                   </thead>
                   <tbody class="bg-white divide-y divide-gray-200">
-                    <% @contract.items.includes(:type).each do |item| %>
+                    <% @contract.compact_items_with_types.each do |item| %>
                       <tr>
                         <td class="px-4 py-2 whitespace-nowrap text-xs font-medium text-gray-900">
-                          <%= item.name %>
+                          <%= item[:type].name %>
                         </td>
                         <td class="px-4 py-2 whitespace-nowrap text-right text-xs font-medium">
-                          <%= number_with_delimiter item.quantity %>
+                          <%= number_with_delimiter item[:quantity] %>
                         </td>
                       </tr>
                     <% end %>

@@ -170,15 +170,17 @@ class Contract < ApplicationRecord
     end
   end
 
-  def compact_types
-    items.select(:type_id, :quantity).each_with_object({}) do |item, h|
+  def compact_items_with_types
+    grouped = items.includes(:type).order('types.name').each_with_object({}) do |item, h|
       type_id = item.type_id
+
       if h.key?(type_id)
-        h[type_id] += item.quantity
+        h[type_id][:quantity] += item.quantity
       else
-        h[type_id] = item.quantity
+        h[type_id] = { type: item.type, quantity: item.quantity }
       end
     end
+    grouped.values
   end
 
   def description
