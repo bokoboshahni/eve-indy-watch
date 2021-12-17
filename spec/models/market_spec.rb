@@ -12,6 +12,7 @@
 # **`name`**                   | `text`             | `not null`
 # **`orders_updated_at`**      | `datetime`         |
 # **`owner_type`**             | `string`           |
+# **`trade_hub`**              | `boolean`          |
 # **`type_stats_updated_at`**  | `datetime`         |
 # **`created_at`**             | `datetime`         | `not null`
 # **`updated_at`**             | `datetime`         | `not null`

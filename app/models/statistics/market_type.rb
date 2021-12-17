@@ -48,6 +48,8 @@
 #
 module Statistics
   class MarketType < ApplicationRecord
+    self.primary_keys = :market_id, :type_id, :time
+
     validates :market_id, presence: true
     validates :type_id, presence: true
     validates :time, presence: true

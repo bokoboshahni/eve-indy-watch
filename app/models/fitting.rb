@@ -81,29 +81,33 @@ class Fitting < ApplicationRecord
 
   delegate :appraisal_market, :main_market, to: :owner
 
-  def latest_market_snapshot(market)
-    @latest_market_snapshots ||= {}
-    @latest_market_snapshots[market.id] ||= market_fitting_snapshots.includes(:market).order(time: :desc).find_by(market_id: market.id)
+  def latest_market_stats(market)
+    @latest_market_stats ||= {}
+    @latest_market_stats[market.id] ||=
+      begin
+        time = Statistics::MarketFitting.where(fitting_id: id, market_id: market.id).maximum(:time)
+        Statistics::MarketFitting.find_by(fitting_id: id, market_id: market.id, time: time)
+      end
   end
 
   def market_on_hand(market)
-    latest_market_snapshot(market)&.quantity
+    latest_market_stats(market)&.quantity
   end
 
   def market_price_buy(market)
-    latest_market_snapshot(market)&.price_buy
+    latest_market_stats(market)&.price_buy
   end
 
   def market_price_sell(market)
-    latest_market_snapshot(market)&.price_sell
+    latest_market_stats(market)&.price_sell
   end
 
   def market_price_split(market)
-    latest_market_snapshot(market)&.price_split
+    latest_market_stats(market)&.price_split
   end
 
   def market_limiting_items(market)
-    latest_market_snapshot(market)&.limiting_items
+    latest_market_stats(market)&.limiting_items
   end
 
   def compact_items

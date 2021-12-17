@@ -29,11 +29,6 @@
     class: 'MarketPriceSnapshot::SyncFromESIWorker'
     description: "Create a snapshot of market prices"
 
-  create_market_fitting_snapshots:
-    cron: '*/5 * * * *'
-    class: 'MarketFittingSnapshot::CreateForAllFittingsAndMarkets'
-    description: "Create snapshots for all markets/fittings"
-
   prune_market_orders:
     cron: '15 * * * *'
     class: 'MarketOrder::PruneWorker'
