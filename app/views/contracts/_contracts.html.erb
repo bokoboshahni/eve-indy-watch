@@ -23,7 +23,7 @@
                 <% if matches.any? { |m| m.similarity == 1.0 } %>
                   <% matches.select { |m| m.similarity == 1.0 }.each do |contract_fitting| %>
                     <li>
-                      <%= link_to fitting_path(contract_fitting.fitting), class: "text-xs text-green-500 hover:text-green-500" do %>
+                      <%= link_to fitting_path(contract_fitting.fitting), class: "text-xs text-green-500 hover:text-green-500", data: { turbo_frame: '_top' } do %>
                         <%= contract_fitting.fitting.name %>
                       <% end %>
                     </li>
@@ -35,7 +35,7 @@
                       similarity_color = contract_fitting.similarity == 1.0 ? 'green' : 'red'
                     %>
                     <li>
-                      <%= link_to fitting_path(fitting), class: "text-xs text-#{similarity_color}-500 hover:text-#{similarity_color}-500" do %>
+                      <%= link_to fitting_path(fitting), class: "text-xs text-#{similarity_color}-500 hover:text-#{similarity_color}-500", data: { turbo_frame: '_top' } do %>
                         <%= fitting.name %>
                         <% if contract_fitting.similarity < 1.0 %>(<%= number_to_percentage contract_fitting.similarity * 100, precision: 0 %>)<% end %>
                       <% end %>
