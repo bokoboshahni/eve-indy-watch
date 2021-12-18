@@ -37,6 +37,7 @@ class User < ApplicationRecord
 
   has_many :esi_authorizations, inverse_of: :user, dependent: :destroy
 
+  delegate :id, :name, to: :alliance, prefix: true, allow_nil: true
   delegate :id, :name, to: :corporation, prefix: true
   delegate :portrait_url_256, :name, to: :character # rubocop:disable Naming/VariableNumber
   delegate :icon_url_256, :name, to: :corporation, prefix: true # rubocop:disable Naming/VariableNumber
