@@ -4,8 +4,9 @@
   <%= render(CardComponent.new(title: 'Priority Doctrine Fittings', body_class_names: '')) do |c| %>
     <% c.body do %>
       <%= render(TableComponent.new) do |t| %>
-        <% t.header width: '1/2' do %>Fitting<% end %>
+        <% t.header width: '1/3' do %>Fitting<% end %>
         <% t.header width: '1/6' do %>Contracts<% end %>
+        <% t.header width: '1/6' do %>Quality Contracts<% end %>
         <% t.header width: '1/6' do %><%= current_alliance.main_market_name %> Market<% end %>
         <% t.header width: '1/6' do %><%= current_alliance.appraisal_market_name %> Market<% end %>
 
@@ -27,7 +28,10 @@
               </div>
             <% end %>
             <% tr.cell do %>
-              <%= fitting.contracts_on_hand&.count || 'N/A' %>
+              <%= fitting.contracts_all_on_hand&.count || 'N/A' %>
+            <% end %>
+            <% tr.cell do %>
+              <%= fitting.contract_quality ? number_to_percentage(fitting.contract_quality, precision: 0) : 'N/A' %>
             <% end %>
             <% tr.cell do %>
               <% if fitting.main_market %>

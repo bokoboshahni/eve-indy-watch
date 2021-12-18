@@ -61,6 +61,10 @@ class Fitting < ApplicationRecord
     def problematic
       where('contract_fittings.similarity >= 0.75 AND contract_fittings.similarity < 1.0')
     end
+
+    def all_matching
+      where('contract_fittings.similarity >= 0.75')
+    end
   end
 
   has_many :killmails, through: :killmail_fittings do
@@ -138,6 +142,10 @@ class Fitting < ApplicationRecord
     contracts.matching.outstanding
   end
 
+  def contracts_all_on_hand
+    contracts.all_matching.outstanding
+  end
+
   def contracts_received(period = nil)
     contracts.where(issued_at: build_period(period))
   end
@@ -151,6 +159,8 @@ class Fitting < ApplicationRecord
   end
 
   def contract_quality
+    return unless contracts.outstanding.count.positive?
+
     (contracts.matching.outstanding.count.to_d / contracts.outstanding.count.to_d) * 100.0
   end
 
