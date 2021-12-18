@@ -32,4 +32,6 @@ class KillmailFitting < ApplicationRecord
 
   belongs_to :fitting, inverse_of: :killmail_fittings
   belongs_to :killmail, inverse_of: :killmail_fittings
+
+  scope :matching, -> { joins(:fitting).where('similarity >= COALESCE(fittings.killmail_match_threshold, 1.0)') }
 end

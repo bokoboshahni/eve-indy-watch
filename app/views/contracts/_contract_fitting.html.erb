@@ -1,4 +1,4 @@
-<p class="font-medium text-center">Compared with <%= link_to @contract_fitting.fitting.name, fittings_path(@contract_fitting.fitting), class: 'underline' %> (<%= number_to_percentage @contract_fitting.similarity * 100, precision: 2 %> match)</p>
+<p class="font-medium text-center">Compared with <%= link_to @contract_fitting.fitting.name, fitting_path(@contract_fitting.fitting), class: 'underline', data: { turbo_frame: '_top' } %> (<%= number_to_percentage @contract_fitting.similarity * 100, precision: 2 %> match)</p>
 
 <div class="mt-4 shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
   <table class="min-w-full divide-y divide-gray-200">

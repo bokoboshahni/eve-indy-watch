@@ -48,9 +48,10 @@ class Fitting < ApplicationRecord
   belongs_to :owner, polymorphic: true
   belongs_to :type, inverse_of: :fittings
 
-  has_many :contract_fittings, inverse_of: :fitting, dependent: :destroy
   has_many :items, class_name: 'FittingItem', inverse_of: :fitting, dependent: :destroy
   has_many :killmail_fittings, inverse_of: :fitting, dependent: :destroy
+
+  has_many :contract_fittings, inverse_of: :fitting, dependent: :destroy
 
   has_many :contracts, through: :contract_fittings do
     def matching
@@ -71,10 +72,6 @@ class Fitting < ApplicationRecord
   end
 
   has_many :killmails, through: :killmail_fittings do
-    def matching
-      where('killmail_fittings.similarity = 1.0')
-    end
-
     def likely_matching
       where('killmail_fittings.similarity >= 0.95 AND killmail_fittings.similarity < 1.0')
     end
@@ -149,7 +146,7 @@ class Fitting < ApplicationRecord
   end
 
   def contracts_on_hand
-    contracts.matching.outstanding
+    contracts.where(id: contract_fittings.matching.outstanding.pluck(:contract_id))
   end
 
   def contracts_all_on_hand
@@ -157,11 +154,14 @@ class Fitting < ApplicationRecord
   end
 
   def contracts_received(period = nil)
-    contracts.where(issued_at: build_period(period))
+    contracts.where(id: contract_fittings.matching.pluck(:contract_id), issued_at: build_period(period))
   end
 
   def contracts_sold(period = nil)
-    contracts.finished.where(completed_at: build_period(period))
+    contracts.finished.where(
+      id: contract_fittings.matching.pluck(:contract_id),
+      completed_at: build_period(period)
+    )
   end
 
   def contracts_sell_through_rate(period = nil)
@@ -200,7 +200,7 @@ class Fitting < ApplicationRecord
   end
 
   def total_available
-    (contracts_all_on_hand&.count).to_i + market_on_hand(main_market).to_i
+    (contracts_on_hand&.count).to_i + market_on_hand(main_market).to_i
   end
 
   def reorder_point

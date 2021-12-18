@@ -40,13 +40,13 @@
               <% end %>
             <% end %>
             <% tr.cell do %>
-              <%= fitting.contracts_all_on_hand&.count || 'N/A' %>
+              <%= fitting.contracts_on_hand&.count || 'N/A' %>
             <% end %>
             <% tr.cell do %>
               <%= fitting.contract_quality ? number_to_percentage(fitting.contract_quality, precision: 0) : 'N/A' %>
             <% end %>
             <% tr.cell do %>
-              <%= number_to_isk fitting.contracts_all_on_hand ? fitting.contracts_all_on_hand.average(:price) : 'N/A' %>
+              <%= number_to_isk fitting.contracts_on_hand ? fitting.contracts_on_hand.minimum(:price) : 'N/A' %>
             <% end %>
             <% tr.cell do %>
               <% if fitting.main_market %>

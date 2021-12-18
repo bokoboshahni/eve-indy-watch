@@ -97,7 +97,7 @@
             Lost (7 days)
           </dt>
           <dd class="mt-1 text-3xl font-semibold text-gray-900">
-            <%= @fitting.killmails.where('similarity >= ?', @fitting.killmail_match_threshold || 1.0).where(time: 7.days.ago.beginning_of_day..Time.zone.now).count %>
+            <%= @fitting.killmail_fittings.matching.joins(:killmail).where('killmails.time >= ?', 7.days.ago.beginning_of_day).count %>
           </dd>
         </div>
       </dl>
@@ -150,8 +150,8 @@
           <div class="px-4 py-5">
             <%=
               line_chart [
-                { name: 'Issued', data: ContractEvent.where(event: 'issued', contract_id: @fitting.contract_fittings.where('similarity = 1.0').pluck(:contract_id)).where('time >= ?', 1.month.ago.beginning_of_day).group_by_day(:time).count },
-                { name: 'Sold', data: ContractEvent.where(event: 'finished', contract_id: @fitting.contract_fittings.where('similarity = 1.0').pluck(:contract_id)).where('time >= ?', 1.month.ago.beginning_of_day).group_by_day(:time).count }
+                { name: 'Issued', data: ContractEvent.where(event: 'issued', contract_id: @fitting.contract_fittings.where('similarity >= ?', @fitting.contract_match_threshold || 1.0).pluck(:contract_id)).where('time >= ?', 1.month.ago.beginning_of_day).group_by_day(:time).count },
+                { name: 'Sold', data: ContractEvent.where(event: 'finished', contract_id: @fitting.contract_fittings.where('similarity >= ?', @fitting.contract_match_threshold || 1.0).pluck(:contract_id)).where('time >= ?', 1.month.ago.beginning_of_day).group_by_day(:time).count }
               ]
             %>
           </div>
@@ -161,6 +161,9 @@
                 <tr>
                   <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Title
+                  </th>
+                  <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Similarity
                   </th>
                   <th scope="col" class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Price (ISK)
@@ -174,10 +177,14 @@
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
-                <% @fitting.contracts_on_hand.each do |contract| %>
+                <% @fitting.contract_fittings.includes(:contract).matching.outstanding.order(similarity: :desc).each do |contract_fitting| %>
+                  <% contract = contract_fitting.contract %>
                   <tr>
                     <td class="px-3 py-2 whitespace-nowrap">
                       <%= link_to contract.title.strip.present? ? contract.title.strip : '(No title)', contract_path(contract), class: 'text-xs text-indigo-600 hover:text-indigo-900' %>
+                    </td>
+                    <td class="px-3 py-2 whitespace-nowrap">
+                      <div class="text-xs text-gray-900"><%= number_to_percentage contract_fitting.similarity * 100.0, precision: 0, delimiter: ',' %></div>
                     </td>
                     <td class="px-3 py-2 whitespace-nowrap">
                       <div class="text-xs text-gray-900"><%= number_with_precision contract.price, precision: 2, delimiter: ',' %></div>

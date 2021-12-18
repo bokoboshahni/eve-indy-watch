@@ -39,6 +39,10 @@ class ContractFitting < ApplicationRecord
 
   scope :fully_matching, -> { where('quantity > 0') }
 
+  scope :matching, -> { joins(:fitting).where('similarity >= COALESCE(fittings.contract_match_threshold, 1.0)') }
+
+  scope :outstanding, -> { joins(:contract).where("contracts.status = 'outstanding'") }
+
   def types
     Type.find(items.keys).each_with_object({}) { |t, h| h[t.id] = t }
   end
