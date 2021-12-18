@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
   include Pagy::Backend
   include Pundit
 
+  before_action :check_rack_mini_profiler
+
   protected
 
   def authenticate_user!
@@ -57,5 +59,11 @@ class ApplicationController < ActionController::Base
 
     payload[:host] = request.host
     payload[:x_forwarded_for] = request.env['HTTP_X_FORWARDED_FOR']
+  end
+
+  def check_rack_mini_profiler
+    if params[:rmp] && current_user&.admin?
+      Rack::MiniProfiler.authorize_request
+    end
   end
 end
