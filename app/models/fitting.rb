@@ -199,6 +199,10 @@ class Fitting < ApplicationRecord
     MatchMarket.call(self, market)
   end
 
+  def total_available
+    (contracts_all_on_hand&.count).to_i + market_on_hand(main_market).to_i
+  end
+
   def reorder_point
     safety_stock
   end
