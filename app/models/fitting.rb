@@ -150,6 +150,10 @@ class Fitting < ApplicationRecord
     (contracts_sold(build_period(period)).count.to_d / contracts_received(build_period(period)).count.to_d) * 100.0
   end
 
+  def contract_quality
+    (contracts.matching.outstanding.count.to_d / contracts.outstanding.count.to_d) * 100.0
+  end
+
   def build_period(period = nil)
     return default_period unless period
 
