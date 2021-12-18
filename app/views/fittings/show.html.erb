@@ -26,7 +26,23 @@
 
 <div class="mt-8 max-w-3xl mx-auto grid grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
   <div class="space-y-6 lg:col-start-1 lg:col-span-2">
-    <!-- Description list-->
+    <% if @fitting.total_available.zero? %>
+      <section>
+        <div class="bg-red-50 border-l-4 border-red-400 p-4">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <%= heroicon 'exclamation', variant: :solid, options: { class: 'h-5 w-5 text-red-400' } %>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm text-red-700">
+                Out of stock on contract and <%= @fitting.main_market.name %> market.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    <% end %>
+
     <section>
       <dl class="grid grid-cols-1 gap-5 sm:grid-cols-3">
         <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
