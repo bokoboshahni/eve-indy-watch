@@ -38,6 +38,10 @@
 #     * **`main_market_id => markets.id`**
 #
 class Alliance < ApplicationRecord
+  include PgSearch::Model
+
+  multisearchable against: %i[name]
+
   belongs_to :api_corporation, class_name: 'Corporation', inverse_of: :api_alliance, optional: true
   belongs_to :main_market, class_name: 'Market', inverse_of: :alliances_as_main_market, optional: true
   belongs_to :appraisal_market, class_name: 'Market', inverse_of: :alliances_as_appraisal_market, optional: true

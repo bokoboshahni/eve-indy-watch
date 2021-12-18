@@ -23,7 +23,13 @@
 #     * **`ancestry`**
 #
 class MarketGroup < ApplicationRecord
+  include PgSearch::Model
+
+  multisearchable against: %i[description name parent_name]
+
   has_ancestry cache_depth: true
 
   has_many :types, inverse_of: :market_group, dependent: :restrict_with_exception
+
+  delegate :name, to: :parent, prefix: true, allow_nil: true
 end

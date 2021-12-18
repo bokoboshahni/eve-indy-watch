@@ -35,7 +35,14 @@
 #     * **`type_id => types.id`**
 #
 class Station < ApplicationRecord
+  include PgSearch::Model
+
+  multisearchable against: %i[name owner_name type_name]
+
   belongs_to :owner, class_name: 'Corporation', inverse_of: :stations
   belongs_to :solar_system, inverse_of: :stations
   belongs_to :type, inverse_of: :stations
+
+  delegate :name, to: :owner, prefix: true
+  delegate :name, to: :type, prefix: true
 end

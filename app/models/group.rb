@@ -26,7 +26,13 @@
 #     * **`category_id => categories.id`**
 #
 class Group < ApplicationRecord
+  include PgSearch::Model
+
+  multisearchable against: %i[name category_name]
+
   belongs_to :category, inverse_of: :groups
 
   has_many :types, inverse_of: :group, dependent: :restrict_with_exception
+
+  delegate :name, to: :category, prefix: true
 end

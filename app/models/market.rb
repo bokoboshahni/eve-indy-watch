@@ -25,6 +25,10 @@
 #     * **`owner_id`**
 #
 class Market < ApplicationRecord
+  include PgSearch::Model
+
+  multisearchable against: %i[name owner_name]
+
   belongs_to :owner, polymorphic: true, optional: true
 
   has_many :alliances_as_appraisal_market, class_name: 'Alliance', inverse_of: :appraisal_market
@@ -34,6 +38,8 @@ class Market < ApplicationRecord
   has_many :stations, through: :market_locations, source: :location, source_type: 'Station'
   has_many :structures, through: :market_locations, source: :location, source_type: 'Structure'
   has_many :types, through: :orders
+
+  delegate :name, to: :owner, prefix: true, allow_nil: true
 
   validates :name, presence: true
 

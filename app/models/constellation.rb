@@ -25,6 +25,10 @@
 #     * **`region_id => regions.id`**
 #
 class Constellation < ApplicationRecord
+  include PgSearch::Model
+
+  multisearchable against: %i[name]
+
   belongs_to :region, inverse_of: :constellations
 
   has_many :market_orders, through: :solar_systems

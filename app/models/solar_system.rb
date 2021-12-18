@@ -26,7 +26,13 @@
 #     * **`constellation_id => constellations.id`**
 #
 class SolarSystem < ApplicationRecord
+  include PgSearch::Model
+
+  multisearchable against: %i[name constellation_name region_name]
+
   belongs_to :constellation, inverse_of: :solar_systems
+
+  has_one :region, through: :constellation
 
   has_one :latest_industry_index_snapshot, lambda {
                                              order esi_last_modified_at: :desc
@@ -39,4 +45,6 @@ class SolarSystem < ApplicationRecord
 
   delegate :copying, :duplicating, :invention, :manufacturing, :none, :reaction, :researching_material_efficiency,
            :researching_technology, :researching_time_efficiency, :reverse_engineering, to: :latest_industry_index_snapshot, prefix: :industry_index
+  delegate :name, to: :constellation, prefix: true
+  delegate :name, to: :region, prefix: true
 end

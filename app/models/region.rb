@@ -30,6 +30,9 @@
 #
 class Region < ApplicationRecord
   include MarketOrdersSyncable
+  include PgSearch::Model
+
+  multisearchable against: %i[name]
 
   belongs_to :esi_authorization, inverse_of: :regions, optional: true
 

@@ -41,6 +41,10 @@
 #     * **`esi_authorization_id => esi_authorizations.id`**
 #
 class Corporation < ApplicationRecord
+  include PgSearch::Model
+
+  multisearchable against: %i[name ticker alliance_name]
+
   belongs_to :alliance, inverse_of: :corporations, optional: true
   belongs_to :esi_authorization, inverse_of: :corporation, optional: true
 
@@ -60,6 +64,8 @@ class Corporation < ApplicationRecord
   has_many :structures, inverse_of: :owner, dependent: :restrict_with_exception
 
   scope :player, -> { where(npc: nil) }
+
+  delegate :name, to: :alliance, prefix: true, allow_nil: true
 
   def available_esi_authorizations
     ESIAuthorization.includes(:character).joins(character: :corporation).where('corporation_id = ?',

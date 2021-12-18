@@ -79,4 +79,17 @@ namespace :fittings do
   end
 end
 
+namespace :search do
+  desc 'Rebuild all multisearch indices'
+  task :rebuild_all do
+    on roles(:db) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, 'search:rebuild_all'
+        end
+      end
+    end
+  end
+end
+
 before 'deploy:migrate', 'deploy:db_schema_load' if ENV['DB_SCHEMA_LOAD']

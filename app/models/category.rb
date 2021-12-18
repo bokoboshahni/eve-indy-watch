@@ -15,6 +15,10 @@
 # **`updated_at`**  | `datetime`         | `not null`
 #
 class Category < ApplicationRecord
+  include PgSearch::Model
+
+  multisearchable against: %i[name]
+
   CHARGE_CATEGORY_NAME = 'Charge'
   DRONE_CATEGORY_NAME = 'Drone'
   FIGHTER_CATEGORY_NAME = 'Fighter'

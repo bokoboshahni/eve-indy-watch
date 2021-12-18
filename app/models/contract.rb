@@ -68,7 +68,12 @@
 #     * **`type`**
 #
 class Contract < ApplicationRecord
+  include PgSearch::Model
+
   self.inheritance_column = nil
+
+  multisearchable against: %i[title acceptor_name assignee_name end_location_name issuer_name issuer_corporation_name start_location_name fitting_names item_names],
+                  if: -> (record) { record.outstanding? && record.item_exchange? }
 
   has_paper_trail ignore: %i[updated_at esi_expires_at esi_last_modified_at esi_items_exception esi_items_expires_at esi_items_last_modified_at],
                   versions: { class_name: 'ContractVersion' }
@@ -80,13 +85,17 @@ class Contract < ApplicationRecord
   belongs_to :issuer_corporation, class_name: 'Corporation', inverse_of: :issued_contracts
   belongs_to :start_location, polymorphic: true, optional: true
 
-  has_one :end_solar_system, through: :end_location, source: :solar_system
-  has_one :start_solar_system, through: :start_location, source: :solar_system
-
   has_many :contract_fittings, inverse_of: :contract, dependent: :destroy
   has_many :events, class_name: 'ContractEvent', inverse_of: :contract, dependent: :destroy
   has_many :fittings, through: :contract_fittings
   has_many :items, class_name: 'ContractItem', inverse_of: :contract, dependent: :destroy
+
+  delegate :name, to: :acceptor, prefix: true, allow_nil: true
+  delegate :name, to: :assignee, prefix: true
+  delegate :name, to: :end_location, prefix: true, allow_nil: true
+  delegate :name, to: :issuer, prefix: true
+  delegate :name, to: :issuer_corporation, prefix: true
+  delegate :name, to: :start_location, prefix: true, allow_nil: true
 
   scope :courier, -> { where(type: 'courier') }
   scope :expired, -> { outstanding.where('expired_at <= ?', Time.zone.now) }
@@ -113,6 +122,18 @@ class Contract < ApplicationRecord
 
   def done?
     deleted? || finished?
+  end
+
+  def outstanding?
+    status == 'outstanding'
+  end
+
+  def fitting_names
+    fittings.pluck(:name)
+  end
+
+  def item_names
+    items.includes(:type).pluck('types.name')
   end
 
   def sync_items_from_esi!

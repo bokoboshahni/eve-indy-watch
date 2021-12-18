@@ -35,6 +35,10 @@
 #     * **`market_group_id => market_groups.id`**
 #
 class Type < ApplicationRecord
+  include PgSearch::Model
+
+  multisearchable against: %i[description name market_group_name category_name group_name]
+
   belongs_to :group, inverse_of: :types
   belongs_to :market_group, inverse_of: :types, optional: true
 
@@ -55,6 +59,8 @@ class Type < ApplicationRecord
   has_many :structures, inverse_of: :type, dependent: :restrict_with_exception
 
   delegate :name, to: :category, prefix: true
+  delegate :name, to: :group, prefix: true
+  delegate :name, to: :market_group, prefix: true, allow_nil: true
 
   delegate :adjusted_price, :average_price, to: :latest_market_price_snapshot
 

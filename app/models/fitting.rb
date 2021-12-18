@@ -39,6 +39,9 @@
 #
 class Fitting < ApplicationRecord
   include Discard::Model
+  include PgSearch::Model
+
+  multisearchable against: %i[name owner_name type_name item_names], if: :kept?
 
   has_paper_trail
 
@@ -82,6 +85,13 @@ class Fitting < ApplicationRecord
   scope :pinned, -> { where(pinned: true) }
 
   delegate :appraisal_market, :main_market, :markets, to: :owner
+
+  delegate :name, to: :owner, prefix: true
+  delegate :name, to: :type, prefix: true
+
+  def item_names
+    items.includes(:type).pluck('types.name')
+  end
 
   def latest_market_stats(market)
     @latest_market_stats ||= {}

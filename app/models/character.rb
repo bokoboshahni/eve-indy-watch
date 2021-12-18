@@ -36,6 +36,10 @@
 #     * **`corporation_id => corporations.id`**
 #
 class Character < ApplicationRecord
+  include PgSearch::Model
+
+  multisearchable against: %i[name]
+
   belongs_to :alliance, inverse_of: :characters, optional: true
   belongs_to :corporation, inverse_of: :characters
 

@@ -26,10 +26,15 @@
 #     * **`character_id => characters.id`**
 #
 class User < ApplicationRecord
+  include PgSearch::Model
+
+  multisearchable against: %i[name corporation_name alliance_name]
+
   ROLES = %w[
     alliance.fittings.admin
     corporation.fitting.admin
   ].freeze
+
   belongs_to :character, inverse_of: :user
 
   has_one :alliance, through: :character
