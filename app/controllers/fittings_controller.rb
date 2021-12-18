@@ -26,7 +26,14 @@ class FittingsController < ApplicationController
 
   def edit; end
 
-  def update; end
+  def update
+    if @fitting.update(fitting_params)
+      flash[:success] = 'Fitting settings updated sucessfully.'
+      redirect_to fitting_path(@fitting)
+    else
+      render :edit
+    end
+  end
 
   def destroy; end
 
@@ -34,5 +41,9 @@ class FittingsController < ApplicationController
 
   def find_fitting
     @fitting = authorize(Fitting.find(params[:id]))
+  end
+
+  def fitting_params
+    params.require(:fitting).permit(:name, :contract_match_threshold, :killmail_match_threshold, :pinned, :safety_stock)
   end
 end

@@ -189,10 +189,6 @@ class Fitting < ApplicationRecord
     MatchMarket.call(self, market)
   end
 
-  def target_on_hand
-    desired_count || 9
-  end
-
   def reorder_point
     safety_stock
   end

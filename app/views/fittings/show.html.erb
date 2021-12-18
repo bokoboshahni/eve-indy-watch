@@ -72,7 +72,7 @@
             Quality Contracts
           </dt>
           <dd class="mt-1 text-3xl font-semibold text-gray-900">
-            <%= number_to_percentage @fitting.contract_quality, precision: 2 %>
+            <%= @fitting.contract_quality ? number_to_percentage(@fitting.contract_quality, precision: 2) : 'N/A' %>
           </dd>
         </div>
 
