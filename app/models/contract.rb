@@ -207,4 +207,12 @@ class Contract < ApplicationRecord
   def description
     title.strip.present? ? title : '[No description]'
   end
+
+  def icon_url
+    if fittings.pluck(:type_id).uniq.count == 1
+      fittings.first.type.icon_url
+    else
+      "https://images.evetech.net/types/3468/icon"
+    end
+  end
 end

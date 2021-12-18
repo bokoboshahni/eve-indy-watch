@@ -51,6 +51,20 @@ CREATE EXTENSION IF NOT EXISTS pg_trgm WITH SCHEMA public;
 COMMENT ON EXTENSION pg_trgm IS 'text similarity measurement and index searching based on trigrams';
 
 
+--
+-- Name: unaccent; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION unaccent; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
+
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -2790,6 +2804,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211217182152'),
 ('20211217201626'),
 ('20211217223216'),
-('20211218175043');
+('20211218175043'),
+('20211218193359');
 
 

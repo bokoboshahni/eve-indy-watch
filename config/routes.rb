@@ -34,6 +34,8 @@ Rails.application.routes.draw do
 
   resources :fittings
 
+  resource :search, only: :show
+
   resource :settings, only: %i[show update destroy] do
     resources :esi_authorizations, path: 'authorizations', only: %i[create index destroy]
   end
