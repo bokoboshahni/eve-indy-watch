@@ -2,6 +2,14 @@
   <%= render(CardComponent.new(title: 'Market Availability', body_class_names: '')) do |c| %>
     <% c.description do %><p class="text-gray-900 text-xs font-italic">Data refreshed every 5 minutes.<% end %>
     <% c.body do %>
+      <div class="px-4 py-5">
+        <%=
+          line_chart [
+            { name: "Avg. #{fitting.main_market.name} Sell", data: Statistics::MarketFitting.where(fitting_id: fitting.id, market_id: fitting.main_market.id).where('time > ?', 7.days.ago.beginning_of_day).group_by_hour(:time).average(:price_sell) },
+            { name: "Avg. #{fitting.appraisal_market.name} Sell", data: Statistics::MarketFitting.where(fitting_id: fitting.id, market_id: fitting.appraisal_market.id).where('time > ?', 7.days.ago.beginning_of_day).group_by_hour(:time).average(:price_sell) }
+          ], suffix: ' ISK', thousands: ','
+        %>
+      </div>
       <%= render(TableComponent.new) do |t| %>
         <% t.header width: '3/12' do %>Market<% end %>
         <% t.header width: '3/12' do %>On Hand<% end %>

@@ -133,6 +133,14 @@
           <div class="px-4 py-5 sm:px-6">
             <h2 id="contracts-title" class="text-lg font-medium text-gray-900">Outstanding Contracts</h2>
           </div>
+          <div class="px-4 py-5">
+            <%=
+              line_chart [
+                { name: 'Issued', data: ContractEvent.where(event: 'issued', contract_id: @fitting.contract_fittings.where('similarity = 1.0').pluck(:contract_id)).where('time >= ?', 1.month.ago.beginning_of_day).group_by_day(:time).count },
+                { name: 'Sold', data: ContractEvent.where(event: 'finished', contract_id: @fitting.contract_fittings.where('similarity = 1.0').pluck(:contract_id)).where('time >= ?', 1.month.ago.beginning_of_day).group_by_day(:time).count }
+              ]
+            %>
+          </div>
           <div>
             <table class="table-auto min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-50">
@@ -182,6 +190,14 @@
         <div class="divide-y divide-gray-200">
           <div class="px-4 py-5 sm:px-6">
             <h2 id="problematic-contracts-title" class="text-lg font-medium text-gray-900">Problematic Contracts</h2>
+          </div>
+          <div class="px-4 py-5">
+            <%=
+              line_chart [
+                { name: 'Issued', data: ContractEvent.where(event: 'issued', contract_id: @fitting.contract_fittings.where('similarity < 1.0').pluck(:contract_id)).where('time >= ?', 1.month.ago.beginning_of_day).group_by_day(:time).count },
+                { name: 'Sold', data: ContractEvent.where(event: 'finished', contract_id: @fitting.contract_fittings.where('similarity < 1.0').pluck(:contract_id)).where('time >= ?', 1.month.ago.beginning_of_day).group_by_day(:time).count }
+              ]
+            %>
           </div>
           <div>
             <table class="table-auto min-w-full divide-y divide-gray-200">
