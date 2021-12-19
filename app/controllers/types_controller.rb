@@ -2,7 +2,7 @@ class TypesController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @pagy, @types = pagy(Type.marketable.order(:name))
+    @pagy, @types = pagy(Type.marketable.includes(:market_group, group: :category).order(:name))
 
     if turbo_frame_request?
       render partial: 'types', locals: { types: @types, paginator: @pagy }
