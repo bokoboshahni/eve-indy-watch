@@ -37,6 +37,8 @@ class ContractFitting < ApplicationRecord
   belongs_to :contract, inverse_of: :contract_fittings
   belongs_to :fitting, inverse_of: :contract_fittings
 
+  delegate :items, to: :fitting, prefix: true
+
   scope :fully_matching, -> { where('quantity > 0') }
 
   scope :matching, -> { joins(:fitting).where('similarity >= COALESCE(fittings.contract_match_threshold, 1.0)') }
@@ -48,16 +50,27 @@ class ContractFitting < ApplicationRecord
   end
 
   def items_comparison
-    contract_items = contract.compact_items
-    fitting_items = fitting.compact_items
+    @items_comparison ||=
+      begin
+        contract_items = contract.compact_items
+        fitting_items = fitting.compact_items
 
-    items = fitting_items.transform_keys(&:to_i).each_with_object([]) do |(type_id, contract_qty), a|
-      a << {
-        type: types[type_id],
-        contract_quantity: contract_items[type_id],
-        fitting_quantity: fitting_items[type_id]
-      }
-    end
-    items.sort_by { |i| i[:type].name }
+        items = fitting_items.transform_keys(&:to_i).each_with_object([]) do |(type_id, contract_qty), a|
+          a << {
+            type: types[type_id],
+            contract_quantity: contract_items[type_id],
+            fitting_quantity: fitting_items[type_id]
+          }
+        end
+        items.sort_by { |i| i[:type].name }
+      end
+  end
+
+  def extra_item_ids
+    contract.type_ids - fitting.type_ids
+  end
+
+  def extra_items
+    contract.items.includes(:type).where(type_id: extra_item_ids).order('types.name ASC')
   end
 end

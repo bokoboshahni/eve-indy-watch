@@ -86,6 +86,10 @@ class Fitting < ApplicationRecord
   delegate :name, to: :owner, prefix: true
   delegate :name, to: :type, prefix: true
 
+  def type_ids
+    [items.pluck(:type_id), type_id].flatten
+  end
+
   def item_names
     items.includes(:type).pluck('types.name')
   end

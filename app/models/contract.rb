@@ -180,6 +180,10 @@ class Contract < ApplicationRecord
     Contract::DiscoverFittingsWorker.perform_async(id)
   end
 
+  def type_ids
+    items.pluck(:type_id)
+  end
+
   def compact_items
     items.select(:type_id, :quantity).each_with_object({}) do |item, h|
       type_id = item.type_id

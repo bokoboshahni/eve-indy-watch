@@ -29,6 +29,18 @@
           </td>
         </tr>
       <% end %>
+      <% @contract_fitting.extra_items.each do |item| %>
+        <tr>
+          <td class="px-4 py-2 whitespace-nowrap text-xs font-medium text-gray-900">
+            <%= item.name %>
+          </td>
+          <td class="px-4 py-2 whitespace-nowrap text-right text-xs font-medium">
+          </td>
+          <td class="bg-gray-400 px-4 py-2 whitespace-nowrap text-right text-xs font-medium">
+            <%= number_with_delimiter item.quantity %>
+          </td>
+        </tr>
+      <% end %>
     </tbody>
   </table>
 </div>
