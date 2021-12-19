@@ -92,7 +92,7 @@ class Type < ApplicationRecord
           market_id: market.id,
           type_id: id,
           time: Statistics::MarketType.where(market_id: market.id, type_id: id).maximum(:time)
-        )&.send(stat) || 0.0
+        )&.send(stat) || 0
       end
   end
 

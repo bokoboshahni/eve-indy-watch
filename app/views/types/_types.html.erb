@@ -6,11 +6,10 @@
 
     <% c.body do %>
       <%= render(TableComponent.new) do |t| %>
-        <% t.header width: '1/3' do %>Type<% end %>
+        <% t.header do %>Type<% end %>
         <% t.header width: '1/6' do %>Category<% end %>
         <% t.header width: '1/6' do %>Group<% end %>
-        <% t.header width: '1/6' do %><%= current_alliance.main_market_name %> Qty<% end %>
-        <% t.header width: '1/6' do %><%= current_alliance.appraisal_market_name %> Qty<% end %>
+        <% t.header width: '1/6' do %>Market Group<% end %>
 
         <% types.each do |type| %>
           <% t.row do |tr| %>
@@ -36,14 +35,7 @@
               <%= type.group_name %>
             <% end %>
             <% tr.cell do %>
-              <% if current_alliance.main_market %>
-                <%= number_with_delimiter type.market_sell_volume_sum(current_alliance.main_market) %>
-              <% end %>
-            <% end %>
-            <% tr.cell do %>
-              <% if current_alliance.appraisal_market %>
-                <%= number_with_delimiter type.market_sell_volume_sum(current_alliance.appraisal_market) %>
-              <% end %>
+              <%= type.market_group_name %>
             <% end %>
           <% end %>
         <% end %>
