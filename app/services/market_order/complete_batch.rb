@@ -7,9 +7,15 @@ class MarketOrder < ApplicationRecord
     end
 
     def call
-      return if batch.completed?
+      if batch.completed?
+        debug("Market order batch #{batch.id} for #{location.name} has already been completed")
+        return
+      end
 
-      return unless batch.pages.all? { |p| p.imported? }
+      unless batch.pages.all? { |p| p.imported? }
+        debug("Market order batch #{batch.id} for #{location.name} is not fully imported")
+        return
+      end
 
       batch.transaction do
         batch.update!(completed_at: Time.zone.now)
@@ -23,7 +29,7 @@ class MarketOrder < ApplicationRecord
 
         location_ids = MarketOrder.distinct(:location_id).where(time: time).pluck(:location_id)
         location_ids += [location.id] if location.is_a?(Region)
-        @markets = Market.joins(:market_locations).where("market_locations.location_id IN (?)", location_ids)
+        markets = Market.joins(:market_locations).where("market_locations.location_id IN (?)", location_ids)
         fitting_markets = []
         markets.each do |market|
           if market.orders_updated_at.nil? || (market.orders_updated_at && market.orders_updated_at <= time)
@@ -31,7 +37,8 @@ class MarketOrder < ApplicationRecord
           end
           market.aggregate_type_stats!(time)
 
-          fitting_markets << market if market.trade_hub || market.owner
+          fitting_market_ids = Alliance.pluck(:main_market_id, :appraisal_market_id).flatten.compact.uniq
+          fitting_markets << market if fitting_market_ids.include?(market.id)
         end
 
         args = fitting_markets.each_with_object([]) do |market, a|
@@ -44,7 +51,7 @@ class MarketOrder < ApplicationRecord
         Market::AggregateFittingStatsWorker.perform_bulk(args)
       end
 
-      markets.map(&:id)
+      batch
     end
 
     private
