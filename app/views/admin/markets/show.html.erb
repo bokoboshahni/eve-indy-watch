@@ -1,0 +1,111 @@
+<% content_for :breadcrumbs do %>
+  <%= render(BreadcrumbsComponent.new) do |c| %>
+    <%= c.item href: admin_root_path do %>Administration<% end %>
+    <%= c.item href: admin_markets_path do %>Markets<% end %>
+    <%= c.item href: admin_market_path(@market) do %><%= @market.name %><% end %>
+  <% end %>
+<% end %>
+
+<%= render PageHeadingComponent.new(title: @market.name) do |c| %>
+  <% c.action(href: edit_admin_market_path(@market)).with_content('Edit market') %>
+<% end %>
+
+<div class="mt-8 max-w-3xl mx-auto grid grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
+  <div class="space-y-6 lg:col-start-1 lg:col-span-2">
+    <section>
+      <dl class="grid grid-cols-1 gap-5 sm:grid-cols-3">
+        <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+          <dt class="text-sm font-medium text-gray-500 truncate">
+            Orders
+          </dt>
+          <dd class="mt-1 text-3xl font-semibold text-gray-900">
+            <%= number_with_delimiter @market.latest_orders.count %>
+          </dd>
+        </div>
+
+        <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+          <dt class="text-sm font-medium text-gray-500 truncate">
+            Types
+          </dt>
+          <dd class="mt-1 text-3xl font-semibold text-gray-900">
+            <%= number_with_delimiter @market.types.count %>
+          </dd>
+        </div>
+
+        <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+          <dt class="text-sm font-medium text-gray-500 truncate">
+            Locations
+          </dt>
+          <dd class="mt-1 text-3xl font-semibold text-gray-900">
+            <%= @market.market_locations.count %>
+          </dd>
+        </div>
+      </dl>
+    </section>
+    <section aria-labelledby="fitting-information-title">
+      <div class="bg-white shadow sm:rounded-lg">
+        <div class="px-4 py-5 sm:px-6">
+          <h2 id="fitting-information-title" class="text-lg leading-6 font-medium text-gray-900">
+            Market Information
+          </h2>
+        </div>
+        <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+          <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+            <div class="sm:col-span-1">
+              <dt class="text-sm font-medium text-gray-500">
+                Type
+              </dt>
+              <dd class="mt-1 text-sm text-gray-900">
+                <%= @market.kind.titleize %>
+              </dd>
+            </div>
+            <div class="sm:col-span-1">
+              <dt class="text-sm font-medium text-gray-500">
+                Last updated
+              </dt>
+              <dd class="mt-1 text-sm text-gray-900">
+                <%= local_time @market.updated_at, format: :db %>
+              </dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section aria-labelledby="contents-title" class="lg:col-start-3 lg:col-span-1">
+    <div class="bg-white shadow sm:rounded-lg sm:overflow-hidden">
+      <div class="divide-y divide-gray-200">
+        <div class="px-4 py-5 sm:px-6">
+          <h2 id="contents-title" class="text-lg font-medium text-gray-900">Locations</h2>
+        </div>
+        <div>
+          <table class="max-w-full table-fixed divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th scope="col" class="w-1/2 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Name
+                </th>
+                <th scope="col" class="w-1/2 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Orders Updated
+                </th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <% @market.market_locations.each do |market_location| %>
+                <tr>
+                  <td class="px-4 py-2 text-xs font-medium text-gray-900">
+                    <%= market_location.location_name %>
+                  </td>
+                  <td class="px-4 py-2 text-xs font-medium">
+                    <%= local_time market_location.orders_updated_at, format: :db %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

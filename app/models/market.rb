@@ -45,6 +45,14 @@ class Market < ApplicationRecord
 
   validates :name, presence: true
 
+  def kind
+    return owner.class.name.underscore if owner
+
+    return 'trade_hub' if trade_hub?
+
+    return 'regional' if regional?
+  end
+
   def latest_orders
     if regional?
       scope = MarketOrder.joins(solar_system: { constellation: :region }).where('regions.id IN (?)', regions.pluck(:id))

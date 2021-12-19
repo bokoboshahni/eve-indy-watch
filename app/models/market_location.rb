@@ -34,4 +34,7 @@ class MarketLocation < ApplicationRecord
   belongs_to :market, inverse_of: :market_locations
 
   has_many :orders, class_name: 'MarketOrder', inverse_of: :market_locations, primary_key: :location_id, foreign_key: :location_id
+
+  delegate :name, to: :location, prefix: true
+  delegate :orders_updated_at, to: :location
 end
