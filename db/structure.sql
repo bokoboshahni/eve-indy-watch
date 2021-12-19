@@ -1058,7 +1058,8 @@ CREATE TABLE public.markets (
     updated_at timestamp(6) without time zone NOT NULL,
     type_stats_updated_at timestamp without time zone,
     orders_updated_at timestamp without time zone,
-    trade_hub boolean
+    trade_hub boolean,
+    regional boolean
 );
 
 
@@ -2964,6 +2965,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211217223216'),
 ('20211218175043'),
 ('20211218193359'),
-('20211219003130');
+('20211219003130'),
+('20211219145430');
 
 

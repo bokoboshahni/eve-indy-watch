@@ -12,6 +12,7 @@
 # **`name`**                   | `text`             | `not null`
 # **`orders_updated_at`**      | `datetime`         |
 # **`owner_type`**             | `string`           |
+# **`regional`**               | `boolean`          |
 # **`trade_hub`**              | `boolean`          |
 # **`type_stats_updated_at`**  | `datetime`         |
 # **`created_at`**             | `datetime`         | `not null`
@@ -36,16 +37,26 @@ class Market < ApplicationRecord
   has_many :appraisals, inverse_of: :market, dependent: :destroy
   has_many :market_locations, inverse_of: :market, dependent: :destroy
   has_many :orders, class_name: 'MarketOrder', through: :market_locations
+  has_many :regions, through: :market_locations, source: :location, source_type: 'Region'
   has_many :stations, through: :market_locations, source: :location, source_type: 'Station'
   has_many :structures, through: :market_locations, source: :location, source_type: 'Structure'
-  has_many :types, through: :orders
 
   delegate :name, to: :owner, prefix: true, allow_nil: true
 
   validates :name, presence: true
 
   def latest_orders
-    orders.where(time: orders.maximum(:time))
+    if regional?
+      scope = MarketOrder.joins(solar_system: { constellation: :region }).where('regions.id IN (?)', regions.pluck(:id))
+      time = scope.maximum(:time)
+      scope.where(time: time)
+    else
+      orders.where(time: orders.maximum(:time))
+    end
+  end
+
+  def types
+    Type.where(id: latest_orders.distinct(:type_id).pluck(:type_id))
   end
 
   def type_ids_for_sale

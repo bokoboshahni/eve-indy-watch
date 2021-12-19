@@ -15,6 +15,26 @@ class Market < ApplicationRecord
 
       location_ids = market.market_locations.pluck(:location_id)
 
+      region_ids = market.regions.pluck(:id)
+
+      region_join =
+        if region_ids.any?
+          <<~SQL
+            INNER JOIN solar_systems ON solar_systems.id = market_orders.solar_system_id
+            INNER JOIN constellations ON constellations.id = solar_systems.constellation_id
+            INNER JOIN regions ON regions.id = constellations.region_id
+          SQL
+        else
+          ''
+        end
+
+      location_query =
+        if region_ids.any?
+          "(location_id IN (#{location_ids.join(',')}) OR regions.id IN (#{region_ids.join(',')}))"
+        else
+          "location_id IN (#{location_ids.join(',')})"
+        end
+
       query = <<~SQL
         WITH all_orders AS (
             SELECT kind,
@@ -26,8 +46,9 @@ class Market < ApplicationRecord
                   (min(price) over (partition by kind, type_id))      as min_price,
                   (count(order_id) over (partition by kind, type_id)) as total_order_count
             FROM market_orders
+            #{region_join}
             WHERE time = '#{time.to_s(:db)}'
-              AND location_id IN (#{location_ids.join(',')})
+              AND #{location_query}
         ),
             ranked_orders AS (
                 SELECT kind,

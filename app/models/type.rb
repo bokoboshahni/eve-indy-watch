@@ -82,11 +82,18 @@ class Type < ApplicationRecord
   end
 
   def market_stat(market, stat)
-    Statistics::MarketType.find_by(
+    @market_stat ||= {}
+    @market_stat["#{market.id}_#{stat}"] ||= Statistics::MarketType.find_by(
       market_id: market.id,
       type_id: id,
-      time: market.type_stats_updated_at
+      time: Statistics::MarketType.where(market_id: market.id, type_id: id).maximum(:time)
     )&.send(stat) || 0.0
+  end
+
+  Statistics::MarketType.column_names.excluding('market_id', 'type_id', 'time').each do |stat|
+    define_method "market_#{stat}" do |market|
+      market_stat(market, stat)
+    end
   end
 
   def market_buy_price(market)
