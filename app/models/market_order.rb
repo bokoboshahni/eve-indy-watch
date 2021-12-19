@@ -39,6 +39,8 @@ class MarketOrder < ApplicationRecord
   belongs_to :solar_system, inverse_of: :market_orders
   belongs_to :type, inverse_of: :market_orders
 
+  delegate :name, to: :location, prefix: true
+
   def self.create_batch!(location)
     CreateBatch.call(location)
   end
@@ -56,5 +58,9 @@ class MarketOrder < ApplicationRecord
     Market.update_all(orders_updated_at: nil, type_stats_updated_at: nil)
     Region.update_all(esi_market_orders_expires_at: nil, esi_market_orders_last_modified_at: nil, orders_updated_at: nil)
     Structure.update_all(esi_market_orders_expires_at: nil, esi_market_orders_last_modified_at: nil, orders_updated_at: nil)
+  end
+
+  def expires_at
+    issued_at + duration.days
   end
 end

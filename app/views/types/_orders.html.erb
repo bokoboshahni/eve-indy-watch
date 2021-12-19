@@ -1,0 +1,20 @@
+<%= turbo_frame_tag "#{order_type.underscore}_orders" do %>
+  <%= render(CardComponent.new(title: "#{order_type.titleize} Orders", body_class_names: '')) do |c| %>
+    <% c.description do %><p class="text-gray-900 text-xs font-italic">Data refreshed every 5 minutes.<% end %>
+    <% c.body do %>
+      <%= render(TableComponent.new) do |t| %>
+        <% t.header width: '1/12' do %>Market<% end %>
+        <% t.header width: '1/12' do %>Range<% end %>
+        <% t.header width: '1/12' do %>Qty<% end %>
+        <% t.header width: '1/12' do %>Price<% end %>
+        <% t.header width: '3/12' do %>Location<% end %>
+        <% t.header width: '1/12' do %>Expires in<% end %>
+        <% t.header width: '1/12' do %>Issued<% end %>
+
+        <% orders.each do |order| %>
+          <% render 'order', order: order, market: market, t: t %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

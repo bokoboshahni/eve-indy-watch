@@ -14,6 +14,7 @@
 # **`market_order_sync_enabled`**           | `boolean`          |
 # **`name`**                                | `text`             | `not null`
 # **`orders_updated_at`**                   | `datetime`         |
+# **`type_history_preload_enabled`**        | `boolean`          |
 # **`created_at`**                          | `datetime`         | `not null`
 # **`updated_at`**                          | `datetime`         | `not null`
 # **`esi_authorization_id`**                | `bigint`           |

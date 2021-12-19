@@ -1163,7 +1163,8 @@ CREATE TABLE public.regions (
     esi_market_orders_expires_at timestamp without time zone,
     esi_market_orders_last_modified_at timestamp without time zone,
     market_order_sync_enabled boolean,
-    orders_updated_at timestamp without time zone
+    orders_updated_at timestamp without time zone,
+    type_history_preload_enabled boolean
 );
 
 
@@ -2966,6 +2967,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211218175043'),
 ('20211218193359'),
 ('20211219003130'),
-('20211219145430');
+('20211219145430'),
+('20211219193017');
 
 

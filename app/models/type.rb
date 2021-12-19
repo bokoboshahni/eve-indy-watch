@@ -66,6 +66,7 @@ class Type < ApplicationRecord
   delegate :adjusted_price, :average_price, to: :latest_market_price_snapshot
 
   scope :marketable, -> { where.not(market_group_id: nil) }
+  scope :published, -> { where(published: true) }
 
   def charge?
     category_name == Category::CHARGE_CATEGORY_NAME

@@ -34,3 +34,8 @@
     class: 'MarketOrder::PruneWorker'
     args: ['hour']
     description: "Prune market orders hourly"
+
+  preload_region_type_histories:
+    cron: '15 11 * * *'
+    class: 'Region::PreloadTypeHistoriesWorker'
+    description: "Preload type histories for items in contracts, fittings, and killmails"

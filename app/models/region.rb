@@ -14,6 +14,7 @@
 # **`market_order_sync_enabled`**           | `boolean`          |
 # **`name`**                                | `text`             | `not null`
 # **`orders_updated_at`**                   | `datetime`         |
+# **`type_history_preload_enabled`**        | `boolean`          |
 # **`created_at`**                          | `datetime`         | `not null`
 # **`updated_at`**                          | `datetime`         | `not null`
 # **`esi_authorization_id`**                | `bigint`           |
@@ -52,5 +53,22 @@ class Region < ApplicationRecord
 
   def esi_authorized?
     esi_authorization.present?
+  end
+
+  def type_history_expired?(type)
+    latest = Statistics::RegionTypeHistory.where(region_id: id, type_id: type.id)
+                                          .maximum(:date)
+
+    return true unless latest
+
+    latest < 1.day.ago.to_date
+  end
+
+  def import_type_history!(type)
+    ImportTypeHistory.call(self, type)
+  end
+
+  def import_type_history_async(type)
+    ImportTypeHistoryWorker.perform_async(id, type.id)
   end
 end

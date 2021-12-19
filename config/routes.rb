@@ -33,7 +33,12 @@ Rails.application.routes.draw do
   resources :contracts, only: %i[index show]
 
   resources :fittings
-  resources :types
+
+  resources :types do
+    member do
+      get :intraday_prices
+    end
+  end
 
   resource :search, only: :show
 
