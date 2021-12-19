@@ -279,7 +279,7 @@
           <h2 id="contents-title" class="text-lg font-medium text-gray-900">Contents</h2>
         </div>
         <div>
-          <table class="table-fixed divide-y divide-gray-200">
+          <table class="max-w-full table-fixed divide-y divide-gray-200">
             <thead class="bg-gray-50">
               <tr>
                 <th scope="col" class="w-5/6 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -293,10 +293,10 @@
             <tbody class="bg-white divide-y divide-gray-200">
               <% @fitting.items.includes(:type).each do |item| %>
                 <tr>
-                  <td class="px-4 py-2 whitespace-nowrap text-xs font-medium text-gray-900">
+                  <td class="px-4 py-2 text-xs font-medium text-gray-900">
                     <%= item.type.name %>
                   </td>
-                  <td class="px-4 py-2 whitespace-nowrap text-right text-xs font-medium">
+                  <td class="px-4 py-2 text-xs font-medium">
                     <%= number_with_delimiter item.quantity %>
                   </td>
                 </tr>
