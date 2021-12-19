@@ -10,6 +10,7 @@
         <% t.header width: '3/12' do %>Fittings<% end %>
         <% t.header width: '2/12' do %>Location<% end %>
         <% t.header width: '2/12' do %>Price<% end %>
+        <% t.header width: '2/12' do %>Valuation (<%= current_alliance.appraisal_market.name %> Sell)<% end %>
         <% t.header width: '2/12' do %>Volume<% end %>
 
         <% contracts.each do |contract| %>
@@ -26,7 +27,7 @@
                   <% icon = cf.similarity == 1.0 ? 'check-circle' : 'exclamation' %>
                   <% style = cf.similarity == 1.0 ? 'font-medium' : 'italic' %>
                   <li>
-                    <%= link_to contract_path(contract, fitting_id: fitting.id), class: "mt-2 flex items-center #{style} text-#{color}-700 hover:text-#{color}-500", data: { turbo_frame: '_top' } do %>
+                    <%= link_to contract_path(contract, fitting_id: fitting.id), class: "mt-2 flex items-center #{style} text-#{color}-500 hover:text-#{color}-500", data: { turbo_frame: '_top' } do %>
                       <%= heroicon icon, variant: :outline, options: { class: "flex-shrink-0 mr-1.5 h-5 w-5 text-#{color}-500 hover:text-#{color}-500" } %>
                       <%= fitting.name %>
                       <% unless cf.similarity == 1.0 %>(<%= number_to_percentage(cf.similarity * 100.0, precision: 0) %>)<% end %>
@@ -36,7 +37,24 @@
               </ul>
             <% end %>
             <% tr.cell do %><%= contract.end_location.name %><% end %>
-            <% tr.cell do %><%= number_to_isk contract.price %><% end %>
+            <% tr.cell do %>
+              <%
+                markup_pct = contract.markup_sell_pct(current_alliance.appraisal_market)
+                color =
+                  if markup_pct < 0
+                    'green-500'
+                  elsif markup_pct >= 50 && markup_pct < 100
+                    'red-500'
+                  end
+              %>
+              <span class="text-<%= color %>">
+                <%= number_to_isk contract.price %>
+                <% unless markup_pct.infinite? || markup_pct.nan? %>(<%= '+' if markup_pct.positive? %><%= number_to_percentage markup_pct, precision: 0 %>)<% end %>
+              </span>
+            <% end %>
+            <% tr.cell do %>
+              <%= number_to_isk contract.valuation_sell(current_alliance.appraisal_market) %>
+            <% end %>
             <% tr.cell do %><%= number_to_m3 contract.volume %><% end %>
           <% end %>
         <% end %>

@@ -27,21 +27,24 @@
             Fittings
           </dt>
           <dd class="mt-1 text-sm text-gray-900">
-            <ul class="list-none">
-              <% @contract.contract_fittings.each do |cf| %>
-                <% fitting = cf.fitting %>
-                <% color = cf.similarity == 1.0 ? 'green' : 'red' %>
-                <% icon = cf.similarity == 1.0 ? 'check-circle' : 'exclamation' %>
-                <% style = cf.similarity == 1.0 ? 'font-medium' : 'italic' %>
-                <li>
-                  <%= link_to contract_path(@contract, fitting_id: fitting.id), class: "mt-2 flex items-center #{style} text-#{color}-700 hover:text-#{color}-500" do %>
-                    <%= heroicon icon, variant: :outline, options: { class: "flex-shrink-0 mr-1.5 h-5 w-5 text-#{color}-500 hover:text-#{color}-500" } %>
-                    <%= fitting.name %>
-                    <% unless cf.similarity == 1.0 %>(<%= number_to_percentage(cf.similarity * 100.0, precision: 0) %>)<% end %>
-                  <% end %>
-                </li>
-              <% end %>
-            </ul>
+            <% if @contract.contract_fittings.any? %>
+              <p class="text-xs">Click a fitting to compare below.</p>
+              <ul class="list-none mt-1">
+                <% @contract.contract_fittings.each do |cf| %>
+                  <% fitting = cf.fitting %>
+                  <% color = cf.similarity == 1.0 ? 'green' : 'red' %>
+                  <% icon = cf.similarity == 1.0 ? 'check-circle' : 'exclamation' %>
+                  <% style = cf.similarity == 1.0 ? 'font-medium' : 'italic' %>
+                  <li>
+                    <%= link_to contract_path(@contract, fitting_id: fitting.id), class: "mt-2 flex items-center #{style} text-#{color}-500 hover:text-#{color}-500" do %>
+                      <%= heroicon icon, variant: :outline, options: { class: "flex-shrink-0 mr-1.5 h-5 w-5 text-#{color}-500 hover:text-#{color}-500" } %>
+                      <%= fitting.name %>
+                      <% unless cf.similarity == 1.0 %>(<%= number_to_percentage(cf.similarity * 100.0, precision: 0) %>)<% end %>
+                    <% end %>
+                  </li>
+                <% end %>
+              </ul>
+            <% end %>
           </dd>
         </div>
         <div class="sm:col-span-1">
@@ -65,7 +68,7 @@
             Price
           </dt>
           <dd class="mt-1 text-sm text-gray-900">
-            <%= number_to_currency @contract.price, unit: 'ISK', format: '%n %u' %>
+            <%= number_to_isk @contract.price %>
           </dd>
         </div>
         <div class="sm:col-span-1">
@@ -78,10 +81,41 @@
         </div>
         <div class="sm:col-span-1">
           <dt class="text-sm font-medium text-gray-500">
+            Valuation (<%= current_alliance.appraisal_market.name %> Sell)
+          </dt>
+          <dd class="mt-1 text-sm text-gray-900">
+            <%= number_to_isk @contract.valuation_sell(current_alliance.appraisal_market) %>
+          </dd>
+        </div>
+        <div class="sm:col-span-1">
+          <dt class="text-sm font-medium text-gray-500">
+            Markup
+          </dt>
+          <dd class="mt-1 text-sm text-gray-900">
+            <%
+              markup_pct = @contract.markup_sell_pct(current_alliance.appraisal_market)
+              color =
+                if markup_pct < 0
+                  'green-500'
+                elsif markup_pct >= 50 && markup_pct < 100
+                  'red-500'
+                end
+            %>
+            <% unless markup_pct.infinite? || markup_pct.nan? %>
+              <span class="text-<%= color %>">
+                <%= '+' if markup_pct.positive? %><%= number_to_percentage markup_pct, precision: 0 %>
+              </span>
+            <% else %>
+              N/A
+            <% end %>
+          </dd>
+        </div>
+        <div class="sm:col-span-1">
+          <dt class="text-sm font-medium text-gray-500">
             Volume
           </dt>
           <dd class="mt-1 text-sm text-gray-900">
-            <%= number_with_delimiter @contract.volume %>
+            <%= number_to_m3 @contract.volume %>
           </dd>
         </div>
         <div class="sm:col-span-1">

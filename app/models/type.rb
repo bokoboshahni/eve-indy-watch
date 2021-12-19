@@ -47,6 +47,7 @@ class Type < ApplicationRecord
                                            order esi_last_modified_at: :desc
                                          }, class_name: 'MarketPriceSnapshot', foreign_key: :type_id
 
+  has_many :appraisal_items, inverse_of: :type, dependent: :restrict_with_exception
   has_many :contract_items, inverse_of: :type, dependent: :restrict_with_exception
   has_many :fitting_items, inverse_of: :type, dependent: :restrict_with_exception
   has_many :fittings, inverse_of: :type, dependent: :restrict_with_exception

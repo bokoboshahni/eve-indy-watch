@@ -16,10 +16,10 @@ module ApplicationHelper
   end
 
   def number_to_isk(value)
-    number_with_precision value, precision: 2, delimiter: ','
+    number_with_precision value, precision: 2, delimiter: ',', strip_insignificant_zeros: true
   end
 
   def number_to_m3(value)
-    number_with_delimiter value
+    number_with_precision value, precision: 2, delimiter: ',', strip_insignificant_zeros: true
   end
 end

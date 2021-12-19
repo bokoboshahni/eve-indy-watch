@@ -111,6 +111,91 @@ ALTER SEQUENCE public.alliances_id_seq OWNED BY public.alliances.id;
 
 
 --
+-- Name: appraisal_items; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.appraisal_items (
+    appraisal_id bigint NOT NULL,
+    type_id bigint NOT NULL,
+    buy_five_pct_price_avg numeric,
+    buy_five_pct_price_med numeric,
+    buy_five_pct_order_count bigint,
+    buy_price_avg numeric,
+    buy_price_min numeric,
+    buy_price_med numeric,
+    buy_price_max numeric,
+    buy_price_sum numeric,
+    buy_volume_avg numeric,
+    buy_volume_min bigint,
+    buy_volume_med bigint,
+    buy_volume_max bigint,
+    buy_volume_sum bigint,
+    buy_total_order_count bigint,
+    buy_trimmed_order_count bigint,
+    sell_five_pct_price_avg numeric,
+    sell_five_pct_price_med numeric,
+    sell_five_pct_order_count numeric,
+    sell_price_avg numeric,
+    sell_price_min numeric,
+    sell_price_med numeric,
+    sell_price_max numeric,
+    sell_price_sum numeric,
+    sell_volume_avg numeric,
+    sell_volume_min bigint,
+    sell_volume_med bigint,
+    sell_volume_max bigint,
+    sell_volume_sum bigint,
+    sell_total_order_count bigint,
+    sell_trimmed_order_count bigint,
+    buy_sell_price_spread numeric NOT NULL,
+    quantity bigint NOT NULL
+);
+
+
+--
+-- Name: appraisals; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.appraisals (
+    id bigint NOT NULL,
+    appraisable_type character varying,
+    appraisable_id bigint,
+    market_id bigint NOT NULL,
+    user_id bigint,
+    code text NOT NULL,
+    description text,
+    price_modifier numeric,
+    price_period text NOT NULL,
+    price_stat text NOT NULL,
+    price_type text NOT NULL,
+    expires_at timestamp without time zone,
+    market_time timestamp without time zone NOT NULL,
+    original text,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: appraisals_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.appraisals_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: appraisals_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.appraisals_id_seq OWNED BY public.appraisals.id;
+
+
+--
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1364,6 +1449,13 @@ ALTER TABLE ONLY public.alliances ALTER COLUMN id SET DEFAULT nextval('public.al
 
 
 --
+-- Name: appraisals id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.appraisals ALTER COLUMN id SET DEFAULT nextval('public.appraisals_id_seq'::regclass);
+
+
+--
 -- Name: categories id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1586,6 +1678,14 @@ ALTER TABLE ONLY public.versions ALTER COLUMN id SET DEFAULT nextval('public.ver
 
 ALTER TABLE ONLY public.alliances
     ADD CONSTRAINT alliances_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: appraisals appraisals_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.appraisals
+    ADD CONSTRAINT appraisals_pkey PRIMARY KEY (id);
 
 
 --
@@ -1864,6 +1964,48 @@ CREATE INDEX index_alliances_on_appraisal_market_id ON public.alliances USING bt
 --
 
 CREATE INDEX index_alliances_on_main_market_id ON public.alliances USING btree (main_market_id);
+
+
+--
+-- Name: index_appraisal_items_on_appraisal_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_appraisal_items_on_appraisal_id ON public.appraisal_items USING btree (appraisal_id);
+
+
+--
+-- Name: index_appraisal_items_on_type_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_appraisal_items_on_type_id ON public.appraisal_items USING btree (type_id);
+
+
+--
+-- Name: index_appraisals_on_appraisable; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_appraisals_on_appraisable ON public.appraisals USING btree (appraisable_type, appraisable_id);
+
+
+--
+-- Name: index_appraisals_on_code; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_appraisals_on_code ON public.appraisals USING btree (code);
+
+
+--
+-- Name: index_appraisals_on_market_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_appraisals_on_market_id ON public.appraisals USING btree (market_id);
+
+
+--
+-- Name: index_appraisals_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_appraisals_on_user_id ON public.appraisals USING btree (user_id);
 
 
 --
@@ -2536,6 +2678,14 @@ ALTER TABLE ONLY public.contract_events
 
 
 --
+-- Name: appraisals fk_rails_6b49c57287; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.appraisals
+    ADD CONSTRAINT fk_rails_6b49c57287 FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: stations fk_rails_6ea166210e; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2549,6 +2699,14 @@ ALTER TABLE ONLY public.stations
 
 ALTER TABLE ONLY public.alliances
     ADD CONSTRAINT fk_rails_6f7443e553 FOREIGN KEY (appraisal_market_id) REFERENCES public.markets(id);
+
+
+--
+-- Name: appraisals fk_rails_85dbb73865; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.appraisals
+    ADD CONSTRAINT fk_rails_85dbb73865 FOREIGN KEY (market_id) REFERENCES public.markets(id);
 
 
 --
@@ -2805,6 +2963,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211217201626'),
 ('20211217223216'),
 ('20211218175043'),
-('20211218193359');
+('20211218193359'),
+('20211219003130');
 
 

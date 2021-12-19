@@ -215,4 +215,24 @@ class Contract < ApplicationRecord
       "https://images.evetech.net/types/3468/icon"
     end
   end
+
+  def valuation(market)
+    @valuation ||= Appraisal.new(market: market).generate_items(compact_items)
+  end
+
+  def valuation_sell(market)
+    valuation(market).total_sell_price_min
+  end
+
+  def profit_sell(market)
+    price - valuation_sell(market)
+  end
+
+  def margin_sell_pct(market)
+    (profit_sell(market) / price) * 100.0
+  end
+
+  def markup_sell_pct(market)
+    (profit_sell(market) / valuation_sell(market)) * 100.0
+  end
 end
