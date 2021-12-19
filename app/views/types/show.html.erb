@@ -1,0 +1,23 @@
+<% content_for :breadcrumbs do %>
+  <%= render(BreadcrumbsComponent.new) do |c| %>
+    <%= c.item href: types_path do %>Types<% end %>
+    <%= c.item href: type_path(@type) do %><%= @type.name %><% end %>
+  <% end %>
+<% end %>
+
+<div class="max-w-3xl mx-auto px-4 sm:px-6 md:flex md:items-center md:justify-between md:space-x-5 lg:max-w-7xl lg:px-8">
+  <div class="flex items-center space-x-5">
+    <div class="flex-shrink-0">
+      <div class="relative">
+        <%= image_tag @type.icon_url, class: 'h-16 h-16 rounded-md' %>
+        <span class="absolute inset-0 shadow-inner rounded-md" aria-hidden="true"></span>
+      </div>
+    </div>
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900"><%= @type.name %></h1>
+      <p class="text-sm font-medium text-gray-500"><%= @type.category_name %> / <%= @type.group_name %></p>
+    </div>
+  </div>
+  <div class="mt-6 flex flex-col-reverse justify-stretch space-y-4 space-y-reverse sm:flex-row-reverse sm:justify-end sm:space-x-reverse sm:space-y-0 sm:space-x-3 md:mt-0 md:flex-row md:space-x-3">
+  </div>
+</div>

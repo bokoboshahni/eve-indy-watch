@@ -113,6 +113,7 @@ class Market < ApplicationRecord
         Statistics::MarketType.import(records, validate: false)
         market.update!(type_stats_updated_at: time)
       end
+
       debug "Aggregated market type statistics for #{records.count} type(s) in #{market_name}"
     end
 

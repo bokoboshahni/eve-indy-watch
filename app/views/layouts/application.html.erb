@@ -106,6 +106,13 @@
                     <%= heroicon 'template', variant: :outline, options: { class: "#{sidebar_item_icon_class('fittings')} mr-3 flex-shrink-0 h-6 w-6" } %>
                     Fittings
                   <% end %>
+
+                  <% if current_user.admin? %>
+                    <%= link_to types_path, class: "#{sidebar_item_text_class('types')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
+                      <%= heroicon 'chip', variant: :outline, options: { class: "#{sidebar_item_icon_class('types')} mr-3 flex-shrink-0 h-6 w-6" } %>
+                      Types
+                    <% end %>
+                  <% end %>
                 </div>
 
                 <div class="pt-4">
@@ -178,6 +185,13 @@
                   <%= link_to fittings_path, class: "#{sidebar_item_text_class('fittings')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
                     <%= heroicon 'template', variant: :outline, options: { class: "#{sidebar_item_icon_class('fittings')} mr-3 flex-shrink-0 h-6 w-6" } %>
                     Fittings
+                  <% end %>
+
+                  <% if current_user.admin? %>
+                    <%= link_to types_path, class: "#{sidebar_item_text_class('types')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
+                      <%= heroicon 'chip', variant: :outline, options: { class: "#{sidebar_item_icon_class('types')} mr-3 flex-shrink-0 h-6 w-6" } %>
+                      Types
+                    <% end %>
                   <% end %>
                 </div>
 

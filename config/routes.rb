@@ -33,6 +33,7 @@ Rails.application.routes.draw do
   resources :contracts, only: %i[index show]
 
   resources :fittings
+  resources :types
 
   resource :search, only: :show
 

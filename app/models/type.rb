@@ -65,6 +65,8 @@ class Type < ApplicationRecord
 
   delegate :adjusted_price, :average_price, to: :latest_market_price_snapshot
 
+  scope :marketable, -> { where.not(market_group_id: nil) }
+
   def charge?
     category_name == Category::CHARGE_CATEGORY_NAME
   end
@@ -83,11 +85,14 @@ class Type < ApplicationRecord
 
   def market_stat(market, stat)
     @market_stat ||= {}
-    @market_stat["#{market.id}_#{stat}"] ||= Statistics::MarketType.find_by(
-      market_id: market.id,
-      type_id: id,
-      time: Statistics::MarketType.where(market_id: market.id, type_id: id).maximum(:time)
-    )&.send(stat) || 0.0
+    @market_stat["#{market.id}_#{stat}"] ||=
+      begin
+        Statistics::MarketType.find_by(
+          market_id: market.id,
+          type_id: id,
+          time: Statistics::MarketType.where(market_id: market.id, type_id: id).maximum(:time)
+        )&.send(stat) || 0.0
+      end
   end
 
   Statistics::MarketType.column_names.excluding('market_id', 'type_id', 'time').each do |stat|
