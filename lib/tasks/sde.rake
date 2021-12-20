@@ -7,16 +7,22 @@ namespace :sde do # rubocop:disable Metrics/BlockLength
   end
 
   desc 'Loads the EVE static data export into the database'
-  task load: %w[sde:load:corporations sde:load:items sde:load:map sde:load:inventory_flags]
+  task load: %w[sde:load:corporations sde:load:items sde:load:map sde:load:inventory_flags sde:load:industry]
 
   namespace :load do # rubocop:disable Metrics/BlockLength
     task map: %i[regions constellations solar_systems stations]
 
     task items: %i[categories groups market_groups types]
 
+    task industry: %i[blueprints]
+
     task setup: :environment do
       @sde_path = Rails.root.join('tmp/sde')
       @names = SDE::LoadNames.call(source_path: @sde_path.join('bsd/invNames.yaml'))
+    end
+
+    task blueprints: :setup do
+      SDE::LoadBlueprints.call(source_path: @sde_path.join('fsd/blueprints.yaml'))
     end
 
     task categories: :setup do

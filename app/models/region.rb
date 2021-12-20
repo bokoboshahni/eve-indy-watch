@@ -40,6 +40,7 @@ class Region < ApplicationRecord
   has_many :constellations, inverse_of: :region, dependent: :restrict_with_exception
 
   has_many :contracts, through: :solar_systems
+  has_many :markets_for_type_history, class_name: 'Market', inverse_of: :type_history_region, dependent: :restrict_with_exception
   has_many :market_locations, as: :location, dependent: :destroy
   has_many :market_orders, through: :constellations
   has_many :markets, through: :market_locations

@@ -6,19 +6,20 @@
 #
 # ### Columns
 #
-# Name                   | Type               | Attributes
-# ---------------------- | ------------------ | ---------------------------
-# **`id`**               | `bigint`           | `not null, primary key`
-# **`description`**      | `text`             |
-# **`name`**             | `text`             | `not null`
-# **`packaged_volume`**  | `decimal(, )`      |
-# **`portion_size`**     | `integer`          |
-# **`published`**        | `boolean`          |
-# **`volume`**           | `decimal(, )`      |
-# **`created_at`**       | `datetime`         | `not null`
-# **`updated_at`**       | `datetime`         | `not null`
-# **`group_id`**         | `bigint`           | `not null`
-# **`market_group_id`**  | `bigint`           |
+# Name                        | Type               | Attributes
+# --------------------------- | ------------------ | ---------------------------
+# **`id`**                    | `bigint`           | `not null, primary key`
+# **`description`**           | `text`             |
+# **`max_production_limit`**  | `integer`          |
+# **`name`**                  | `text`             | `not null`
+# **`packaged_volume`**       | `decimal(, )`      |
+# **`portion_size`**          | `integer`          |
+# **`published`**             | `boolean`          |
+# **`volume`**                | `decimal(, )`      |
+# **`created_at`**            | `datetime`         | `not null`
+# **`updated_at`**            | `datetime`         | `not null`
+# **`group_id`**              | `bigint`           | `not null`
+# **`market_group_id`**       | `bigint`           |
 #
 # ### Indexes
 #

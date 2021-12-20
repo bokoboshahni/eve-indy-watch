@@ -6,19 +6,20 @@
 #
 # ### Columns
 #
-# Name                   | Type               | Attributes
-# ---------------------- | ------------------ | ---------------------------
-# **`id`**               | `bigint`           | `not null, primary key`
-# **`description`**      | `text`             |
-# **`name`**             | `text`             | `not null`
-# **`packaged_volume`**  | `decimal(, )`      |
-# **`portion_size`**     | `integer`          |
-# **`published`**        | `boolean`          |
-# **`volume`**           | `decimal(, )`      |
-# **`created_at`**       | `datetime`         | `not null`
-# **`updated_at`**       | `datetime`         | `not null`
-# **`group_id`**         | `bigint`           | `not null`
-# **`market_group_id`**  | `bigint`           |
+# Name                        | Type               | Attributes
+# --------------------------- | ------------------ | ---------------------------
+# **`id`**                    | `bigint`           | `not null, primary key`
+# **`description`**           | `text`             |
+# **`max_production_limit`**  | `integer`          |
+# **`name`**                  | `text`             | `not null`
+# **`packaged_volume`**       | `decimal(, )`      |
+# **`portion_size`**          | `integer`          |
+# **`published`**             | `boolean`          |
+# **`volume`**                | `decimal(, )`      |
+# **`created_at`**            | `datetime`         | `not null`
+# **`updated_at`**            | `datetime`         | `not null`
+# **`group_id`**              | `bigint`           | `not null`
+# **`market_group_id`**       | `bigint`           |
 #
 # ### Indexes
 #
@@ -42,12 +43,20 @@ class Type < ApplicationRecord
   belongs_to :group, inverse_of: :types
   belongs_to :market_group, inverse_of: :types, optional: true
 
+  has_one :blueprint_product, class_name: 'BlueprintProduct', inverse_of: :product_type, foreign_key: :product_type_id
+  has_one :blueprint, class_name: 'Type', through: :blueprint_product, source: :blueprint_type
   has_one :category, through: :group
   has_one :latest_market_price_snapshot, lambda {
                                            order esi_last_modified_at: :desc
                                          }, class_name: 'MarketPriceSnapshot', foreign_key: :type_id
 
   has_many :appraisal_items, inverse_of: :type, dependent: :restrict_with_exception
+  has_many :blueprint_activities, foreign_key: :blueprint_type_id
+  has_many :blueprint_materials, inverse_of: :blueprint_type, foreign_key: :blueprint_type_id
+  has_many :blueprint_products, inverse_of: :blueprint_type, foreign_key: :blueprint_type_id
+  has_many :blueprint_required_materials, class_name: 'BlueprintMaterial', inverse_of: :material_type, foreign_key: :material_type_id
+  has_many :blueprint_required_skills, class_name: 'BlueprintSkill', inverse_of: :skill_type, foreign_key: :skill_type_id
+  has_many :blueprint_skills, inverse_of: :blueprint_type, foreign_key: :blueprint_type_id
   has_many :contract_items, inverse_of: :type, dependent: :restrict_with_exception
   has_many :fitting_items, inverse_of: :type, dependent: :restrict_with_exception
   has_many :fittings, inverse_of: :type, dependent: :restrict_with_exception
@@ -59,11 +68,11 @@ class Type < ApplicationRecord
   has_many :stations, inverse_of: :type, dependent: :restrict_with_exception
   has_many :structures, inverse_of: :type, dependent: :restrict_with_exception
 
+  accepts_nested_attributes_for :blueprint_activities
+
   delegate :name, to: :category, prefix: true
   delegate :name, to: :group, prefix: true
   delegate :name, to: :market_group, prefix: true, allow_nil: true
-
-  delegate :adjusted_price, :average_price, to: :latest_market_price_snapshot
 
   scope :marketable, -> { where.not(market_group_id: nil) }
   scope :published, -> { where(published: true) }
@@ -124,5 +133,40 @@ class Type < ApplicationRecord
 
   def render_url
     "https://images.evetech.net/types/#{id}/render"
+  end
+
+  def lead_time
+    blueprint.blueprint_activities.find_by(activity: 'manufacturing').time
+  end
+
+  def lead_time_days
+    (lead_time / 60 / 60 / 24.0).to_d
+  end
+
+  def regional_history(region, period)
+    Statistics::RegionTypeHistory.where(region_id: region.id, type_id: id, date: build_period(period))
+  end
+
+  def regional_sales_daily_avg(region, period = nil)
+    range = build_period(period)
+    days = (range.first.to_date...range.last.to_date).count
+    regional_history(region, period).average(:volume)
+  end
+
+  def build_period(period = nil)
+    return default_period unless period
+
+    case period
+    when :week
+      7.days.ago.beginning_of_day..Time.zone.now
+    when :month
+      30.days.ago.beginning_of_day..Time.zone.now
+    else
+      period
+    end
+  end
+
+  def default_period
+    30.days.ago.beginning_of_day..Time.zone.now
   end
 end

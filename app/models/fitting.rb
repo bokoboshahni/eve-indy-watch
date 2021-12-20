@@ -168,6 +168,12 @@ class Fitting < ApplicationRecord
     )
   end
 
+  def contracts_sold_daily_avg(period = nil)
+    range = build_period(period)
+    days = (range.first.to_date...range.last.to_date).count
+    contracts_sold(period).group_by_day(:completed_at).count.values.sum / days.to_d
+  end
+
   def contracts_sell_through_rate(period = nil)
     (contracts_sold(build_period(period)).count.to_d / contracts_received(build_period(period)).count.to_d) * 100.0
   end
@@ -176,6 +182,16 @@ class Fitting < ApplicationRecord
     return unless contracts.outstanding.count.positive?
 
     (contracts.matching.outstanding.count.to_d / contracts.outstanding.count.to_d) * 100.0
+  end
+
+  def killmail_losses(period)
+    killmails.where(id: killmail_fittings.matching.pluck(:killmail_id), time: build_period(period))
+  end
+
+  def killmail_losses_daily_avg(period = nil)
+    range = build_period(period)
+    days = (range.first.to_date...range.last.to_date).count
+    killmail_losses(period).group_by_day(:time).count.values.sum / days.to_d
   end
 
   def build_period(period = nil)
@@ -208,6 +224,25 @@ class Fitting < ApplicationRecord
   end
 
   def reorder_point
-    safety_stock
+    safety_stock + lead_time_demand
+  end
+
+  def regional_sales_daily_avg(period = nil)
+    return 0.0 unless main_market.type_history_region
+
+    type.regional_sales_daily_avg(main_market.type_history_region, period)
+  end
+
+  def demand_daily_avg(period = nil)
+    all_demand = [
+      contracts_sold_daily_avg(period),
+      killmail_losses_daily_avg(period),
+    ]
+    all_demand << regional_sales_daily_avg(period)
+    all_demand.compact.sum
+  end
+
+  def lead_time_demand(period = nil)
+    (type.lead_time_days * demand_daily_avg(period)).round
   end
 end

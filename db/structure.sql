@@ -65,6 +65,20 @@ CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
 COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
 
 
+--
+-- Name: blueprint_activity; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.blueprint_activity AS ENUM (
+    'copying',
+    'invention',
+    'manufacturing',
+    'research_material',
+    'research_time',
+    'reaction'
+);
+
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -202,6 +216,61 @@ ALTER SEQUENCE public.appraisals_id_seq OWNED BY public.appraisals.id;
 CREATE TABLE public.ar_internal_metadata (
     key character varying NOT NULL,
     value character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: blueprint_activities; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.blueprint_activities (
+    blueprint_type_id bigint NOT NULL,
+    activity public.blueprint_activity NOT NULL,
+    "time" integer NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: blueprint_materials; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.blueprint_materials (
+    blueprint_type_id bigint NOT NULL,
+    material_type_id bigint NOT NULL,
+    activity public.blueprint_activity NOT NULL,
+    quantity integer NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: blueprint_products; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.blueprint_products (
+    blueprint_type_id bigint NOT NULL,
+    product_type_id bigint NOT NULL,
+    activity public.blueprint_activity NOT NULL,
+    quantity integer NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: blueprint_skills; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.blueprint_skills (
+    blueprint_type_id bigint NOT NULL,
+    skill_type_id bigint NOT NULL,
+    activity public.blueprint_activity NOT NULL,
+    level integer NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -1059,7 +1128,8 @@ CREATE TABLE public.markets (
     type_stats_updated_at timestamp without time zone,
     orders_updated_at timestamp without time zone,
     trade_hub boolean,
-    regional boolean
+    regional boolean,
+    type_history_region_id bigint
 );
 
 
@@ -1352,7 +1422,8 @@ CREATE TABLE public.types (
     published boolean,
     volume numeric,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    max_production_limit integer
 );
 
 
@@ -2011,6 +2082,55 @@ CREATE INDEX index_appraisals_on_user_id ON public.appraisals USING btree (user_
 
 
 --
+-- Name: index_blueprint_activities_on_blueprint_type_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_blueprint_activities_on_blueprint_type_id ON public.blueprint_activities USING btree (blueprint_type_id);
+
+
+--
+-- Name: index_blueprint_materials_on_blueprint_type_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_blueprint_materials_on_blueprint_type_id ON public.blueprint_materials USING btree (blueprint_type_id);
+
+
+--
+-- Name: index_blueprint_materials_on_material_type_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_blueprint_materials_on_material_type_id ON public.blueprint_materials USING btree (material_type_id);
+
+
+--
+-- Name: index_blueprint_products_on_blueprint_type_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_blueprint_products_on_blueprint_type_id ON public.blueprint_products USING btree (blueprint_type_id);
+
+
+--
+-- Name: index_blueprint_products_on_product_type_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_blueprint_products_on_product_type_id ON public.blueprint_products USING btree (product_type_id);
+
+
+--
+-- Name: index_blueprint_skills_on_blueprint_type_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_blueprint_skills_on_blueprint_type_id ON public.blueprint_skills USING btree (blueprint_type_id);
+
+
+--
+-- Name: index_blueprint_skills_on_skill_type_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_blueprint_skills_on_skill_type_id ON public.blueprint_skills USING btree (skill_type_id);
+
+
+--
 -- Name: index_characters_on_alliance_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2389,6 +2509,13 @@ CREATE INDEX index_markets_on_owner ON public.markets USING btree (owner_type, o
 
 
 --
+-- Name: index_markets_on_type_history_region_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_markets_on_type_history_region_id ON public.markets USING btree (type_history_region_id);
+
+
+--
 -- Name: index_pg_search_documents_on_searchable; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2477,6 +2604,34 @@ CREATE INDEX index_types_on_group_id ON public.types USING btree (group_id);
 --
 
 CREATE INDEX index_types_on_market_group_id ON public.types USING btree (market_group_id);
+
+
+--
+-- Name: index_unique_blueprint_activities; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_unique_blueprint_activities ON public.blueprint_activities USING btree (blueprint_type_id, activity);
+
+
+--
+-- Name: index_unique_blueprint_materials; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_unique_blueprint_materials ON public.blueprint_materials USING btree (blueprint_type_id, material_type_id, activity);
+
+
+--
+-- Name: index_unique_blueprint_products; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_unique_blueprint_products ON public.blueprint_products USING btree (blueprint_type_id, product_type_id, activity);
+
+
+--
+-- Name: index_unique_blueprint_skills; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_unique_blueprint_skills ON public.blueprint_skills USING btree (blueprint_type_id, skill_type_id, activity);
 
 
 --
@@ -2840,6 +2995,14 @@ ALTER TABLE ONLY public.fitting_items
 
 
 --
+-- Name: markets fk_rails_c6ac6744a5; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.markets
+    ADD CONSTRAINT fk_rails_c6ac6744a5 FOREIGN KEY (type_history_region_id) REFERENCES public.regions(id);
+
+
+--
 -- Name: esi_authorizations fk_rails_cd77e5d142; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2968,6 +3131,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211218193359'),
 ('20211219003130'),
 ('20211219145430'),
-('20211219193017');
+('20211219193017'),
+('20211220003740'),
+('20211220142851');
 
 

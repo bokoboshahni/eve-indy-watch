@@ -47,7 +47,7 @@
       <dl class="grid grid-cols-1 gap-5 sm:grid-cols-3">
         <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
           <dt class="text-sm font-medium text-gray-500 truncate">
-            On Hand
+            Contracts On Hand
           </dt>
           <dd class="mt-1 text-3xl font-semibold text-gray-900">
             <%= @fitting.contracts_on_hand.count %>
@@ -56,7 +56,7 @@
 
         <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
           <dt class="text-sm font-medium text-gray-500 truncate">
-            Received (7 days)
+            Contracts Received (7 days)
           </dt>
           <dd class="mt-1 text-3xl font-semibold text-gray-900">
             <%= @fitting.contracts_received.count %>
@@ -65,7 +65,7 @@
 
         <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
           <dt class="text-sm font-medium text-gray-500 truncate">
-            Sold (7 days)
+            Contracts Sold (7 days)
           </dt>
           <dd class="mt-1 text-3xl font-semibold text-gray-900">
             <%= @fitting.contracts_sold.count %>
@@ -98,6 +98,33 @@
           </dt>
           <dd class="mt-1 text-3xl font-semibold text-gray-900">
             <%= @fitting.killmail_fittings.matching.joins(:killmail).where('killmails.time >= ?', 7.days.ago.beginning_of_day).count %>
+          </dd>
+        </div>
+
+        <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+          <dt class="text-sm font-medium text-gray-500 truncate">
+            Daily Contract Sales (7 days)
+          </dt>
+          <dd class="mt-1 text-3xl font-semibold text-gray-900">
+            <%= number_with_precision @fitting.contracts_sold_daily_avg(:week), precision: 2 %>
+          </dd>
+        </div>
+
+        <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+          <dt class="text-sm font-medium text-gray-500 truncate">
+            Daily Losses (7 days)
+          </dt>
+          <dd class="mt-1 text-3xl font-semibold text-gray-900">
+            <%= number_with_precision @fitting.killmail_losses_daily_avg(:week), precision: 2 %>
+          </dd>
+        </div>
+
+        <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
+          <dt class="text-sm font-medium text-gray-500 truncate">
+            Regional Hull Sales (7 days)
+          </dt>
+          <dd class="mt-1 text-3xl font-semibold text-gray-900">
+            <%= number_with_precision @fitting.regional_sales_daily_avg(:week), precision: 2 %>
           </dd>
         </div>
       </dl>

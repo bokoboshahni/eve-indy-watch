@@ -6,24 +6,32 @@
 #
 # ### Columns
 #
-# Name                         | Type               | Attributes
-# ---------------------------- | ------------------ | ---------------------------
-# **`id`**                     | `bigint`           | `not null, primary key`
-# **`name`**                   | `text`             | `not null`
-# **`orders_updated_at`**      | `datetime`         |
-# **`owner_type`**             | `string`           |
-# **`regional`**               | `boolean`          |
-# **`trade_hub`**              | `boolean`          |
-# **`type_stats_updated_at`**  | `datetime`         |
-# **`created_at`**             | `datetime`         | `not null`
-# **`updated_at`**             | `datetime`         | `not null`
-# **`owner_id`**               | `bigint`           |
+# Name                          | Type               | Attributes
+# ----------------------------- | ------------------ | ---------------------------
+# **`id`**                      | `bigint`           | `not null, primary key`
+# **`name`**                    | `text`             | `not null`
+# **`orders_updated_at`**       | `datetime`         |
+# **`owner_type`**              | `string`           |
+# **`regional`**                | `boolean`          |
+# **`trade_hub`**               | `boolean`          |
+# **`type_stats_updated_at`**   | `datetime`         |
+# **`created_at`**              | `datetime`         | `not null`
+# **`updated_at`**              | `datetime`         | `not null`
+# **`owner_id`**                | `bigint`           |
+# **`type_history_region_id`**  | `bigint`           |
 #
 # ### Indexes
 #
 # * `index_markets_on_owner`:
 #     * **`owner_type`**
 #     * **`owner_id`**
+# * `index_markets_on_type_history_region_id`:
+#     * **`type_history_region_id`**
+#
+# ### Foreign Keys
+#
+# * `fk_rails_...`:
+#     * **`type_history_region_id => regions.id`**
 #
 class Market < ApplicationRecord
   include PgSearch::Model
@@ -31,6 +39,7 @@ class Market < ApplicationRecord
   multisearchable against: %i[name owner_name]
 
   belongs_to :owner, polymorphic: true, optional: true
+  belongs_to :type_history_region, class_name: 'Region', inverse_of: :markets_for_type_history, optional: true
 
   has_many :alliances_as_appraisal_market, class_name: 'Alliance', inverse_of: :appraisal_market
   has_many :alliances_as_main_market, class_name: 'Alliance', inverse_of: :main_market
