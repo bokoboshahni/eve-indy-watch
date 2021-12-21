@@ -19,7 +19,7 @@ if Rails.env.production?
   end
 
   # If you are using UJS then enable automatic nonce generation
-  Rails.application.config.content_security_policy_nonce_generator = -> request { SecureRandom.base64(16) }
+  Rails.application.config.content_security_policy_nonce_generator = ->(r) { Digest::SHA1.hexdigest(r.session.id.to_s) }
 end
 
 # Set the nonce only to specific directives
