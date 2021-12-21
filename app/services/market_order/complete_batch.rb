@@ -7,18 +7,18 @@ class MarketOrder < ApplicationRecord
     end
 
     def call
-      if batch.completed?
-        debug("Market order batch #{batch.id} for #{location.log_name} has already been processed")
-        return
-      end
-
-      unless batch.pages.all? { |p| p.imported? }
-        debug("Market order batch #{batch.id} for #{location.log_name} is not fully imported")
-        return
-      end
-
       batch.transaction do
         batch.lock!
+
+        if batch.completed?
+          debug("Market order batch #{batch.id} for #{location.log_name} has already been processed")
+          return
+        end
+
+        unless batch.pages.all? { |p| p.imported? }
+          debug("Market order batch #{batch.id} for #{location.log_name} is not fully imported")
+          return
+        end
 
         if location.orders_updated_at.nil? || (location.orders_updated_at && location.orders_updated_at <= time)
           location.update!(
