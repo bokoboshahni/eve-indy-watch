@@ -10,26 +10,26 @@ class MarketOrder < ApplicationRecord
     end
 
     def call
-      return if page.started? || page.imported?
-
-      page.update!(started_at: Time.zone.now)
+      return if page.imported?
 
       data = Oj.load(page.orders)
       orders = data.each_with_object([]) { |o, a| a << map_order(o) }
       orders.uniq! { |o| [o[:location_id], o[:order_id]] }
 
-      page.update!(order_count: orders.count)
-
       page.transaction do
+        page.lock!
+
         results = MarketOrder.import!(orders, on_duplicate_key_update: { conflict_target: %i[location_id order_id time], columns: :all })
         raise "Failed to load market orders from batch #{batch.id}/#{page.page}" if results.failed_instances.any?
 
-        page.update!(imported_at: Time.zone.now, import_count: results.ids.count)
+        page.update!(imported_at: Time.zone.now, order_count: orders.count, import_count: results.ids.count)
       end
 
       debug("Imported #{orders.count} market orders(s) for #{location.name} (#{location.id})")
 
       order_location_ids
+    rescue ActiveRecord::Deadlocked
+      warn("Market order batch page #{batch.id}/#{page.page} for #{location.log_name} is currently being processed.")
     end
 
     private

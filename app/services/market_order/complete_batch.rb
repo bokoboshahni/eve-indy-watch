@@ -8,17 +8,17 @@ class MarketOrder < ApplicationRecord
 
     def call
       if batch.completed?
-        debug("Market order batch #{batch.id} for #{location.name} has already been completed")
+        debug("Market order batch #{batch.id} for #{location.log_name} has already been processed")
         return
       end
 
       unless batch.pages.all? { |p| p.imported? }
-        debug("Market order batch #{batch.id} for #{location.name} is not fully imported")
+        debug("Market order batch #{batch.id} for #{location.log_name} is not fully imported")
         return
       end
 
       batch.transaction do
-        batch.update!(completed_at: Time.zone.now)
+        batch.lock!
 
         if location.orders_updated_at.nil? || (location.orders_updated_at && location.orders_updated_at <= time)
           location.update!(
@@ -49,9 +49,13 @@ class MarketOrder < ApplicationRecord
           end
         end
         Market::AggregateFittingStatsWorker.perform_bulk(args)
+
+        batch.update!(completed_at: Time.zone.now)
       end
 
       batch
+    rescue ActiveRecord::Deadlocked
+      warn("Market order batch #{batch.id} for #{location.log_name} is currently being processed.")
     end
 
     private

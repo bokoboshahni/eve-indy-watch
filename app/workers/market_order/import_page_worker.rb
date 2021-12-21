@@ -4,11 +4,6 @@ class MarketOrder < ApplicationRecord
       page = MarketOrder::BatchPage.find([batch_id, page])
       location = page.location
 
-      if page.started?
-        error "Market order batch page #{batch_id}/#{page} has already started importing"
-        return
-      end
-
       order_location_ids = page.import!
 
       return unless order_location_ids&.any?
