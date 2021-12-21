@@ -30,7 +30,7 @@ class MarketOrder < ApplicationRecord
         location_ids = MarketOrder.distinct(:location_id).where(time: time).pluck(:location_id)
         location_ids += [location.id] if location.is_a?(Region)
         markets = Market.joins(:market_locations).where("market_locations.location_id IN (?)", location_ids)
-        markets = markets.where(private: false) if location.is_a?(Region)
+        markets = markets.where(private: [false, nil]) if location.is_a?(Region)
         fitting_markets = []
         markets.each do |market|
           if market.orders_updated_at.nil? || (market.orders_updated_at && market.orders_updated_at <= time)
