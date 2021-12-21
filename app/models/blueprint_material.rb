@@ -36,7 +36,7 @@ class BlueprintMaterial < ApplicationRecord
     reaction
   ].each_with_object({}) { |v, h| h[v] = v.to_s }
 
-  belongs_to :blueprint_activity, inverse_of: :materials
+  # belongs_to :blueprint_activity, inverse_of: :materials
   belongs_to :blueprint_type, class_name: 'Type', inverse_of: :blueprint_materials
   belongs_to :material_type, class_name: 'Type', inverse_of: :blueprint_required_materials
 end
