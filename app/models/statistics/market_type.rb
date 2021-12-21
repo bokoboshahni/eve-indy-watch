@@ -43,6 +43,10 @@
 #
 # ### Indexes
 #
+# * `index_market_types_on_market_id_and_type_id_and_time`:
+#     * **`market_id`**
+#     * **`type_id`**
+#     * **`time DESC`**
 # * `market_types_time_idx`:
 #     * **`time`**
 #
