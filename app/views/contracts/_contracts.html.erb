@@ -22,6 +22,7 @@
               <ul class="list-none">
                 <% matches = contract.contract_fittings.where('similarity > 0.5').order(similarity: :desc) %>
                 <% matches.each do |cf| %>
+                  <% next if matches.any? { |m| m.similarity == 1.0 } && cf.similarity < 1.0 %>
                   <% fitting = cf.fitting %>
                   <% color = cf.similarity == 1.0 ? 'green' : 'red' %>
                   <% icon = cf.similarity == 1.0 ? 'check-circle' : 'exclamation' %>
@@ -43,7 +44,7 @@
                 color =
                   if markup_pct < 0
                     'green-500'
-                  elsif markup_pct >= 50 && markup_pct < 100
+                  elsif markup_pct >= 30 && markup_pct < 100
                     'red-500'
                   end
               %>
