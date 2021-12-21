@@ -41,6 +41,10 @@ class Fitting < ApplicationRecord
   include Discard::Model
   include PgSearch::Model
 
+  SERVICE_LEVELS = [
+    '50',
+  ]
+
   multisearchable against: %i[name owner_name type_name item_names], if: :kept?
 
   has_paper_trail
@@ -220,11 +224,17 @@ class Fitting < ApplicationRecord
   end
 
   def total_available
-    (contracts_on_hand&.count).to_i + market_on_hand(main_market).to_i
+    [
+      contracts_on_hand&.count,
+      market_on_hand(main_market),
+    ].compact.sum
   end
 
   def reorder_point
-    safety_stock + lead_time_demand
+    [
+      safety_stock,
+      lead_time_demand
+    ].compact.sum
   end
 
   def regional_sales_daily_avg(period = nil)
