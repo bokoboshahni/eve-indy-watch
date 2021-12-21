@@ -14,6 +14,11 @@ set :repo_url, ENV.fetch('DEPLOY_REPO_URL', 'https://github.com/bokoboshahni/eve
 set :branch, ENV.fetch('DEPLOY_BRANCH', 'main')
 set :deploy_to, ENV.fetch('DEPLOY_DIR', '/var/www/eve-indy-watch')
 
+set :migration_role, :app
+
+set :assets_roles, %i[web app]
+set :keep_assets, 2
+
 append :linked_files, '.env'
 append :linked_dirs, 'log', 'node_modules', 'tmp', 'vendor/bundle'
 
