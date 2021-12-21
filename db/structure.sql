@@ -1129,7 +1129,8 @@ CREATE TABLE public.markets (
     orders_updated_at timestamp without time zone,
     trade_hub boolean,
     regional boolean,
-    type_history_region_id bigint
+    type_history_region_id bigint,
+    private boolean
 );
 
 
@@ -3133,6 +3134,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211219145430'),
 ('20211219193017'),
 ('20211220003740'),
-('20211220142851');
+('20211220142851'),
+('20211221182159');
 
 
