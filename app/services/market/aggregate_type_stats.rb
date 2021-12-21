@@ -1,15 +1,21 @@
 class Market < ApplicationRecord
   class AggregateTypeStats < ApplicationService
-    def initialize(market, time)
+    def initialize(market, time, batch)
       super
 
+      @batch = batch
       @market = market
       @time = time
     end
 
     def call
+      if batch.location.is_a?(Region) && market.private?
+        error "Cannot aggregate type statistics from regional batch #{batch.id} for private market #{market.log_name}"
+        return
+      end
+
       if Statistics::MarketType.exists?(market_id: market_id, time: time)
-        debug "Aggregated type statistics already exist for #{market_name} at #{time}"
+        warn "Aggregated type statistics already exist for #{market_name} at #{time}"
         return
       end
 
@@ -121,7 +127,7 @@ class Market < ApplicationRecord
 
     TIMESTAMP_FORMAT = '%Y-%m-%d %H:%M:%S'
 
-    attr_reader :market, :time
+    attr_reader :market, :time, :batch
 
     delegate :id, :name, to: :market, prefix: true
   end

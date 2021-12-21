@@ -12,12 +12,12 @@ class Market < ApplicationRecord
 
     def call
       if Statistics::MarketFitting.exists?(fitting_id: fitting_id, market_id: market_id, time: time)
-        debug("Market fitting entry already exists for #{fitting.log_name} in #{market.log_name} at #{time}")
+        warn("Market fitting entry already exists for #{fitting.log_name} in #{market.log_name} at #{time}")
         return
       end
 
-      unless market.type_stats_updated_at
-        debug("No type statistics available for #{market.log_name}")
+      unless Statistics::MarketType.exists?(market_id: market_id, time: time)
+        error("No type statistics available for #{market.log_name} at #{time}")
         return
       end
 

@@ -90,11 +90,11 @@ class Market < ApplicationRecord
     AggregateFittingStatsWorker.perform_async(id, fitting.id, time)
   end
 
-  def aggregate_type_stats!(time)
-    AggregateTypeStats.call(self, time)
+  def aggregate_type_stats!(time, batch)
+    AggregateTypeStats.call(self, time, batch)
   end
 
-  def aggregate_type_stats_async(time)
-    AggregateTypeStatsWorker.perform_async(id, time)
+  def aggregate_type_stats_async(time, batch)
+    AggregateTypeStatsWorker.perform_async(id, time, batch_id)
   end
 end

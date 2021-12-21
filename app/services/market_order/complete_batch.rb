@@ -36,14 +36,13 @@ class MarketOrder < ApplicationRecord
           if market.orders_updated_at.nil? || (market.orders_updated_at && market.orders_updated_at <= time)
             market.update!(orders_updated_at: time)
           end
-          market.aggregate_type_stats!(time)
+          market.aggregate_type_stats!(time, batch)
 
           fitting_market_ids = Alliance.pluck(:main_market_id, :appraisal_market_id).flatten.compact.uniq
           fitting_markets << market if fitting_market_ids.include?(market.id)
         end
 
         args = fitting_markets.each_with_object([]) do |market, a|
-          time = Statistics::MarketType.where(market_id: market.id).maximum(:time)
           scope = market.owner ? market.owner.fittings.kept : Fitting.kept
           scope.find_each do |fitting|
             a << [market.id, fitting.id, time]
