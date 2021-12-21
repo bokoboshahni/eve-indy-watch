@@ -5,8 +5,8 @@
       <div class="px-4 py-5">
         <%=
           line_chart [
-            { name: "Avg. #{fitting.main_market.name} Sell", data: Statistics::MarketFitting.where(fitting_id: fitting.id, market_id: fitting.main_market.id).where('time > ?', 7.days.ago.beginning_of_day).group_by_hour(:time).average(:price_sell) },
-            { name: "Avg. #{fitting.appraisal_market.name} Sell", data: Statistics::MarketFitting.where(fitting_id: fitting.id, market_id: fitting.appraisal_market.id).where('time > ?', 7.days.ago.beginning_of_day).group_by_hour(:time).average(:price_sell) }
+            { name: "Avg. #{fitting.main_market.name} Sell", data: Statistics::MarketFitting.where(fitting_id: fitting.id, market_id: fitting.main_market.id).where('time > ?', 7.days.ago.beginning_of_day).group_by_day(:time).average(:price_sell) },
+            { name: "Avg. #{fitting.appraisal_market.name} Sell", data: Statistics::MarketFitting.where(fitting_id: fitting.id, market_id: fitting.appraisal_market.id).where('time > ?', 7.days.ago.beginning_of_day).group_by_day(:time).average(:price_sell) }
           ], suffix: ' ISK', thousands: ','
         %>
       </div>

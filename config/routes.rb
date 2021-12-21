@@ -30,7 +30,11 @@ Rails.application.routes.draw do
 
   resource :dashboard, only: :show
 
-  resources :contracts, only: %i[index show]
+  resources :contracts, only: %i[index show] do
+    member do
+      get :list_fittings_card
+    end
+  end
 
   resources :fittings
 

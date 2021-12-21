@@ -1,0 +1,47 @@
+<div class="relative" data-hovercard-target="card">
+  <div class="absolute bottom-8 left-0 z-50 bg-white shadow-lg rounded-lg min-w-max-content">
+    <table class="w-96 divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th scope="col" class="px-2 py-2 text-left text-[0.625rem] font-medium text-gray-500 uppercase tracking-wider">
+            Item
+          </th>
+          <th scope="col" class="px-2 py-2 text-left text-[0.625rem] font-medium text-gray-500 uppercase tracking-wider">
+            Fitting Quantity
+          </th>
+          <th scope="col" class="px-2 py-2 text-left text-[0.625rem] font-medium text-gray-500 uppercase tracking-wider">
+            Contract Quantity
+          </th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <% @contract_fitting.items_comparison.each do |item| %>
+          <% next if item[:contract_quantity].to_i >= item[:fitting_quantity] %>
+          <tr>
+            <td class="px-2 py-2 whitespace-nowrap text-[0.625rem] font-medium text-gray-900">
+              <%= item[:type].name %>
+            </td>
+            <td class="px-2 py-2 text-[0.625rem] font-medium">
+              <%= number_with_delimiter item[:fitting_quantity] %>
+            </td>
+            <td class="<%= item[:contract_quantity].to_i >= item[:fitting_quantity] ? 'bg-green-300' : 'bg-red-300' %> px-4 py-2 whitespace-nowrap text-[0.625rem] font-medium">
+              <%= number_with_delimiter item[:contract_quantity].to_i %>
+            </td>
+          </tr>
+        <% end %>
+        <% @contract_fitting.extra_items.each do |item| %>
+          <tr>
+            <td class="px-2 py-2 text-[0.625rem] font-medium text-gray-900">
+              <%= item.name %>
+            </td>
+            <td class="px-2 py-2 text-[0.625rem] font-medium">
+            </td>
+            <td class="bg-gray-400 px-4 py-2 whitespace-nowrap text-[0.625rem] font-medium">
+              <%= number_with_delimiter item.quantity %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

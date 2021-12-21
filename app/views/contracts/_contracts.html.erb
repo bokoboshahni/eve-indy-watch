@@ -27,11 +27,22 @@
                   <% color = cf.similarity == 1.0 ? 'green' : 'red' %>
                   <% icon = cf.similarity == 1.0 ? 'check-circle' : 'exclamation' %>
                   <% style = cf.similarity == 1.0 ? 'font-medium' : 'italic' %>
+
                   <li>
-                    <%= link_to contract_path(contract, fitting_id: fitting.id), class: "mt-2 flex items-center #{style} text-#{color}-500 hover:text-#{color}-500", data: { turbo_frame: '_top' } do %>
-                      <%= heroicon icon, variant: :outline, options: { class: "flex-shrink-0 mr-1.5 h-5 w-5 text-#{color}-500 hover:text-#{color}-500" } %>
-                      <%= fitting.name %>
-                      <% unless cf.similarity == 1.0 %>(<%= number_to_percentage(cf.similarity * 100.0, precision: 0) %>)<% end %>
+                    <% if cf.similarity == 1.0 %>
+                      <%= link_to contract_path(contract, fitting_id: fitting.id), class: "mt-2 flex items-center #{style} text-#{color}-500 hover:text-#{color}-500", data: { turbo_frame: '_top' } do %>
+                        <%= heroicon icon, variant: :outline, options: { class: "flex-shrink-0 mr-1.5 h-5 w-5 text-#{color}-500 hover:text-#{color}-500" } %>
+                        <%= fitting.name %>
+                        (<%= number_to_percentage(cf.similarity * 100.0, precision: 0) %>)
+                      <% end %>
+                    <% else %>
+                      <%= render HovercardComponent.new(url: list_fittings_card_contract_path(contract, fitting_id: fitting.id), class_name: 'inline-block') do %>
+                        <%= link_to contract_path(contract, fitting_id: fitting.id), class: "mt-2 flex items-center #{style} text-#{color}-500 hover:text-#{color}-500", data: { turbo_frame: '_top' } do %>
+                          <%= heroicon icon, variant: :outline, options: { class: "flex-shrink-0 mr-1.5 h-5 w-5 text-#{color}-500 hover:text-#{color}-500" } %>
+                          <%= fitting.name %>
+                          (<%= number_to_percentage(cf.similarity * 100.0, precision: 0) %>)
+                        <% end %>
+                      <% end %>
                     <% end %>
                   </li>
                 <% end %>
