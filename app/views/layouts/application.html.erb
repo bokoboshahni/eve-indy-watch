@@ -8,10 +8,10 @@
 
     <%= favicon_link_tag main_alliance_logo_url %>
 
-    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <%= stylesheet_link_tag 'https://rsms.me/inter/inter.css' %>
     <%= stylesheet_pack_tag 'application' %>
 
-    <%= javascript_pack_tag 'application' %>
+    <%= javascript_pack_tag 'application', nonce: true %>
   </head>
 
   <body class="h-full">
