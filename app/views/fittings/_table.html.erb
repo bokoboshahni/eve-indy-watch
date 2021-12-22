@@ -1,0 +1,58 @@
+<%= render(TableComponent.new) do |t| %>
+  <% t.header do %>Fitting<% end %>
+  <% t.header width: '1/12' do %>
+    Total Available
+  <% end %>
+  <% t.header width: '1/12' do %>Contracts<% end %>
+  <% t.header width: '1/12' do %>Contract Quality<% end %>
+  <% t.header width: '1/6' do %>Contract Price<% end %>
+  <% t.header width: '1/12' do %><%= current_alliance.main_market_name %> Qty<% end %>
+  <% t.header width: '1/6' do %><%= current_alliance.main_market_name %> Price<% end %>
+
+  <% fittings.each do |fitting| %>
+    <% t.row do |tr| %>
+      <% tr.cell do %>
+        <div class="flex items-center">
+          <div class="flex-shrink-0 h-8 w-8">
+            <%= image_tag fitting.type.icon_url, class: 'h-8 w-8 rounded-md' %>
+          </div>
+          <div class="ml-4">
+            <div class="text-xs font-medium text-gray-900">
+              <%= link_to fitting.name, fitting_path(fitting), class: 'text-xs hover:text-indigo-900' %>
+            </div>
+            <div class="text-xs text-gray-500">
+              <%= fitting.type.name %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <% tr.cell do %>
+        <% if fitting.reorder_point %>
+          <% color = fitting.total_available >= fitting.reorder_point ? 'green' : 'red' %>
+          <span class="text-<%= color %>-500"><%= fitting.total_available %> / <%= fitting.reorder_point %></span>
+        <% else %>
+          <%= fitting.total_available %>
+        <% end %>
+      <% end %>
+      <% tr.cell do %>
+        <%= fitting.contracts_on_hand&.count || 'N/A' %>
+      <% end %>
+      <% tr.cell do %>
+        <%= fitting.contract_quality ? number_to_percentage(fitting.contract_quality, precision: 0) : 'N/A' %>
+      <% end %>
+      <% tr.cell do %>
+        <%= number_to_isk fitting.contracts_on_hand ? fitting.contracts_on_hand.minimum(:price) : 'N/A' %>
+      <% end %>
+      <% tr.cell do %>
+        <% if fitting.main_market %>
+          <%= fitting.market_on_hand(fitting.main_market) || 'N/A' %>
+        <% end %>
+      <% end %>
+      <% tr.cell do %>
+        <% if fitting.main_market %>
+          <%= number_to_isk fitting.market_price_sell(fitting.main_market) || 'N/A' %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>
