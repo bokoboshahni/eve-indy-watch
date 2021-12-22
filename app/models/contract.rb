@@ -94,8 +94,6 @@ class Contract < ApplicationRecord
   has_many :fittings, through: :contract_fittings
   has_many :items, class_name: 'ContractItem', inverse_of: :contract, dependent: :destroy
 
-  delegate :name, to: :acceptor, prefix: true, allow_nil: true
-  delegate :name, to: :assignee, prefix: true
   delegate :name, to: :issuer, prefix: true
   delegate :name, to: :issuer_corporation, prefix: true
 
