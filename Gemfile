@@ -10,6 +10,7 @@ gem 'dotenv-rails', '~> 2.7'
 gem 'active_median', '~> 0.3'
 gem 'activerecord-copy', '~> 1.1'
 gem 'activerecord-import', '~> 1.2'
+gem 'ahoy_matey', '~> 4.0'
 gem 'ancestry', '~> 4.1'
 gem 'awesome_print', '~> 1.9'
 gem 'bootsnap', '>= 1.4.4', require: false
