@@ -42,6 +42,7 @@ class Fitting < ApplicationRecord
   include PgSearch::Model
 
   include ContractStatistics
+  include KillmailStatistics
   include MarketStatistics
 
   SERVICE_LEVELS = [
