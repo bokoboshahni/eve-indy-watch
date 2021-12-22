@@ -1,13 +1,16 @@
 # frozen_string_literal: true
 
 class ContractsController < ApplicationController
+  include Filterable
+
   before_action :authenticate_user!
   before_action :find_contract, only: %i[show list_fittings_card]
 
   def index
-    @pagy, @contracts = pagy(Contract.includes(:fittings).where(assignee_id: main_alliance_id, status: 'outstanding', type: 'item_exchange', esi_items_exception: nil).order(
-                               :title, :issued_at
-                             ))
+    store_filters!('Contract')
+
+    scope = Contract.item_exchange.outstanding.assigned_to(main_alliance_id)
+    @pagy, @contracts = pagy(filter_for('Contract').apply!(scope))
 
     if turbo_frame_request?
       render partial: 'contracts', locals: { contracts: @contracts, paginator: @pagy }

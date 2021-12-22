@@ -44,6 +44,16 @@ class ApplicationController < ActionController::Base
     app_config.main_alliance_id
   end
 
+  helper_method :main_market_id
+  def main_market_id
+    main_alliance.main_market_id
+  end
+
+  helper_method :main_market
+  def main_market
+    main_alliance.main_market
+  end
+
   helper_method :app_config
   def app_config
     Rails.application.config.x.app

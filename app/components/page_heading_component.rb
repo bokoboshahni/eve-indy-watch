@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class PageHeadingComponent < ApplicationComponent
-  renders_many :actions, ActionButtonComponent
+  renders_many :actions
 
   def initialize(title:, width: '7xl')
     @title = title

@@ -74,10 +74,16 @@
 class Contract < ApplicationRecord
   include PgSearch::Model
 
+  SEARCH_FIELDS = %i[
+    title acceptor_name assignee_name end_location_name issuer_name
+    issuer_corporation_name start_location_name fitting_names item_names
+  ]
+
   self.inheritance_column = nil
 
-  multisearchable against: %i[title acceptor_name assignee_name end_location_name issuer_name issuer_corporation_name start_location_name fitting_names item_names],
-                  if: -> (record) { record.outstanding? && record.item_exchange? }
+  multisearchable against: SEARCH_FIELDS, if: -> r { r.outstanding? && r.item_exchange? }
+
+  pg_search_scope :search_by_all, against: SEARCH_FIELDS
 
   has_paper_trail ignore: %i[updated_at esi_expires_at esi_last_modified_at esi_items_exception esi_items_expires_at esi_items_last_modified_at],
                   versions: { class_name: 'ContractVersion' }
@@ -101,8 +107,10 @@ class Contract < ApplicationRecord
   scope :expired, -> { outstanding.where('expired_at <= ?', Time.zone.now) }
   scope :finished, -> { where(status: 'finished') }
   scope :in_progress, -> { where(status: 'in_progress') }
-  scope :item_exchange, -> { where(type: 'item_exchange') }
+  scope :item_exchange, -> { where(type: 'item_exchange', esi_items_exception: nil) }
   scope :outstanding, -> { where(status: 'outstanding') }
+
+  scope :assigned_to, -> id { where(assignee_id: id) }
 
   def courier?
     type == 'courier'

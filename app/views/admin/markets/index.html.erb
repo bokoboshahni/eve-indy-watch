@@ -6,7 +6,9 @@
 <% end %>
 
 <%= render PageHeadingComponent.new(title: 'Markets') do |c| %>
-  <% c.action(href: new_admin_market_path).with_content('New market') %>
+  <% c.action do %>
+    <%= render ActionButtonComponent.new(href: new_admin_market_path).with_content('New market') %>
+  <% end %>
 <% end %>
 <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
   <div class="py-4">
