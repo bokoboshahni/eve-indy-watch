@@ -30,7 +30,7 @@
     description: "Create a snapshot of market prices"
 
   prune_market_orders:
-    cron: '15 * * * *'
+    cron: '15 */2 * * *'
     class: 'MarketOrder::PruneWorker'
     args: ['hour']
     description: "Prune market orders hourly"
