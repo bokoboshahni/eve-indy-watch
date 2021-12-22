@@ -9,7 +9,7 @@
         <% t.header width: '3/12' do %>Fittings<% end %>
         <% t.header width: '2/12' do %>Location<% end %>
         <% t.header width: '2/12' do %>Price<% end %>
-        <% t.header width: '2/12' do %>Valuation (<%= current_alliance.appraisal_market.name %> Sell)<% end %>
+        <% t.header width: '2/12' do %>Valuation (<%= main_alliance.appraisal_market.name %> Sell)<% end %>
         <% t.header width: '2/12' do %>Volume<% end %>
 
         <% contracts.each do |contract| %>
@@ -50,7 +50,7 @@
             <% tr.cell do %><%= contract.end_location.name %><% end %>
             <% tr.cell do %>
               <%
-                markup_pct = contract.markup_sell_pct(current_alliance.appraisal_market)
+                markup_pct = contract.markup_sell_pct(main_alliance.appraisal_market)
                 color =
                   if markup_pct < 0
                     'green-500'
