@@ -41,6 +41,9 @@ class Fitting < ApplicationRecord
   include Discard::Model
   include PgSearch::Model
 
+  include ContractStatistics
+  include MarketStatistics
+
   SERVICE_LEVELS = [
     '50',
   ]
@@ -53,33 +56,6 @@ class Fitting < ApplicationRecord
   belongs_to :type, inverse_of: :fittings
 
   has_many :items, class_name: 'FittingItem', inverse_of: :fitting, dependent: :destroy
-  has_many :killmail_fittings, inverse_of: :fitting, dependent: :destroy
-
-  has_many :contract_fittings, inverse_of: :fitting, dependent: :destroy
-
-  has_many :contracts, through: :contract_fittings do
-    def matching
-      where('contract_fittings.quantity > 0')
-    end
-
-    def partially_matching
-      where('contract_fittings.similarity >= 0.95 AND contract_fittings.similarity < 1.0')
-    end
-
-    def problematic
-      where('contract_fittings.similarity >= 0.75 AND contract_fittings.similarity < 1.0')
-    end
-
-    def all_matching
-      where('contract_fittings.similarity >= 0.75')
-    end
-  end
-
-  has_many :killmails, through: :killmail_fittings do
-    def likely_matching
-      where('killmail_fittings.similarity >= 0.95 AND killmail_fittings.similarity < 1.0')
-    end
-  end
 
   accepts_nested_attributes_for :items, allow_destroy: true
 
@@ -96,35 +72,6 @@ class Fitting < ApplicationRecord
 
   def item_names
     items.includes(:type).pluck('types.name')
-  end
-
-  def latest_market_stats(market)
-    @latest_market_stats ||= {}
-    @latest_market_stats[market.id] ||=
-      begin
-        time = Statistics::MarketFitting.where(fitting_id: id, market_id: market.id).maximum(:time)
-        Statistics::MarketFitting.find_by(fitting_id: id, market_id: market.id, time: time)
-      end
-  end
-
-  def market_on_hand(market)
-    latest_market_stats(market)&.quantity
-  end
-
-  def market_price_buy(market)
-    latest_market_stats(market)&.price_buy
-  end
-
-  def market_price_sell(market)
-    latest_market_stats(market)&.price_sell
-  end
-
-  def market_price_split(market)
-    latest_market_stats(market)&.price_split
-  end
-
-  def market_limiting_items(market)
-    latest_market_stats(market)&.limiting_items
   end
 
   def compact_items
@@ -153,51 +100,6 @@ class Fitting < ApplicationRecord
     grouped.values
   end
 
-  def contracts_on_hand
-    contracts.where(id: contract_fittings.matching.outstanding.pluck(:contract_id))
-  end
-
-  def contracts_all_on_hand
-    contracts.all_matching.outstanding
-  end
-
-  def contracts_received(period = nil)
-    contracts.where(id: contract_fittings.matching.pluck(:contract_id), issued_at: build_period(period))
-  end
-
-  def contracts_sold(period = nil)
-    contracts.finished.where(
-      id: contract_fittings.matching.pluck(:contract_id),
-      completed_at: build_period(period)
-    )
-  end
-
-  def contracts_sold_daily_avg(period = nil)
-    range = build_period(period)
-    days = (range.first.to_date...range.last.to_date).count
-    contracts_sold(period).group_by_day(:completed_at).count.values.sum / days.to_d
-  end
-
-  def contracts_sell_through_rate(period = nil)
-    (contracts_sold(build_period(period)).count.to_d / contracts_received(build_period(period)).count.to_d) * 100.0
-  end
-
-  def contract_quality
-    return unless contracts.outstanding.count.positive?
-
-    (contracts.matching.outstanding.count.to_d / contracts.outstanding.count.to_d) * 100.0
-  end
-
-  def killmail_losses(period)
-    killmails.where(id: killmail_fittings.matching.pluck(:killmail_id), time: build_period(period))
-  end
-
-  def killmail_losses_daily_avg(period = nil)
-    range = build_period(period)
-    days = (range.first.to_date...range.last.to_date).count
-    killmail_losses(period).group_by_day(:time).count.values.sum / days.to_d
-  end
-
   def build_period(period = nil)
     return default_period unless period
 
@@ -213,14 +115,6 @@ class Fitting < ApplicationRecord
 
   def default_period
     30.days.ago.beginning_of_day..Time.zone.now
-  end
-
-  def match_contract(contract)
-    MatchContract.call(self, contract)
-  end
-
-  def match_market(market)
-    MatchMarket.call(self, market)
   end
 
   def total_available

@@ -51,6 +51,9 @@ class Market < ApplicationRecord
   has_many :stations, through: :market_locations, source: :location, source_type: 'Station'
   has_many :structures, through: :market_locations, source: :location, source_type: 'Structure'
 
+  has_many :fitting_stats, class_name: 'Statistics::MarketFitting', inverse_of: :market
+  has_many :type_stats, class_name: 'Statistics::MarketType', inverse_of: :market
+
   delegate :name, to: :owner, prefix: true, allow_nil: true
 
   validates :name, presence: true

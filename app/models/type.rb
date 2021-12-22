@@ -68,6 +68,9 @@ class Type < ApplicationRecord
   has_many :stations, inverse_of: :type, dependent: :restrict_with_exception
   has_many :structures, inverse_of: :type, dependent: :restrict_with_exception
 
+  has_many :fitting_stats, class_name: 'Statistics::MarketFitting', inverse_of: :market
+  has_many :market_stats, class_name: 'Statistics::MarketType', inverse_of: :market
+
   accepts_nested_attributes_for :blueprint_activities
 
   delegate :name, to: :category, prefix: true

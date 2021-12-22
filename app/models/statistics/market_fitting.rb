@@ -24,6 +24,9 @@ module Statistics
   class MarketFitting < ApplicationRecord
     self.primary_keys = :market_id, :fitting_id, :time
 
+    belongs_to :market, inverse_of: :fitting_stats
+    belongs_to :fitting, inverse_of: :market_stats
+
     validates :market_id, presence: true
     validates :fitting_id, presence: true
     validates :time, presence: true
