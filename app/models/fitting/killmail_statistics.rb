@@ -1,5 +1,5 @@
 class Fitting < ApplicationRecord
-  module ContractStatistics
+  module KillmailStatistics
     extend ActiveSupport::Concern
 
     included do
