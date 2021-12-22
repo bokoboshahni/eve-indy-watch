@@ -538,7 +538,11 @@ CREATE TABLE public.contracts (
     type text NOT NULL,
     volume numeric,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    start_location_name text,
+    end_location_name text,
+    assignee_name text,
+    acceptor_name text
 );
 
 
@@ -1077,7 +1081,8 @@ CREATE TABLE public.market_orders (
     range text NOT NULL,
     volume_remain integer NOT NULL,
     volume_total integer NOT NULL,
-    batch_page_id bigint[]
+    batch_page_id bigint[],
+    location_name text
 );
 
 
@@ -3135,6 +3140,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211219193017'),
 ('20211220003740'),
 ('20211220142851'),
-('20211221182159');
+('20211221182159'),
+('20211222165711'),
+('20211222171050');
 
 

@@ -9,6 +9,7 @@
 # **`duration`**         | `integer`          | `not null`
 # **`issued_at`**        | `datetime`         | `not null`
 # **`kind`**             | `text`             | `not null`
+# **`location_name`**    | `text`             |
 # **`location_type`**    | `string`           | `not null`
 # **`min_volume`**       | `integer`          | `not null`
 # **`price`**            | `decimal(, )`      | `not null`

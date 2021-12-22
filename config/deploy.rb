@@ -97,4 +97,17 @@ namespace :search do
   end
 end
 
+namespace :data do
+  desc 'Backfill contract related names'
+  task :backfill_contract_related_names do
+    on roles(:db) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, 'data:backfill_contract_related_names'
+        end
+      end
+    end
+  end
+end
+
 before 'deploy:migrate', 'deploy:db_schema_load' if ENV['DB_SCHEMA_LOAD']

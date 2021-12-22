@@ -10,13 +10,16 @@
 # --------------------------------- | ------------------ | ---------------------------
 # **`id`**                          | `bigint`           | `not null, primary key`
 # **`accepted_at`**                 | `datetime`         |
+# **`acceptor_name`**               | `text`             |
 # **`acceptor_type`**               | `string`           |
+# **`assignee_name`**               | `text`             |
 # **`assignee_type`**               | `string`           | `not null`
 # **`availability`**                | `text`             | `not null`
 # **`buyout`**                      | `decimal(, )`      |
 # **`collateral`**                  | `decimal(, )`      |
 # **`completed_at`**                | `datetime`         |
 # **`days_to_complete`**            | `integer`          |
+# **`end_location_name`**           | `text`             |
 # **`end_location_type`**           | `string`           |
 # **`esi_expires_at`**              | `datetime`         | `not null`
 # **`esi_items_exception`**         | `jsonb`            |
@@ -28,6 +31,7 @@
 # **`issued_at`**                   | `datetime`         | `not null`
 # **`price`**                       | `decimal(, )`      |
 # **`reward`**                      | `decimal(, )`      |
+# **`start_location_name`**         | `text`             |
 # **`start_location_type`**         | `string`           |
 # **`status`**                      | `text`             | `not null`
 # **`title`**                       | `text`             |
