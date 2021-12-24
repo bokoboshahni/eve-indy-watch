@@ -39,6 +39,7 @@ Rails.application.routes.draw do
   resources :fittings do
     member do
       get :inventory_chart_data
+      get :stock_levels
     end
   end
 

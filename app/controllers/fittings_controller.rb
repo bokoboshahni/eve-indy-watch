@@ -2,7 +2,7 @@
 
 class FittingsController < ApplicationController
   before_action :authenticate_user!
-  before_action :find_fitting, only: %i[show edit update destroy inventory_chart_data]
+  before_action :find_fitting, only: %i[show edit update destroy stock_levels]
 
   def index
     @pagy, @fittings = pagy(Fitting.kept.where(owner_id: main_alliance_id).order(:name))
@@ -16,6 +16,7 @@ class FittingsController < ApplicationController
 
   def show
     @fitting = Fitting.find(params[:id])
+    @contract_fittings = contracts_for_fitting(@fitting)
   end
 
   def new
@@ -50,7 +51,11 @@ class FittingsController < ApplicationController
     render json: data
   end
 
-  def stock_control_data
+  def stock_levels
+    stock_levels = @fitting.stock_levels.where(market_id: market_param)
+                                        .where('time >= ?', 24.hours.ago)
+                                        .order(time: :asc)
+    render json: stock_levels.to_json
   end
 
   private
@@ -61,5 +66,22 @@ class FittingsController < ApplicationController
 
   def fitting_params
     params.require(:fitting).permit(:name, :contract_match_threshold, :killmail_match_threshold, :pinned, :safety_stock)
+  end
+
+  def market_param
+    params.fetch(:market_id, main_market_id)
+  end
+
+  def contracts_for_fitting(fitting)
+    contracts =
+      case params[:contract_type]
+      when 'matching'
+        fitting.contract_fittings.matching
+      when 'problematic'
+        fitting.contract_fittings.problematic
+      else
+        fitting.contract_fittings
+      end
+    contracts.outstanding.includes(:contract).order(similarity: :desc)
   end
 end

@@ -43,6 +43,8 @@ class ContractFitting < ApplicationRecord
 
   scope :matching, -> { joins(:fitting).where('similarity >= COALESCE(fittings.contract_match_threshold, 1.0)') }
 
+  scope :problematic, -> { joins(:fitting).where('similarity < COALESCE(fittings.contract_match_threshold, 1.0)') }
+
   scope :outstanding, -> { joins(:contract).where("contracts.status = 'outstanding'") }
 
   def types

@@ -48,6 +48,18 @@ module Statistics
 
     accepts_nested_attributes_for :items
 
+    def as_json(_options = nil)
+      super.merge(
+        total_quantity: total_quantity
+      )
+    end
+
+    def contract_problematic_quantity
+      return unless contract_match_quantity.to_i && contract_total_quantity.to_i.positive?
+
+      contract_total_quantity.to_i - contract_match_quantity.to_i
+    end
+
     def contract_quality
       return unless contract_match_quantity.to_d && contract_total_quantity.to_d.positive?
 

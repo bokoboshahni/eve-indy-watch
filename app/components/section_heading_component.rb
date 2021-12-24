@@ -4,8 +4,10 @@ class SectionHeadingComponent < ApplicationComponent
   attr_reader :title, :width
 
   renders_one :description
+  renders_one :sorter
 
-  renders_many :actions, ActionButtonComponent
+  renders_many :actions
+  renders_many :inline_tabs
 
   def initialize(title:, width: '7xl')
     @title = title

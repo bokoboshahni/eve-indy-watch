@@ -35,7 +35,7 @@ class FittingPolicy < ApplicationPolicy
     corporation_fittings_admin? || alliance_fittings_admin?
   end
 
-  def inventory_chart_data?
+  def stock_levels?
     show?
   end
 
