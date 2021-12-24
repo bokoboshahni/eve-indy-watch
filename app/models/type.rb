@@ -65,11 +65,9 @@ class Type < ApplicationRecord
   has_many :killmail_items, inverse_of: :type, dependent: :restrict_with_exception
   has_many :lossmails, class_name: 'Killmail', inverse_of: :ship_type, dependent: :restrict_with_exception
   has_many :market_price_snapshots, inverse_of: :type, dependent: :destroy
+  has_many :market_stats, class_name: 'Statistics::MarketType', inverse_of: :market
   has_many :stations, inverse_of: :type, dependent: :restrict_with_exception
   has_many :structures, inverse_of: :type, dependent: :restrict_with_exception
-
-  has_many :fitting_stats, class_name: 'Statistics::MarketFitting', inverse_of: :market
-  has_many :market_stats, class_name: 'Statistics::MarketType', inverse_of: :market
 
   accepts_nested_attributes_for :blueprint_activities
 

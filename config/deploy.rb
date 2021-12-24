@@ -108,6 +108,17 @@ namespace :data do
       end
     end
   end
+
+  desc 'Backfill fitting markets'
+  task :backfill_fitting_markets do
+    on roles(:db) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, 'data:backfill_fitting_markets'
+        end
+      end
+    end
+  end
 end
 
 before 'deploy:migrate', 'deploy:db_schema_load' if ENV['DB_SCHEMA_LOAD']

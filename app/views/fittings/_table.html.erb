@@ -31,7 +31,7 @@
         <% if fitting.reorder_point %>
           <% total_available = stock.total_quantity %>
           <% color = total_available >= fitting.reorder_point ? 'green' : 'red' %>
-          <span class="text-<%= color %>-500"><%= fitting.total_available %> / <%= fitting.reorder_point %></span>
+          <span class="text-<%= color %>-500"><%= total_available %> / <%= fitting.reorder_point %></span>
         <% else %>
           <%= total_available %>
         <% end %>

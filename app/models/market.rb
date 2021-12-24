@@ -55,7 +55,6 @@ class Market < ApplicationRecord
   has_many :stations, through: :market_locations, source: :location, source_type: 'Station'
   has_many :structures, through: :market_locations, source: :location, source_type: 'Structure'
 
-  has_many :fitting_stats, class_name: 'Statistics::MarketFitting', inverse_of: :market
   has_many :type_stats, class_name: 'Statistics::MarketType', inverse_of: :market
 
   delegate :name, to: :owner, prefix: true, allow_nil: true
@@ -91,14 +90,6 @@ class Market < ApplicationRecord
   def type_ids_for_sale
     time = Statistics::MarketType.where(market_id: id).maximum(:time)
     Statistics::MarketType.distinct(:type_id).where(market_id: id).pluck(:type_id)
-  end
-
-  def aggregate_fitting_stats!(fitting, time)
-    AggregateFittingStats.call(self, fitting, time)
-  end
-
-  def aggregate_fitting_stats_async(fitting, time)
-    AggregateFittingStatsWorker.perform_async(id, fitting.id, time)
   end
 
   def aggregate_type_stats!(time, batch)
