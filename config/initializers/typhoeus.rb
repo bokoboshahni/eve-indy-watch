@@ -1,3 +1,3 @@
-require 'typhoeus/cache/rails'
+# require 'typhoeus/cache/rails'
 
-Typhoeus::Config.cache = Typhoeus::Cache::Rails.new
+# Typhoeus::Config.cache = Typhoeus::Cache::Rails.new
