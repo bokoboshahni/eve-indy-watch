@@ -2,7 +2,7 @@
 
 class ESIAuthorizationsController < ApplicationController
   before_action :find_esi_authorization, only: %i[destroy]
-  before_action :authorize_admin!
+  before_action :authorize!
 
   layout 'settings'
 
@@ -24,6 +24,10 @@ class ESIAuthorizationsController < ApplicationController
   private
 
   delegate :client_id, :client_secret, :oauth_url, :redirect_uri, :scopes, to: :esi_config
+
+  def authorize!
+    redirect_to dashboard_path unless current_user.admin? || current_user.esi_authorizations_enabled?
+  end
 
   def find_esi_authorization
     @esi_authorization = current_user.esi_authorizations.find(params[:id])

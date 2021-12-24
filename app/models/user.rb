@@ -6,14 +6,15 @@
 #
 # ### Columns
 #
-# Name                | Type               | Attributes
-# ------------------- | ------------------ | ---------------------------
-# **`id`**            | `bigint`           | `not null, primary key`
-# **`admin`**         | `boolean`          | `default(FALSE), not null`
-# **`roles`**         | `text`             | `default([]), is an Array`
-# **`created_at`**    | `datetime`         | `not null`
-# **`updated_at`**    | `datetime`         | `not null`
-# **`character_id`**  | `bigint`           | `not null`
+# Name                              | Type               | Attributes
+# --------------------------------- | ------------------ | ---------------------------
+# **`id`**                          | `bigint`           | `not null, primary key`
+# **`admin`**                       | `boolean`          | `default(FALSE), not null`
+# **`esi_authorizations_enabled`**  | `boolean`          |
+# **`roles`**                       | `text`             | `default([]), is an Array`
+# **`created_at`**                  | `datetime`         | `not null`
+# **`updated_at`**                  | `datetime`         | `not null`
+# **`character_id`**                | `bigint`           | `not null`
 #
 # ### Indexes
 #

@@ -1476,7 +1476,8 @@ CREATE TABLE public.users (
     admin boolean DEFAULT false NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    roles text[] DEFAULT '{}'::text[]
+    roles text[] DEFAULT '{}'::text[],
+    esi_authorizations_enabled boolean
 );
 
 
@@ -3173,6 +3174,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211221182159'),
 ('20211222165711'),
 ('20211222171050'),
-('20211224154201');
+('20211224154201'),
+('20211224232516');
 
 
