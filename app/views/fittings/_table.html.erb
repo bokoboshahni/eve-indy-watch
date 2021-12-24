@@ -18,7 +18,7 @@
           </div>
           <div class="ml-4">
             <div class="text-xs font-medium text-gray-900">
-              <%= link_to fitting.name, fitting_path(fitting), class: 'text-xs hover:text-indigo-900' %>
+              <%= link_to fitting.name, fitting_path(fitting), class: 'text-xs hover:text-indigo-900', data: { turbo_frame: '_top' } %>
             </div>
             <div class="text-xs text-gray-500">
               <%= fitting.type.name %>
