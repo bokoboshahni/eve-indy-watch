@@ -678,6 +678,20 @@ ALTER SEQUENCE public.fitting_items_id_seq OWNED BY public.fitting_items.id;
 
 
 --
+-- Name: fitting_markets; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.fitting_markets (
+    fitting_id bigint NOT NULL,
+    market_id bigint NOT NULL,
+    contract_stock_level_enabled boolean NOT NULL,
+    market_stock_level_enabled boolean NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: fittings; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2713,11 +2727,27 @@ ALTER TABLE ONLY public.contract_events
 
 
 --
+-- Name: fitting_markets fk_rails_2004b6faf6; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.fitting_markets
+    ADD CONSTRAINT fk_rails_2004b6faf6 FOREIGN KEY (fitting_id) REFERENCES public.fittings(id);
+
+
+--
 -- Name: corporations fk_rails_25cac28994; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.corporations
     ADD CONSTRAINT fk_rails_25cac28994 FOREIGN KEY (esi_authorization_id) REFERENCES public.esi_authorizations(id);
+
+
+--
+-- Name: fitting_markets fk_rails_26f703ad40; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.fitting_markets
+    ADD CONSTRAINT fk_rails_26f703ad40 FOREIGN KEY (market_id) REFERENCES public.markets(id);
 
 
 --
@@ -3142,6 +3172,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211220142851'),
 ('20211221182159'),
 ('20211222165711'),
-('20211222171050');
+('20211222171050'),
+('20211224154201');
 
 

@@ -21,10 +21,7 @@ class MarketOrder < ApplicationRecord
         end
 
         if location.orders_updated_at.nil? || (location.orders_updated_at && location.orders_updated_at <= time)
-          location.update!(
-            esi_market_orders_last_modified_at: time,
-            orders_updated_at: time
-          )
+          location.update!(orders_updated_at: time)
         end
 
         location_ids = MarketOrder.distinct(:location_id).where(time: time).pluck(:location_id)
@@ -42,6 +39,7 @@ class MarketOrder < ApplicationRecord
           if market.orders_updated_at.nil? || (market.orders_updated_at && market.orders_updated_at <= time)
             market.update!(orders_updated_at: time)
           end
+
           market.aggregate_type_stats!(time, batch)
 
           fitting_market_ids.add(market.id) if alliance_market_ids.include?(market.id)

@@ -45,7 +45,6 @@ module EVEIndyWatch
     config.generators.stylesheets = false
     config.generators.javascripts = false
 
-    config.log_formatter = ::NewRelic::Agent::Logging::DecoratingFormatter.new
     config.lograge.custom_options = lambda do |event|
       {
         application: Rails.application.class.parent_name,

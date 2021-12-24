@@ -1,13 +1,14 @@
+<% stock = fitting.current_stock_level(market) %>
 <% t.row do |tr| %>
   <%= tr.cell do %><%= market.name %><% end %>
-  <%= tr.cell do %><%= fitting.market_on_hand(market) || 'N/A' %><% end %>
-  <%= tr.cell do %><%= number_to_isk(fitting.market_price_buy(market)) || 'N/A' %><% end %>
-  <%= tr.cell do %><%= number_to_isk(fitting.market_price_sell(market)) || 'N/A' %><% end %>
-  <%= tr.cell do %><%= number_to_isk(fitting.market_price_split(market)) || 'N/A' %><% end %>
+  <%= tr.cell do %><%= stock.market_quantity || 'N/A' %><% end %>
+  <%= tr.cell do %><%= number_to_isk(stock.market_buy_price) || 'N/A' %><% end %>
+  <%= tr.cell do %><%= number_to_isk(stock.market_sell_price) || 'N/A' %><% end %>
+  <%= tr.cell do %><%= number_to_isk(stock.market_split_price) || 'N/A' %><% end %>
   <%= tr.cell do %>
-    <% if fitting.market_limiting_items(market)&.any? %>
+    <% if stock.limiting_items.any? %>
       <ul>
-        <% fitting.market_limiting_items(market).each do |type| %>
+        <% stock.limiting_items.each do |type| %>
           <li class="inline-block">
             <a title="<%= type.name %>">
               <%= image_tag "https://images.evetech.net/types/#{type.id}/icon", alt: type.name, class: 'h-4 h-4 rounded-md' %>

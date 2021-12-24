@@ -53,6 +53,7 @@
 module Statistics
   class MarketType < ApplicationRecord
     self.primary_keys = :market_id, :type_id, :time
+    self.table_name = :market_types
 
     belongs_to :market, inverse_of: :type_stats
     belongs_to :type, inverse_of: :market_stats

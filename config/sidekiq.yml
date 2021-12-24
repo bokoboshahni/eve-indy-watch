@@ -39,3 +39,26 @@
     cron: '15 11 * * *'
     class: 'Region::PreloadTypeHistoriesWorker'
     description: "Preload type histories for items in contracts, fittings, and killmails"
+
+  calculate_live_stock_levels:
+    cron: '*/5 * * * *'
+    class: 'Fitting::CalculateAllStockLevelsWorker'
+    description: "Calculate live stock levels"
+
+  calculate_end_of_day_stock_levels:
+    cron: '0 11 * * *'
+    class: 'Fitting::CalculateAllStockLevelsWorker'
+    args: ['daily']
+    description: "Calculate end-of-day stock levels"
+
+  calculate_end_of_week_stock_levels:
+    cron: '0 11 * * 7'
+    class: 'Fitting::CalculateAllStockLevelsWorker'
+    args: ['weekly']
+    description: "Calculate end-of-week stock levels"
+
+  calculate_end_of_month_stock_levels:
+    cron: '0 11 1 * *'
+    class: 'Fitting::CalculateAllStockLevelsWorker'
+    args: ['monthly']
+    description: "Calculate end-of-month stock levels"

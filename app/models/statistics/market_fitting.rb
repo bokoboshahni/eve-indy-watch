@@ -23,6 +23,7 @@
 module Statistics
   class MarketFitting < ApplicationRecord
     self.primary_keys = :market_id, :fitting_id, :time
+    self.table_name = :market_fittings
 
     belongs_to :market, inverse_of: :fitting_stats
     belongs_to :fitting, inverse_of: :market_stats

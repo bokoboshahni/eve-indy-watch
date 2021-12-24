@@ -26,5 +26,6 @@
 #
 module Statistics
   class RegionTypeHistory < ApplicationRecord
+    self.table_name = :region_type_histories
   end
 end

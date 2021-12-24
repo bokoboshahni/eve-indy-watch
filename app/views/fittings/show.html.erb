@@ -5,7 +5,8 @@
   <% end %>
 <% end %>
 
-<!-- Page header -->
+<% stock = @fitting.current_stock_level(@fitting.owner.main_market) %>
+
 <div class="max-w-3xl mx-auto px-4 sm:px-6 md:flex md:items-center md:justify-between md:space-x-5 lg:max-w-7xl lg:px-8">
   <div class="flex items-center space-x-5">
     <div class="flex-shrink-0">
@@ -26,7 +27,7 @@
 
 <div class="mt-8 max-w-3xl mx-auto grid grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
   <div class="space-y-6 lg:col-start-1 lg:col-span-2">
-    <% if @fitting.total_available.zero? %>
+    <% if stock.total_quantity.zero? %>
       <section>
         <div class="bg-red-50 border-l-4 border-red-400 p-4">
           <div class="flex">
@@ -43,6 +44,18 @@
       </section>
     <% end %>
 
+    <% if current_user.admin? %>
+    <section>
+      <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6"
+        data-controller="inventory-chart"
+        data-inventory-chart-url-value="<%= inventory_chart_data_fitting_path(@fitting) %>"
+        data-inventory-chart-canvas-id-value="#inventoryChart"
+      >
+        <div id="inventoryChart" class="h-72" data-inventory-chart-target="chart"></div>
+      </div>
+    </section>
+    <% end %>
+
     <section>
       <dl class="grid grid-cols-1 gap-5 sm:grid-cols-3">
         <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
@@ -50,7 +63,7 @@
             Contracts On Hand
           </dt>
           <dd class="mt-1 text-3xl font-semibold text-gray-900">
-            <%= @fitting.contracts_on_hand.count %>
+            <%= stock.contract_match_quantity || 'N/A' %>
           </dd>
         </div>
 
@@ -78,7 +91,7 @@
               <%= @fitting.owner.main_market.name %> Market
             </dt>
             <dd class="mt-1 text-3xl font-semibold text-gray-900">
-              <%= @fitting.market_on_hand(@fitting.owner.main_market) %>
+              <%= stock.market_quantity || 'N/A' %>
             </dd>
           </div>
         <% end %>
@@ -88,7 +101,7 @@
             Quality Contracts
           </dt>
           <dd class="mt-1 text-3xl font-semibold text-gray-900">
-            <%= @fitting.contract_quality ? number_to_percentage(@fitting.contract_quality, precision: 2) : 'N/A' %>
+            <%= stock.contract_quality ? number_to_percentage(stock.contract_quality, precision: 2) : 'N/A' %>
           </dd>
         </div>
 
@@ -129,40 +142,6 @@
         </div>
       </dl>
     </section>
-    <section aria-labelledby="fitting-information-title">
-      <div class="bg-white shadow sm:rounded-lg">
-        <div class="px-4 py-5 sm:px-6">
-          <h2 id="fitting-information-title" class="text-lg leading-6 font-medium text-gray-900">
-            Fitting Information
-          </h2>
-        </div>
-        <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
-          <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
-            <div class="sm:col-span-1">
-              <dt class="text-sm font-medium text-gray-500">
-                Owner
-              </dt>
-              <dd class="mt-1 text-sm text-gray-900">
-                <%= @fitting.owner.name %>
-              </dd>
-            </div>
-            <div class="sm:col-span-1">
-              <dt class="text-sm font-medium text-gray-500">
-                Last updated
-              </dt>
-              <dd class="mt-1 text-sm text-gray-900">
-                <%= local_time @fitting.updated_at, format: :db %>
-              </dd>
-            </div>
-          </dl>
-        </div>
-        <!--
-        <div>
-          <a href="#" class="block bg-gray-50 text-sm font-medium text-gray-500 text-center px-4 py-4 hover:text-gray-700 sm:rounded-b-lg">View on wiki</a>
-        </div>
-        -->
-      </div>
-    </section>
 
     <section>
       <%= render 'market_availability', fitting: @fitting %>
@@ -175,12 +154,35 @@
             <h2 id="contracts-title" class="text-lg font-medium text-gray-900">Open Contracts</h2>
           </div>
           <div class="px-4 py-5">
-            <%=
-              line_chart [
-                { name: 'Issued', data: ContractEvent.where(event: 'issued', contract_id: @fitting.contract_fittings.where('similarity >= ?', @fitting.contract_match_threshold || 1.0).pluck(:contract_id)).where('time >= ?', 1.month.ago.beginning_of_day).group_by_day(:time).count },
-                { name: 'Sold', data: ContractEvent.where(event: 'finished', contract_id: @fitting.contract_fittings.where('similarity >= ?', @fitting.contract_match_threshold || 1.0).pluck(:contract_id)).where('time >= ?', 1.month.ago.beginning_of_day).group_by_day(:time).count }
-              ]
-            %>
+            <%= turbo_frame_tag 'open_contracts_chart' do %>
+              <div>
+                <div class="hidden sm:block">
+                  <nav class="flex justify-end space-x-2" aria-label="Tabs">
+                    <% current_period = params[:open_contracts_period] || '1D' %>
+                    <% current_class = 'bg-gray-100 text-gray-700' %>
+                    <% default_class = 'text-gray-500 hover:text-gray-700' %>
+
+                    <%= link_to '1D', fitting_path(@fitting, open_contracts_period: '1D', class: "#{current_period == '1D' ? current_class : default_class} px-3 py-2 font-medium text-xs rounded-md") %>
+
+                    <%= link_to '1W', fitting_path(@fitting, open_contracts_period: '1W', class: "#{current_period == '1W' ? current_class : default_class} px-3 py-2 font-medium text-xs rounded-md") %>
+
+                    <%= link_to '1M', fitting_path(@fitting, open_contracts_period: '1M', class: "#{current_period == '1M' ? current_class : default_class} px-3 py-2 font-medium text-xs rounded-md") %>
+
+                    <%= link_to '6M', fitting_path(@fitting, open_contracts_period: '6M', class: "#{current_period == '6M' ? current_class : default_class} px-3 py-2 font-medium text-xs rounded-md") %>
+
+                    <%= link_to 'YTD', fitting_path(@fitting, open_contracts_period: 'YTD', class: "#{current_period == 'YTD' ? current_class : default_class} px-3 py-2 font-medium text-xs rounded-md") %>
+
+                    <%= link_to '1Y', fitting_path(@fitting, open_contracts_period: '1Y', class: "#{current_period == '1Y' ? current_class : default_class} px-3 py-2 font-medium text-xs rounded-md") %>
+                  </nav>
+                </div>
+              </div>
+              <%=
+                line_chart [
+                  { name: 'Issued', data: ContractEvent.where(event: 'issued', contract_id: @fitting.contract_fittings.where('similarity >= ?', @fitting.contract_match_threshold || 1.0).pluck(:contract_id)).where('time >= ?', 1.month.ago.beginning_of_day).group_by_day(:time).count },
+                  { name: 'Sold', data: ContractEvent.where(event: 'finished', contract_id: @fitting.contract_fittings.where('similarity >= ?', @fitting.contract_match_threshold || 1.0).pluck(:contract_id)).where('time >= ?', 1.month.ago.beginning_of_day).group_by_day(:time).count }
+                ]
+              %>
+            <% end %>
           </div>
           <div>
             <table class="table-auto min-w-full divide-y divide-gray-200">
@@ -299,39 +301,9 @@
     </section>
   </div>
 
-  <section aria-labelledby="contents-title" class="lg:col-start-3 lg:col-span-1">
-    <div class="bg-white shadow sm:rounded-lg sm:overflow-hidden">
-      <div class="divide-y divide-gray-200">
-        <div class="px-4 py-5 sm:px-6">
-          <h2 id="contents-title" class="text-lg font-medium text-gray-900">Contents</h2>
-        </div>
-        <div>
-          <table class="max-w-full table-fixed divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-              <tr>
-                <th scope="col" class="w-5/6 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Item
-                </th>
-                <th scope="col" class="w-1/6 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Qty
-                </th>
-              </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-              <% @fitting.items.includes(:type).each do |item| %>
-                <tr>
-                  <td class="px-4 py-2 text-xs font-medium text-gray-900">
-                    <%= item.type.name %>
-                  </td>
-                  <td class="px-4 py-2 text-xs font-medium">
-                    <%= number_with_delimiter item.quantity %>
-                  </td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </section>
+  <div class="lg:col-start-3 lg:col-span-1 space-y-6">
+    <%= render 'fitting_info', fitting: @fitting %>
+
+    <%= render 'fitting_items', fitting: @fitting %>
+  </div>
 </div>

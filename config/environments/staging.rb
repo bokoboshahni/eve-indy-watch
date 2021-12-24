@@ -63,8 +63,8 @@ Rails.application.configure do
   # Tell Active Support which deprecation messages to disallow.
   config.active_support.disallowed_deprecation_warnings = []
 
-  # Use default logging formatter so that PID and timestamp are not suppressed.
-  config.log_formatter = ::Logger::Formatter.new
+  # Use New Relic log formatter
+  config.log_formatter = ::NewRelic::Agent::Logging::DecoratingFormatter.new
 
   # Use a different logger for distributed setups.
   # require "syslog/logger"

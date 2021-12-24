@@ -45,6 +45,10 @@ class Market < ApplicationRecord
   has_many :alliances_as_appraisal_market, class_name: 'Alliance', inverse_of: :appraisal_market
   has_many :alliances_as_main_market, class_name: 'Alliance', inverse_of: :main_market
   has_many :appraisals, inverse_of: :market, dependent: :destroy
+  has_many :fitting_markets, inverse_of: :market
+  has_many :fitting_stock_level_summaries, class_name: 'Statistics::FittingStockLevelSummary', inverse_of: :market
+  has_many :fitting_stock_levels, class_name: 'Statistics::FittingStockLevel', inverse_of: :market
+  has_many :fittings, through: :fitting_markets
   has_many :market_locations, inverse_of: :market, dependent: :destroy
   has_many :orders, class_name: 'MarketOrder', through: :market_locations
   has_many :regions, through: :market_locations, source: :location, source_type: 'Region'
@@ -74,6 +78,10 @@ class Market < ApplicationRecord
     else
       orders.where(time: orders.maximum(:time))
     end
+  end
+
+  def location_ids
+    market_locations.pluck(:location_id)
   end
 
   def types

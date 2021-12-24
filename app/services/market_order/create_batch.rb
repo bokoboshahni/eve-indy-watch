@@ -7,7 +7,10 @@ class MarketOrder < ApplicationRecord
     end
 
     def call
-      return unless location.esi_market_orders_expired?
+      unless location.esi_market_orders_expired?
+        debug("Market orders are not expired for #{location.log_name}")
+        return
+      end
 
       fetch_page_count_and_time
       return if Batch.exists?(location_id: location.id, time: time)

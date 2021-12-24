@@ -3,7 +3,7 @@ class MarketOrder < ApplicationRecord
     sidekiq_options lock: :until_and_while_executing, on_conflict: :log
 
     def perform(location_type, location_id)
-      location = Object.const_get(location_type).find(location_id)
+      location = location_type.constantize.find(location_id)
       batch = CreateBatch.call(location)
 
       return unless batch

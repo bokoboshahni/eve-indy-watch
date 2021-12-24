@@ -15,4 +15,16 @@ namespace :data do
       end
     end
   end
+
+  task backfill_fitting_markets: :environment do
+    Fitting.transaction do
+      Fitting.find_each do |fitting|
+        fitting_markets = [
+          { market_id: fitting.owner.main_market_id, contract_stock_level_enabled: true, market_stock_level_enabled: true },
+          { market_id: fitting.owner.appraisal_market_id, contract_stock_level_enabled: false, market_stock_level_enabled: true },
+        ]
+        fitting.fitting_markets.create!(fitting_markets)
+      end
+    end
+  end
 end

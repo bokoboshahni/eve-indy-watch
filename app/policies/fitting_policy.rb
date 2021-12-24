@@ -35,6 +35,10 @@ class FittingPolicy < ApplicationPolicy
     corporation_fittings_admin? || alliance_fittings_admin?
   end
 
+  def inventory_chart_data?
+    show?
+  end
+
   private
 
   def record_admin?

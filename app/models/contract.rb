@@ -110,6 +110,8 @@ class Contract < ApplicationRecord
   scope :item_exchange, -> { where(type: 'item_exchange', esi_items_exception: nil) }
   scope :outstanding, -> { where(status: 'outstanding') }
 
+  scope :at, -> id { where(end_location_id: id) }
+
   scope :assigned_to, -> id { where(assignee_id: id) }
 
   def courier?

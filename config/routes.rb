@@ -36,7 +36,11 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :fittings
+  resources :fittings do
+    member do
+      get :inventory_chart_data
+    end
+  end
 
   resources :types do
     member do

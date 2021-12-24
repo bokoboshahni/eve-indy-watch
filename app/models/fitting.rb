@@ -56,7 +56,11 @@ class Fitting < ApplicationRecord
   belongs_to :owner, polymorphic: true
   belongs_to :type, inverse_of: :fittings
 
+  has_many :fitting_markets, inverse_of: :fitting
   has_many :items, class_name: 'FittingItem', inverse_of: :fitting, dependent: :destroy
+  has_many :markets, through: :fitting_markets
+  has_many :stock_level_summaries, class_name: 'Statistics::FittingStockLevelSummary', inverse_of: :fitting
+  has_many :stock_levels, class_name: 'Statistics::FittingStockLevel', inverse_of: :fitting
 
   accepts_nested_attributes_for :items, allow_destroy: true
 
@@ -66,6 +70,16 @@ class Fitting < ApplicationRecord
 
   delegate :name, to: :owner, prefix: true
   delegate :name, to: :type, prefix: true
+
+  def current_stock_level_time(market)
+    @current_stock_level_time ||= {}
+    @current_stock_level_time[market.id] ||= stock_levels.where(market_id: market.id).maximum(:time)
+  end
+
+  def current_stock_level(market)
+    @current_stock_level ||= {}
+    @current_stock_level[market.id] ||= stock_levels.find_by(market_id: market.id, time: current_stock_level_time(market))
+  end
 
   def type_ids
     [items.pluck(:type_id), type_id].flatten
@@ -149,5 +163,9 @@ class Fitting < ApplicationRecord
 
   def lead_time_demand(period = nil)
     (type.lead_time_days * demand_daily_avg(period)).round
+  end
+
+  def calculate_stock_level(market, market_time, time, interval = nil)
+    CalculateStockLevel.call(id, market.id, market_time, time, interval)
   end
 end
