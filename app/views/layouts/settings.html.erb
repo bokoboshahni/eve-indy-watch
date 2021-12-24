@@ -20,7 +20,7 @@
           <nav class="-mb-px flex space-x-8">
             <%= link_to 'General', settings_path, class: "#{settings_tab_text_class('settings')} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" %>
 
-            <%= link_to('Authorizations', settings_esi_authorizations_path, class: "#{settings_tab_text_class('esi_authorizations')} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm") if current_user.admin? %>
+            <%= link_to('Authorizations', settings_esi_authorizations_path, class: "#{settings_tab_text_class('esi_authorizations')} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm") if current_user.admin? || current_user.esi_authorizations_enabled? %>
           </nav>
         </div>
       </div>
