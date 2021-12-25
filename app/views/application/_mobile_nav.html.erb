@@ -1,0 +1,119 @@
+
+  <div class="fixed inset-0 flex z-40 md:hidden hidden" role="dialog" aria-modal="true" data-toggle-target="toggleable">
+    <!--
+      Off-canvas menu overlay, show/hide based on off-canvas menu state.
+
+      Entering: "transition-opacity ease-linear duration-300"
+        From: "opacity-0"
+        To: "opacity-100"
+      Leaving: "transition-opacity ease-linear duration-300"
+        From: "opacity-100"
+        To: "opacity-0"
+    -->
+    <div class="fixed inset-0 bg-gray-600 bg-opacity-75" aria-hidden="true"></div>
+
+    <!--
+      Off-canvas menu, show/hide based on off-canvas menu state.
+
+      Entering: "transition ease-in-out duration-300 transform"
+        From: "-translate-x-full"
+        To: "translate-x-0"
+      Leaving: "transition ease-in-out duration-300 transform"
+        From: "translate-x-0"
+        To: "-translate-x-full"
+    -->
+    <div class="relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-gray-800">
+      <!--
+        Close button, show/hide based on off-canvas menu state.
+
+        Entering: "ease-in-out duration-300"
+          From: "opacity-0"
+          To: "opacity-100"
+        Leaving: "ease-in-out duration-300"
+          From: "opacity-100"
+          To: "opacity-0"
+      -->
+      <div class="absolute top-0 right-0 -mr-12 pt-2">
+        <button type="button" class="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" data-action='click->toggle#toggle touch->toggle#toggle'>
+          <span class="sr-only">Close sidebar</span>
+          <!-- Heroicon name: outline/x -->
+          <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="flex-shrink-0 flex items-center px-4">
+        <%= image_tag main_alliance_logo_url, class: 'h-8 w-8 mx-auto', alt: '' %>
+      </div>
+      <div class="mt-5 flex-1 h-0 overflow-y-auto">
+        <nav class="px-2 space-y-1">
+          <div>
+            <%= link_to root_path, class: "#{sidebar_item_text_class('dashboards')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
+              <%= heroicon 'home', variant: :outline, options: { class: "#{sidebar_item_icon_class('dashboards')} mr-3 flex-shrink-0 h-6 w-6" } %>
+              Dashboard
+            <% end %>
+
+            <%= link_to contracts_path class: "#{sidebar_item_text_class('contracts')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
+              <%= heroicon 'document-text', variant: :outline, options: { class: "#{sidebar_item_icon_class('contracts')} mr-3 flex-shrink-0 h-6 w-6" } %>
+              Contracts
+            <% end %>
+
+            <%= link_to fittings_path, class: "#{sidebar_item_text_class('fittings')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
+              <%= heroicon 'template', variant: :outline, options: { class: "#{sidebar_item_icon_class('fittings')} mr-3 flex-shrink-0 h-6 w-6" } %>
+              Fittings
+            <% end %>
+
+            <% if current_user.admin? %>
+              <%= link_to types_path, class: "#{sidebar_item_text_class('types')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
+                <%= heroicon 'chip', variant: :outline, options: { class: "#{sidebar_item_icon_class('types')} mr-3 flex-shrink-0 h-6 w-6" } %>
+                Types
+              <% end %>
+            <% end %>
+          </div>
+
+          <div class="pt-4">
+            <% if current_user.admin? %>
+              <p class="px-3 pb-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                Administration
+              </p>
+
+              <%= link_to admin_markets_path, class: "#{sidebar_item_text_class('markets')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
+                <%= heroicon 'scale', variant: :outline, options: { class: "#{sidebar_item_icon_class('markets')} mr-3 flex-shrink-0 h-6 w-6" } %>
+                Markets
+              <% end %>
+
+              <%= link_to admin_users_path, class: "#{sidebar_item_text_class('users')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
+                <%= heroicon 'users', variant: :outline, options: { class: "#{sidebar_item_icon_class('users')} mr-3 flex-shrink-0 h-6 w-6" } %>
+                Users
+              <% end %>
+
+              <%= link_to admin_corporations_path, class: "#{sidebar_item_text_class('corporations')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
+                <%= heroicon 'office-building', variant: :outline, options: { class: "#{sidebar_item_icon_class('corporations')} mr-3 flex-shrink-0 h-6 w-6" } %>
+                Corporations
+              <% end %>
+
+              <%= link_to admin_alliances_path, class: "#{sidebar_item_text_class('alliances')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
+                <%= heroicon 'globe-alt', variant: :outline, options: { class: "#{sidebar_item_icon_class('alliances')} mr-3 flex-shrink-0 h-6 w-6" } %>
+                Alliances
+              <% end %>
+
+              <%= link_to admin_structures_path, class: "#{sidebar_item_text_class('structures')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
+                <%= heroicon 'library', variant: :outline, options: { class: "#{sidebar_item_icon_class('structures')} mr-3 flex-shrink-0 h-6 w-6" } %>
+                Structures
+              <% end %>
+
+              <%= link_to admin_regions_path, class: "#{sidebar_item_text_class('regions')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
+                <%= heroicon 'map', variant: :outline, options: { class: "#{sidebar_item_icon_class('regions')} mr-3 flex-shrink-0 h-6 w-6" } %>
+                Regions
+              <% end %>
+            <% end %>
+          </div>
+        </nav>
+      </div>
+    </div>
+
+    <div class="flex-shrink-0 w-14" aria-hidden="true">
+      <!-- Dummy element to force sidebar to shrink to fit close icon -->
+    </div>
+  </div>

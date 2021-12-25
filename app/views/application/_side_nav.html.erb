@@ -1,0 +1,84 @@
+<div class="hidden md:flex md:w-64 md:flex-col md:fixed md:inset-y-0">
+  <!-- Sidebar component, swap this element with another sidebar if you like -->
+  <div class="flex-1 flex flex-col min-h-0 bg-gray-800">
+    <div class="flex items-center h-16 flex-shrink-0 px-4 bg-gray-900">
+
+      <%= image_tag main_alliance_logo_url, class: 'h-8 w-8 mx-auto', alt: '' %>
+    </div>
+    <div class="flex-1 flex flex-col overflow-y-auto">
+      <nav class="flex-1 px-2 py-4 space-y-1">
+        <div>
+          <%= link_to root_path, class: "#{sidebar_item_text_class('dashboards')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
+            <%= heroicon 'home', variant: :outline, options: { class: "#{sidebar_item_icon_class('dashboards')} mr-3 flex-shrink-0 h-6 w-6" } %>
+            Dashboard
+          <% end %>
+
+          <%= link_to contracts_path, class: "#{sidebar_item_text_class('contracts')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
+            <%= heroicon 'document-text', variant: :outline, options: { class: "#{sidebar_item_icon_class('contracts')} mr-3 flex-shrink-0 h-6 w-6" } %>
+            Contracts
+          <% end %>
+
+          <%= link_to fittings_path, class: "#{sidebar_item_text_class('fittings')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
+            <%= heroicon 'template', variant: :outline, options: { class: "#{sidebar_item_icon_class('fittings')} mr-3 flex-shrink-0 h-6 w-6" } %>
+            Fittings
+          <% end %>
+
+          <% if current_user.admin? %>
+            <%= link_to types_path, class: "#{sidebar_item_text_class('types')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
+              <%= heroicon 'chip', variant: :outline, options: { class: "#{sidebar_item_icon_class('types')} mr-3 flex-shrink-0 h-6 w-6" } %>
+              Types
+            <% end %>
+          <% end %>
+        </div>
+
+        <div class="pt-4">
+          <% if current_user.admin? %>
+            <p class="px-3 pb-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+              Administration
+            </p>
+
+            <%= link_to admin_markets_path, class: "#{sidebar_item_text_class('markets')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
+              <%= heroicon 'scale', variant: :outline, options: { class: "#{sidebar_item_icon_class('markets')} mr-3 flex-shrink-0 h-6 w-6" } %>
+              Markets
+            <% end %>
+
+            <%= link_to admin_users_path, class: "#{sidebar_item_text_class('users')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
+              <%= heroicon 'users', variant: :outline, options: { class: "#{sidebar_item_icon_class('users')} mr-3 flex-shrink-0 h-6 w-6" } %>
+              Users
+            <% end %>
+
+            <%= link_to admin_corporations_path, class: "#{sidebar_item_text_class('corporations')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
+              <%= heroicon 'office-building', variant: :outline, options: { class: "#{sidebar_item_icon_class('corporations')} mr-3 flex-shrink-0 h-6 w-6" } %>
+              Corporations
+            <% end %>
+
+            <%= link_to admin_alliances_path, class: "#{sidebar_item_text_class('alliances')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
+              <%= heroicon 'globe-alt', variant: :outline, options: { class: "#{sidebar_item_icon_class('alliances')} mr-3 flex-shrink-0 h-6 w-6" } %>
+              Alliances
+            <% end %>
+
+            <%= link_to admin_structures_path, class: "#{sidebar_item_text_class('structures')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
+              <%= heroicon 'library', variant: :outline, options: { class: "#{sidebar_item_icon_class('structures')} mr-3 flex-shrink-0 h-6 w-6" } %>
+              Structures
+            <% end %>
+
+            <%= link_to admin_regions_path, class: "#{sidebar_item_text_class('regions')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
+              <%= heroicon 'map', variant: :outline, options: { class: "#{sidebar_item_icon_class('regions')} mr-3 flex-shrink-0 h-6 w-6" } %>
+              Regions
+            <% end %>
+
+            <%= link_to '/admin/sidekiq', class: "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
+              <%= heroicon 'clock', variant: :outline, options: { class: "text-gray-400 group-hover:text-gray-300 mr-3 flex-shrink-0 h-6 w-6" } %>
+              Jobs
+            <% end %>
+
+            <%= link_to '/admin/pghero', class: "text-gray-300 hover:bg-gray-700 hover:text-white group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
+              <%= heroicon 'database', variant: :outline, options: { class: "text-gray-400 group-hover:text-gray-300 mr-3 flex-shrink-0 h-6 w-6" } %>
+              Database
+            <% end %>
+          <% end %>
+        </div>
+      </nav>
+    </div>
+  </div>
+</div>
