@@ -101,8 +101,7 @@ CREATE TABLE public.alliances (
     appraisal_market_id bigint,
     main_market_id bigint,
     zkb_fetched_at timestamp without time zone,
-    zkb_sync_enabled boolean,
-    contract_esi_authorization_id bigint
+    zkb_sync_enabled boolean
 );
 
 
@@ -2055,13 +2054,6 @@ CREATE INDEX index_alliances_on_appraisal_market_id ON public.alliances USING bt
 
 
 --
--- Name: index_alliances_on_contract_esi_authorization_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_alliances_on_contract_esi_authorization_id ON public.alliances USING btree (contract_esi_authorization_id);
-
-
---
 -- Name: index_alliances_on_main_market_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2840,14 +2832,6 @@ ALTER TABLE ONLY public.stations
 
 
 --
--- Name: alliances fk_rails_5e6377c390; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.alliances
-    ADD CONSTRAINT fk_rails_5e6377c390 FOREIGN KEY (contract_esi_authorization_id) REFERENCES public.esi_authorizations(id);
-
-
---
 -- Name: characters fk_rails_5ed7aa5594; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3192,6 +3176,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211222171050'),
 ('20211224154201'),
 ('20211224232516'),
-('20211226163422');
+('20211226163422'),
+('20211226183751');
 
 
