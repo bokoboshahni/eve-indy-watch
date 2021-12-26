@@ -49,7 +49,7 @@ class Contract < ApplicationRecord
         return
       end
 
-      authorization = corporation.authorization
+      authorization = corporation.esi_authorization
       raise Error, "Unable to find authorization for contract #{contract_id}" unless authorization
 
       esi_retriable do
