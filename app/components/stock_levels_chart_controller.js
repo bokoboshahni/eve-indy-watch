@@ -1,12 +1,17 @@
 import { Controller } from "@hotwired/stimulus";
 
 import * as d3 from 'd3'
+import { scaleBand } from "d3";
 import * as fc from 'd3fc'
 
 export default class extends Controller {
   static targets = ["chart"];
 
-  static values = { canvasId: String, url: String, minimumLevel: Number };
+  static values = {
+    canvasId: String,
+    url: String,
+    minimumLevel: Number
+  };
 
   connect() {
     this.load().then(data => this.render(data))
@@ -22,7 +27,7 @@ export default class extends Controller {
       quantity: Number(d.total_quantity),
     }))
 
-    console.log(data)
+    // console.log(data)
 
     const xExtent = fc.extentTime()
       .accessors([d => d.time]);
@@ -31,12 +36,22 @@ export default class extends Controller {
       .accessors([d => d.quantity])
       .include([0])
 
-    console.log(yExtent(data))
+    // console.log(yExtent(data))
+
+    const quantityColor = d3.scaleThreshold()
+      .domain([this.minimumLevelValue])
+      .range(["#7f1d1d", "#14532d"])
+
+    // console.log(quantityColor(data[0]))
 
     const quantitySeries = fc
       .seriesSvgLine()
       .mainValue(d => d.quantity)
       .crossValue(d => d.time)
+      .decorate(sel =>
+        sel.enter()
+          .attr("stroke-width", 1.5)
+      )
 
     const minLevelBand = fc
       .annotationSvgBand()

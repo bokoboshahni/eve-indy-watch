@@ -46,14 +46,7 @@
 
     <% if current_user.admin? %>
       <section>
-        <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6"
-          data-controller="stock-levels-chart"
-          data-stock-levels-chart-url-value="<%= stock_levels_fitting_path(@fitting) %>"
-          data-stock-levels-chart-minimum-level-value="<%= @fitting.safety_stock %>"
-          data-stock-levels-chart-canvas-id-value="#stockLevelsChart"
-        >
-          <div id="stockLevelsChart" class="h-72" data-stock-levels-chart-target="chart"></div>
-        </div>
+        <%= render 'fitting_stock_levels', fitting: @fitting %>
       </section>
     <% end %>
 
