@@ -8,6 +8,7 @@
 # -------------------- | ------------------ | ---------------------------
 # **`id`**             | `bigint`           | `not null, primary key`
 # **`completed_at`**   | `datetime`         |
+# **`compressed_at`**  | `datetime`         |
 # **`fetched_at`**     | `datetime`         |
 # **`location_type`**  | `string`           | `not null`
 # **`time`**           | `datetime`         | `not null`

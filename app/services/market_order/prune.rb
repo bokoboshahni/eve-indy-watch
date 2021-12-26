@@ -9,7 +9,6 @@ class MarketOrder < ApplicationRecord
     def call
       MarketOrder.transaction do
         MarketOrder.where('time < ?', before).delete_all
-        MarketOrder::Batch.where('time < ?', before).destroy_all
       end
     end
 

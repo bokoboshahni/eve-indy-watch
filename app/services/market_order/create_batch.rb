@@ -17,6 +17,7 @@ class MarketOrder < ApplicationRecord
 
       Batch.transaction do
         @batch = Batch.create!(location: location, time: time)
+        FileUtils.mkdir_p Rails.root.join("tmp/market_orders/#{batch.id}")
         pages = fetch_pages(@batch)
         BatchPage.import(pages, validate: false)
         batch.update!(fetched_at: Time.zone.now)
@@ -61,7 +62,10 @@ class MarketOrder < ApplicationRecord
 
             next if res.body.strip.empty?
 
-            pages << { batch_id: batch.id, orders: res.body, page: page }
+            page_path = Rails.root.join("tmp/market_orders/#{batch.id}/#{page}.json")
+            File.write(page_path, res.body)
+
+            pages << { batch_id: batch.id, page: page }
             pending_pages.delete(page)
           end
           hydra.queue(req)

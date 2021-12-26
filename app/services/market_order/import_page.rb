@@ -12,7 +12,9 @@ class MarketOrder < ApplicationRecord
     def call
       return if page.imported?
 
-      data = Oj.load(page.orders)
+      page_path = Rails.root.join("tmp/market_orders/#{batch.id}/#{page.page}.json")
+
+      data = Oj.load(File.read(page_path))
       orders = data.each_with_object([]) { |o, a| a << map_order(o) }
       orders.uniq! { |o| [o[:location_id], o[:order_id]] }
 

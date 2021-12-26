@@ -49,5 +49,12 @@ module Statistics
                      foreign_key: %i[fitting_id market_id time interval], dependent: :destroy
 
     accepts_nested_attributes_for :items
+
+    scope :end_of_day, -> { where(interval: 'daily') }
+    scope :end_of_week, -> { where(interval: 'weekly') }
+    scope :end_of_month, -> { where(interval: 'monthly') }
+
+    scope :by_fitting, -> id { where(fitting_id: id) }
+    scope :by_market, -> id { where(market_id: id) }
   end
 end

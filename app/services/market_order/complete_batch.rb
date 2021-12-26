@@ -43,6 +43,8 @@ class MarketOrder < ApplicationRecord
         end
 
         batch.update!(completed_at: Time.zone.now)
+
+        MarketOrder::CompressBatch.call(batch)
       end
 
       batch

@@ -1031,7 +1031,6 @@ CREATE TABLE public.market_locations (
 CREATE TABLE public.market_order_batch_pages (
     batch_id bigint NOT NULL,
     imported_at timestamp without time zone,
-    orders text NOT NULL,
     page integer NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
@@ -1053,7 +1052,8 @@ CREATE TABLE public.market_order_batches (
     fetched_at timestamp without time zone,
     "time" timestamp without time zone NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    compressed_at timestamp without time zone
 );
 
 
@@ -3177,6 +3177,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211224154201'),
 ('20211224232516'),
 ('20211226163422'),
-('20211226183751');
+('20211226183751'),
+('20211226231019'),
+('20211226231701'),
+('20211226233003');
 
 

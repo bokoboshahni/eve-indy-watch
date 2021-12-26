@@ -9,7 +9,6 @@
 # **`import_count`**  | `integer`          |
 # **`imported_at`**   | `datetime`         |
 # **`order_count`**   | `integer`          |
-# **`orders`**        | `text`             | `not null`
 # **`page`**          | `integer`          | `not null, primary key`
 # **`started_at`**    | `datetime`         |
 # **`created_at`**    | `datetime`         | `not null`
