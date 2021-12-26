@@ -1,0 +1,31 @@
+<% content_for :breadcrumbs do %>
+  <%= render(BreadcrumbsComponent.new) do |c| %>
+    <%= c.item href: admin_root_path do %>Administration<% end %>
+    <%= c.item href: admin_reports_path do %>Reports<% end %>
+  <% end %>
+<% end %>
+
+<%= render PageHeadingComponent.new(title: 'Reports') %>
+
+<div class="max-w-7xl mt-4 mx-auto px-4 sm:px-6 md:px-8">
+  <%= render(CardComponent.new(body_class_names: '')) do |c| %>
+    <% c.body do %>
+      <%= render(TableComponent.new) do |t| %>
+        <% t.header do %>Report<% end %>
+        <% t.header width: '2/12' do %>Last Run By<% end %>
+        <% t.header width: '2/12' do %>Last Run At<% end %>
+        <% t.header width: '2/12' do %>Last Status<% end %>
+
+        <% @reports.each do |report_class| %>
+          <% last_run = report_class.last_run %>
+          <% t.row do |tr| %>
+            <% tr.cell do %><%= link_to report_class.title, admin_report_path(report_class.report_name) %><% end %>
+            <% tr.cell do %><%= last_run&.user&.name %><% end %>
+            <% tr.cell do %><%= local_time last_run&.started_at, format: :db if last_run %><% end %>
+            <% tr.cell do %><%= last_run&.status&.titleize %><% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

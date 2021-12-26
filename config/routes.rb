@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     resources :esi_authorizations
     resources :markets
     resources :regions, only: %i[index show edit update]
+    resources :reports, only: %i[index show]
     resources :structures, only: %i[index show edit update]
     resources :users
 

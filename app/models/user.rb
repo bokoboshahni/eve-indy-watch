@@ -42,6 +42,7 @@ class User < ApplicationRecord
   has_one :corporation, through: :character
 
   has_many :esi_authorizations, inverse_of: :user, dependent: :destroy
+  has_many :report_runs, class_name: 'Statistics::ReportRun', inverse_of: :user
 
   delegate :id, :name, to: :alliance, prefix: true, allow_nil: true
   delegate :id, :name, to: :corporation, prefix: true
