@@ -78,6 +78,9 @@ class Contract < ApplicationRecord
     rescue ESI::Errors::NotFoundError, ESI::Errors::ForbiddenError => e
       contract.update!(esi_items_exception: e.as_json)
       error "Unable to fetch items for contract #{contract_id}, see #esi_items_exception on contract for details: #{e.message}"
+    rescue Error => e
+      contract.update!(esi_items_exception: e.as_json)
+      error "Unable to fetch items for contract #{contract_id} because there is no authorization to use"
     end
 
     private

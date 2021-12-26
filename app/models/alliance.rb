@@ -50,7 +50,6 @@ class Alliance < ApplicationRecord
   belongs_to :api_corporation, class_name: 'Corporation', inverse_of: :api_alliance, optional: true
   belongs_to :main_market, class_name: 'Market', inverse_of: :alliances_as_main_market, optional: true
   belongs_to :appraisal_market, class_name: 'Market', inverse_of: :alliances_as_appraisal_market, optional: true
-  belongs_to :contract_esi_authorization, class_name: 'ESIAuthorization', inverse_of: :alliance_for_contracts, optional: true
 
   has_one :esi_authorization, through: :api_corporation
 
@@ -75,12 +74,6 @@ class Alliance < ApplicationRecord
     rel = ESIAuthorization.includes(:character).joins(character: :corporation)
     rel.where('corporation_id = ?', api_corporation_id)
     rel.order('characters.name')
-  end
-
-  def available_contract_esi_authorizations
-    ESIAuthorization.includes(:character).joins(:character)
-                    .where('characters.alliance_id = ?', id)
-                    .order('characters.name')
   end
 
   def log_name
