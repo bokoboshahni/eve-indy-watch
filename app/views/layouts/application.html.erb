@@ -22,7 +22,7 @@
         <%= render 'application/side_nav' %>
 
         <div class="md:pl-64 flex flex-col">
-          <%= render 'application/environment_banner' %>
+          <%= render 'application/environment_banner' unless Rails.env.production? %>
           <%= render 'application/top_nav' %>
 
           <main class="flex-1 pb-8">
