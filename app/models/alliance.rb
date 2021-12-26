@@ -50,6 +50,7 @@ class Alliance < ApplicationRecord
   belongs_to :api_corporation, class_name: 'Corporation', inverse_of: :api_alliance, optional: true
   belongs_to :main_market, class_name: 'Market', inverse_of: :alliances_as_main_market, optional: true
   belongs_to :appraisal_market, class_name: 'Market', inverse_of: :alliances_as_appraisal_market, optional: true
+  belongs_to :contract_esi_authorization, class_name: 'ESIAuthorization', inverse_of: :alliance_for_contracts, optional: true
 
   has_one :esi_authorization, through: :api_corporation
 

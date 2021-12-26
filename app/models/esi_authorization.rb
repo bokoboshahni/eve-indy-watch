@@ -39,6 +39,8 @@ class ESIAuthorization < ApplicationRecord
   has_many :regions, inverse_of: :esi_authorization, dependent: :restrict_with_exception
   has_many :structures, inverse_of: :esi_authorization, dependent: :restrict_with_exception
 
+  has_one :alliance_for_contracts, class_name: 'Alliance', inverse_of: :contract_esi_authorization
+
   has_one :corporation, inverse_of: :esi_authorization, dependent: :restrict_with_exception
 
   encrypts :access_token, :refresh_token
