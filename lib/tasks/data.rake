@@ -27,4 +27,14 @@ namespace :data do
       end
     end
   end
+
+  task retry_contracts_with_inaccessible_items: :environment do
+    Contract.transaction do
+      contracts = Contract.where.not(esi_items_exception: nil).where("esi_items_exception->>'m' LIKE '(403)%'")
+      contracts.update_all(esi_items_exception: nil)
+
+      args = contracts.map { |c| [c.id] }
+      Contract::SyncItemsFromESIWorker.perform_bulk(args)
+    end
+  end
 end

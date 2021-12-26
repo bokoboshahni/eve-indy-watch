@@ -80,6 +80,8 @@ class Contract < ApplicationRecord
     delegate :id, to: :corporation, prefix: true
 
     def find_authorization
+      return contract_assignee.contract_esi_authorization if contract_assignee.is_a?(Alliance) && contract_assignee.contract_esi_authorization
+
       return corporation.esi_authorization if corporation.esi_authorization
 
       return contract_assignee.esi_authorization if contract_assignee.respond_to?(:esi_authorization)

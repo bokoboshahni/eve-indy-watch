@@ -119,6 +119,17 @@ namespace :data do
       end
     end
   end
+
+  desc 'Retry contracts with inaccessible items'
+  task :retry_contracts_with_inaccessible_items do
+    on roles(:db) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, 'data:retry_contracts_with_inaccessible_items'
+        end
+      end
+    end
+  end
 end
 
 before 'deploy:migrate', 'deploy:db_schema_load' if ENV['DB_SCHEMA_LOAD']
