@@ -1,0 +1,35 @@
+<% content_for :breadcrumbs do %>
+  <%= render(BreadcrumbsComponent.new) do |c| %>
+    <%= c.item href: admin_root_path do %>Administration<% end %>
+    <%= c.item href: admin_reports_path do %>Reports<% end %>
+    <%= c.item href: admin_report_path(params[:id]) do %><%= @report.title %><% end %>
+  <% end %>
+<% end %>
+
+<%= render PageHeadingComponent.new(title: @report.title) %>
+
+<div class="max-w-7xl mt-4 mx-auto px-4 sm:px-6 md:px-8">
+  <%= render(CardComponent.new(body_class_names: '')) do |c| %>
+    <% c.body do %>
+      <%= render(TableComponent.new) do |t| %>
+        <% t.header width: '3/12' do %>Fitting<% end %>
+        <% t.header width: '2/12' do %>1-3 days<% end %>
+        <% t.header width: '2/12' do %>4-7 days<% end %>
+        <% t.header width: '2/12' do %>8-14 days<% end %>
+        <% t.header width: '2/12' do %>> 14 days<% end %>
+
+        <% @results.each do |fitting| %>
+          <% t.row do |tr| %>
+            <% tr.cell do %>
+              <%= link_to fitting.name, fitting_path(fitting), class: 'font-medium', data: { turbo_frame: '_top' } %>
+            <% end %>
+            <% tr.cell do %><%= fitting.contracts.outstanding.where('issued_at >= ?', 3.days.ago.beginning_of_day).count %><% end %>
+            <% tr.cell do %><%= fitting.contracts.outstanding.where('issued_at >= ? AND issued_at < ?', 7.days.ago.beginning_of_day, 3.days.ago.beginning_of_day).count %><% end %>
+            <% tr.cell do %><%= fitting.contracts.outstanding.where('issued_at >= ? AND issued_at < ?', 14.days.ago.beginning_of_day, 7.days.ago.beginning_of_day).count %><% end %>
+            <% tr.cell do %><%= fitting.contracts.outstanding.where('issued_at < ?', 14.days.ago.beginning_of_day).count %><% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

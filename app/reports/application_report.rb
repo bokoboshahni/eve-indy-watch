@@ -31,7 +31,8 @@ class ApplicationReport
 
   def self.reports
     [
-      ContractItemsInaccessibleReport
+      ContractItemsInaccessibleReport,
+      ContractAgingReport
     ]
   end
 
