@@ -12,7 +12,15 @@ class Contract < ApplicationRecord
       super
 
       @contract = contract
-      @corporation = contract.assignee.api_corporation
+      @corporation =
+        case contract.assignee
+        when Alliance
+          contract.assignee.api_corporation
+        when Corporation
+          contract.assignee
+        when Character
+          contract.assignee.corporation
+        end
     end
 
     def call # rubocop:disable Metrics/AbcSize
