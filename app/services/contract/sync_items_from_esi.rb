@@ -49,7 +49,7 @@ class Contract < ApplicationRecord
         return
       end
 
-      authorization = find_authorization
+      authorization = corporation.authorization
       raise Error, "Unable to find authorization for contract #{contract_id}" unless authorization
 
       esi_retriable do
@@ -86,15 +86,5 @@ class Contract < ApplicationRecord
 
     delegate :assignee, :id, to: :contract, prefix: true
     delegate :id, to: :corporation, prefix: true
-
-    def find_authorization
-      return corporation.esi_authorization if corporation.esi_authorization
-
-      return contract_assignee.esi_authorization if contract_assignee.respond_to?(:esi_authorization)
-
-      return contract_assignee.corporation.esi_authorization if contract_assignee.corporation.esi_authorization
-
-      contract_assignee.alliance.esi_authorization if contract_assignee.alliance&.esi_authorization
-    end
   end
 end
