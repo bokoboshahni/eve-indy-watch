@@ -2,7 +2,7 @@
 
 module Admin
   class StructuresController < AdminController
-    before_action :find_structure, only: %i[show edit update]
+    before_action :find_structure, only: %i[show edit update market_order_batches]
 
     def index
       @structures = Structure.order(:name)
@@ -21,10 +21,14 @@ module Admin
       end
     end
 
+    def market_order_batches
+      @pagy, @market_order_batches = pagy(@structure.market_order_batches.order(time: :desc))
+    end
+
     private
 
     def find_structure
-      @structure = Structure.find(params[:id])
+      @structure = Structure.find(params[:id], params[:structure_id])
     end
 
     def structure_params

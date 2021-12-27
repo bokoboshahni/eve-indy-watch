@@ -1,0 +1,32 @@
+
+  <%= render(CardComponent.new(body_class_names: '')) do |c| %>
+    <% c.header do %>
+      <%= render(PaginatorComponent.new(pagy: paginator)) %>
+    <% end %>
+
+    <% c.body do %>
+      <%= render(TableComponent.new) do |t| %>
+        <% t.header width: '1/12' do %>Batch<% end %>
+        <% t.header width: '2/12' do %>Time<% end %>
+        <% t.header width: '2/12' do %>Pages<% end %>
+        <% t.header width: '2/12' do %>Fetched<% end %>
+        <% t.header width: '2/12' do %>Completed<% end %>
+        <% t.header width: '2/12' do %>Compressed<% end %>
+
+        <% market_order_batches.each do |batch| %>
+          <% t.row do |tr| %>
+            <% tr.cell do %><%= batch.id %><% end %>
+            <% tr.cell do %><%= local_time batch.time, format: :db %><% end %>
+            <% tr.cell do %><%= batch.pages.count %><% end %>
+            <% tr.cell do %><%= local_time batch.fetched_at, format: :db if batch.fetched_at %><% end %>
+            <% tr.cell do %><%= local_time batch.completed_at, format: :db if batch.completed_at %><% end %>
+            <% tr.cell do %><%= local_time batch.compressed_at, format: :db if batch.compressed_at %><% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <% c.footer do %>
+      <%= render(PaginatorComponent.new(pagy: paginator)) %>
+    <% end %>
+  <% end %>

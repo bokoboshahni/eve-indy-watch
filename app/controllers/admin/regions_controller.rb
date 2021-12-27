@@ -2,7 +2,7 @@
 
 module Admin
   class RegionsController < AdminController
-    before_action :find_region, only: %i[show edit update]
+    before_action :find_region, only: %i[show edit update market_order_batches]
 
     def index
       @regions = Region.order(:name)
@@ -21,10 +21,14 @@ module Admin
       end
     end
 
+    def market_order_batches
+      @pagy, @market_order_batches = pagy(@region.market_order_batches.order(time: :desc))
+    end
+
     private
 
     def find_region
-      @region = Region.find(params[:id])
+      @region = Region.find(params[:id] || params[:region_id])
     end
 
     def region_params

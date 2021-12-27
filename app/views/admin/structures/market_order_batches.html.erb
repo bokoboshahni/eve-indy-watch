@@ -1,0 +1,14 @@
+<% content_for :breadcrumbs do %>
+  <%= render(BreadcrumbsComponent.new) do |c| %>
+    <%= c.item href: admin_root_path do %>Administration<% end %>
+    <%= c.item href: admin_structures_path do %>Structures<% end %>
+    <%= c.item href: admin_structure_path(@structure) do %><%= @structure.name %><% end %>
+    <%= c.item href: admin_structure_market_order_batches_path(@structure) do %>Market Order Batches<% end %>
+  <% end %>
+<% end %>
+
+<%= render PageHeadingComponent.new(title: "#{@structure.name} - Market Order Batches") %>
+
+<div class="max-w-7xl mt-4 mx-auto px-4 sm:px-6 md:px-8">
+  <%= render 'admin/shared/market_order_batches', market_order_batches: @market_order_batches, paginator: @pagy %>
+</div>
