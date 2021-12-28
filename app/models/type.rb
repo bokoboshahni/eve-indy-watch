@@ -78,6 +78,10 @@ class Type < ApplicationRecord
   scope :marketable, -> { where.not(market_group_id: nil) }
   scope :published, -> { where(published: true) }
 
+  def blueprint?
+    category_name == Category::BLUEPRINT_CATEGORY_NAME
+  end
+
   def charge?
     category_name == Category::CHARGE_CATEGORY_NAME
   end
