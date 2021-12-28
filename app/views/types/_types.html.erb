@@ -16,7 +16,7 @@
             <% tr.cell do %>
               <div class="flex items-center">
                 <div class="flex-shrink-0 h-8 w-8">
-                  <%= image_tag type.icon_url, class: 'h-8 w-8 rounded-md' %>
+                  <%= render(TypeIconComponent.new(type: type, classes: 'h-8 w-8 rounded-md')) %>
                 </div>
                 <div class="ml-4">
                   <div class="text-xs font-medium text-gray-900">
