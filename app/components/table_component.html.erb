@@ -1,12 +1,13 @@
 <table class="table-fixed w-full divide-y divide-gray-200">
   <thead class="bg-gray-50">
-    <tr>
+    <tr class="sticky top-0">
       <% headers.each do |header| %>
         <%= header %>
       <% end %>
     </tr>
   </thead>
   <tbody class="bg-white divide-y divide-gray-200">
+    <%= body %>
     <% rows.each do |row| %>
       <%= row %>
     <% end %>

@@ -3,7 +3,7 @@
 <div class="max-w-7xl mt-4 mx-auto px-4 sm:px-6 md:px-8">
   <%= render(CardComponent.new(title: 'Priority Doctrine Fittings', body_class_names: '')) do |c| %>
     <% c.body do %>
-      <%= render 'fittings/table', fittings: @fittings %>
+      <%= render 'fittings/fittings_table', fittings: @fittings %>
     <% end %>
   <% end %>
 </div>

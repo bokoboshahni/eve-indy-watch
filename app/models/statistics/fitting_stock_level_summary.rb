@@ -39,6 +39,8 @@
 #
 module Statistics
   class FittingStockLevelSummary < ApplicationRecord
+    include FittingStockLevelCalculations
+
     self.primary_keys = :fitting_id, :market_id, :time, :interval
     self.table_name = :fitting_stock_level_summaries
 
@@ -54,7 +56,12 @@ module Statistics
     scope :end_of_week, -> { where(interval: 'weekly') }
     scope :end_of_month, -> { where(interval: 'monthly') }
 
+    scope :last_7_days, -> { where(time: 7.days.ago.beginning_of_day..Time.zone.now.beginning_of_day) }
+    scope :last_30_days, -> { where(time: 30.days.ago.beginning_of_day..Time.zone.now.beginning_of_day) }
+
     scope :by_fitting, -> id { where(fitting_id: id) }
     scope :by_market, -> id { where(market_id: id) }
+
+    scope :by_fitting_and_market, -> (fitting_id, market_id) { where(fitting_id: fitting_id, market_id: market_id) }
   end
 end

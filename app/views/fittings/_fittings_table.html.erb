@@ -1,0 +1,15 @@
+<%= render(TableComponent.new) do |t| %>
+  <% t.header do %>Fitting<% end %>
+  <% t.header width: '1/12' do %>
+    Total Available
+  <% end %>
+  <% t.header padding: 'px-2 py-2', width: '1/12' do %>Contracts<% end %>
+  <% t.header padding: 'px-2 py-2', width: '1/12' do %>Contract Quality<% end %>
+  <% t.header padding: 'px-2 py-2', width: '1/6' do %>Contract Price<% end %>
+  <% t.header padding: 'px-2 py-2', width: '1/12' do %><%= current_alliance.main_market_name %> Qty<% end %>
+  <% t.header padding: 'px-2 py-2', width: '1/6' do %><%= current_alliance.main_market_name %> Price<% end %>
+
+  <% t.body do %>
+    <%= render partial: 'fittings/fittings_table_row', collection: fittings, cached: true, as: :fitting %>
+  <% end %>
+<% end %>
