@@ -19,6 +19,7 @@ class Category < ApplicationRecord
 
   multisearchable against: %i[name]
 
+  BLUEPRINT_CATEGORY_NAME = 'Blueprint'
   CHARGE_CATEGORY_NAME = 'Charge'
   DRONE_CATEGORY_NAME = 'Drone'
   FIGHTER_CATEGORY_NAME = 'Fighter'
