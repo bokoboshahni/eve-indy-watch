@@ -6,12 +6,13 @@ module.exports = {
   purge: {
     enabled: process.env.NODE_ENV == 'production',
     content: [
+      './app/components/**/*.html.erb',
       './app/views/**/*.html.erb',
       './app/helpers/**/*.rb',
       './app/javascript/**/*.js',
     ]
   },
-  darkMode: false, // or 'media' or 'class'
+  darkMode: 'media',
   theme: {
     colors: {
       transparent: 'transparent',
