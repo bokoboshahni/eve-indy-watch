@@ -1,11 +1,11 @@
   <%= render(CardComponent.new(body_class_names: 'rounded-lg', footer_padding: 'px-2 py-2')) do |c| %>
     <% c.body do %>
-      <%= render(TableComponent.new) do |t| %>
-        <% t.header padding: 'px-4 py-2', width: '3/12' do %>Description<% end %>
-        <% t.header padding: 'px-4 py-2', width: '3/12' do %>Fittings<% end %>
-        <% t.header padding: 'px-4 py-2', width: '2/12' do %>Location<% end %>
-        <% t.header padding: 'px-4 py-2', width: '2/12' do %>Price<% end %>
-        <% t.header padding: 'px-4 py-2', width: '2/12' do %>Value<% end %>
+      <%= render(TableComponent.new(layout: 'auto')) do |t| %>
+        <% t.header padding: 'px-4 py-2' do %>Description<% end %>
+        <% t.header padding: 'px-4 py-2', width: 'w-48' do %>Fittings<% end %>
+        <% t.header padding: 'px-4 py-2', width: 'w-48' do %>Location<% end %>
+        <% t.header padding: 'px-4 py-2', width: 'w-48' do %>Price<% end %>
+        <% t.header padding: 'px-4 py-2', width: 'w-48' do %>Value<% end %>
 
         <% contracts.each do |contract| %>
           <% t.row do |tr| %>
