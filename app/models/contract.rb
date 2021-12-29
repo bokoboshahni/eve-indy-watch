@@ -89,6 +89,9 @@ class Contract < ApplicationRecord
                                     issuer: :name,
                                     issuer_corporation: :name,
                                     types: :name
+                                  },
+                                  using: {
+                                    tsearch: { prefix: true }
                                   }
 
   has_paper_trail ignore: %i[updated_at esi_expires_at esi_last_modified_at esi_items_exception esi_items_expires_at esi_items_last_modified_at],
