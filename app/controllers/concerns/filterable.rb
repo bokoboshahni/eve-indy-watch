@@ -16,6 +16,7 @@ module Filterable
   private
 
   def store_filters!(resource)
+    filter_for(resource).clear!
     filter_params(resource).each { |k, v| set_filter_for!(resource, k, v) }
   end
 
@@ -32,7 +33,7 @@ module Filterable
     array_names = []
     filter_class = "#{resource}Filter".constantize
     filter_class.attribute_types.each_key do |name|
-      filter_class.array_attributes.include?(name) ? array_names << name : names << name
+      filter_class.array_attributes.include?(name.to_s) ? array_names << name.to_sym : names << name
     end
     params.permit(*names, **array_names.each_with_object({}) { |n, h| h[n] = [] })
   end

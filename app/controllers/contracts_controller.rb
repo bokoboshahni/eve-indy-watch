@@ -10,10 +10,11 @@ class ContractsController < ApplicationController
     store_filters!('Contract')
 
     scope = Contract.item_exchange.outstanding.assigned_to(main_alliance_id)
-    @pagy, @contracts = pagy(filter_for('Contract').apply!(scope))
+    @filter = filter_for('Contract')
+    @pagy, @contracts = pagy(@filter.apply!(scope))
 
     if turbo_frame_request?
-      render partial: 'contracts', locals: { contracts: @contracts, paginator: @pagy }
+      render partial: 'contracts', locals: { contracts: @contracts, filter: @filter, paginator: @pagy }
     else
       render :index
     end

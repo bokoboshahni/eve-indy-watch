@@ -74,16 +74,22 @@
 class Contract < ApplicationRecord
   include PgSearch::Model
 
-  SEARCH_FIELDS = %i[
+  MULTISEARCH_FIELDS = %i[
     title acceptor_name assignee_name end_location_name issuer_name
     issuer_corporation_name start_location_name fitting_names item_names
   ]
 
   self.inheritance_column = nil
 
-  multisearchable against: SEARCH_FIELDS, if: -> r { r.outstanding? && r.item_exchange? }
+  multisearchable against: MULTISEARCH_FIELDS, if: -> r { r.outstanding? && r.item_exchange? }
 
-  pg_search_scope :search_by_all, against: SEARCH_FIELDS
+  pg_search_scope :search_by_all, against: %i[title acceptor_name assignee_name end_location_name start_location_name],
+                                  associated_against: {
+                                    fittings: :name,
+                                    issuer: :name,
+                                    issuer_corporation: :name,
+                                    types: :name
+                                  }
 
   has_paper_trail ignore: %i[updated_at esi_expires_at esi_last_modified_at esi_items_exception esi_items_expires_at esi_items_last_modified_at],
                   versions: { class_name: 'ContractVersion' }
@@ -99,6 +105,7 @@ class Contract < ApplicationRecord
   has_many :events, class_name: 'ContractEvent', inverse_of: :contract, dependent: :destroy
   has_many :fittings, through: :contract_fittings
   has_many :items, class_name: 'ContractItem', inverse_of: :contract, dependent: :destroy
+  has_many :types, through: :items
 
   delegate :name, to: :issuer, prefix: true
   delegate :name, to: :issuer_corporation, prefix: true

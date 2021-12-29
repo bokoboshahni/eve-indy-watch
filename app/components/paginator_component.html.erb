@@ -23,30 +23,30 @@
     <div>
       <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
         <% if pagy.prev %>
-          <a href="<%= pagy_url_for(pagy, pagy.prev) %>" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-s font-medium text-gray-500 hover:bg-gray-50" data-turbo-action="advance">
+          <a href="<%= pagy_url_for(pagy, pagy.prev) %>" class="relative inline-flex items-center px-1 py-1 rounded-l-md border border-gray-300 bg-white text-xs font-medium text-gray-500 hover:bg-gray-50" data-turbo-action="advance">
             <span class="sr-only">Previous</span>
-            <%= heroicon 'chevron-left', variant: :solid, options: { class: 'h-5 h-5' } %>
+            <%= heroicon 'chevron-left', variant: :solid, options: { class: 'h-3 h-3' } %>
           </a>
         <% end %>
 
         <% pagy.series.each do |item| %>
           <% if item.is_a?(Integer) %>
-            <%=raw link.call(item, item, 'class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 hidden md:inline-flex relative items-center px-4 py-2 border text-xs font-medium" data-turbo-action="advance"') %>
+            <%=raw link.call(item, item, 'class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 hidden md:inline-flex relative items-center px-2 py-1 border text-xs font-medium" data-turbo-action="advance"') %>
           <% elsif item.is_a?(String) %>
-            <a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-xs font-medium" data-turbo-action="advance">
+            <a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-2 py-1 border text-xs font-medium" data-turbo-action="advance">
               <%= item %>
             </a>
           <% elsif item == :gap %>
-            <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-xs font-medium text-gray-700">
+            <span class="relative inline-flex items-center px-2 py-1 border border-gray-300 bg-white text-xs font-medium text-gray-700">
               &hellip;
             </span>
           <% end %>
         <% end %>
 
         <% if pagy.next %>
-          <a href="<%= pagy_url_for(pagy, pagy.next) %>" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-s font-medium text-gray-500 hover:bg-gray-50" data-turbo-action="advance">
+          <a href="<%= pagy_url_for(pagy, pagy.next) %>" class="relative inline-flex items-center px-1 py-1 rounded-r-md border border-gray-300 bg-white text-xs font-medium text-gray-500 hover:bg-gray-50" data-turbo-action="advance">
             <span class="sr-only">Next</span>
-            <%= heroicon 'chevron-right', variant: :solid, options: { class: 'h-5 h-5' } %>
+            <%= heroicon 'chevron-right', variant: :solid, options: { class: 'h-3 h-3' } %>
           </a>
         <% end %>
       </nav>

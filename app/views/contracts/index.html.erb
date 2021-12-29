@@ -6,27 +6,14 @@
 
 <%= render PageHeadingComponent.new(title: 'Contracts') do |c| %>
   <%= c.action do %>
-    <div class="flex items-center">
-      <div class="relative inline-block text-left" data-controller="dropdown" data-dropdown-active-class="bg-gray-100 font-medium text-gray-900" data-dropdown-active-target="#contractsSorter">
-        <div>
-          <button type="button" class="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900" id="menu-button" aria-expanded="false" aria-haspopup="true" data-action="click->dropdown#toggle click@window->dropdown#hide" data-dropdown-target="button">
-            Sort
-            <%= heroicon 'chevron-down', variant: :solid, options: { class: 'flex-shrink-0 -mr-1 ml-1 h-5 w-5 text-gray-400 group-hover:text-gray-500' } %>
-          </button>
-        </div>
-        <div id="contractsSorter" class="z-50 origin-top-right absolute right-0 mt-2 w-80 rounded-md shadow-2xl bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" data-dropdown-target="menu">
-          <div class="py-1" role="none">
-            <% ContractFilter.sorters.each do |sorter_name, sorter| %>
-              <% class_name = session.dig('filters', 'Contract', 'sort') == sorter_name ? 'bg-gray-100 font-medium text-gray-900' : 'text-gray-500' %>
-              <%= link_to sorter[:label], contracts_path(sort: sorter_name), class: "#{class_name} bg-white block px-4 py-2 text-xs", role: 'menuitem', tabindex: '-1', data: { turbo_frame: 'contracts' } %>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </div>
+    <%= render(DataTableSorterComponent.new(name: :contracts, filter: @filter)) %>
   <% end %>
 <% end %>
 
 <div class="max-w-7xl mt-4 mx-auto px-4 sm:px-6 md:px-8">
-  <%= render 'contracts', contracts: @contracts, paginator: @pagy %>
+  <%= render(DataTableComponent.new(name: :contracts, filter: @filter, scope: @contracts)) do |dt| %>
+    <% dt.table do %>
+      <%= render 'contracts', contracts: @contracts, paginator: @pagy %>
+    <% end %>
+  <% end %>
 </div>
