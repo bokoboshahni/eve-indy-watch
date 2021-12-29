@@ -1,11 +1,17 @@
 class TypesController < ApplicationController
+  include Filterable
+
   before_action :authenticate_user!
 
   def index
-    @pagy, @types = pagy(Type.marketable.includes(:market_group, group: :category).order(:name))
+    store_filters!('Type')
+
+    scope = Type.marketable.includes(:market_group, group: :category)
+    @filter = filter_for('Type')
+    @pagy, @types = pagy(@filter.apply!(scope))
 
     if turbo_frame_request?
-      render partial: 'types', locals: { types: @types, paginator: @pagy }
+      render partial: 'types', locals: { types: @types, filter: @filter, paginator: @pagy }
     else
       render :index
     end

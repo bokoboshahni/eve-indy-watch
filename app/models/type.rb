@@ -40,6 +40,15 @@ class Type < ApplicationRecord
 
   multisearchable against: %i[description name market_group_name category_name group_name]
 
+  pg_search_scope :search_by_all, against: %i[name description],
+                                  associated_against: {
+                                    market_group: :name,
+                                    group: :name
+                                  },
+                                  using: {
+                                    tsearch: { prefix: true }
+                                  }
+
   belongs_to :group, inverse_of: :types
   belongs_to :market_group, inverse_of: :types, optional: true
 
@@ -71,7 +80,7 @@ class Type < ApplicationRecord
 
   accepts_nested_attributes_for :blueprint_activities
 
-  delegate :name, to: :category, prefix: true
+  delegate :id, :name, to: :category, prefix: true
   delegate :name, to: :group, prefix: true
   delegate :name, to: :market_group, prefix: true, allow_nil: true
 
@@ -80,6 +89,10 @@ class Type < ApplicationRecord
 
   def blueprint?
     category_name == Category::BLUEPRINT_CATEGORY_NAME
+  end
+
+  def skin?
+    category_name == Category::SKIN_CATEGORY_NAME
   end
 
   def charge?

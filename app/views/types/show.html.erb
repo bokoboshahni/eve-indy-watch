@@ -9,7 +9,7 @@
   <div class="flex items-center space-x-5">
     <div class="flex-shrink-0">
       <div class="relative">
-        <%= image_tag @type.icon_url, class: 'h-16 h-16 rounded-md' %>
+        <%= render(TypeIconComponent.new(type: @type, classes: 'h-16 w-16 rounded-md')) %>
         <span class="absolute inset-0 shadow-inner rounded-md" aria-hidden="true"></span>
       </div>
     </div>

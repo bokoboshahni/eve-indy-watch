@@ -4,8 +4,16 @@
   <% end %>
 <% end %>
 
-<%= render PageHeadingComponent.new(title: 'Types') %>
+<%= render PageHeadingComponent.new(title: 'Types') do |c| %>
+  <%= c.action do %>
+    <%= render(DataTableSorterComponent.new(name: :types, filter: @filter)) %>
+  <% end %>
+<% end %>
 
 <div class="max-w-7xl mt-4 mx-auto px-4 sm:px-6 md:px-8">
-  <%= render 'types', types: @types, paginator: @pagy %>
+  <%= render(DataTableComponent.new(name: :types, filter: @filter, scope: @types)) do |dt| %>
+    <% dt.table do %>
+      <%= render 'types', types: @types, paginator: @pagy %>
+    <% end %>
+  <% end %>
 </div>

@@ -1,19 +1,14 @@
-<%= turbo_frame_tag 'types' do %>
   <%= render(CardComponent.new(body_class_names: '')) do |c| %>
-    <% c.header do %>
-      <%= render(PaginatorComponent.new(pagy: paginator)) %>
-    <% end %>
-
     <% c.body do %>
       <%= render(TableComponent.new) do |t| %>
-        <% t.header do %>Type<% end %>
-        <% t.header width: '1/6' do %>Category<% end %>
-        <% t.header width: '1/6' do %>Group<% end %>
-        <% t.header width: '1/6' do %>Market Group<% end %>
+        <% t.header padding: 'px-4 py-2' do %>Type<% end %>
+        <% t.header padding: 'px-4 py-2', width: '1/6' do %>Category<% end %>
+        <% t.header padding: 'px-4 py-2', width: '1/6' do %>Group<% end %>
+        <% t.header padding: 'px-4 py-2', width: '1/6' do %>Market Group<% end %>
 
         <% types.each do |type| %>
           <% t.row do |tr| %>
-            <% tr.cell do %>
+            <% tr.cell padding: 'px-4 py-1' do %>
               <div class="flex items-center">
                 <div class="flex-shrink-0 h-8 w-8">
                   <%= render(TypeIconComponent.new(type: type, classes: 'h-8 w-8 rounded-md')) %>
@@ -28,13 +23,13 @@
                 </div>
               </div>
             <% end %>
-            <% tr.cell do %>
+            <% tr.cell padding: 'px-4 py-1' do %>
               <%= type.category_name %>
             <% end %>
-            <% tr.cell do %>
+            <% tr.cell padding: 'px-4 py-1' do %>
               <%= type.group_name %>
             <% end %>
-            <% tr.cell do %>
+            <% tr.cell padding: 'px-4 py-1' do %>
               <%= type.market_group_name %>
             <% end %>
           <% end %>
@@ -46,4 +41,3 @@
       <%= render(PaginatorComponent.new(pagy: paginator)) %>
     <% end %>
   <% end %>
-<% end %>

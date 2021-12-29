@@ -1,30 +1,20 @@
 class ContractFilter < ApplicationFilter
-  self.sorters = {
-    'title_asc' => { label: 'Title: A to Z', column: 'title', direction: 'asc' },
-    'title_dsc' => { label: 'Title: Z to A', column: 'title', direction: 'desc' },
-    'location_asc' => { label: 'Location: A to Z', column: 'end_location_name', direction: 'asc' },
-    'location_dsc' => { label: 'Location: Z to A', column: 'end_location_name', direction: 'desc' },
-    'price_asc' => { label: 'Price: Low to High', column: 'price', direction: 'asc' },
-    'price_dsc' => { label: 'Price: High to Low', column: 'price', direction: 'desc' },
-    'volume_asc' => { label: 'Volume: Low to High', column: 'price', direction: 'asc' },
-    'volume_dsc' => { label: 'Volume: High to Low', column: 'price', direction: 'desc' },
-    'issued_at_asc' => { label: 'Date Issued: Oldest to Newest', column: 'issued_at', direction: 'asc' },
-    'issued_at_dsc' => { label: 'Date Issued: Newest to Oldest', column: 'issued_at', direction: 'desc' }
-  }
+  self.sorters = {}
+  self.facets = {}
 
-  self.labels = {
-    'end_location_id' => 'Location',
-    'fitting_id' => 'Fitting'
-  }
+  sorter 'title_asc', label: 'Title: A to Z', column: 'title', direction: 'asc'
+  sorter 'title_dsc', label: 'Title: Z to A', column: 'title', direction: 'desc'
+  sorter 'location_asc', label: 'Location: A to Z', column: 'end_location_name', direction: 'asc'
+  sorter 'location_dsc', label: 'Location: Z to A', column: 'end_location_name', direction: 'desc'
+  sorter 'price_asc', label: 'Price: Low to High', column: 'price', direction: 'asc'
+  sorter 'price_dsc', label: 'Price: High to Low', column: 'price', direction: 'desc'
+  sorter 'volume_asc', label: 'Volume: Low to High', column: 'price', direction: 'asc'
+  sorter 'volume_dsc', label: 'Volume: High to Low', column: 'price', direction: 'desc'
+  sorter 'issued_at_asc', label: 'Date Issued: Oldest to Newest', column: 'issued_at', direction: 'asc'
+  sorter 'issued_at_dsc', label: 'Date Issued: Newest to Oldest', column: 'issued_at', direction: 'desc'
 
   facet :end_location_id, label: 'Location', array: true
-
   facet :fitting_id, label: 'Fitting', array: true
-
-  self.facet_labels = {
-    'end_location_id' => -> val { (Station.find_by(id: val) || Structure.find_by(id: val)).name },
-    'fitting_id' => -> val { Fitting.find_by(id: val).name }
-  }
 
   attribute :query, :string
   attribute :end_location_id, array: true, default: []
@@ -36,10 +26,6 @@ class ContractFilter < ApplicationFilter
   attribute :min_volume, :integer
   attribute :max_volume, :integer
   attribute :sort, :string, default: 'title_asc'
-
-  self.array_attributes = %w[end_location_id fitting_id]
-
-  attr_reader :scope
 
   def apply!(scope)
     @scope ||=
@@ -57,26 +43,6 @@ class ContractFilter < ApplicationFilter
         scope = scope.order(sorters[sort][:column] => sorters[sort][:direction], issued_at: :asc) if sorters[sort]
         scope
       end
-  end
-
-  def merge!(attribute, value)
-    super
-
-    send(:"#{attribute}=", value)
-
-    @session[:filters]['Contract'].merge!(attribute => send(attribute))
-  end
-
-  def facet_items(field)
-    send(:"#{field}_items") || []
-  end
-
-  def facet_item_selected?(facet, value)
-    send(facet).include?(value)
-  end
-
-  def facet_active?(facet)
-    send(facet).any?
   end
 
   def end_location_id_items

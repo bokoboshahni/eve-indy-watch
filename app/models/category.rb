@@ -25,6 +25,7 @@ class Category < ApplicationRecord
   FIGHTER_CATEGORY_NAME = 'Fighter'
   IMPLANT_CATEGORY_NAME = 'Implant'
   MODULE_CATEGORY_NAMES = ['Module', 'Subsystem', 'Structure Module'].freeze
+  SKIN_CATEGORY_NAME = 'SKINs'
 
   has_many :groups, dependent: :restrict_with_exception
 

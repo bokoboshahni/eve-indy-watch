@@ -3,12 +3,12 @@ class ApplicationFilter
   include ActiveModel::Attributes
 
   class_attribute :sorters
-  class_attribute :array_attributes
-  class_attribute :labels
-  class_attribute :facets
-  class_attribute :facet_labels
+  self.sorters = {}
 
+  class_attribute :facets
   self.facets = {}
+
+  attr_reader :scope
 
   def initialize(session)
     @session = session
@@ -16,11 +16,15 @@ class ApplicationFilter
     super(@session.fetch(:filters, {})[filter_resource_class])
   end
 
+  def self.sorter(name, opts = {})
+    sorters[name] = opts
+  end
+
   def self.facet(name, opts = {})
     facets[name.to_sym] = opts
   end
 
-  def apply!(_chain)
+  def apply!(_scope)
   end
 
   def clear!
@@ -29,9 +33,13 @@ class ApplicationFilter
     @session[:filters][filter_resource_class] = @session[:filters][filter_resource_class].slice('sort')
   end
 
-  def merge!(_attribute, _value)
+  def merge!(attribute, value)
     @session[:filters] ||= {}
     @session[:filters][filter_resource_class] ||= {}
+
+    send(:"#{attribute}=", value)
+
+    @session[:filters][filter_resource_class].merge!(attribute => send(attribute))
   end
 
   def active?
@@ -49,5 +57,17 @@ class ApplicationFilter
 
   def filter_resource_class
     @filter_resource_class || self.class.name.match(/\A(?<resource>.*)Filter\z/)[:resource]
+  end
+
+  def facet_items(field)
+    send(:"#{field}_items") || []
+  end
+
+  def facet_item_selected?(facet, value)
+    send(facet).include?(value)
+  end
+
+  def facet_active?(facet)
+    send(facet).any?
   end
 end
