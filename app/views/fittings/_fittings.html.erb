@@ -1,9 +1,5 @@
 <%= turbo_frame_tag 'fittings' do %>
   <%= render(CardComponent.new(body_class_names: '')) do |c| %>
-    <% c.header do %>
-      <%= render(PaginatorComponent.new(pagy: paginator)) %>
-    <% end %>
-
     <% c.body do %>
       <%= render 'fittings/fittings_table', fittings: fittings %>
     <% end %>

@@ -1,4 +1,7 @@
 <tr class="<%= classes %>">
+  <% headers.each do |header| %>
+    <%= header %>
+  <% end %>
   <% cells.each do |cell| %>
     <%= cell %>
   <% end %>

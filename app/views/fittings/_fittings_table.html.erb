@@ -1,13 +1,21 @@
-<%= render(TableComponent.new) do |t| %>
-  <% t.header do %>Fitting<% end %>
-  <% t.header width: '1/12' do %>
-    Total Available
+<%= render(TableComponent.new(layout: 'auto')) do |t| %>
+  <% t.head do %>
+    <%= render(TableRowComponent.new(classes: 'divide-x divide-gray-300 border-b border-gray-300 ')) do |tr| %>
+      <% tr.header padding: 'px-4 py-1', colspan: 2 do %><% end %>
+      <% tr.header padding: 'px-4 py-1', colspan: 3, align: 'text-center' do %>Contracts<% end %>
+      <% tr.header padding: 'px-4 py-1', colspan: 2, align: 'text-center' do %><%= current_alliance.main_market_name %><% end %>
+    <% end %>
+
+    <%= render(TableRowComponent.new) do |tr| %>
+      <% tr.header padding: 'px-4 py-1' do %>Fitting<% end %>
+      <% tr.header padding: 'px-4 py-1', width: 'w-24' do %>Total<% end %>
+      <% tr.header padding: 'px-4 py-1', width: 'w-24' do %>Qty<% end %>
+      <% tr.header padding: 'px-4 py-1', width: 'w-24' do %>Quality<% end %>
+      <% tr.header padding: 'px-4 py-1', width: 'w-24' do %>Price<% end %>
+      <% tr.header padding: 'px-4 py-1', width: 'w-24' do %>Qty<% end %>
+      <% tr.header padding: 'px-4 py-1', width: 'w-24' do %>Price<% end %>
+    <% end %>
   <% end %>
-  <% t.header padding: 'px-2 py-2', width: '1/12' do %>Contracts<% end %>
-  <% t.header padding: 'px-2 py-2', width: '1/12' do %>Contract Quality<% end %>
-  <% t.header padding: 'px-2 py-2', width: '1/6' do %>Contract Price<% end %>
-  <% t.header padding: 'px-2 py-2', width: '1/12' do %><%= current_alliance.main_market_name %> Qty<% end %>
-  <% t.header padding: 'px-2 py-2', width: '1/6' do %><%= current_alliance.main_market_name %> Price<% end %>
 
   <% t.body do %>
     <%= render partial: 'fittings/fittings_table_row', collection: fittings, cached: true, as: :fitting %>

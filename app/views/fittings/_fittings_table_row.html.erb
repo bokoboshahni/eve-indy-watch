@@ -1,6 +1,6 @@
 <% stock = fitting.current_stock_level(main_market) %>
 <%= render(TableRowComponent.new(classes: 'divide-x divide-gray-200')) do |tr| %>
-  <% tr.cell padding: 'px-2 py-2' do %>
+  <% tr.cell padding: 'px-4 py-1' do %>
     <div class="flex items-center">
       <div class="flex-shrink-0 h-8 w-8">
         <%= image_tag fitting.type.icon_url, class: 'h-8 w-8 rounded-md' %>
@@ -15,7 +15,7 @@
       </div>
     </div>
   <% end %>
-  <% tr.cell padding: 'px-2 py-2' do %>
+  <% tr.cell padding: 'px-4 py-1' do %>
     <% if fitting.reorder_point %>
       <% total_available = stock.total_quantity %>
       <% color = total_available >= fitting.reorder_point ? 'green' : 'red' %>
@@ -24,21 +24,21 @@
       <%= total_available %>
     <% end %>
   <% end %>
-  <% tr.cell padding: 'px-2 py-2' do %>
+  <% tr.cell padding: 'px-4 py-1' do %>
     <%= stock.contract_match_quantity || 'N/A' %>
   <% end %>
-  <% tr.cell padding: 'px-2 py-2' do %>
+  <% tr.cell padding: 'px-4 py-1' do %>
     <%= stock.contract_quality ? number_to_percentage(stock.contract_quality, precision: 0) : 'N/A' %>
   <% end %>
-  <% tr.cell padding: 'px-2 py-2' do %>
+  <% tr.cell padding: 'px-4 py-1' do %>
     <%= number_to_isk stock.contract_price_avg ? stock.contract_price_avg : 'N/A' %>
   <% end %>
-  <% tr.cell padding: 'px-2 py-2' do %>
+  <% tr.cell padding: 'px-4 py-1' do %>
     <% if fitting.main_market %>
       <%= stock.market_quantity || 'N/A' %>
     <% end %>
   <% end %>
-  <% tr.cell padding: 'px-2 py-2' do %>
+  <% tr.cell padding: 'px-4 py-1' do %>
     <% if fitting.main_market %>
       <%= number_to_isk stock.market_sell_price || 'N/A' %>
     <% end %>

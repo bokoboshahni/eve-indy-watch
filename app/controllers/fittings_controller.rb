@@ -1,14 +1,20 @@
 # frozen_string_literal: true
 
 class FittingsController < ApplicationController
+  include Filterable
+
   before_action :authenticate_user!
   before_action :find_fitting, only: %i[show edit update destroy stock_levels]
 
   def index
-    @pagy, @fittings = pagy(Fitting.kept.where(owner_id: main_alliance_id).order(:name))
+    store_filters!('Fitting')
+
+    scope = Fitting.kept.where(owner_id: main_alliance_id)
+    @filter = filter_for('Fitting')
+    @pagy, @fittings = pagy(@filter.apply!(scope))
 
     if turbo_frame_request?
-      render partial: 'fittings', locals: { fittings: @fittings, paginator: @pagy }
+      render partial: 'fittings', locals: { fittings: @fittings, filter: @filter, paginator: @pagy }
     else
       render :index
     end

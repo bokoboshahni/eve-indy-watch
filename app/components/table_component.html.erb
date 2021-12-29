@@ -1,10 +1,14 @@
-<table class="table-fixed w-full divide-y divide-gray-200">
+<table class="<%= layout %> w-full divide-y divide-gray-200">
   <thead class="bg-gray-50">
-    <tr class="sticky top-0">
-      <% headers.each do |header| %>
-        <%= header %>
-      <% end %>
-    </tr>
+    <% if head %>
+      <%= head %>
+    <% else %>
+      <tr class="sticky top-0">
+        <% headers.each do |header| %>
+          <%= header %>
+        <% end %>
+      </tr>
+    <% end %>
   </thead>
   <tbody class="bg-white divide-y divide-gray-200">
     <%= body %>
