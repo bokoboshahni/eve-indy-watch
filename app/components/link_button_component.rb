@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
 class LinkButtonComponent < ViewComponent::Base
-  def initialize(href:, size: :md, color: 'indigo')
+  attr_reader :href, :size, :color, :margin
+
+  def initialize(href:, size: :md, color: 'indigo', margin: nil)
     @href = href
     @size = size
     @color = color
+    @margin = margin
   end
 
   def call
@@ -12,7 +15,7 @@ class LinkButtonComponent < ViewComponent::Base
   end
 
   def class_names
-    "#{base_class_names} #{size_class_names}"
+    "#{base_class_names} #{size_class_names} #{margin}"
   end
 
   def base_class_names

@@ -1,0 +1,68 @@
+<%= render(CardComponent.new(body_class_names: 'rounded-lg', footer_padding: 'px-2 py-2')) do |c| %>
+  <% c.body do %>
+    <%= render(TableComponent.new(layout: 'auto')) do |t| %>
+      <% t.head do %>
+        <%= render(TableRowComponent.new) do |tr| %>
+          <% tr.header padding: 'px-4 py-2' do %>Name<% end %>
+          <% tr.header padding: 'px-4 py-2', width: 'w-48' do %>Type<% end %>
+          <% tr.header padding: 'px-4 py-2', width: 'w-24' do %>Owner<% end %>
+          <% tr.header padding: 'px-4 py-2', width: 'w-24' do %>Locations<% end %>
+          <% tr.header padding: 'px-4 py-2', width: 'w-36' do %>Orders Updated<% end %>
+          <% tr.header padding: 'px-4 py-2', width: 'w-36' do %>Types Updated<% end %>
+        <% end %>
+      <% end %>
+
+      <% markets.each do |market| %>
+        <% t.row do |tr| %>
+          <% tr.cell padding: 'px-4 py-1' do %>
+            <div class="text-xs font-medium text-gray-900">
+              <%= link_to market.name, admin_market_path(market), class: 'font-medium', data: { turbo_frame: '_top' } %>
+            </div>
+          <% end %>
+          <% tr.cell padding: 'px-4 py-1' do %>
+            <div class="text-xs font-medium text-gray-900">
+              <%= market.kind.titleize %>
+            </div>
+          <% end %>
+          <% tr.cell padding: 'px-4 py-1' do %>
+            <% if market.owner %>
+              <div class="flex items-center">
+                <div class="flex-shrink-0 h-10 w-10">
+                  <% if market.owner.is_a?(Alliance) %>
+                    <%= render(AllianceIconComponent.new(alliance: market.owner, classes: 'h-10 w-10 rounded-sm')) %>
+                  <% elsif market.owner.is_a?(Corporation) %>
+                    <%= render(CorporationIconComponent.new(corporation: market.owner, classes: 'h-10 w-10 rounded-sm')) %>
+                  <% end %>
+                </div>
+                <div class="ml-4">
+                  <div class="text-xs font-medium text-gray-900">
+                    <%= market.owner.name %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+          <% tr.cell padding: 'px-4 py-1' do %>
+            <div class="text-xs font-medium text-gray-900">
+              <%= market.market_locations.count %>
+            </div>
+          <% end %>
+          <% tr.cell padding: 'px-4 py-1' do %>
+            <div class="text-xs font-medium text-gray-900">
+              <%= local_time market.orders_updated_at, format: :db if market.orders_updated_at %>
+            </div>
+          <% end %>
+          <% tr.cell padding: 'px-4 py-1' do %>
+            <div class="text-xs font-medium text-gray-900">
+              <%= local_time market.type_stats_updated_at, format: :db if market.type_stats_updated_at %>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <% c.footer do %>
+    <%= render(PaginatorComponent.new(pagy: paginator)) %>
+  <% end %>
+<% end %>

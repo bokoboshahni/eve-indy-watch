@@ -39,6 +39,11 @@ class Market < ApplicationRecord
 
   multisearchable against: %i[name owner_name]
 
+  pg_search_scope :search_by_all, against: %i[name],
+                                  using: {
+                                    tsearch: { prefix: true }
+                                  }
+
   belongs_to :owner, polymorphic: true, optional: true
   belongs_to :type_history_region, class_name: 'Region', inverse_of: :markets_for_type_history, optional: true
 

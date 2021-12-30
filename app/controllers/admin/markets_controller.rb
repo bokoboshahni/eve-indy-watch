@@ -2,10 +2,22 @@
 
 module Admin
   class MarketsController < AdminController
+    include Filterable
+
     before_action :find_market, only: %i[show edit update destroy]
 
     def index
-      @markets = Market.order(:name)
+      store_filters!('Market')
+
+      scope = Market
+      @filter = filter_for('Market')
+      @pagy, @markets = pagy(@filter.apply!(scope))
+
+      if turbo_frame_request?
+        render partial: 'markets', locals: { users: @markets, filter: @filter, paginator: @pagy }
+      else
+        render :index
+      end
     end
 
     def new
