@@ -35,7 +35,7 @@
             <% if corporation.alliance %>
               <div class="flex items-center">
                 <div class="flex-shrink-0 h-10 w-10">
-                  <%= image_tag corporation.alliance.icon_url_128, class: 'h-10 w-10 rounded-full', alt: '' %>
+                  <%= render(AllianceIconComponent.new(alliance: corporation.alliance, classes: 'h-10 w-10 rounded-sm')) %>
                 </div>
                 <div class="ml-4">
                   <div class="text-xs font-medium text-gray-900">

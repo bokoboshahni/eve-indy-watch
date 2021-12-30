@@ -3,7 +3,7 @@
     <%= render(TableComponent.new(layout: 'auto')) do |t| %>
       <% t.header padding: 'px-4 py-2' do %>Name<% end %>
       <% t.header padding: 'px-4 py-2', width: 'w-48' do %>Corporation<% end %>
-      <% t.header padding: 'px-4 py-2', width: 'w-36' do %>Last Synced<% end %>
+      <% t.header padding: 'px-4 py-2', width: 'w-36' do %>Last Sync<% end %>
       <% t.header padding: 'px-4 py-2', width: 'w-48' do %>Role<% end %>
 
       <% users.each do |user| %>

@@ -2,7 +2,7 @@
   <% c.body do %>
     <%= render(TableComponent.new(layout: 'auto')) do |t| %>
       <% t.header padding: 'px-4 py-2' do %>Name<% end %>
-      <% t.header padding: 'px-4 py-2', width: 'w-36' do %>Last Synced<% end %>
+      <% t.header padding: 'px-4 py-2', width: 'w-36' do %>Last Sync<% end %>
 
       <% alliances.each do |alliance| %>
         <% t.row do |tr| %>
