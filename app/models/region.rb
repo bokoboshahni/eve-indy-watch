@@ -35,6 +35,11 @@ class Region < ApplicationRecord
 
   multisearchable against: %i[name]
 
+  pg_search_scope :search_by_all, against: %i[name],
+                                  using: {
+                                    tsearch: { prefix: true }
+                                  }
+
   belongs_to :esi_authorization, inverse_of: :regions, optional: true
 
   has_many :constellations, inverse_of: :region, dependent: :restrict_with_exception

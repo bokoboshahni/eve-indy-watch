@@ -2,10 +2,22 @@
 
 module Admin
   class RegionsController < AdminController
+    include Filterable
+
     before_action :find_region, only: %i[show edit update market_order_batches]
 
     def index
-      @regions = Region.order(:name)
+      store_filters!('Region')
+
+      scope = Region
+      @filter = filter_for('Region')
+      @pagy, @regions = pagy(@filter.apply!(scope))
+
+      if turbo_frame_request?
+        render partial: 'regions', locals: { users: @regions, filter: @filter, paginator: @pagy }
+      else
+        render :index
+      end
     end
 
     def show; end
