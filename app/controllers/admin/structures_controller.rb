@@ -2,10 +2,22 @@
 
 module Admin
   class StructuresController < AdminController
+    include Filterable
+
     before_action :find_structure, only: %i[show edit update market_order_batches]
 
     def index
-      @structures = Structure.order(:name)
+      store_filters!('Structure')
+
+      scope = Structure.includes(owner: :alliance)
+      @filter = filter_for('Structure')
+      @pagy, @structures= pagy(@filter.apply!(scope))
+
+      if turbo_frame_request?
+        render partial: 'structures', locals: { structures: @structures, filter: @filter, paginator: @pagy }
+      else
+        render :index
+      end
     end
 
     def show; end

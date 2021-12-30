@@ -51,6 +51,16 @@ class Structure < ApplicationRecord
 
   multisearchable against: %i[name owner_name type_name]
 
+  pg_search_scope :search_by_all, against: %i[name],
+                                  associated_against: {
+                                    owner: :name,
+                                    solar_system: :name,
+                                    type: :name
+                                  },
+                                  using: {
+                                    tsearch: { prefix: true }
+                                  }
+
   belongs_to :esi_authorization, inverse_of: :structures, optional: true
   belongs_to :owner, class_name: 'Corporation', inverse_of: :structures, optional: true
   belongs_to :solar_system, inverse_of: :structures, optional: true
