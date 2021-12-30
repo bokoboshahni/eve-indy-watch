@@ -1,0 +1,26 @@
+<div class="pb-5 border-b border-gray-200">
+  <h3 class="text-lg leading-6 font-medium text-gray-900">
+    Market Availability
+  </h3>
+</div>
+
+<%= turbo_frame_tag 'market_statistics' do %>
+  <%= render(CardComponent.new(body_class_names: '')) do |c| %>
+    <% c.body do %>
+      <%= render(TableComponent.new(layout: 'auto')) do |t| %>
+        <% t.header width: '3/12' do %>Market<% end %>
+        <% t.header width: '3/12' do %>On Hand<% end %>
+        <% t.header width: '3/12' do %>Price (Buy)<% end %>
+        <% t.header width: '2/12' do %>Price (Sell)<% end %>
+        <% t.header width: '2/12' do %>Price (Split)<% end %>
+        <% t.header width: '2/12' do %>Limiting Items<% end %>
+
+        <% render 'fitting_market', fitting: fitting, market: fitting.main_market, t: t if fitting.main_market %>
+
+        <% Market.where(trade_hub: true).order(:name).each do |market| %>
+          <% render 'fitting_market', fitting: fitting, market: market, t: t if market %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

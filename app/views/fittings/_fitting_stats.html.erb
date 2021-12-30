@@ -11,33 +11,6 @@
     </dt>
     <dd class="mt-1 text-3xl font-semibold text-gray-900">
       <%= stock.contract_match_quantity || 'N/A' %>
-      <%= area_chart(
-        fitting.stock_level_summaries.daily.group_by_day(:time).sum(:contract_match_quantity),
-        xmin: 1.week.ago, height: '5rem',
-        library: {
-          scales: {
-            x: {
-              grid: {
-                display: false,
-                drawTicks: false
-              },
-              ticks: {
-                display: false,
-                major: { enabled: false }
-              }
-            },
-            y: {
-              grid: {
-                display: false,
-              },
-              ticks: {
-                display: false,
-                major: { enabled: false }
-              }
-            }
-          }
-        }
-      ) %>
     </dd>
   </div>
 
