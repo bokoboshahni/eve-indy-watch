@@ -3,15 +3,12 @@ const defaultTheme = require('tailwindcss/defaultTheme')
 
 module.exports = {
   mode: 'jit',
-  purge: {
-    enabled: process.env.NODE_ENV == 'production',
-    content: [
-      './app/components/**/*.html.erb',
-      './app/views/**/*.html.erb',
-      './app/helpers/**/*.rb',
-      './app/javascript/**/*.js',
-    ]
-  },
+  content: [
+    './app/components/**/*.html.erb',
+    './app/views/**/*.html.erb',
+    './app/helpers/**/*.rb',
+    './app/javascript/**/*.js',
+  ],
   darkMode: 'media',
   theme: {
     colors: {
