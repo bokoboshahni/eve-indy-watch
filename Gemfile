@@ -14,7 +14,6 @@ gem 'ahoy_matey', '~> 4.0'
 gem 'ancestry', '~> 4.1'
 gem 'awesome_print', '~> 1.9'
 gem 'bootsnap', '>= 1.4.4', require: false
-gem 'chartkick', '~> 4.1'
 gem 'composite_primary_keys', '~> 13.0'
 gem 'discard', '~> 1.2'
 gem 'down', '~> 5.2'
