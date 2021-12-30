@@ -2,10 +2,22 @@
 
 module Admin
   class AlliancesController < AdminController
+    include Filterable
+
     before_action :find_alliance, only: %i[show edit update]
 
     def index
-      @alliances = Alliance.order(:name)
+      store_filters!('Alliance')
+
+      scope = Alliance
+      @filter = filter_for('Alliance')
+      @pagy, @alliances = pagy(@filter.apply!(scope))
+
+      if turbo_frame_request?
+        render partial: 'alliances', locals: { users: @alliances, filter: @filter, paginator: @pagy }
+      else
+        render :index
+      end
     end
 
     def show; end

@@ -1,0 +1,34 @@
+<%= render(CardComponent.new(body_class_names: 'rounded-lg', footer_padding: 'px-2 py-2')) do |c| %>
+  <% c.body do %>
+    <%= render(TableComponent.new(layout: 'auto')) do |t| %>
+      <% t.header padding: 'px-4 py-2' do %>Name<% end %>
+      <% t.header padding: 'px-4 py-2', width: 'w-36' do %>Last Synced<% end %>
+
+      <% alliances.each do |alliance| %>
+        <% t.row do |tr| %>
+          <% tr.cell padding: 'px-4 py-1' do %>
+            <div class="flex items-center">
+              <div class="flex-shrink-0 h-10 w-10">
+                <%= render(AllianceIconComponent.new(alliance: alliance, classes: 'h-10 w-10 rounded-full')) %>
+              </div>
+              <div class="ml-4">
+                <div class="text-xs font-medium text-gray-900">
+                  <%= alliance.name %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+          <% tr.cell padding: 'px-4 py-1' do %>
+            <div class="text-xs font-medium text-gray-900">
+              <%= local_time alliance.esi_last_modified_at, format: :db %>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <% c.footer do %>
+    <%= render(PaginatorComponent.new(pagy: paginator)) %>
+  <% end %>
+<% end %>

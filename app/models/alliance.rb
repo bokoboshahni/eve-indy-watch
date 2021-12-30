@@ -42,6 +42,11 @@ class Alliance < ApplicationRecord
 
   multisearchable against: %i[name]
 
+  pg_search_scope :search_by_all, against: %i[name],
+                                  using: {
+                                    tsearch: { prefix: true }
+                                  }
+
   belongs_to :api_corporation, class_name: 'Corporation', inverse_of: :api_alliance, optional: true
   belongs_to :main_market, class_name: 'Market', inverse_of: :alliances_as_main_market, optional: true
   belongs_to :appraisal_market, class_name: 'Market', inverse_of: :alliances_as_appraisal_market, optional: true
