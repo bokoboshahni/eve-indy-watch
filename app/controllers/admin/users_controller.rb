@@ -2,10 +2,22 @@
 
 module Admin
   class UsersController < AdminController
+    include Filterable
+
     before_action :find_user, only: %i[destroy edit show update]
 
     def index
-      @pagy, @users = pagy(User.includes(:character, :corporation, :alliance).order('characters.name asc'))
+      store_filters!('User')
+
+      scope = User.includes(:character, :corporation, :alliance)
+      @filter = filter_for('User')
+      @pagy, @users = pagy(@filter.apply!(scope))
+
+      if turbo_frame_request?
+        render partial: 'users', locals: { users: @users, filter: @filter, paginator: @pagy }
+      else
+        render :index
+      end
     end
 
     def update

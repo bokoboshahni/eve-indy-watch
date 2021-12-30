@@ -31,6 +31,13 @@ class User < ApplicationRecord
 
   multisearchable against: %i[name corporation_name alliance_name]
 
+  pg_search_scope :search_by_all, associated_against: {
+                                    character: :name
+                                  },
+                                  using: {
+                                    tsearch: { prefix: true }
+                                  }
+
   ROLES = %w[
     alliance.fittings.admin
     corporation.fitting.admin
