@@ -1,70 +1,70 @@
-  <%= render(CardComponent.new(body_class_names: 'rounded-lg', footer_padding: 'px-2 py-2')) do |c| %>
-    <% c.body do %>
-      <%= render(TableComponent.new(layout: 'auto')) do |t| %>
-        <% t.header padding: 'px-4 py-2' do %>Description<% end %>
-        <% t.header padding: 'px-4 py-2', width: 'w-48' do %>Fittings<% end %>
-        <% t.header padding: 'px-4 py-2', width: 'w-48' do %>Location<% end %>
-        <% t.header padding: 'px-4 py-2', width: 'w-48' do %>Price<% end %>
-        <% t.header padding: 'px-4 py-2', width: 'w-48' do %>Value<% end %>
+<%= render(CardComponent.new(body_class_names: 'rounded-lg', footer_padding: 'px-2 py-2')) do |c| %>
+  <% c.body do %>
+    <%= render(TableComponent.new(layout: 'auto')) do |t| %>
+      <% t.header padding: 'px-4 py-2' do %>Description<% end %>
+      <% t.header padding: 'px-4 py-2', width: 'w-48' do %>Fittings<% end %>
+      <% t.header padding: 'px-4 py-2', width: 'w-48' do %>Location<% end %>
+      <% t.header padding: 'px-4 py-2', width: 'w-48' do %>Price<% end %>
+      <% t.header padding: 'px-4 py-2', width: 'w-48' do %>Value<% end %>
 
-        <% contracts.each do |contract| %>
-          <% t.row do |tr| %>
-            <% tr.cell padding: 'px-4 py-1' do %>
-              <%= link_to contract.description, contract_path(contract), class: 'font-medium', data: { turbo_frame: '_top' } %>
-            <% end %>
-            <% tr.cell padding: 'px-4 py-1' do %>
-              <% matches = contract.contract_fittings.where('similarity > 0.5').order(similarity: :desc) %>
-              <% if matches.count > 0 %>
-                <% cf = matches.first %>
-                <% fitting = cf.fitting %>
-                <% color = cf.similarity == 1.0 ? 'text-green-500' : 'text-red-500' %>
-                <% icon = cf.similarity == 1.0 ? 'check-circle' : 'exclamation' %>
-                <% style = cf.similarity == 1.0 ? 'font-medium' : 'italic' %>
+      <% contracts.each do |contract| %>
+        <% t.row do |tr| %>
+          <% tr.cell padding: 'px-4 py-1' do %>
+            <%= link_to contract.description, contract_path(contract), class: 'font-medium', data: { turbo_frame: '_top' } %>
+          <% end %>
+          <% tr.cell padding: 'px-4 py-1' do %>
+            <% matches = contract.contract_fittings.where('similarity > 0.5').order(similarity: :desc) %>
+            <% if matches.count > 0 %>
+              <% cf = matches.first %>
+              <% fitting = cf.fitting %>
+              <% color = cf.similarity == 1.0 ? 'text-green-500' : 'text-red-500' %>
+              <% icon = cf.similarity == 1.0 ? 'check-circle' : 'exclamation' %>
+              <% style = cf.similarity == 1.0 ? 'font-medium' : 'italic' %>
 
-                <% if cf.similarity == 1.0 %>
+              <% if cf.similarity == 1.0 %>
+                <%= link_to contract_path(contract, fitting_id: fitting.id), class: "mt-2 flex items-center #{style} #{color} hover:#{color}", data: { turbo_frame: '_top' } do %>
+                  <%= heroicon icon, variant: :outline, options: { class: "flex-shrink-0 mr-1.5 h-5 w-5 #{color} hover:text-#{color}-500" } %>
+                  <%= fitting.name %>
+                  (<%= number_to_percentage(cf.similarity * 100.0, precision: 0) %>)
+                  <% if matches.count > 1 %>+ <%= matches.count %> more<% end %>
+                <% end %>
+              <% else %>
+                <%= render HovercardComponent.new(url: list_fittings_card_contract_path(contract, fitting_id: fitting.id), class_name: 'inline-block') do %>
                   <%= link_to contract_path(contract, fitting_id: fitting.id), class: "mt-2 flex items-center #{style} #{color} hover:#{color}", data: { turbo_frame: '_top' } do %>
-                    <%= heroicon icon, variant: :outline, options: { class: "flex-shrink-0 mr-1.5 h-5 w-5 #{color} hover:text-#{color}-500" } %>
+                    <%= heroicon icon, variant: :outline, options: { class: "flex-shrink-0 mr-1.5 h-5 w-5 #{color} hover:#{color}" } %>
                     <%= fitting.name %>
                     (<%= number_to_percentage(cf.similarity * 100.0, precision: 0) %>)
                     <% if matches.count > 1 %>+ <%= matches.count %> more<% end %>
                   <% end %>
-                <% else %>
-                  <%= render HovercardComponent.new(url: list_fittings_card_contract_path(contract, fitting_id: fitting.id), class_name: 'inline-block') do %>
-                    <%= link_to contract_path(contract, fitting_id: fitting.id), class: "mt-2 flex items-center #{style} #{color} hover:#{color}", data: { turbo_frame: '_top' } do %>
-                      <%= heroicon icon, variant: :outline, options: { class: "flex-shrink-0 mr-1.5 h-5 w-5 #{color} hover:#{color}" } %>
-                      <%= fitting.name %>
-                      (<%= number_to_percentage(cf.similarity * 100.0, precision: 0) %>)
-                      <% if matches.count > 1 %>+ <%= matches.count %> more<% end %>
-                    <% end %>
-                  <% end %>
                 <% end %>
               <% end %>
             <% end %>
-            <% tr.cell padding: 'px-4 py-1' do %><%= contract.end_location.name %><% end %>
-            <% tr.cell padding: 'px-4 py-1' do %>
-              <%
-                markup_pct = contract.markup_sell_pct(main_alliance.appraisal_market)
-                color =
-                  if markup_pct < 0
-                    'green-500'
-                  elsif markup_pct >= 30 && markup_pct < 100
-                    'red-500'
-                  end
-              %>
-              <span class="text-<%= color %>">
-                <%= number_to_isk contract.price %>
-                <% unless markup_pct.infinite? || markup_pct.nan? %>(<%= '+' if markup_pct.positive? %><%= number_to_percentage markup_pct, precision: 0 %>)<% end %>
-              </span>
-            <% end %>
-            <% tr.cell padding: 'px-4 py-1' do %>
-              <%= number_to_isk contract.valuation_sell(current_alliance.appraisal_market) %>
-            <% end %>
+          <% end %>
+          <% tr.cell padding: 'px-4 py-1' do %><%= contract.end_location.name %><% end %>
+          <% tr.cell padding: 'px-4 py-1' do %>
+            <%
+              markup_pct = contract.markup_sell_pct(main_alliance.appraisal_market)
+              color =
+                if markup_pct < 0
+                  'green-500'
+                elsif markup_pct >= 30 && markup_pct < 100
+                  'red-500'
+                end
+            %>
+            <span class="text-<%= color %>">
+              <%= number_to_isk contract.price %>
+              <% unless markup_pct.infinite? || markup_pct.nan? %>(<%= '+' if markup_pct.positive? %><%= number_to_percentage markup_pct, precision: 0 %>)<% end %>
+            </span>
+          <% end %>
+          <% tr.cell padding: 'px-4 py-1' do %>
+            <%= number_to_isk contract.valuation_sell(current_alliance.appraisal_market) %>
           <% end %>
         <% end %>
       <% end %>
     <% end %>
-
-    <% c.footer do %>
-      <%= render(PaginatorComponent.new(pagy: paginator)) %>
-    <% end %>
   <% end %>
+
+  <% c.footer do %>
+    <%= render(PaginatorComponent.new(pagy: paginator)) %>
+  <% end %>
+<% end %>

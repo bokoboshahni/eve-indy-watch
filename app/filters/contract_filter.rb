@@ -15,10 +15,12 @@ class ContractFilter < ApplicationFilter
 
   facet :end_location_id, label: 'Location', array: true
   facet :fitting_id, label: 'Fitting', array: true
+  facet :issuer_corporation_id, label: 'Issuer Corporation', array: true
 
   attribute :query, :string
   attribute :end_location_id, array: true, default: []
   attribute :fitting_id, array: true, default: []
+  attribute :issuer_corporation_id, array: true, default: []
   attribute :min_price, :integer
   attribute :max_price, :integer
   attribute :min_similarity, :decimal
@@ -31,8 +33,10 @@ class ContractFilter < ApplicationFilter
     @scope ||=
       begin
         scope = scope.includes(contract_fittings: :fitting)
+        scope = scope.joins('INNER JOIN corporations ic1 ON ic1.id = contracts.issuer_corporation_id')
         scope = scope.search_by_all(query) if query.present?
         scope = scope.where(end_location_id: end_location_id) if end_location_id.any?
+        scope = scope.where(issuer_corporation_id: issuer_corporation_id) if issuer_corporation_id.any?
         scope = scope.where('price >= ?', price) if min_price.present?
         scope = scope.where('price <= ?', price) if max_price.present?
         scope = scope.where('volume >= ?', price) if min_price.present?
@@ -50,6 +54,10 @@ class ContractFilter < ApplicationFilter
          .pluck(:end_location_name, :end_location_id)
          .uniq
          .sort_by { |e| e.first }
+  end
+
+  def issuer_corporation_id_items
+    scope.order('ic1.name').pluck('ic1.name, ic1.id').uniq
   end
 
   def fitting_id_items
