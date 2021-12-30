@@ -36,7 +36,7 @@ module Admin
     private
 
     def find_corporation
-      @corporation = Corporation.find(params[:id])
+      @corporation = authorize(Corporation.find(params[:id]))
     end
 
     def corporation_params

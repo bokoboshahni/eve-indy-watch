@@ -23,7 +23,7 @@ module Admin
     def update
       if @user.update(user_params)
         flash[:success] = 'User updated successfully.'
-        redirect_to admin_user_path(@user)
+        redirect_to edit_admin_user_path(@user)
       else
         render :edit
       end
@@ -38,7 +38,7 @@ module Admin
     private
 
     def find_user
-      @user = User.find(params[:id])
+      @user = authorize(User.find(params[:id]))
     end
 
     def user_params

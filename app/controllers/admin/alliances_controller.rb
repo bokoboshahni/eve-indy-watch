@@ -36,7 +36,7 @@ module Admin
     private
 
     def find_alliance
-      @alliance = Alliance.find(params[:id])
+      @alliance = authorize(Alliance.find(params[:id]))
     end
 
     def alliance_params

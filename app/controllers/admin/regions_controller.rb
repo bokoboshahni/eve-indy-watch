@@ -40,7 +40,7 @@ module Admin
     private
 
     def find_region
-      @region = Region.find(params[:id] || params[:region_id])
+      @region = authorize(Region.find(params[:id] || params[:region_id]))
     end
 
     def region_params

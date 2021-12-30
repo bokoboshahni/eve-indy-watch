@@ -40,7 +40,7 @@ module Admin
     private
 
     def find_structure
-      @structure = Structure.find(params[:id], params[:structure_id])
+      @structure = authorize(Structure.find(params[:id], params[:structure_id]))
     end
 
     def structure_params

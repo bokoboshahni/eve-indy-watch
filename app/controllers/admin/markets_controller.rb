@@ -21,10 +21,12 @@ module Admin
     end
 
     def new
+      @market = authorize(Market.new)
     end
 
     def create
-      if @market.create(market_params)
+      @market = authorize(Market.new(market_params))
+      if @market.save
         flash[:success] = 'Market created successfully.'
         redirect_to admin_market_path(@market)
       else
@@ -53,7 +55,7 @@ module Admin
     private
 
     def find_market
-      @market = Market.find(params[:id])
+      @market = authorize(Market.find(params[:id]))
     end
 
     def market_params
