@@ -1,15 +1,15 @@
 <%= turbo_frame_tag "#{order_type.underscore}_orders" do %>
   <%= render(CardComponent.new(title: "#{order_type.titleize} Orders", body_class_names: '')) do |c| %>
-    <% c.description do %><p class="text-gray-900 text-xs font-italic">Data refreshed every 5 minutes.<% end %>
+    <% c.description do %><p class="text-gray-900 text-xs font-italic">Last updated <%= local_time market.orders_updated_at %><% end %>
     <% c.body do %>
-      <%= render(TableComponent.new) do |t| %>
-        <% t.header width: '1/12', classes: 'px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider' do %>Market<% end %>
-        <% t.header width: '1/12', classes: 'px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider' do %>Range<% end %>
-        <% t.header width: '1/12', classes: 'px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider' do %>Qty<% end %>
-        <% t.header width: '1/12', classes: 'px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider' do %>Price<% end %>
-        <% t.header width: '3/12', classes: 'px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider' do %>Location<% end %>
-        <% t.header width: '1/12', classes: 'px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider' do %>Expires in<% end %>
-        <% t.header width: '1/12', classes: 'px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider' do %>Issued<% end %>
+      <%= render(TableComponent.new(layout: 'auto')) do |t| %>
+        <% t.header width: '1/12', padding: 'px-4 py-2' do %>Market<% end %>
+        <% t.header width: '1/12', padding: 'px-4 py-2' do %>Range<% end %>
+        <% t.header width: '1/12', padding: 'px-4 py-2' do %>Qty<% end %>
+        <% t.header width: '1/12', padding: 'px-4 py-2' do %>Price<% end %>
+        <% t.header width: '3/12', padding: 'px-4 py-2' do %>Location<% end %>
+        <% t.header width: '1/12', padding: 'px-4 py-2' do %>Expires in<% end %>
+        <% t.header width: '1/12', padding: 'px-4 py-2' do %>Issued<% end %>
 
         <% orders.each do |order| %>
           <% render 'order', order: order, market: market, t: t %>

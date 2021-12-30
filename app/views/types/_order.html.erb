@@ -1,9 +1,9 @@
 <% t.row do |tr| %>
-  <%= tr.cell classes: 'px-3 py-1 text-[0.625rem]' do %><%= market.name %><% end %>
-  <%= tr.cell classes: 'px-3 py-1 text-[0.625rem]' do %><%= market_order_range order.range %><% end %>
-  <%= tr.cell classes: 'px-3 py-1 text-[0.625rem]' do %><%= number_to_m3 order.volume_remain %><% end %>
-  <%= tr.cell classes: 'px-3 py-1 text-[0.625rem]' do %><%= number_to_isk order.price %><% end %>
-  <%= tr.cell classes: 'px-3 py-1 text-[0.625rem]' do %><%= order.location_name %><% end %>
-  <%= tr.cell classes: 'px-3 py-1 text-[0.625rem]' do %><%= distance_of_time_in_words Time.zone.now, order.expires_at %><% end %>
-  <%= tr.cell classes: 'px-3 py-1 text-[0.625rem]' do %><%= local_time order.issued_at, format: :db %><% end %>
+  <%= tr.cell classes: 'px-4 py-1 text-[0.625rem]' do %><%= market.name %><% end %>
+  <%= tr.cell classes: 'px-4 py-1 text-[0.625rem]' do %><%= market_order_range order.range %><% end %>
+  <%= tr.cell classes: 'px-4 py-1 text-[0.625rem]' do %><%= number_to_m3 order.volume_remain %><% end %>
+  <%= tr.cell classes: 'px-4 py-1 text-[0.625rem]' do %><%= number_to_isk order.price %><% end %>
+  <%= tr.cell classes: 'px-4 py-1 text-[0.625rem]' do %><%= order.location_name %><% end %>
+  <%= tr.cell classes: 'px-4 py-1 text-[0.625rem]' do %><%= distance_of_time_in_words Time.zone.now, order.expires_at %><% end %>
+  <%= tr.cell classes: 'px-4 py-1 text-[0.625rem]' do %><%= local_time order.issued_at, format: :db %><% end %>
 <% end %>
