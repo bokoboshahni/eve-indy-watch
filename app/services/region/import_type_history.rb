@@ -15,22 +15,26 @@ class Region < ApplicationRecord
 
       records = []
 
-      Retriable.retriable tries: 10 do
+      Retriable.retriable tries: 10, base_interval: 1.0, multiplier: 2.0 do
         req = Typhoeus::Request.new(history_url, params: { type_id: type_id }, headers: default_headers)
         req.on_complete do |res|
-          next if res.code != 200
+          next if res.code == 404
 
-          next if res.body =~ /error/
+          raise "##{res.code}: #{res.body}" if res.code != 200
 
-          next if res.body =~ /\A50\d/
+          raise "##{res.code}: #{res.body}" if res.body =~ /error/
 
-          next if res.body.strip.empty?
+          raise "##{res.code}: #{res.body}" if res.body =~ /\A50\d/
+
+          raise "##{res.code}: (empty body)" if res.body.strip.empty?
 
           records.push(*Oj.load(res.body).map { |r| r.symbolize_keys!.merge!(region_id: region_id, type_id: type_id) })
         end
         hydra.queue(req)
         hydra.run
       end
+
+      return if records.empty?
 
       Statistics::RegionTypeHistory.import(
         records,
@@ -41,7 +45,7 @@ class Region < ApplicationRecord
         }
       )
 
-      region
+      records
     end
 
     private
