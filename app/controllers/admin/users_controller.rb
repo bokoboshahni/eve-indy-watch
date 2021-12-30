@@ -23,7 +23,7 @@ module Admin
     def update
       if @user.update(user_params)
         flash[:success] = 'User updated successfully.'
-        redirect_to edit_admin_user_path(@user)
+        redirect_to admin_user_path(@user)
       else
         render :edit
       end

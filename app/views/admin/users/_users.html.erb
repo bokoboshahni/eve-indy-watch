@@ -3,8 +3,8 @@
     <%= render(TableComponent.new(layout: 'auto')) do |t| %>
       <% t.header padding: 'px-4 py-2' do %>Name<% end %>
       <% t.header padding: 'px-4 py-2', width: 'w-48' do %>Corporation<% end %>
+      <% t.header padding: 'px-4 py-2', width: 'w-36' do %>Last Synced<% end %>
       <% t.header padding: 'px-4 py-2', width: 'w-48' do %>Role<% end %>
-      <% t.header padding: 'px-4 py-2', width: 'w-48' do %><% end %>
 
       <% users.each do |user| %>
         <% t.row do |tr| %>
@@ -15,7 +15,7 @@
               </div>
               <div class="ml-4">
                 <div class="text-xs font-medium text-gray-900">
-                  <%= user.character.name %>
+                  <%= link_to user.name, admin_user_path(user), class: 'font-medium', data: { turbo_frame: '_top' } %>
                 </div>
               </div>
             </div>
@@ -25,10 +25,10 @@
             <% if user.alliance %><div class="text-xs text-gray-500"><%= user.alliance.name %></div><% end %>
           <% end %>
           <% tr.cell padding: 'px-4 py-1' do %>
-            <% if user.admin? %>Administrator<% else %>User<% end %>
+            <%= local_time user.character.esi_last_modified_at, format: :db if user.character.esi_last_modified_at %>
           <% end %>
           <% tr.cell padding: 'px-4 py-1' do %>
-            <%= link_to 'Edit', edit_admin_user_path(user), class: "text-indigo-600 hover:text-indigo-900", data: { turbo_frame: '_top' } %>
+            <% if user.admin? %>Administrator<% else %>User<% end %>
           <% end %>
         <% end %>
       <% end %>
