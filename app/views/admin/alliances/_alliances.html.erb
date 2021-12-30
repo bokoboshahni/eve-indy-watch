@@ -13,7 +13,7 @@
               </div>
               <div class="ml-4">
                 <div class="text-xs font-medium text-gray-900">
-                  <%= alliance.name %>
+                  <%= link_to alliance.name, admin_alliance_path(alliance), class: 'font-medium', data: { turbo_frame: '_top' } %>
                 </div>
               </div>
             </div>

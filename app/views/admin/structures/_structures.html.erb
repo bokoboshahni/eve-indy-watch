@@ -13,8 +13,8 @@
           <% tr.header padding: 'px-4 py-2', width: 'w-48' do %>Location<% end %>
           <% tr.header padding: 'px-4 py-2', width: 'w-48' do %>Last Sync<% end %>
           <% tr.header padding: 'px-4 py-2', width: 'w-24' do %>Status<% end %>
-          <% tr.header padding: 'px-4 py-2', width: 'w-24' do %>Last Update<% end %>
-          <% tr.header padding: 'px-4 py-2', width: 'w-24' do %>Next Update<% end %>
+          <% tr.header padding: 'px-4 py-2', width: 'w-36' do %>Last Update<% end %>
+          <% tr.header padding: 'px-4 py-2', width: 'w-36' do %>Next Update<% end %>
         <% end %>
       <% end %>
 
@@ -27,7 +27,7 @@
               </div>
               <div class="ml-4">
                 <div class="text-xs font-medium text-gray-900">
-                  <%= structure.name %>
+                  <%= link_to structure.name, admin_structure_path(structure), class: 'font-medium', data: { turbo_frame: '_top' } %>
                 </div>
               </div>
             </div>
