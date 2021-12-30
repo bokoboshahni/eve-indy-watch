@@ -1,0 +1,83 @@
+<%= render(CardComponent.new(body_class_names: 'rounded-lg', footer_padding: 'px-2 py-2')) do |c| %>
+  <% c.body do %>
+    <%= render(TableComponent.new(layout: 'auto')) do |t| %>
+      <% t.head do %>
+        <%= render(TableRowComponent.new(classes: 'divide-x divide-gray-300 border-b border-gray-300 ')) do |tr| %>
+          <% tr.header padding: 'px-4 py-1', colspan: 4 do %><% end %>
+          <% tr.header padding: 'px-4 py-1', colspan: 3, align: 'text-center' do %>Contracts<% end %>
+        <% end %>
+
+        <%= render(TableRowComponent.new) do |tr| %>
+          <% tr.header padding: 'px-4 py-2' do %>Name<% end %>
+          <% tr.header padding: 'px-4 py-2', width: 'w-48' do %>Name<% end %>
+          <% tr.header padding: 'px-4 py-2', width: 'w-48' do %>Alliance<% end %>
+          <% tr.header padding: 'px-4 py-2', width: 'w-48' do %>Last Sync<% end %>
+          <% tr.header padding: 'px-4 py-2', width: 'w-24' do %>Status<% end %>
+          <% tr.header padding: 'px-4 py-2', width: 'w-24' do %>Last Update<% end %>
+          <% tr.header padding: 'px-4 py-2', width: 'w-24' do %>Next Update<% end %>
+        <% end %>
+      <% end %>
+
+      <% corporations.each do |corporation| %>
+        <% t.row do |tr| %>
+          <% tr.cell padding: 'px-4 py-1' do %>
+            <div class="flex items-center">
+              <div class="flex-shrink-0 h-10 w-10">
+                <%= render(CorporationIconComponent.new(corporation: corporation, classes: 'h-10 w-10 rounded-sm')) %>
+              </div>
+              <div class="ml-4">
+                <div class="text-xs font-medium text-gray-900">
+                  <%= corporation.name %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+          <% tr.cell padding: 'px-4 py-1' do %>
+            <% if corporation.alliance %>
+              <div class="flex items-center">
+                <div class="flex-shrink-0 h-10 w-10">
+                  <%= image_tag corporation.alliance.icon_url_128, class: 'h-10 w-10 rounded-full', alt: '' %>
+                </div>
+                <div class="ml-4">
+                  <div class="text-xs font-medium text-gray-900">
+                    <%= corporation.alliance.name %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+          <% tr.cell padding: 'px-4 py-1' do %>
+            <div class="text-xs font-medium text-gray-900">
+              <%= local_time corporation.esi_last_modified_at, format: :db if corporation.esi_last_modified_at %>
+            </div>
+          <% end %>
+          <% tr.cell padding: 'px-4 py-1' do %>
+            <% if corporation.contract_sync_enabled %>
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                Enabled
+              </span>
+            <% else %>
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                Disabled
+              </span>
+            <% end %>
+          <% end %>
+          <% tr.cell padding: 'px-4 py-1' do %>
+            <div class="text-xs font-medium text-gray-900">
+              <%= local_time(corporation.esi_contracts_last_modified_at, format: :db) if corporation.esi_contracts_last_modified_at %>
+            </div>
+          <% end %>
+          <% tr.cell padding: 'px-4 py-1' do %>
+            <div class="text-xs font-medium text-gray-900">
+              <%= local_time(corporation.esi_contracts_expires_at, format: :db) if corporation.esi_contracts_expires_at %>
+            </div>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+
+  <% c.footer do %>
+    <%= render(PaginatorComponent.new(pagy: paginator)) %>
+  <% end %>
+<% end %>

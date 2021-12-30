@@ -45,6 +45,14 @@ class Corporation < ApplicationRecord
 
   multisearchable against: %i[name ticker alliance_name]
 
+  pg_search_scope :search_by_all, against: %i[name],
+                                  associated_against: {
+                                    alliance: :name,
+                                  },
+                                  using: {
+                                    tsearch: { prefix: true }
+                                  }
+
   belongs_to :alliance, inverse_of: :corporations, optional: true
   belongs_to :esi_authorization, inverse_of: :corporation, optional: true
 

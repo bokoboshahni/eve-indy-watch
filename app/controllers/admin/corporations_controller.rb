@@ -2,10 +2,22 @@
 
 module Admin
   class CorporationsController < AdminController
+    include Filterable
+
     before_action :find_corporation, only: %i[show edit update]
 
     def index
-      @pagy, @corporations = pagy(Corporation.player.order(:name))
+      store_filters!('Corporation')
+
+      scope = Corporation.includes(:alliance)
+      @filter = filter_for('Corporation')
+      @pagy, @corporations= pagy(@filter.apply!(scope))
+
+      if turbo_frame_request?
+        render partial: 'corporations', locals: { corporations: @corporations, filter: @filter, paginator: @pagy }
+      else
+        render :index
+      end
     end
 
     def show; end
