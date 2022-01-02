@@ -69,6 +69,9 @@ namespace :sde do
       end
     end
   end
+
+  desc 'Update to the latest SDE'
+  task update: %i[download load]
 end
 
 namespace :fittings do
