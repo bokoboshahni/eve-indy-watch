@@ -3,7 +3,6 @@
   <head>
     <title><%= "[#{Rails.env.upcase}] " unless Rails.env.production? %><%= site_name %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= NewRelic::Agent.browser_timing_header(content_security_policy_nonce) %>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
