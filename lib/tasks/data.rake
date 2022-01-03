@@ -37,4 +37,14 @@ namespace :data do
       Contract::SyncItemsFromESIWorker.perform_bulk(args)
     end
   end
+
+  task backfill_locations: :environment do
+    records = [Constellation, Region, SolarSystem, Station, Structure].each_with_object([]) do |locatable_type, a|
+      locatable_type.pluck(:id, :name).each do |locatable_id, name|
+        a << { locatable_id: locatable_id, locatable_type: locatable_type.name, name: name }
+      end
+    end
+
+    Location.import!(records, on_duplicate_key_update: { conflict_target: %i[locatable_id locatable_type], columns: :all })
+  end
 end

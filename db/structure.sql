@@ -10,6 +10,20 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Name: timescaledb; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS timescaledb WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION timescaledb; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION timescaledb IS 'Enables scalable inserts and complex queries for time-series data';
+
+
+--
 -- Name: fuzzystrmatch; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -960,6 +974,19 @@ CREATE SEQUENCE public.killmails_id_seq
 --
 
 ALTER SEQUENCE public.killmails_id_seq OWNED BY public.killmails.id;
+
+
+--
+-- Name: locations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.locations (
+    locatable_type character varying NOT NULL,
+    locatable_id bigint NOT NULL,
+    name text NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
 
 
 --
@@ -2467,6 +2494,13 @@ CREATE INDEX index_killmails_on_solar_system_id ON public.killmails USING btree 
 
 
 --
+-- Name: index_locations_on_locatable; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_locations_on_locatable ON public.locations USING btree (locatable_type, locatable_id);
+
+
+--
 -- Name: index_market_groups_on_ancestry; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2653,6 +2687,13 @@ CREATE UNIQUE INDEX index_unique_contract_fittings ON public.contract_fittings U
 --
 
 CREATE UNIQUE INDEX index_unique_industry_index_snapshots ON public.industry_index_snapshots USING btree (solar_system_id, esi_last_modified_at);
+
+
+--
+-- Name: index_unique_locations; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_unique_locations ON public.locations USING btree (locatable_id, locatable_type);
 
 
 --
@@ -3166,6 +3207,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211226183751'),
 ('20211226231019'),
 ('20211226231701'),
-('20211226233003');
+('20211226233003'),
+('20220103183905');
 
 

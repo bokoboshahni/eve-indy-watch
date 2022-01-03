@@ -23,6 +23,9 @@ class Structure < ApplicationRecord
       struct_attrs = structure_attrs_from_esi
       struct ? struct.update!(struct_attrs) : struct = Structure.create!(struct_attrs.merge(id: structure_id))
 
+      location = Location.find_by(locatable_id: struct.id)
+      location ? location.update!(name: struct.name) : Location.create!(locatable: struct, name: struct.name)
+
       debug("Synced structure #{structure_id} from ESI")
       struct
     rescue ESI::Errors::ClientError => e

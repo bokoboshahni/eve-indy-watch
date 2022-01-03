@@ -24,6 +24,18 @@ module SDE
           )
         end
       end
+
+      records = Station.pluck(:id, :name).each_with_object([]) do |(locatable_id, name), a|
+        a << { locatable_id: locatable_id, locatable_type: 'Station', name: name }
+      end
+
+      Location.import!(
+        records,
+        on_duplicate_key_update: {
+          conflict_target: %i[locatable_id locatable_type],
+          columns: :all
+        }
+      )
     end
   end
 end

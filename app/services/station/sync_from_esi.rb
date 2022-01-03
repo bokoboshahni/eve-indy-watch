@@ -18,6 +18,9 @@ class Station < ApplicationRecord
       station_attrs = station_attrs_from_esi
       station ? station.update!(station_attrs) : station = Station.create!(station_attrs.merge(id: station_id))
 
+      location = Location.find_by(locatable_id: station.id)
+      location ? location.update!(name: station.name) : Location.create!(locatable: station, name: station.name)
+
       debug("Synced station #{station_id} from ESI")
       station
     rescue ESI::Errors::ClientError => e
