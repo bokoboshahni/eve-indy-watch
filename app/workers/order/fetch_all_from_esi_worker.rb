@@ -6,7 +6,7 @@ class Order < StatisticsRecord
       locations = Structure.select(:id).where(market_order_sync_enabled: true)
       locations += Region.select(:id).where(market_order_sync_enabled: true)
       args = locations.map { |l| [l.id] }
-      FetchAllFromESI.perform_bulk(args)
+      FetchFromESIWorker.perform_bulk(args)
     end
   end
 end
