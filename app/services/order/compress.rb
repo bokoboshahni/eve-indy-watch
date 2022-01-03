@@ -9,11 +9,9 @@ class Order < StatisticsRecord
     end
 
     def call
-      Dir.chdir(location_dir) do
-        cmd = TTY::Command.new
-        cmd.run("tar zcvf #{name}.tar.gz #{name}")
-        cmd.run("rm -rf #{name}") if delete
-      end
+      cmd = TTY::Command.new
+      cmd.run("tar cfvj #{location_dir}/#{name}.tar.bz2 -C #{location_dir} #{name}")
+      cmd.run("rm -rf #{location_dir}/#{name}") if delete
     end
 
     private
