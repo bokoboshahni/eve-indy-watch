@@ -52,7 +52,7 @@ module EVEIndyWatch
 
     config.lograge.custom_options = lambda do |event|
       {
-        application: Rails.application.class.parent_name,
+        application: ENV['SITE_NAME'].dasherize,
         host: event.payload[:host],
         rails_env: Rails.env,
 
