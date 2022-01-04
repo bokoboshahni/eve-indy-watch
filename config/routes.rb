@@ -30,6 +30,7 @@ Rails.application.routes.draw do
     root to: 'dashboards#show'
   end
 
+  get 'auth' => 'sso#new'
   match 'auth/eve/callback' => 'sso#create', via: %i[get post]
   post 'auth/logout' => 'sso#destroy', as: :log_out
 
