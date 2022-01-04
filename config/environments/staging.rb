@@ -44,6 +44,8 @@ Rails.application.configure do
   # Prepend all log lines with the following tags.
   config.log_tags = [:request_id]
 
+  config.lograge.enabled = true
+
   config.cache_store = :redis_cache_store, { url: ENV.fetch('REDIS_CACHE_URL', 'redis://localhost:6378/0') }
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
