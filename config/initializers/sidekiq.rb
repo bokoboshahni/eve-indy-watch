@@ -8,6 +8,10 @@ Sidekiq::Throttled.setup!
 SidekiqUniqueJobs.config.lock_info = true
 
 Sidekiq.configure_server do |config|
+  if ENV['RAILS_LOG_TO_GELF'].present?
+    Sidekiq::Logging::GELF.hook!(ENV['GELF_UDP_ADDRESS'], ENV.fetch('GELF_UDP_PORT', 12201), ENV.fetch('GELF_MAX_SIZE', 'WAN'))
+  end
+
   config.redis = { url: ENV.fetch('SIDEKIQ_REDIS_URL', 'redis://localhost:6379/1'), driver: :hiredis }
 
   config.client_middleware do |chain|
