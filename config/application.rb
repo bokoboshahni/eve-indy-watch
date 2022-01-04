@@ -46,33 +46,11 @@ module EVEIndyWatch
     config.generators.javascripts = false
 
     if ENV['RAILS_LOG_TO_GELF'].present?
-      config.lograge.formatter = Lograge::Formatters::Graylog2.new
-      config.logger = GELF::Logger.new(ENV['GELF_UDP_ADDRESS'], ENV.fetch('GELF_UDP_PORT', 12201), ENV.fetch('GELF_MAX_SIZE', 'WAN'))
-    end
-
-    config.lograge.enabled = true
-    config.lograge.custom_options = lambda do |event|
-      {
-        application: ENV['SITE_NAME'].dasherize,
-        host: event.payload[:host],
-        rails_env: Rails.env,
-
-        process_id: Process.pid,
-        request_id: event.payload[:headers]['action_dispatch.request_id'],
-        request_time: Time.now,
-
-        remote_ip: event.payload[:remote_ip],
-        ip: event.payload[:ip],
-        x_forwarded_for: event.payload[:x_forwarded_for],
-
-        params: event.payload[:params].except(*config.filter_parameters).to_json,
-
-        exception: event.payload[:exception]&.first,
-        exception_message: "#{event.payload[:exception]&.last}",
-        exception_backtrace: event.payload[:exception_object]&.backtrace&.join(","),
-
-        context: Thread.current[:sidekiq_context]
-      }
+      SemanticLogger.add_appender(
+        appender: :graylog,
+        url:      "udp://#{ENV['GELF_UDP_ADDRESS']}:#{ENV.fetch('GELF_UDP_PORT', 12201)}",
+        facility: ENV['SITE_NAME'].dasherize
+      )
     end
 
     config.x.esi.client_id = ENV['ESI_CLIENT_ID']

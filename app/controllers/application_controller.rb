@@ -69,6 +69,7 @@ class ApplicationController < ActionController::Base
 
     payload[:host] = request.host
     payload[:x_forwarded_for] = request.env['HTTP_X_FORWARDED_FOR']
+    payload[:user_id] = current_user.id if logged_in?
   end
 
   def check_rack_mini_profiler
