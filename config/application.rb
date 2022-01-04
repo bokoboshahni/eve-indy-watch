@@ -50,6 +50,7 @@ module EVEIndyWatch
       config.logger = GELF::Logger.new(ENV['GELF_UDP_ADDRESS'], ENV.fetch('GELF_UDP_PORT', 12201), ENV.fetch('GELF_MAX_SIZE', 'WAN'))
     end
 
+    config.lograge.enabled = true
     config.lograge.custom_options = lambda do |event|
       {
         application: ENV['SITE_NAME'].dasherize,
@@ -68,8 +69,10 @@ module EVEIndyWatch
 
         exception: event.payload[:exception]&.first,
         exception_message: "#{event.payload[:exception]&.last}",
-        exception_backtrace: event.payload[:exception_object]&.backtrace&.join(",")
-      }.compact
+        exception_backtrace: event.payload[:exception_object]&.backtrace&.join(","),
+
+        context: Thread.current[:sidekiq_context]
+      }
     end
 
     config.x.esi.client_id = ENV['ESI_CLIENT_ID']
