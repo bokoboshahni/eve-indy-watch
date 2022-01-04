@@ -46,6 +46,7 @@ module EVEIndyWatch
     config.generators.javascripts = false
 
     if ENV['RAILS_LOG_TO_GELF'].present?
+      config.lograge.formatter = Lograge::Formatters::Graylog2.new
       config.logger = GELF::Logger.new(ENV['GELF_UDP_ADDRESS'], ENV.fetch('GELF_UDP_PORT', 12201), ENV.fetch('GELF_MAX_SIZE', 'WAN'))
     end
 
