@@ -45,6 +45,10 @@ module EVEIndyWatch
     config.generators.stylesheets = false
     config.generators.javascripts = false
 
+    if ENV['RAILS_LOG_TO_GELF'].present?
+      config.logger = GELF::Logger.new(ENV['GELF_UDP_ADDRESS'], ENV.fetch('GELF_UDP_PORT', 12201), ENV.fetch('GELF_MAX_SIZE', 'WAN'))
+    end
+
     config.lograge.custom_options = lambda do |event|
       {
         application: Rails.application.class.parent_name,
