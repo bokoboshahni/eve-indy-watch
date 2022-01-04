@@ -313,6 +313,10 @@ GEM
       nokogiri (>= 1.6)
     rails-html-sanitizer (1.4.2)
       loofah (~> 2.3)
+    rails_semantic_logger (4.9.0)
+      rack
+      railties (>= 5.1)
+      semantic_logger (~> 4.9)
     railties (6.1.4.1)
       actionpack (= 6.1.4.1)
       activesupport (= 6.1.4.1)
@@ -522,6 +526,7 @@ DEPENDENCIES
   pundit (~> 2.1)
   rack-mini-profiler (~> 2.0)
   rails (~> 6.1.4, >= 6.1.4.1)
+  rails_semantic_logger (~> 4.9)
   repost (~> 0.3)
   retriable (~> 3.1)
   rollups (~> 0.1)

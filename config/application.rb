@@ -45,13 +45,6 @@ module EVEIndyWatch
     config.generators.stylesheets = false
     config.generators.javascripts = false
 
-    if ENV['RAILS_LOG_TO_GELF'].present?
-      SemanticLogger.add_appender(
-        appender: :graylog,
-        url:      "udp://#{ENV['GELF_UDP_ADDRESS']}:#{ENV.fetch('GELF_UDP_PORT', 12201)}",
-      )
-    end
-
     config.x.esi.client_id = ENV['ESI_CLIENT_ID']
     config.x.esi.client_secret = ENV['ESI_CLIENT_SECRET']
     config.x.esi.oauth_url = ENV.fetch('ESI_OAUTH_URL', DEFAULT_ESI_OAUTH_URL)
