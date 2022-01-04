@@ -5,9 +5,7 @@
     </div>
     <div class="mt-8 space-y-6">
       <div>
-        <%= form_with url: '/auth/eve' do |f| %>
-          <%= f.submit 'Log in with EVE SSO', type: :image, src: asset_pack_path('media/images/eve-sso-login-black-small.png'), class: 'relative flex justify-center mx-auto', 'data-turbo': false %>
-        <% end %>
+        <%= link_to image_pack_tag('media/images/eve-sso-login-black-small.png'), auth_path, class: 'relative flex justify-center mx-auto', 'data-turbo': false %>
       </div>
     </form>
   </div>
