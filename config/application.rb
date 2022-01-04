@@ -64,7 +64,7 @@ module EVEIndyWatch
         ip: event.payload[:ip],
         x_forwarded_for: event.payload[:x_forwarded_for],
 
-        params: event.payload[:params].except(*exceptions).to_json,
+        params: event.payload[:params].except(*config.filter_parameters).to_json,
 
         exception: event.payload[:exception]&.first,
         exception_message: "#{event.payload[:exception]&.last}",
