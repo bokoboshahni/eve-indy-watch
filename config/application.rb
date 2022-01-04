@@ -49,7 +49,6 @@ module EVEIndyWatch
       SemanticLogger.add_appender(
         appender: :graylog,
         url:      "udp://#{ENV['GELF_UDP_ADDRESS']}:#{ENV.fetch('GELF_UDP_PORT', 12201)}",
-        facility: ENV['SITE_NAME'].dasherize
       )
     end
 
