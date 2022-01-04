@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'prometheus_exporter/instrumentation'
+
 require 'sidekiq/throttled'
 Sidekiq::Throttled.setup!
 
@@ -13,10 +15,28 @@ Sidekiq.configure_server do |config|
   end
 
   config.server_middleware do |chain|
+    chain.add PrometheusExporter::Instrumentation::Sidekiq
     chain.add SidekiqUniqueJobs::Middleware::Server
   end
 
+  config.on :startup do
+    PrometheusExporter::Instrumentation::ActiveRecord.start(
+      custom_labels: { type: "sidekiq" },
+      config_labels: [:database, :host]
+    )
+    PrometheusExporter::Instrumentation::Process.start type: 'sidekiq'
+    PrometheusExporter::Instrumentation::SidekiqProcess.start
+    PrometheusExporter::Instrumentation::SidekiqQueue.start
+    PrometheusExporter::Instrumentation::SidekiqStats.start
+  end
+
+  config.death_handlers << PrometheusExporter::Instrumentation::Sidekiq.death_handler
+
   SidekiqUniqueJobs::Server.configure(config)
+
+  at_exit do
+    PrometheusExporter::Client.default.stop(wait_timeout_seconds: 10)
+  end
 end
 
 Sidekiq.configure_client do |config|
@@ -29,6 +49,5 @@ end
 
 require 'sidekiq/web'
 require 'sidekiq-scheduler/web'
-require 'sidekiq-status/web'
 require 'sidekiq/throttled/web'
 require 'sidekiq_unique_jobs/web'

@@ -113,8 +113,6 @@ GEM
       capistrano (~> 3.7)
       capistrano-bundler
       puma (>= 4.0, < 6.0)
-    chronic_duration (0.10.6)
-      numerizer (~> 0.1.1)
     coderay (1.1.3)
     composite_primary_keys (13.0.1)
       activerecord (~> 6.1.0)
@@ -237,7 +235,6 @@ GEM
     nio4r (2.5.8)
     nokogiri (1.12.5-x86_64-linux)
       racc (~> 1.4)
-    numerizer (0.1.1)
     oauth2 (1.4.7)
       faraday (>= 0.8, < 2.0)
       jwt (>= 1.0, < 3.0)
@@ -275,6 +272,8 @@ GEM
       activesupport (>= 5.2)
     pghero (2.8.1)
       activerecord (>= 5)
+    prometheus_exporter (1.0.1)
+      webrick
     pry (0.14.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -392,6 +391,8 @@ GEM
       redis (>= 4.2.0)
     sidekiq-batch (0.1.6)
       sidekiq (>= 3)
+    sidekiq-prometheus-exporter (0.1.16)
+      sidekiq (>= 3.3.1)
     sidekiq-scheduler (3.1.0)
       e2mmap
       redis (>= 3, < 5)
@@ -399,9 +400,6 @@ GEM
       sidekiq (>= 3)
       thwait
       tilt (>= 1.4.0)
-    sidekiq-status (2.1.0)
-      chronic_duration
-      sidekiq (>= 5.0)
     sidekiq-throttled (0.13.0)
       concurrent-ruby
       redis-prescription
@@ -465,6 +463,7 @@ GEM
       rack-proxy (>= 0.6.1)
       railties (>= 5.2)
       semantic_range (>= 2.3.0)
+    webrick (1.7.0)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -519,6 +518,7 @@ DEPENDENCIES
   pg_query (~> 2.1)
   pg_search (~> 2.3)
   pghero (~> 2.8)
+  prometheus_exporter (~> 1.0)
   pry-rails (~> 0.3)
   puma (~> 5.0)
   pundit (~> 2.1)
@@ -536,8 +536,8 @@ DEPENDENCIES
   scenic (~> 1.5)
   sidekiq (~> 6.3)
   sidekiq-batch (~> 0.1)
+  sidekiq-prometheus-exporter (~> 0.1)
   sidekiq-scheduler (~> 3.1)
-  sidekiq-status (~> 2.1)
   sidekiq-throttled (~> 0.13)
   sidekiq-unique-jobs (~> 7.1)
   stackprof (~> 0.2)

@@ -18,4 +18,8 @@ require 'capistrano/sidekiq'
 install_plugin Capistrano::Sidekiq
 install_plugin Capistrano::Sidekiq::Systemd
 
+require_relative './lib/capistrano/prometheus'
+install_plugin Capistrano::Prometheus
+install_plugin Capistrano::Prometheus::Systemd
+
 Dir.glob('lib/capistrano/tasks/*.rake').each { |r| import r }
