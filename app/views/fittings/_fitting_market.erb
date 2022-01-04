@@ -1,10 +1,10 @@
 <% stock = fitting.current_stock_level(market) %>
 <% t.row do |tr| %>
   <%= tr.cell do %><%= market.name %><% end %>
-  <%= tr.cell do %><%= stock.market_quantity || 'N/A' %><% end %>
-  <%= tr.cell do %><%= number_to_isk(stock.market_buy_price) || 'N/A' %><% end %>
-  <%= tr.cell do %><%= number_to_isk(stock.market_sell_price) || 'N/A' %><% end %>
-  <%= tr.cell do %><%= number_to_isk(stock.market_split_price) || 'N/A' %><% end %>
+  <%= tr.cell do %><%= stock&.market_quantity || 'N/A' %><% end %>
+  <%= tr.cell do %><%= number_to_isk(stock&.market_buy_price) || 'N/A' %><% end %>
+  <%= tr.cell do %><%= number_to_isk(stock&.market_sell_price) || 'N/A' %><% end %>
+  <%= tr.cell do %><%= number_to_isk(stock&.market_split_price) || 'N/A' %><% end %>
   <%= tr.cell do %>
     <% if stock.limiting_items.any? %>
       <ul>
