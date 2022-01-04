@@ -34,6 +34,9 @@ set :sidekiq_processes, ENV.fetch('SIDEKIQ_PROCESSES', 4).to_i
 set :sidekiq_concurrency, ENV.fetch('SIDEKIQ_CONCURRENCY', 25).to_i
 set :sidekiq_config, 'config/sidekiq.yml'
 
+set :prometheus_bind_address, '0.0.0.0'
+set :prometheus_label, -> { { app: fetch(:application), env: fetch(:stage) } }
+
 namespace :deploy do
   desc 'Load database schema from structure.sql'
   task :db_schema_load do

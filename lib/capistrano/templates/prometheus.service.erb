@@ -1,0 +1,25 @@
+[Unit]
+Description=Prometheus exporter for <%= "#{fetch(:application)} (#{fetch(:stage)})" %>
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=<%= current_path %>
+# Support older bundler versions where file descriptors weren't kept
+# See https://github.com/rubygems/rubygems/issues/3254
+ExecStart=<%= expanded_bundle_command %> exec --keep-file-descriptors prometheus_exporter <% fetch(:prometheus_custom_collectors).each do |c| %>-a <%= c %><% end %> -b <%= fetch(:prometheus_bind_address) %> -p <%= fetch(:prometheus_bind_port) %> -t <%= fetch(:prometheus_timeout) %> --label '<%= fetch(:prometheus_label).to_json %>' <% if fetch(:prometheus_prefix, nil) %>--prefix '<%= fetch(:prometheus_prefix) %>'<% end %>
+ExecReload=/bin/kill -USR1 $MAINPID
+StandardOutput=append:<%= fetch(:prometheus_access_log) %>
+StandardError=append:<%= fetch(:prometheus_error_log) %>
+<%="EnvironmentFile=#{fetch(:prometheus_service_unit_env_file)}" if fetch(:prometheus_service_unit_env_file) %>
+<% fetch(:prometheus_service_unit_env_vars, []).each do |environment_variable| %>
+<%="Environment=#{environment_variable}" %>
+<% end %>
+
+Restart=always
+RestartSec=1
+
+SyslogIdentifier=prometheus
+
+[Install]
+WantedBy=default.target
