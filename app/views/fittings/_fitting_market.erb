@@ -6,7 +6,7 @@
   <%= tr.cell do %><%= number_to_isk(stock&.market_sell_price) || 'N/A' %><% end %>
   <%= tr.cell do %><%= number_to_isk(stock&.market_split_price) || 'N/A' %><% end %>
   <%= tr.cell do %>
-    <% if stock.limiting_items.any? %>
+    <% if stock && stock.limiting_items.any? %>
       <ul>
         <% stock.limiting_items.each do |type| %>
           <li class="inline-block">
