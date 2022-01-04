@@ -47,6 +47,13 @@ Sidekiq.configure_client do |config|
   end
 end
 
+sidekiq_logger = SemanticLogger[Sidekiq]
+sidekiq_logger.filter = lambda do |log|
+  log.message !~ /\A(start|done|fail)\z/
+end
+
+Sidekiq.logger = sidekiq_logger
+
 require 'sidekiq/web'
 require 'sidekiq-scheduler/web'
 require 'sidekiq/throttled/web'
