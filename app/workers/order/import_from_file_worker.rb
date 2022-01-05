@@ -7,4 +7,3 @@ class Order < StatisticsRecord
     end
   end
 end
-

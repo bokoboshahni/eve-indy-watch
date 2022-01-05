@@ -9,7 +9,11 @@ module ServiceHelpers
 
   protected
 
-  delegate :debug, :error, :info, :warn, to: :logger
+  delegate :debug, :error, :info, :measure_info, :warn, to: :logger
+
+  def cmd
+    @cmd ||= TTY::Command.new(output: logger)
+  end
 
   def cache
     Rails.cache
@@ -28,7 +32,7 @@ module ServiceHelpers
   end
 
   def logger
-    Rails.logger
+    @logger ||= Rails.logger
   end
 
   def say(msg)
@@ -61,5 +65,22 @@ module ServiceHelpers
     esi_authorize!(authorization)
     access_token = authorization.access_token
     httpx.authentication("Bearer #{access_token}")
+  end
+
+  def history_bucket_client
+    @history_bucket_client ||= Aws::S3::Client.new(
+      access_key_id: app_config.history_bucket_access_key_id,
+      secret_access_key: app_config.history_bucket_secret_access_key,
+      endpoint: app_config.history_bucket_endpoint,
+      region: app_config.history_bucket_region
+    )
+  end
+
+  def history_bucket_resource
+    @history_bucket_resource ||= Aws::S3::Resource.new(client: history_bucket_client)
+  end
+
+  def history_bucket
+    @history_bucket ||= history_bucket_resource.bucket(app_config.history_bucket_name)
   end
 end

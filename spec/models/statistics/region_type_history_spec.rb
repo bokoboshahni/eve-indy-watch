@@ -7,13 +7,13 @@
 # Name               | Type               | Attributes
 # ------------------ | ------------------ | ---------------------------
 # **`average`**      | `decimal(, )`      | `not null`
-# **`date`**         | `date`             | `not null`
+# **`date`**         | `date`             | `not null, primary key`
 # **`highest`**      | `decimal(, )`      | `not null`
 # **`lowest`**       | `decimal(, )`      | `not null`
 # **`order_count`**  | `bigint`           | `not null`
 # **`volume`**       | `bigint`           | `not null`
-# **`region_id`**    | `bigint`           | `not null`
-# **`type_id`**      | `bigint`           | `not null`
+# **`region_id`**    | `bigint`           | `not null, primary key`
+# **`type_id`**      | `bigint`           | `not null, primary key`
 #
 # ### Indexes
 #

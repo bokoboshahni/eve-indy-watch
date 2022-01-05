@@ -67,3 +67,8 @@
     cron: '* * * * *'
     class: 'Order::FetchAllFromESIWorker'
     description: "Fetch market orders for enabled locations"
+
+  ingest_all_markets:
+    cron: '* * * * *'
+    class: 'Market::IngestAllWorker'
+    description: "Ingest market locations and run aggregations for all markets"

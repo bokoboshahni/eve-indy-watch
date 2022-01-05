@@ -73,6 +73,8 @@ class Structure < ApplicationRecord
   delegate :name, to: :owner, prefix: true, allow_nil: true
   delegate :name, to: :type, prefix: true, allow_nil: true
 
+  scope :orders_enabled, -> { where(market_order_sync_enabled: true) }
+
   def available_esi_authorizations
     rel = ESIAuthorization.includes(:character).joins(character: :corporation)
     rel.where('corporation_id IN (?)', [owner_id, owner&.alliance&.api_corporation_id].compact)

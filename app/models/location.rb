@@ -10,7 +10,7 @@
 # **`name`**            | `text`             | `not null`
 # **`created_at`**      | `datetime`         | `not null`
 # **`updated_at`**      | `datetime`         | `not null`
-# **`locatable_id`**    | `bigint`           | `not null`
+# **`locatable_id`**    | `bigint`           | `not null, primary key`
 #
 # ### Indexes
 #
@@ -25,4 +25,7 @@ class Location < ApplicationRecord
   self.primary_key = :locatable_id
 
   belongs_to :locatable, polymorphic: true
+
+  has_many :market_locations_as_source, class_name: 'MarketLocation', foreign_key: :source_location_id, dependent: :restrict_with_exception
+  has_many :markets, through: :market_locations_as_source
 end

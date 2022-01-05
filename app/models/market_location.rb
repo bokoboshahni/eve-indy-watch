@@ -6,13 +6,14 @@
 #
 # ### Columns
 #
-# Name                 | Type               | Attributes
-# -------------------- | ------------------ | ---------------------------
-# **`location_type`**  | `string`           | `not null, primary key`
-# **`created_at`**     | `datetime`         | `not null`
-# **`updated_at`**     | `datetime`         | `not null`
-# **`location_id`**    | `bigint`           | `not null, primary key`
-# **`market_id`**      | `bigint`           | `not null, primary key`
+# Name                      | Type               | Attributes
+# ------------------------- | ------------------ | ---------------------------
+# **`location_type`**       | `string`           | `not null, primary key`
+# **`created_at`**          | `datetime`         | `not null`
+# **`updated_at`**          | `datetime`         | `not null`
+# **`location_id`**         | `bigint`           | `not null, primary key`
+# **`market_id`**           | `bigint`           | `not null, primary key`
+# **`source_location_id`**  | `bigint`           |
 #
 # ### Indexes
 #
@@ -31,10 +32,17 @@ class MarketLocation < ApplicationRecord
   self.primary_keys = :market_id, :location_type, :location_id
 
   belongs_to :location, polymorphic: true
+  belongs_to :source_location, class_name: 'Location', optional: true
   belongs_to :market, inverse_of: :market_locations
-
-  has_many :orders, class_name: 'MarketOrder', inverse_of: :market_locations, primary_key: :location_id, foreign_key: :location_id
 
   delegate :name, to: :location, prefix: true
   delegate :orders_updated_at, to: :location
+
+  def orders
+    if location.is_a?(Station) || (location.is_a?(Structure) && !location.market_order_sync_enabled?)
+      location.region.market_orders.where(location_id: location_id)
+    else
+      location.market_orders
+    end
+  end
 end

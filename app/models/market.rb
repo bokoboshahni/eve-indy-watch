@@ -56,7 +56,9 @@ class Market < ApplicationRecord
   has_many :fittings, through: :fitting_markets
   has_many :market_locations, inverse_of: :market, dependent: :destroy
   has_many :orders, class_name: 'MarketOrder', through: :market_locations
+  has_many :order_prices, class_name: 'MarketOrderPrice', inverse_of: :market
   has_many :regions, through: :market_locations, source: :location, source_type: 'Region'
+  has_many :snapshot_locations, class_name: 'Location', through: :market_locations
   has_many :stations, through: :market_locations, source: :location, source_type: 'Station'
   has_many :structures, through: :market_locations, source: :location, source_type: 'Structure'
 
@@ -103,5 +105,9 @@ class Market < ApplicationRecord
 
   def aggregate_type_stats_async(time, batch)
     AggregateTypeStatsWorker.perform_async(id, time, batch_id)
+  end
+
+  def calculate_depth!(time)
+    CalculateDepth.call(self, time)
   end
 end

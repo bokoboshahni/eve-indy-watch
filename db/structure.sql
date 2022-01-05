@@ -1033,7 +1033,8 @@ CREATE TABLE public.market_locations (
     location_type character varying NOT NULL,
     location_id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    source_location_id bigint
 );
 
 
@@ -3208,6 +3209,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211226231019'),
 ('20211226231701'),
 ('20211226233003'),
-('20220103183905');
+('20220103183905'),
+('20220103214836');
 
 

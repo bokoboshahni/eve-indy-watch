@@ -73,10 +73,14 @@ class Type < ApplicationRecord
   has_many :killmail_attacker_weapons, inverse_of: :weapon_type, dependent: :restrict_with_exception
   has_many :killmail_items, inverse_of: :type, dependent: :restrict_with_exception
   has_many :lossmails, class_name: 'Killmail', inverse_of: :ship_type, dependent: :restrict_with_exception
+  has_many :market_daily_summaries, class_name: 'Statistics::MarketTypeDailySummary', inverse_of: :type, dependent: :restrict_with_exception
+  has_many :market_order_prices, inverse_of: :type
   has_many :market_price_snapshots, inverse_of: :type, dependent: :destroy
-  has_many :market_stats, class_name: 'Statistics::MarketType', inverse_of: :market
+  has_many :region_histories, class_name: 'Statistics::RegionTypeHistory', inverse_of: :type, dependent: :restrict_with_exception
   has_many :stations, inverse_of: :type, dependent: :restrict_with_exception
   has_many :structures, inverse_of: :type, dependent: :restrict_with_exception
+
+  has_many :market_stats, class_name: 'Statistics::MarketType', inverse_of: :market
 
   accepts_nested_attributes_for :blueprint_activities
 
@@ -186,5 +190,15 @@ class Type < ApplicationRecord
 
   def default_period
     30.days.ago.beginning_of_day..Time.zone.now
+  end
+
+  def market_stats(market, time = nil)
+    key = time ? "#{market.id}.#{time_key}" : markets_redis.get("markets.#{market.id}.dom.latest")
+
+    return {} unless key
+
+    type_key = "markets.#{market.id}.#{key}.dom.types.#{id}"
+
+    Oj.load(markets_redis.get("#{type_key}.stats_json"))
   end
 end

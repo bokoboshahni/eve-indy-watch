@@ -57,5 +57,10 @@ module EVEIndyWatch
     config.x.app.allowed_corporation_ids = ENV.fetch('ALLOWED_CORPORATION_IDS', '').strip.split(',').map(&:to_i)
     config.x.app.main_alliance_id = ENV.fetch('MAIN_ALLIANCE_ID').to_i
     config.x.app.site_name = ENV.fetch('SITE_NAME', DEFAULT_SITE_NAME)
+    config.x.app.history_bucket_name = ENV['HISTORY_BUCKET_NAME']
+    config.x.app.history_bucket_access_key_id = ENV['HISTORY_BUCKET_ACCESS_KEY_ID']
+    config.x.app.history_bucket_secret_access_key = ENV['HISTORY_BUCKET_SECRET_ACCESS_KEY']
+    config.x.app.history_bucket_endpoint = ENV['HISTORY_BUCKET_ENDPOINT']
+    config.x.app.history_bucket_region = ENV['HISTORY_BUCKET_REGION']
   end
 end

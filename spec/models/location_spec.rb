@@ -10,7 +10,7 @@
 # **`name`**            | `text`             | `not null`
 # **`created_at`**      | `datetime`         | `not null`
 # **`updated_at`**      | `datetime`         | `not null`
-# **`locatable_id`**    | `bigint`           | `not null`
+# **`locatable_id`**    | `bigint`           | `not null, primary key`
 #
 # ### Indexes
 #

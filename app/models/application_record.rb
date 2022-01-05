@@ -22,4 +22,8 @@ class ApplicationRecord < ActiveRecord::Base
   def app_config
     Rails.application.config.x.app
   end
+
+  def markets_redis
+    @markets_redis ||= Kredis.redis(config: :markets)
+  end
 end
