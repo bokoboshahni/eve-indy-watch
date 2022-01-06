@@ -10,6 +10,11 @@ SidekiqUniqueJobs.config.lock_info = true
 Sidekiq.configure_server do |config|
   config.redis = { url: ENV.fetch('SIDEKIQ_REDIS_URL', 'redis://localhost:6379/1'), driver: :hiredis }
 
+  config.error_handlers.pop
+  config.error_handlers << lambda do |ex, ctx|
+    Sidekiq.logger.error("#{ex.class.name}: #{ex.message}", ctx, ex)
+  end
+
   config.client_middleware do |chain|
     chain.add SidekiqUniqueJobs::Middleware::Client
   end
