@@ -137,6 +137,17 @@ namespace :data do
     end
   end
 
+  desc 'Backfill market location sources'
+  task :backfill_market_location_sources do
+    on roles(:app) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, 'data:backfill_market_location_sources'
+        end
+      end
+    end
+  end
+
   desc 'Retry contracts with inaccessible items'
   task :retry_contracts_with_inaccessible_items do
     on roles(:app) do
