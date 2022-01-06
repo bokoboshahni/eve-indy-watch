@@ -63,11 +63,6 @@
     args: ['monthly']
     description: "Calculate end-of-month stock levels"
 
-  fetch_all_orders:
-    cron: '* * * * *'
-    class: 'Order::FetchAllFromESIWorker'
-    description: "Fetch market orders for enabled locations"
-
   ingest_all_markets:
     cron: '* * * * *'
     class: 'Market::IngestAllWorker'
