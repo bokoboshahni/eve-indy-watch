@@ -10,6 +10,20 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Name: timescaledb; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS timescaledb WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION timescaledb; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION timescaledb IS 'Enables scalable inserts and complex queries for time-series data';
+
+
+--
 -- Name: fuzzystrmatch; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -1019,8 +1033,7 @@ CREATE TABLE public.market_locations (
     location_type character varying NOT NULL,
     location_id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    source_location_id bigint
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -1149,7 +1162,9 @@ CREATE TABLE public.markets (
     trade_hub boolean,
     regional boolean,
     type_history_region_id bigint,
-    private boolean
+    private boolean,
+    source_location_id bigint,
+    active boolean
 );
 
 
@@ -1363,7 +1378,9 @@ CREATE TABLE public.stations (
     type_id bigint NOT NULL,
     name text NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    esi_expires_at timestamp without time zone,
+    esi_last_modified_at timestamp without time zone
 );
 
 
@@ -2537,6 +2554,13 @@ CREATE INDEX index_markets_on_owner ON public.markets USING btree (owner_type, o
 
 
 --
+-- Name: index_markets_on_source_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_markets_on_source_location_id ON public.markets USING btree (source_location_id);
+
+
+--
 -- Name: index_markets_on_type_history_region_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3196,6 +3220,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20211226231701'),
 ('20211226233003'),
 ('20220103183905'),
-('20220103214836');
+('20220103214836'),
+('20220107011531'),
+('20220107183210'),
+('20220107194531');
 
 

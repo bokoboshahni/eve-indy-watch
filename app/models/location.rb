@@ -26,6 +26,5 @@ class Location < ApplicationRecord
 
   belongs_to :locatable, polymorphic: true
 
-  has_many :market_locations_as_source, class_name: 'MarketLocation', foreign_key: :source_location_id, dependent: :restrict_with_exception
-  has_many :markets, through: :market_locations_as_source
+  has_many :markets, inverse_of: :source_location, foreign_key: :source_location_id
 end

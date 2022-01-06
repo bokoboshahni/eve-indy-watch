@@ -192,13 +192,13 @@ class Type < ApplicationRecord
     30.days.ago.beginning_of_day..Time.zone.now
   end
 
-  def market_stats(market, time = nil)
-    key = time ? "#{market.id}.#{time_key}" : markets_redis.get("markets.#{market.id}.dom.latest")
+  def market_stats(market_id, time = nil)
+    time = markets_reader.get("markets.#{market_id}.latest") unless time
 
-    return {} unless key
+    return unless time
 
-    type_key = "markets.#{market.id}.#{key}.dom.types.#{id}"
-
-    Oj.load(markets_redis.get("#{type_key}.stats_json"))
+    key = "markets.#{market_id}.#{time.to_datetime.to_s(:number)}.types.#{id}.stats"
+    Rails.logger.debug(key)
+    Oj.load(markets_reader.get(key))
   end
 end

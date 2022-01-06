@@ -81,4 +81,12 @@ class Region < ApplicationRecord
   def import_type_history_async(type)
     ImportTypeHistoryWorker.perform_async(id, type.id)
   end
+
+  def esi_last_modified
+    orders_reader.get("orders.#{id}.esi_last_modified")&.to_datetime
+  end
+
+  def esi_expires
+    orders_reader.get("orders.#{id}.esi_expires")&.to_datetime
+  end
 end

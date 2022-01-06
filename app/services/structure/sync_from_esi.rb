@@ -14,9 +14,16 @@ class Structure < ApplicationRecord
     end
 
     def call # rubocop:disable Metrics/AbcSize
+      expires_key = "locations.#{structure_id}.esi_expires"
+      last_modified_key = "locations.#{structure_id}.esi_last_modified"
+
       struct = Structure.find_by(id: structure_id)
       if struct&.esi_expires_at&.>= Time.zone.now
         logger.debug("ESI response for structure (#{struct.name}) #{struct.id} is not expired: #{struct.esi_expires_at.iso8601}") # rubocop:disable Metrics/LineLength
+
+        locations_writer.set(expires_key, struct.esi_expires_at.to_s(:number)) if locations_reader.exists(expires_key).zero?
+        locations_writer.set(last_modified_key, struct.esi_last_modified_at.to_s(:number)) if locations_reader.exists(last_modified_key).zero?
+
         return struct
       end
 
@@ -25,6 +32,9 @@ class Structure < ApplicationRecord
 
       location = Location.find_by(locatable_id: struct.id)
       location ? location.update!(name: struct.name) : Location.create!(locatable: struct, name: struct.name)
+
+      locations_writer.set(expires_key, struct.esi_expires_at.to_s(:number))
+      locations_writer.set(last_modified_key, struct.esi_last_modified_at.to_s(:number))
 
       debug("Synced structure #{structure_id} from ESI")
       struct

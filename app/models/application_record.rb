@@ -23,7 +23,19 @@ class ApplicationRecord < ActiveRecord::Base
     Rails.application.config.x.app
   end
 
-  def markets_redis
-    @markets_redis ||= Kredis.redis(config: :markets)
+  def markets_reader
+    Kredis.redis(config: :markets_writer)
+  end
+
+  def markets_writer
+    Kredis.redis(config: :markets_writer)
+  end
+
+  def orders_reader
+    Kredis.redis(config: :orders_reader)
+  end
+
+  def orders_writer
+    Kredis.redis(config: :orders_writer)
   end
 end

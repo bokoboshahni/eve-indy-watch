@@ -63,7 +63,7 @@
     args: ['monthly']
     description: "Calculate end-of-month stock levels"
 
-  # ingest_all_markets:
-  #   cron: '* * * * *'
-  #   class: 'Market::IngestAllWorker'
-  #   description: "Ingest market locations and run aggregations for all markets"
+  ingest_all_markets:
+    cron: '* * * * *'
+    class: 'Market::IngestAllWorker'
+    description: "Ingest market locations and run aggregations for all markets"

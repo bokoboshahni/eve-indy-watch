@@ -1,0 +1,14 @@
+production: &production
+  url: <%= ENV.fetch("ORDERS_WRITER_REDIS_URL", "redis://127.0.0.1:6376/1") %>
+  timeout: 1
+
+development: &development
+  url: <%= ENV.fetch("ORDERS_WRITER_REDIS_URL", "redis://127.0.0.1:6376/1") %>
+  timeout: 1
+
+staging: &staging
+  url: <%= ENV.fetch("ORDERS_WRITER_REDIS_URL", "redis://127.0.0.1:6376/1") %>
+  timeout: 1
+
+test:
+  <<: *development

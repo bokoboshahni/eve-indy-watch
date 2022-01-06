@@ -2,18 +2,20 @@ require 'tempfile'
 
 class Location < ApplicationRecord
   class SnapshotOrdersFromESI < ApplicationService
-    def initialize(locatable)
+    def initialize(locatable, force: false)
       super
 
       @location = locatable
+      @force = force
     end
 
     def call
       fetch_page_count
 
-      unless orders_redis.get(latest_key).to_i < time_key.to_i
+      current_expires = orders_writer.get("orders.#{location_id}.esi_expires")&.to_datetime
+      if current_expires.to_i > time.to_i && !force
         debug("Orders have already been fetched for #{log_name} at #{time.to_s(:db)}")
-        return
+        return orders_writer.get("orders.#{location_id}.esi_last_modified")&.to_datetime
       end
 
       fetch_pages
@@ -23,9 +25,24 @@ class Location < ApplicationRecord
 
     private
 
+    ORDER_KEYS = {
+      'duration'      => 'd',
+      'is_buy_order'  => 's',
+      'issued'        => 'i',
+      'location_id'   => 'l',
+      'min_volume'    => 'vm',
+      'order_id'      => 'o',
+      'price'         => 'p',
+      'range'         => 'r',
+      'system_id'     => 'ss',
+      'type_id'       => 't',
+      'volume_remain' => 'v',
+      'volume_total'  => 'vt'
+    }
+
     METRIC_NAME = 'location/snapshot_orders_from_esi'
 
-    attr_reader :location, :page_count, :time, :batch, :expires, :etag, :orders_key, :orders_dir, :orders
+    attr_reader :location, :force, :page_count, :time, :batch, :expires, :etag, :orders_key, :orders_dir, :orders
 
     delegate :log_name, to: :location
     delegate :id, to: :location, prefix: true
@@ -41,7 +58,7 @@ class Location < ApplicationRecord
 
         headers = resp.headers
         @time = headers['last-modified'].to_datetime
-        @expires = headers['expires']
+        @expires = headers['expires'].to_datetime
         @etag = headers['etag']
         @page_count = headers['X-Pages'].to_i
         @orders_dir = Rails.root.join("tmp/orders/#{location_id}")
@@ -91,57 +108,48 @@ class Location < ApplicationRecord
         )
 
         unique_orders = orders.uniq { |o| o['order_id'] }
+                              .map! { |o| o.transform_keys! { |k| ORDER_KEYS[k] } }
+                              .map! { |o| o['i'] = o['i'].to_datetime.to_i; o }
         if unique_orders.any?
           expiry = 1.hour.from_now.to_i
           measure_info(
             "Wrote #{unique_orders.count} order(s) to Redis for #{log_name} at #{log_time}",
             metric: "#{METRIC_NAME}/write_redis"
           ) do
-            orders_redis.pipelined do
-              order_ids = []
-              location_order_ids = {}
-              location_type_ids = {}
-              type_ids = {}
-              buy_order_ids = []
-              sell_order_ids = []
+            orders_writer.pipelined do
+              orders_by_location_and_type = unique_orders.group_by { |o| "#{'%019d' % o['l']}.#{'%019d' % o['t']}" }
+              orders_by_location_and_type.each do |(key, orders)|
+                location_id, type_id = key.split('.')
 
-              unique_orders.each do |order_data|
-                order_id = order_data['order_id']
-                order_location_id = order_data['location_id']
-                order_type_id = order_data['type_id']
-                order_side = order_data['is_buy_order'] ? 1 : 0
+                order_set_key = "#{orders_key}.orders.#{location_id.to_i}.#{type_id.to_i}"
 
-                order_location_id_p = "%019d" % order_location_id
-                order_type_id_p = "%019d" % order_type_id
+                orders_writer.set(order_set_key, Oj.dump(orders))
+                orders_writer.expireat(order_set_key, expiry)
 
-                orders_redis.set("#{orders_key}.orders_json.#{order_id}", Oj.dump(order_data))
-                orders_redis.expireat("#{orders_key}.orders_json.#{order_id}", expiry)
-
-                orders_redis.sadd("#{orders_key}.location_ids", order_location_id)
-                orders_redis.sadd("#{orders_key}.type_ids", order_type_id)
-                orders_redis.sadd("#{orders_key}.order_ids", order_id)
-                orders_redis.zadd("#{orders_key}.order_ids_by_location_id", order_location_id, order_id)
-                orders_redis.zadd("#{orders_key}.order_ids_by_type_id", order_type_id, order_id)
-                orders_redis.zadd("#{orders_key}.order_ids_by_side", order_side, order_id)
-                orders_redis.zadd("#{orders_key}.order_ids_by_location_id_and_type_id", 0, [order_location_id_p, order_type_id_p, order_id].join(':'))
-                orders_redis.zadd("#{orders_key}.order_ids_by_location_id_and_type_id_and_side", 0, [order_location_id_p, order_type_id_p, order_side, order_id].join(':'))
-                orders_redis.zadd("#{orders_key}.type_ids_by_location", order_location_id, order_type_id)
+                orders_writer.sadd("#{orders_key}.location_ids", location_id.to_i)
+                orders_writer.sadd("#{orders_key}.order_ids", orders.map { |o| o['o'] })
+                orders_writer.zadd("#{orders_key}.order_ids_by_location_id_and_type_id", orders.map { |o| [0, [location_id, type_id, o['o']].join(':')] })
+                orders_writer.zadd("#{orders_key}.order_set_keys_by_type", type_id.to_i, order_set_key)
+                orders_writer.sadd("#{orders_key}.type_ids", type_id.to_i)
+                orders_writer.sadd("#{orders_key}.type_ids_by_location.#{location_id.to_i}", type_id.to_i)
               end
 
-              orders_redis.expireat("#{orders_key}.location_ids", expiry)
-              orders_redis.expireat("#{orders_key}.type_ids", expiry)
-              orders_redis.expireat("#{orders_key}.order_ids", expiry)
-              orders_redis.expireat("#{orders_key}.order_ids_by_location_id", expiry)
-              orders_redis.expireat("#{orders_key}.order_ids_by_type_id", expiry)
-              orders_redis.expireat("#{orders_key}.order_ids_by_side", expiry)
-              orders_redis.expireat("#{orders_key}.order_ids_by_location_id_and_type_id", expiry)
-              orders_redis.expireat("#{orders_key}.order_ids_by_location_id_and_type_id_and_side", expiry)
-              orders_redis.expireat("#{orders_key}.type_ids_by_location", expiry)
+              orders_writer.expireat("#{orders_key}.location_ids", expiry)
+              orders_writer.expireat("#{orders_key}.order_ids", expiry)
+              orders_writer.expireat("#{orders_key}.order_ids_by_location_id_and_type_id", expiry)
+              orders_writer.expireat("#{orders_key}.order_set_keys_by_type", expiry)
+              orders_writer.expireat("#{orders_key}.type_ids", expiry)
 
-              orders_redis.zadd("orders.#{location_id}.snapshots", time_key, orders_key)
+              orders_writer.expireat("#{orders_key}.type_ids_by_location", expiry)
+
+              orders_writer.set("#{orders_key}.order_set_count", orders_by_location_and_type.count)
+              orders_writer.expireat("#{orders_key}.order_set_count", expiry)
+
+              orders_writer.zadd("orders.#{location_id}.snapshots", time_key, orders_key)
             end
 
-            orders_redis.set(latest_key, time_key) if orders_redis.get(latest_key).to_i < time_key.to_i
+            orders_writer.set("orders.#{location_id}.esi_last_modified", time.to_s(:number))
+            orders_writer.set("orders.#{location_id}.esi_expires", expires.to_s(:number))
           end
         else
           logger.info("No orders for #{log_name} at #{log_time}")
@@ -205,28 +213,12 @@ class Location < ApplicationRecord
       end
     end
 
-    def location_list
-      @location_list ||= Kredis.set("orders.location_ids", config: :orders)
-    end
-
-    def location_orders_list
-      @location_orders_list ||= Kredis.list("orders.#{location_id}.snapshots", config: :orders)
-    end
-
-    def latest_key
-      "orders.#{location_id}.latest"
-    end
-
     def log_time
       time.to_s(:db)
     end
 
     def time_key
       time.to_s(:number)
-    end
-
-    def orders_redis
-      @orders_redis ||= Kredis.redis(config: :orders)
     end
   end
 end

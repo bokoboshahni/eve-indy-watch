@@ -16,8 +16,14 @@ class Location < ApplicationRecord
       end
 
       location = Location.find(location_id)
-      args = location.markets.pluck(:id).map { |market_id| [market_id, time.to_s(:number)] }
-      Market::CalculateDepthWorker.perform_bulk(args)
+      location.markets.each do |market|
+        unless market.active?
+          debug("Market #{market.log_name} is not active")
+          next
+        end
+
+        market.calculate_type_statistics_async(time)
+      end
     end
   end
 end

@@ -9,7 +9,7 @@ module ServiceHelpers
 
   protected
 
-  delegate :debug, :error, :info, :measure_info, :warn, to: :logger
+  delegate :debug, :error, :info, :measure_info, :trace, :warn, to: :logger
 
   def cmd
     @cmd ||= TTY::Command.new(output: logger)
@@ -82,5 +82,29 @@ module ServiceHelpers
 
   def history_bucket
     @history_bucket ||= history_bucket_resource.bucket(app_config.history_bucket_name)
+  end
+
+  def markets_reader
+    Kredis.redis(config: :markets_writer)
+  end
+
+  def markets_writer
+    Kredis.redis(config: :markets_writer)
+  end
+
+  def orders_reader
+    Kredis.redis(config: :orders_reader)
+  end
+
+  def orders_writer
+    Kredis.redis(config: :orders_writer)
+  end
+
+  def locations_reader
+    Kredis.redis(config: :locations_reader)
+  end
+
+  def locations_writer
+    Kredis.redis(config: :locations_writer)
   end
 end

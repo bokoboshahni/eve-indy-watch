@@ -9,6 +9,7 @@
 # Name                          | Type               | Attributes
 # ----------------------------- | ------------------ | ---------------------------
 # **`id`**                      | `bigint`           | `not null, primary key`
+# **`active`**                  | `boolean`          |
 # **`name`**                    | `text`             | `not null`
 # **`orders_updated_at`**       | `datetime`         |
 # **`owner_type`**              | `string`           |
@@ -19,6 +20,7 @@
 # **`created_at`**              | `datetime`         | `not null`
 # **`updated_at`**              | `datetime`         | `not null`
 # **`owner_id`**                | `bigint`           |
+# **`source_location_id`**      | `bigint`           |
 # **`type_history_region_id`**  | `bigint`           |
 #
 # ### Indexes
@@ -26,6 +28,8 @@
 # * `index_markets_on_owner`:
 #     * **`owner_type`**
 #     * **`owner_id`**
+# * `index_markets_on_source_location_id`:
+#     * **`source_location_id`**
 # * `index_markets_on_type_history_region_id`:
 #     * **`type_history_region_id`**
 #
@@ -45,6 +49,7 @@ class Market < ApplicationRecord
                                   }
 
   belongs_to :owner, polymorphic: true, optional: true
+  belongs_to :source_location, class_name: 'Location', inverse_of: :markets, optional: true
   belongs_to :type_history_region, class_name: 'Region', inverse_of: :markets_for_type_history, optional: true
 
   has_many :alliances_as_appraisal_market, class_name: 'Alliance', inverse_of: :appraisal_market
@@ -107,7 +112,31 @@ class Market < ApplicationRecord
     AggregateTypeStatsWorker.perform_async(id, time, batch_id)
   end
 
-  def calculate_depth!(time)
-    CalculateDepth.call(self, time)
+  def latest_snapshot_time
+    markets_reader.get("markets.#{id}.latest")&.to_datetime
+  end
+
+  def latest_snapshot_key
+    "markets.#{id}.#{latest_snapshot_time.to_s(:number)}"
+  end
+
+  def latest_snapshot_type_ids
+    markets_reader.smembers("#{latest_snapshot_key}.types.type_ids")
+  end
+
+  def snapshot_keys
+    markets_reader.zrangebyscore("markets.#{id}.snapshots", 0, latest_snapshot_time.to_s(:number).to_i, with_scores: true)
+                  .to_h.invert.transform_keys { |k| k.to_i }
+  end
+
+  def calculate_type_statistics_async(time, force: false)
+    CalculateTypeStatisticsQueuer.call(self, time, force: force)
+  end
+
+  def cache_ingestion_info
+    markets_writer.set("markets.#{id}.kind", kind)
+    markets_writer.set("markets.#{id}.name", name)
+    markets_writer.set("markets.#{id}.source_location_id", source_location_id)
+    markets_writer.sadd("markets.#{id}.location_ids", market_locations.pluck(:location_id)) if market_locations.any?
   end
 end
