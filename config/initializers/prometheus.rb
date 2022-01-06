@@ -1,4 +1,4 @@
-unless Rails.env == "test"
+unless Rails.env == "test" || ENV['DISABLE_PROMETHEUS'].present?
   require 'prometheus_exporter/middleware'
   Rails.application.middleware.unshift PrometheusExporter::Middleware
 

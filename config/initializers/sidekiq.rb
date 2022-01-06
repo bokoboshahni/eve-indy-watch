@@ -20,22 +20,24 @@ Sidekiq.configure_server do |config|
   end
 
   config.server_middleware do |chain|
-    chain.add PrometheusExporter::Instrumentation::Sidekiq
+    chain.add PrometheusExporter::Instrumentation::Sidekiq unless ENV['DISABLE_PROMETHEUS'].present?
     chain.add SidekiqUniqueJobs::Middleware::Server
   end
 
   config.on :startup do
-    PrometheusExporter::Instrumentation::ActiveRecord.start(
-      custom_labels: { type: "sidekiq" },
-      config_labels: [:database, :host]
-    )
-    PrometheusExporter::Instrumentation::Process.start type: 'sidekiq'
-    PrometheusExporter::Instrumentation::SidekiqProcess.start
-    PrometheusExporter::Instrumentation::SidekiqQueue.start
-    PrometheusExporter::Instrumentation::SidekiqStats.start
+    unless ENV['DISABLE_PROMETHEUS'].present?
+      PrometheusExporter::Instrumentation::ActiveRecord.start(
+        custom_labels: { type: "sidekiq" },
+        config_labels: [:database, :host]
+      )
+      PrometheusExporter::Instrumentation::Process.start type: 'sidekiq'
+      PrometheusExporter::Instrumentation::SidekiqProcess.start
+      PrometheusExporter::Instrumentation::SidekiqQueue.start
+      PrometheusExporter::Instrumentation::SidekiqStats.start
+    end
   end
 
-  config.death_handlers << PrometheusExporter::Instrumentation::Sidekiq.death_handler
+  config.death_handlers << PrometheusExporter::Instrumentation::Sidekiq.death_handler unless ENV['DISABLE_PROMETHEUS'].present?
 
   SidekiqUniqueJobs::Server.configure(config)
 
