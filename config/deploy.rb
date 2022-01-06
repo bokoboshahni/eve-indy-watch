@@ -104,56 +104,12 @@ namespace :search do
 end
 
 namespace :data do
-  desc 'Backfill contract related names'
-  task :backfill_contract_related_names do
-    on roles(:app) do
-      within release_path do
-        with rails_env: fetch(:rails_env) do
-          execute :rake, 'data:backfill_contract_related_names'
-        end
-      end
-    end
-  end
-
-  desc 'Backfill fitting markets'
-  task :backfill_fitting_markets do
-    on roles(:app) do
-      within release_path do
-        with rails_env: fetch(:rails_env) do
-          execute :rake, 'data:backfill_fitting_markets'
-        end
-      end
-    end
-  end
-
-  desc 'Backfill locations'
-  task :backfill_locations do
-    on roles(:app) do
-      within release_path do
-        with rails_env: fetch(:rails_env) do
-          execute :rake, 'data:backfill_locations'
-        end
-      end
-    end
-  end
-
   desc 'Backfill market location sources'
   task :backfill_market_location_sources do
     on roles(:app) do
       within release_path do
         with rails_env: fetch(:rails_env) do
           execute :rake, 'data:backfill_market_location_sources'
-        end
-      end
-    end
-  end
-
-  desc 'Retry contracts with inaccessible items'
-  task :retry_contracts_with_inaccessible_items do
-    on roles(:app) do
-      within release_path do
-        with rails_env: fetch(:rails_env) do
-          execute :rake, 'data:retry_contracts_with_inaccessible_items'
         end
       end
     end
