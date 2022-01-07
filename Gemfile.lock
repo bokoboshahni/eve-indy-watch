@@ -190,7 +190,7 @@ GEM
       json
     globalid (1.0.0)
       activesupport (>= 5.0)
-    google-protobuf (3.19.1-x86_64-linux)
+    google-protobuf (3.19.2-x86_64-linux)
     groupdate (5.2.4)
       activesupport (>= 5)
     hashie (5.0.0)
