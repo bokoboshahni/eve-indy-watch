@@ -26,16 +26,19 @@ class Market < ApplicationRecord
               h.merge!(Oj.load(json).each_with_object({}) { |o, h| h[o['o']] = o })
             end
 
-            raise "No current orders for #{log_name} at #{log_time}" if current_orders.empty?
+            raise "No current orders for #{log_name} at #{log_time} from keys: #{current_orders_keys}" if current_orders.empty?
 
             previous_orders_keys = orders_reader.zrangebyscore("#{previous_orders_key}.order_set_keys_by_type", type_id, type_id)
             @previous_orders = previous_orders_keys.empty? ? {} : orders_reader.mget(*previous_orders_keys).each_with_object({}) do |json, h|
               h.merge!(Oj.load(json).each_with_object({}) { |o, h| h[o['o']] = o })
             end
           else
+            current_orders_keys = market_location_ids.each_with_object({}) do |location_id, h|
+              h[location_id] = "#{current_orders_key}.orders.#{location_id}.#{type_id}"
+            end
+
             @current_orders = market_location_ids.each_with_object({}) do |location_id, h|
-              orders_key = "#{current_orders_key}.orders.#{location_id}.#{type_id}"
-              orders_json = orders_reader.get(orders_key)
+              orders_json = orders_reader.get(current_orders_keys[location_id])
 
               if orders_json.blank?
                 # trace("No orders for #{orders_key} for #{log_name} at #{log_time}")
@@ -45,7 +48,7 @@ class Market < ApplicationRecord
               h.merge!(Oj.load(orders_json).each_with_object({}) { |o, h| h[o['o']] = o })
             end
 
-            raise "No current orders for #{log_name} at #{log_time}" if current_orders.empty?
+            raise "No current orders for #{log_name} at #{log_time} from keys: #{current_orders_keys}" if current_orders.empty?
 
             @previous_orders = previous_orders_key.nil? ? {} : market_location_ids.each_with_object({}) do |location_id, h|
               orders_key = "#{previous_orders_key}.orders.#{location_id}.#{type_id}"
