@@ -72,7 +72,7 @@ class Appraisal < ApplicationRecord
   before_validation :ensure_price_type, on: :create
 
   def generate_items(items, time = nil)
-    self.market_time = time || Statistics::MarketType.where(market_id: market.id).maximum(:time)
+    self.market_time = time || market.latest_snapshot_time
     self.items_attributes = GenerateItems.call(items, market, market_time)
     self
   end
