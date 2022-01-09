@@ -24,7 +24,7 @@ class ApplicationRecord < ActiveRecord::Base
   end
 
   def markets_reader
-    Kredis.redis(config: :markets_writer)
+    Kredis.redis(config: :markets_reader)
   end
 
   def markets_writer
