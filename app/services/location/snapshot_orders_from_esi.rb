@@ -111,7 +111,7 @@ class Location < ApplicationRecord
                               .map! { |o| o.transform_keys! { |k| ORDER_KEYS[k] } }
                               .map! { |o| o['i'] = o['i'].to_datetime.to_i; o }
         if unique_orders.any?
-          expiry = 1.hour.from_now.to_i
+          expiry = 15.minutes.from_now.to_i
           measure_info(
             "Wrote #{unique_orders.count} order(s) to Redis for #{log_name} at #{log_time}",
             metric: "#{METRIC_NAME}/write_redis"
