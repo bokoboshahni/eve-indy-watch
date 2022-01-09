@@ -4,7 +4,7 @@ module Admin
   class RegionsController < AdminController
     include Filterable
 
-    before_action :find_region, only: %i[show edit update market_order_batches]
+    before_action :find_region, only: %i[show edit update]
 
     def index
       store_filters!('Region')
@@ -33,10 +33,6 @@ module Admin
       end
     end
 
-    def market_order_batches
-      @pagy, @market_order_batches = pagy(@region.market_order_batches.order(time: :desc))
-    end
-
     private
 
     def find_region
@@ -44,7 +40,7 @@ module Admin
     end
 
     def region_params
-      params.require(:region).permit(:market_order_sync_enabled, :esi_authorization_id)
+      params.require(:region).permit(:esi_authorization_id)
     end
   end
 end

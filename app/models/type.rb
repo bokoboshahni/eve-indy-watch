@@ -73,8 +73,6 @@ class Type < ApplicationRecord
   has_many :killmail_attacker_weapons, inverse_of: :weapon_type, dependent: :restrict_with_exception
   has_many :killmail_items, inverse_of: :type, dependent: :restrict_with_exception
   has_many :lossmails, class_name: 'Killmail', inverse_of: :ship_type, dependent: :restrict_with_exception
-  has_many :market_daily_summaries, class_name: 'Statistics::MarketTypeDailySummary', inverse_of: :type, dependent: :restrict_with_exception
-  has_many :market_order_prices, inverse_of: :type
   has_many :market_price_snapshots, inverse_of: :type, dependent: :destroy
   has_many :region_histories, class_name: 'Statistics::RegionTypeHistory', inverse_of: :type, dependent: :restrict_with_exception
   has_many :stations, inverse_of: :type, dependent: :restrict_with_exception

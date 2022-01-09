@@ -4,12 +4,11 @@
       <% t.head do %>
         <%= render(TableRowComponent.new(classes: 'divide-x divide-gray-300 border-b border-gray-300 ')) do |tr| %>
           <% tr.header padding: 'px-4 py-1', colspan: 1 do %><% end %>
-          <% tr.header padding: 'px-4 py-1', colspan: 3, align: 'text-center' do %>Market Orders<% end %>
+          <% tr.header padding: 'px-4 py-1', colspan: 2, align: 'text-center' do %>Market Orders<% end %>
         <% end %>
 
         <%= render(TableRowComponent.new) do |tr| %>
           <% tr.header padding: 'px-4 py-2' do %>Name<% end %>
-          <% tr.header padding: 'px-4 py-2', width: 'w-24' do %>Status<% end %>
           <% tr.header padding: 'px-4 py-2', width: 'w-36' do %>Last Update<% end %>
           <% tr.header padding: 'px-4 py-2', width: 'w-36' do %>Next Update<% end %>
         <% end %>
@@ -21,24 +20,13 @@
             <%= link_to region.name, admin_region_path(region), class: 'font-medium', data: { turbo_frame: '_top' } %>
           <% end %>
           <% tr.cell padding: 'px-4 py-1' do %>
-            <% if region.market_order_sync_enabled %>
-              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                Enabled
-              </span>
-            <% else %>
-              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
-                Disabled
-              </span>
-            <% end %>
-          <% end %>
-          <% tr.cell padding: 'px-4 py-1' do %>
             <div class="text-xs font-medium text-gray-900">
-              <%= local_time(region.esi_market_orders_last_modified_at, format: :db) if region.esi_market_orders_last_modified_at %>
+              <%= local_time(region.orders_last_modified, format: :db) if region.orders_last_modified %>
             </div>
           <% end %>
           <% tr.cell padding: 'px-4 py-1' do %>
             <div class="text-xs font-medium text-gray-900">
-              <%= local_time(region.esi_market_orders_expires_at, format: :db) if region.esi_market_orders_expires_at %>
+              <%= local_time(region.orders_expires, format: :db) if region.orders_expires %>
             </div>
           <% end %>
         <% end %>

@@ -30,7 +30,6 @@
 #     * **`esi_authorization_id => esi_authorizations.id`**
 #
 class Region < ApplicationRecord
-  include MarketOrdersSyncable
   include PgSearch::Model
 
   multisearchable against: %i[name]
@@ -47,7 +46,6 @@ class Region < ApplicationRecord
   has_many :contracts, through: :solar_systems
   has_many :markets_for_type_history, class_name: 'Market', inverse_of: :type_history_region, dependent: :restrict_with_exception
   has_many :market_locations, as: :location, dependent: :destroy
-  has_many :market_orders, through: :constellations
   has_many :markets, through: :market_locations
   has_many :solar_systems, through: :constellations
   has_many :stations, through: :solar_systems
@@ -55,7 +53,6 @@ class Region < ApplicationRecord
   has_many :type_histories, class_name: 'Statistics::RegionTypeHistory', inverse_of: :region, dependent: :restrict_with_exception
 
   scope :new_eden, -> { where(id: 10_000_000..11_000_000) }
-  scope :orders_enabled, -> { where(market_order_sync_enabled: true) }
 
   def available_esi_authorizations
     main_alliance.available_esi_authorizations

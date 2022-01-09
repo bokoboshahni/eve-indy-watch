@@ -4,7 +4,7 @@ module Admin
   class StructuresController < AdminController
     include Filterable
 
-    before_action :find_structure, only: %i[show edit update market_order_batches]
+    before_action :find_structure, only: %i[show edit update]
 
     def index
       store_filters!('Structure')
@@ -33,10 +33,6 @@ module Admin
       end
     end
 
-    def market_order_batches
-      @pagy, @market_order_batches = pagy(@structure.market_order_batches.order(time: :desc))
-    end
-
     private
 
     def find_structure
@@ -44,7 +40,7 @@ module Admin
     end
 
     def structure_params
-      params.require(:structure).permit(:market_order_sync_enabled, :esi_authorization_id)
+      params.require(:structure).permit(:esi_authorization_id)
     end
   end
 end

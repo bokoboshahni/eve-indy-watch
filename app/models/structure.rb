@@ -46,7 +46,6 @@
 #     * **`type_id => types.id`**
 #
 class Structure < ApplicationRecord
-  include MarketOrdersSyncable
   include PgSearch::Model
 
   multisearchable against: %i[name owner_name type_name]
@@ -67,13 +66,10 @@ class Structure < ApplicationRecord
   belongs_to :type, inverse_of: :structures, optional: true
 
   has_many :market_locations, as: :location, dependent: :destroy
-  has_many :market_orders, as: :location
   has_many :markets, through: :market_locations
 
   delegate :name, to: :owner, prefix: true, allow_nil: true
   delegate :name, to: :type, prefix: true, allow_nil: true
-
-  scope :orders_enabled, -> { where(market_order_sync_enabled: true) }
 
   def available_esi_authorizations
     rel = ESIAuthorization.includes(:character).joins(character: :corporation)

@@ -36,12 +36,4 @@ class MarketLocation < ApplicationRecord
 
   delegate :name, to: :location, prefix: true
   delegate :orders_updated_at, to: :location
-
-  def orders
-    if location.is_a?(Station) || (location.is_a?(Structure) && !location.market_order_sync_enabled?)
-      location.region.market_orders.where(location_id: location_id)
-    else
-      location.market_orders
-    end
-  end
 end

@@ -1038,82 +1038,6 @@ CREATE TABLE public.market_locations (
 
 
 --
--- Name: market_order_batch_pages; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.market_order_batch_pages (
-    batch_id bigint NOT NULL,
-    imported_at timestamp without time zone,
-    page integer NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    started_at timestamp without time zone,
-    order_count integer,
-    import_count integer
-);
-
-
---
--- Name: market_order_batches; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.market_order_batches (
-    id bigint NOT NULL,
-    location_type character varying NOT NULL,
-    location_id bigint NOT NULL,
-    completed_at timestamp without time zone,
-    fetched_at timestamp without time zone,
-    "time" timestamp without time zone NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    compressed_at timestamp without time zone
-);
-
-
---
--- Name: market_order_batches_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.market_order_batches_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: market_order_batches_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.market_order_batches_id_seq OWNED BY public.market_order_batches.id;
-
-
---
--- Name: market_orders; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.market_orders (
-    location_type character varying NOT NULL,
-    location_id bigint NOT NULL,
-    solar_system_id bigint NOT NULL,
-    type_id bigint NOT NULL,
-    duration integer NOT NULL,
-    "time" timestamp without time zone NOT NULL,
-    issued_at timestamp without time zone NOT NULL,
-    kind text NOT NULL,
-    min_volume integer NOT NULL,
-    order_id bigint NOT NULL,
-    price numeric NOT NULL,
-    range text NOT NULL,
-    volume_remain integer NOT NULL,
-    volume_total integer NOT NULL,
-    batch_page_id bigint[],
-    location_name text
-);
-
-
---
 -- Name: market_price_snapshots; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1693,13 +1617,6 @@ ALTER TABLE ONLY public.market_groups ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
--- Name: market_order_batches id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.market_order_batches ALTER COLUMN id SET DEFAULT nextval('public.market_order_batches_id_seq'::regclass);
-
-
---
 -- Name: market_price_snapshots id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1949,14 +1866,6 @@ ALTER TABLE ONLY public.killmails
 
 ALTER TABLE ONLY public.market_groups
     ADD CONSTRAINT market_groups_pkey PRIMARY KEY (id);
-
-
---
--- Name: market_order_batches market_order_batches_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.market_order_batches
-    ADD CONSTRAINT market_order_batches_pkey PRIMARY KEY (id);
 
 
 --
@@ -2526,27 +2435,6 @@ CREATE INDEX index_market_locations_on_market_id ON public.market_locations USIN
 
 
 --
--- Name: index_market_order_batch_pages_on_batch_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_market_order_batch_pages_on_batch_id ON public.market_order_batch_pages USING btree (batch_id);
-
-
---
--- Name: index_market_order_batches_on_location; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_market_order_batches_on_location ON public.market_order_batches USING btree (location_type, location_id);
-
-
---
--- Name: index_market_orders_on_time; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_market_orders_on_time ON public.market_orders USING btree ("time");
-
-
---
 -- Name: index_markets_on_owner; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2705,20 +2593,6 @@ CREATE UNIQUE INDEX index_unique_industry_index_snapshots ON public.industry_ind
 --
 
 CREATE UNIQUE INDEX index_unique_locations ON public.locations USING btree (locatable_id, locatable_type);
-
-
---
--- Name: index_unique_market_order_batches; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_unique_market_order_batches ON public.market_order_batches USING btree (location_id, location_type, "time");
-
-
---
--- Name: index_unique_market_orders; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_unique_market_orders ON public.market_orders USING btree (location_id, order_id, "time");
 
 
 --
@@ -3223,6 +3097,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220103214836'),
 ('20220107011531'),
 ('20220107183210'),
-('20220107194531');
+('20220107194531'),
+('20220109212932');
 
 
