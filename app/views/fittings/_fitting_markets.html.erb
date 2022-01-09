@@ -15,9 +15,7 @@
         <% t.header width: '2/12' do %>Price (Split)<% end %>
         <% t.header width: '2/12' do %>Limiting Items<% end %>
 
-        <% render 'fitting_market', fitting: fitting, market: fitting.main_market, t: t if fitting.main_market %>
-
-        <% Market.where(trade_hub: true).order(:name).each do |market| %>
+        <% fitting.markets.order(:name).each do |market| %>
           <% render 'fitting_market', fitting: fitting, market: market, t: t if market %>
         <% end %>
       <% end %>

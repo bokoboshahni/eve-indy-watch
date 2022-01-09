@@ -67,7 +67,7 @@ class Fitting < ApplicationRecord
 
   scope :pinned, -> { where(pinned: true) }
 
-  delegate :appraisal_market, :main_market, :markets, to: :owner
+  delegate :appraisal_market, :main_market, to: :owner
 
   delegate :name, to: :owner, prefix: true
   delegate :name, to: :type, prefix: true
