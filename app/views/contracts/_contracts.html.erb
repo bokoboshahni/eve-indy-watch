@@ -40,7 +40,7 @@
               <% end %>
             <% end %>
           <% end %>
-          <% tr.cell padding: 'px-4 py-1' do %><%= contract.end_location.name %><% end %>
+          <% tr.cell padding: 'px-4 py-1' do %><%= contract.end_location&.name %><% end %>
           <% tr.cell padding: 'px-4 py-1' do %>
             <%
               markup_pct = contract.markup_sell_pct(main_alliance.appraisal_market)

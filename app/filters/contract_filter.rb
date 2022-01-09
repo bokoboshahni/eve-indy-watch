@@ -53,6 +53,7 @@ class ContractFilter < ApplicationFilter
     scope.select(:end_location_id, :end_location_id)
          .pluck(:end_location_name, :end_location_id)
          .uniq
+         .reject { |e| e.first.nil? }
          .sort_by { |e| e.first }
   end
 
