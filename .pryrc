@@ -2,8 +2,8 @@
 
 Pry.config.prompt = Pry::Prompt[:rails]
 
-markets_redis = Kredis.redis(config: :markets)
-orders_redis = Kredis.redis(config: :orders)
+markets_reader = Kredis.redis(config: :markets_reader)
+orders_reader = Kredis.redis(config: :orders_reader)
 
 forge_region = Region.find_by(name: 'The Forge')
 
