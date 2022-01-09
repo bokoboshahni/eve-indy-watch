@@ -58,6 +58,7 @@ class Fitting < ApplicationRecord
 
   has_many :fitting_markets, inverse_of: :fitting
   has_many :items, class_name: 'FittingItem', inverse_of: :fitting, dependent: :destroy
+  has_many :types, through: :items
   has_many :markets, through: :fitting_markets
   has_many :stock_level_summaries, class_name: 'Statistics::FittingStockLevelSummary', inverse_of: :fitting
   has_many :stock_levels, class_name: 'Statistics::FittingStockLevel', inverse_of: :fitting

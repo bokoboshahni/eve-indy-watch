@@ -80,7 +80,7 @@ class Type < ApplicationRecord
   has_many :stations, inverse_of: :type, dependent: :restrict_with_exception
   has_many :structures, inverse_of: :type, dependent: :restrict_with_exception
 
-  has_many :market_stats, class_name: 'Statistics::MarketType', inverse_of: :market
+  has_many :market_stats, class_name: 'MarketTypeStats', inverse_of: :type
 
   accepts_nested_attributes_for :blueprint_activities
 
@@ -115,38 +115,30 @@ class Type < ApplicationRecord
     Category::MODULE_CATEGORY_NAMES.include?(category_name)
   end
 
-  def market_stat(market, stat)
-    @market_stat ||= {}
-    @market_stat["#{market.id}_#{stat}"] ||=
-      begin
-        Statistics::MarketType.find_by(
-          market_id: market.id,
-          type_id: id,
-          time: Statistics::MarketType.where(market_id: market.id, type_id: id).maximum(:time)
-        )&.send(stat) || 0
-      end
+  def market_stats(market, time: nil)
+    time = markets_reader.get("markets.#{market.id}.latest") unless time
+
+    return {} unless time
+
+    key = "markets.#{market.id}.#{time.to_datetime.to_s(:number)}.types.#{id}.stats"
+    json = markets_reader.get(key)
+    json.present? ? Oj.load(json).merge(market_id: market.id) : {}
   end
 
-  Statistics::MarketType.column_names.excluding('market_id', 'type_id', 'time').each do |stat|
-    define_method "market_#{stat}" do |market|
-      market_stat(market, stat)
-    end
+  def market_buy_price(market, time: nil)
+    market_stats(market, time: time).dig(:buy, :price_max)
   end
 
-  def market_buy_price(market)
-    market_stat(market, :buy_price_max)
+  def market_sell_price(market, time: nil)
+    market_stats(market, time: time).dig(:sell, :price_min)
   end
 
-  def market_sell_price(market)
-    market_stat(market, :sell_price_min)
+  def market_split_price(market, time: nil)
+    market_stats(market, time: time).dig(:mid_price)
   end
 
-  def market_split_price(market)
-    (market_buy_price(market) + market_sell_price(market)) / 2.0
-  end
-
-  def market_volume(market)
-    market_stat(market, :sell_volume_sum)
+  def market_volume(market, time: nil)
+    market_stats(market, time: time).dig(:sell, :volume_sum)
   end
 
   def icon_url
@@ -190,15 +182,5 @@ class Type < ApplicationRecord
 
   def default_period
     30.days.ago.beginning_of_day..Time.zone.now
-  end
-
-  def market_stats(market_id, time = nil)
-    time = markets_reader.get("markets.#{market_id}.latest") unless time
-
-    return unless time
-
-    key = "markets.#{market_id}.#{time.to_datetime.to_s(:number)}.types.#{id}.stats"
-    Rails.logger.debug(key)
-    Oj.load(markets_reader.get(key))
   end
 end

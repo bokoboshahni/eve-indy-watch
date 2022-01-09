@@ -67,7 +67,9 @@ class Market < ApplicationRecord
   has_many :stations, through: :market_locations, source: :location, source_type: 'Station'
   has_many :structures, through: :market_locations, source: :location, source_type: 'Structure'
 
-  has_many :type_stats, class_name: 'Statistics::MarketType', inverse_of: :market
+  has_many :type_stats, class_name: 'MarketTypeStats', inverse_of: :market
+
+  scope :active, -> { where(active: true) }
 
   delegate :name, to: :owner, prefix: true, allow_nil: true
 
@@ -96,12 +98,11 @@ class Market < ApplicationRecord
   end
 
   def types
-    Type.where(id: latest_orders.distinct(:type_id).pluck(:type_id))
+    Type.where(id: type_ids_for_sale)
   end
 
   def type_ids_for_sale
-    time = Statistics::MarketType.where(market_id: id).maximum(:time)
-    Statistics::MarketType.distinct(:type_id).where(market_id: id).pluck(:type_id)
+    markets_reader.smembers("#{latest_snapshot_key}.types.type_ids")
   end
 
   def aggregate_type_stats!(time, batch)
@@ -135,10 +136,22 @@ class Market < ApplicationRecord
     CalculateTypeStatisticsQueuer.call(self, time, force: force)
   end
 
-  def cache_ingestion_info
+  def orders_last_modified
+    source_location.locatable.orders_last_modified
+  end
+
+  def latest_order_count
+    markets_reader.get("#{latest_snapshot_key}.order_count").to_i
+  end
+
+  def latest_type_count
+    markets_reader.get("#{latest_snapshot_key}.type_count").to_i
+  end
+
+  def update_ingestion_info!
     markets_writer.set("markets.#{id}.kind", kind)
     markets_writer.set("markets.#{id}.name", name)
     markets_writer.set("markets.#{id}.source_location_id", source_location_id)
-    markets_writer.sadd("markets.#{id}.location_ids", market_locations.pluck(:location_id)) if market_locations.any?
+    markets_writer.sadd("markets.#{id}.location_ids", location_ids) if location_ids.any?
   end
 end

@@ -125,17 +125,16 @@ class Market < ApplicationRecord
 
             h[side] = {
               depth: depth,
-              price_5pct_avg: five_pct_prices.mean.round(2),
-              price_5pct_max: five_pct_prices.max,
-              price_5pct_med: five_pct_prices.median,
-              price_5pct_min: five_pct_prices.min,
-              price_5pct_count: five_pct_orders.count,
-              price_5pct_sum: five_pct_prices.sum,
+              five_pct_price_avg: five_pct_prices.mean.round(2),
+              five_pct_price_max: five_pct_prices.max,
+              five_pct_price_med: five_pct_prices.median,
+              five_pct_price_min: five_pct_prices.min,
+              five_pct_price_sum: five_pct_prices.sum,
+              five_pct_order_count: five_pct_orders.count,
               price_avg: trimmed_prices.mean.round(2),
               price_max: trimmed_prices.max,
               price_med: trimmed_prices.median,
               price_min: trimmed_prices.min,
-              price_stdev: trimmed_prices.stdev.round(3),
               price_sum: trimmed_prices.sum,
               outlier_count: outliers,
               outlier_threshold: threshold.round(2),
@@ -144,7 +143,6 @@ class Market < ApplicationRecord
               volume_max: trimmed_volumes.max,
               volume_med: trimmed_volumes.median,
               volume_min: trimmed_volumes.min,
-              volume_stdev: trimmed_volumes.stdev.round(3),
               volume_sum: trimmed_volumes.sum
             }
           end
@@ -198,8 +196,7 @@ class Market < ApplicationRecord
               volume_traded_max: volume_traded.max,
               volume_traded_med: volume_traded.median,
               volume_traded_min: volume_traded.min,
-              volume_traded_stdev: volume_traded.stdev.round(3),
-              volume_traded: volume_traded.sum
+              volume_traded_sum: volume_traded.sum
             }
           end
 
@@ -221,7 +218,7 @@ class Market < ApplicationRecord
 
         redis_duration = Benchmark.realtime do
           markets_writer.pipelined do
-            expiry = (1.day.from_now.beginning_of_day + 12.hours).to_i
+            expiry = 15.minutes.from_now.to_i
 
             stats = {
               time: time.to_s(:number),
@@ -270,6 +267,12 @@ class Market < ApplicationRecord
 
             markets_writer.sadd("markets.#{market_id}.#{time_key}.type_ids", type_id)
             markets_writer.zadd("markets.#{market_id}.type_stats.#{type_id}", time_key.to_i, "#{type_key}.stats")
+
+            markets_writer.incr("markets.#{market_id}.#{time_key}.type_count")
+            markets_writer.expireat("markets.#{market_id}.#{time_key}.type_count", expiry)
+
+            markets_writer.incrby("markets.#{market_id}.#{time_key}.order_count", current_orders.count)
+            markets_writer.expireat("markets.#{market_id}.#{time_key}.order_count", expiry)
           end
         end
 
@@ -284,7 +287,7 @@ class Market < ApplicationRecord
 
     private
 
-    METRIC_NAME = 'market/calculate_order_flow'
+    METRIC_NAME = 'market/calculate_type_statistics'
 
     attr_reader :market_id, :type_id, :time, :current_orders, :previous_orders, :current_order_ids_with_location, :previous_order_ids_with_location
 

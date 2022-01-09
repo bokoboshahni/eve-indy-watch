@@ -4,7 +4,7 @@ class Fitting < ApplicationRecord
       super
 
       @fitting = Fitting.eager_load(:items).find(fitting_id)
-      @market = Market.eager_load(:market_locations).find(market_id)
+      @market = Market.find(market_id)
       @fitting_market = FittingMarket.find_by!(fitting_id: fitting_id, market_id: market_id)
       @market_time = market_time
       @time = time
@@ -50,10 +50,13 @@ class Fitting < ApplicationRecord
     delegate :compact_items, to: :fitting
     delegate :id, to: :fitting, prefix: true
 
-    delegate :location_ids, :type_stats, to: :market
     delegate :id, to: :market, prefix: true
 
     delegate :contract_stock_level_enabled?, :market_stock_level_enabled?, to: :fitting_market
+
+    def location_ids
+      @location_ids ||= markets_reader.smembers("markets.#{market_id}.location_ids").map(&:to_i)
+    end
 
     def stock_level_class
       interval.present? ? Statistics::FittingStockLevelSummary : Statistics::FittingStockLevel
@@ -79,9 +82,12 @@ class Fitting < ApplicationRecord
     def market_stock_level
       result = {}
 
-      market_stats = type_stats.select(:buy_price_max, :sell_price_min, :sell_volume_sum, :market_id, :type_id, :time)
-                               .where(time: market_time, type_id: compact_items.keys)
-                               .each_with_object({}) { |r, h| h[r.type_id] = r }
+      market_key = "markets.#{market_id}.#{market_time.to_s(:number)}"
+      type_ids = compact_items.keys
+      type_keys =  type_ids.map { |t| "#{market_key}.types.#{t}.stats" }
+      market_stats = markets_reader.mapped_mget(*type_keys)
+                                   .transform_keys! { |k| k.split('.')[-2].to_i }
+                                   .transform_values! { |j| Oj.load(j) if j.present? }
 
       result[:items_attributes] = compact_items.each_with_object({}) do |(item_id, fitting_qty), h|
         stock_item = { fitting_id: fitting_id, market_id: market_id, type_id: item_id, time: time }
@@ -89,10 +95,10 @@ class Fitting < ApplicationRecord
 
         if market_item
           stock_item.merge!(
-            fitting_quantity: market_item.sell_volume_sum.to_i / fitting_qty,
-            market_buy_price: market_item.buy_price_max,
-            market_sell_price: market_item.sell_price_min,
-            market_sell_volume: market_item.sell_volume_sum.to_i
+            fitting_quantity: market_item.dig(:sell, :volume_sum).to_i / fitting_qty,
+            market_buy_price: market_item.dig(:buy, :price_max),
+            market_sell_price: market_item.dig(:sell, :price_min),
+            market_sell_volume: market_item.dig(:sell, :volume_sum).to_i
           )
         else
           stock_item.merge!(

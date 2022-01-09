@@ -1,14 +1,4 @@
 :schedule:
-  create_market_order_batches:
-    cron: '* * * * *'
-    class: 'MarketOrder::CreateAllBatchesWorker'
-    description: "Import market orders for all regions/structures with market order sync enabled"
-
-  complete_market_order_batches:
-    cron: '* * * * *'
-    class: 'MarketOrder::CompleteAllBatchesWorker'
-    description: "Check all incomplete market order batches for completion"
-
   sync_all_contracts_from_esi:
     cron: '*/5 * * * *'
     class: 'Corporation::SyncAllContractsFromESIWorker'
@@ -28,12 +18,6 @@
     cron: '0 * * * *'
     class: 'MarketPriceSnapshot::SyncFromESIWorker'
     description: "Create a snapshot of market prices"
-
-  prune_market_orders:
-    cron: '15 * * * *'
-    class: 'MarketOrder::PruneWorker'
-    args: ['hour']
-    description: "Prune market orders hourly"
 
   preload_region_type_histories:
     cron: '15 11 * * *'

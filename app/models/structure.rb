@@ -85,11 +85,11 @@ class Structure < ApplicationRecord
     esi_authorization.present?
   end
 
-  def esi_last_modified
-    orders_reader.get("orders.#{id}.esi_last_modified")
+  def orders_last_modified
+    orders_reader.get("orders.#{id}.esi_last_modified")&.to_datetime
   end
 
-  def esi_expires
-    orders_reader.get("orders.#{id}.esi_expires")
+  def orders_expires
+    orders_reader.get("orders.#{id}.esi_expires")&.to_datetime
   end
 end

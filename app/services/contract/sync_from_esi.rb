@@ -146,16 +146,7 @@ class Contract < ApplicationRecord
     end
 
     def find_and_sync_location(id)
-      case id
-      when 60_000_000..64_000_000
-        begin
-          Station.find(id)
-        rescue ActiveRecord::RecordNotFound
-          Station::SyncFromESI.call(id)
-        end
-      else
-        Structure::SyncFromESI.call(id, corporation.esi_authorization)
-      end
+      Location::ResolveAndSync.call(id, corporation.esi_authorization)
     end
   end
 end

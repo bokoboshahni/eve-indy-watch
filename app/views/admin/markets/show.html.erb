@@ -19,7 +19,7 @@
             Orders
           </dt>
           <dd class="mt-1 text-3xl font-semibold text-gray-900">
-            <%= number_with_delimiter @market.latest_orders.count %>
+            <%= number_with_delimiter @market.latest_order_count %>
           </dd>
         </div>
 
@@ -28,7 +28,7 @@
             Types
           </dt>
           <dd class="mt-1 text-3xl font-semibold text-gray-900">
-            <%= number_with_delimiter @market.types.count %>
+            <%= number_with_delimiter @market.latest_type_count %>
           </dd>
         </div>
 
@@ -37,7 +37,7 @@
             Locations
           </dt>
           <dd class="mt-1 text-3xl font-semibold text-gray-900">
-            <%= @market.market_locations.count %>
+            <%= @market.regional? ? '1' : @market.market_locations.count %>
           </dd>
         </div>
       </dl>
@@ -75,6 +75,14 @@
                 <%= @market.owner_name || 'None' %>
               </dd>
             </div>
+            <div class="sm:col-span-1">
+              <dt class="text-sm font-medium text-gray-500">
+                Source updated
+              </dt>
+              <dd class="mt-1 text-sm text-gray-900">
+                <%= local_time @market.source_location.locatable.orders_last_modified, format: :db %>
+              </dd>
+            </div>
           </dl>
         </div>
       </div>
@@ -94,9 +102,6 @@
                 <th scope="col" class="w-1/2 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Name
                 </th>
-                <th scope="col" class="w-1/2 px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Orders Updated
-                </th>
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
@@ -104,9 +109,6 @@
                 <tr>
                   <td class="px-4 py-2 text-xs font-medium text-gray-900">
                     <%= market_location.location_name %>
-                  </td>
-                  <td class="px-4 py-2 text-xs font-medium">
-                    <%= local_time market_location.orders_updated_at, format: :db %>
                   </td>
                 </tr>
               <% end %>

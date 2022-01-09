@@ -8,7 +8,7 @@
           <% tr.header padding: 'px-4 py-2', width: 'w-24' do %>Owner<% end %>
           <% tr.header padding: 'px-4 py-2', width: 'w-24' do %>Locations<% end %>
           <% tr.header padding: 'px-4 py-2', width: 'w-36' do %>Orders Updated<% end %>
-          <% tr.header padding: 'px-4 py-2', width: 'w-36' do %>Types Updated<% end %>
+          <% tr.header padding: 'px-4 py-2', width: 'w-36' do %>Statistics Updated<% end %>
         <% end %>
       <% end %>
 
@@ -44,17 +44,17 @@
           <% end %>
           <% tr.cell padding: 'px-4 py-1' do %>
             <div class="text-xs font-medium text-gray-900">
-              <%= market.market_locations.count %>
+              <%= market.regional? ? '1' : market.market_locations.count %>
             </div>
           <% end %>
           <% tr.cell padding: 'px-4 py-1' do %>
             <div class="text-xs font-medium text-gray-900">
-              <%= local_time market.orders_updated_at, format: :db if market.orders_updated_at %>
+              <%= local_time market.orders_last_modified, format: :db if market.orders_last_modified %>
             </div>
           <% end %>
           <% tr.cell padding: 'px-4 py-1' do %>
             <div class="text-xs font-medium text-gray-900">
-              <%= local_time market.type_stats_updated_at, format: :db if market.type_stats_updated_at %>
+              <%= local_time market.latest_snapshot_time, format: :db if market.latest_snapshot_time %>
             </div>
           <% end %>
         <% end %>
