@@ -9,6 +9,8 @@ class Market < ApplicationRecord
     end
 
     def call
+      market.update_ingestion_info!
+
       time_key = time.to_s(:number)
       existing_snapshot = market.snapshot_keys[time_key.to_i]
       if existing_snapshot && !force
