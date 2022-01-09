@@ -1,15 +1,16 @@
 class Market < ApplicationRecord
   class CalculateTypeStatistics < ApplicationService
-    def initialize(market_id, type_id, time)
+    def initialize(market_id, type_id, time, force: false)
       super
 
       @market_id = market_id
       @type_id = type_id
       @time = time
+      @force = force
     end
 
     def call
-      if markets_writer.exists("#{type_key}.stats").to_i == 1
+      if markets_writer.exists("#{type_key}.stats").to_i == 1 && !force
         debug("Market depth and order flow have already been calculated for #{log_name} at #{log_time}")
         return
       end
@@ -289,7 +290,9 @@ class Market < ApplicationRecord
 
     METRIC_NAME = 'market/calculate_type_statistics'
 
-    attr_reader :market_id, :type_id, :time, :current_orders, :previous_orders, :current_order_ids_with_location, :previous_order_ids_with_location
+    attr_reader :market_id, :type_id, :time, :force
+
+    attr_reader :current_orders, :previous_orders, :current_order_ids_with_location, :previous_order_ids_with_location
 
     attr_reader :deleted_orders, :created_orders, :changed_orders
 
