@@ -9,7 +9,7 @@ class ContractsController < ApplicationController
   def index
     store_filters!('Contract')
 
-    scope = Contract.item_exchange.outstanding.assigned_to(main_alliance_id)
+    scope = Contract.item_exchange.outstanding.where.not(end_location_id: nil).assigned_to(main_alliance_id)
     @filter = filter_for('Contract')
     @pagy, @contracts = pagy(@filter.apply!(scope))
 
