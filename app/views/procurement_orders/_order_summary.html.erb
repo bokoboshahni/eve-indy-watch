@@ -1,0 +1,268 @@
+<div class="space-y-8 mt-4">
+  <div class="bg-white border-t border-b border-gray-200 shadow-sm sm:border sm:rounded-lg divide-y divide-gray-200">
+    <%= render(TableComponent.new(layout: 'auto')) do |t| %>
+      <% t.header padding: 'px-4 py-2' do %>Item<% end %>
+      <% if policy(order).update? %>
+        <% t.header padding: 'px-4 py-4', width: 'w-36' do %>Unit Price<% end %>
+        <% t.header padding: 'px-4 py-4', width: 'w-24' do %>Quantity<% end %>
+        <% t.header padding: 'px-4 py-4', width: 'w-36' do %>Amount<% end %>
+        <% t.header padding: 'px-4 py-4', width: 'w-1' do %><span class="sr-only">Actions</span><% end %>
+      <% else %>
+        <% t.header padding: 'px-4 py-4', width: 'w-24' do %>Quantity<% end %>
+        <% t.header padding: 'px-4 py-4', width: 'w-36' do %>Unit Price<% end %>
+        <% t.header padding: 'px-4 py-4', width: 'w-24' do %>Multiplier<% end %>
+        <% t.header padding: 'px-4 py-4', width: 'w-24' do %>Bonus<% end %>
+        <% t.header padding: 'px-4 py-4', width: 'w-36' do %>Amount<% end %>
+      <% end %>
+
+      <% order.items.each do |item| %>
+        <% t.row classes: 'divide-x divide-x-gray-200' do |tr| %>
+          <% tr.cell padding: 'px-4 py-2' do %>
+            <div class="flex items-center">
+              <div class="flex-shrink-0 h-8 w-8">
+                <%= render(TypeIconComponent.new(type: item.type, classes: 'h-8 w-8 rounded-md')) %>
+              </div>
+              <div class="ml-4">
+                <div class="text-xs font-medium text-gray-900">
+                  <%= item.name %>
+                </div>
+                <div class="text-xs text-gray-500">
+                  <%= item.category_name %> / <%= item.group_name %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+          <% if policy(order).update? %>
+            <% tr.cell padding: 'px-4 py-4' do %>
+              <%= number_to_isk item.price %>
+            <% end %>
+            <% tr.cell padding: 'px-4 py-4' do %>
+              <%= number_to_m3 item.quantity_required %>
+            <% end %>
+            <% tr.cell padding: 'px-4 py-4' do %>
+              <%= number_to_isk item.total %>
+            <% end %>
+          <% else %>
+            <% tr.cell padding: 'px-4 py-4' do %>
+              <%= number_to_m3 item.quantity_required %>
+            <% end %>
+            <% tr.cell padding: 'px-4 py-4' do %>
+              <%= number_to_isk item.price %>
+            <% end %>
+            <% tr.cell padding: 'px-4 py-4' do %>
+              <%= number_with_precision item.multiplier, precision: 2 %>
+            <% end %>
+            <% tr.cell padding: 'px-4 py-4' do %>
+              <%= number_to_isk item.bonus %>
+            <% end %>
+            <% tr.cell padding: 'px-4 py-4' do %>
+              <%= number_to_isk item.total %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+    <div class="py-5 px-4">
+      <div class="bg-gray-100 py-6 px-4 sm:px-6 sm:rounded-lg lg:px-8 lg:py-8 lg:grid lg:grid-cols-12 lg:gap-x-8">
+        <dl class="grid grid-cols-2 gap-4 text-sm sm:grid-cols-2 md:gap-x-4 lg:col-span-7">
+          <div>
+            <dt class="font-medium text-gray-900">Contract to</dt>
+            <div class="mt-3">
+              <dd class="-ml-2 -mt-4 flex flex-wrap items-center">
+                <div class="ml-2 mt-4 flex-shrink-0">
+                  <% if order.requester.is_a?(Character) %>
+                    <%= render(CharacterPortraitComponent.new(character: order.requester, classes: 'h-12 w-auto rounded-md')) %>
+                  <% elsif order.requester.is_a?(Corporation) %>
+                    <%= render(CorporationIconComponent.new(corporation: order.requester, classes: 'h-12 w-auto rounded-md')) %>
+                  <% elsif order.requester.is_a?(Alliance) %>
+                    <%= render(AllianceIconComponent.new(alliance: order.requester, classes: 'h-12 w-auto rounded-md')) %>
+                  <% end %>
+                  <p class="sr-only"><%= order.requester.name %></p>
+                </div>
+                <div class="ml-4 mt-4">
+                  <p class="text-gray-900">
+                    <% if order.requester.is_a?(Alliance) %>
+                      <%= order.requester.procurement_order_requester_name %> (on behalf of <%= order.requester_name %>)
+                    <% else %>
+                      <%= order.requester_name %>
+                    <% end %>
+                  </p>
+                </div>
+              </dd>
+            </div>
+          </div>
+          <div>
+            <dt class="font-medium text-gray-900">Delivery location</dt>
+            <div class="mt-3">
+              <dd class="-ml-2 -mt-4 flex flex-wrap items-center">
+                <div class="ml-2 mt-4 flex-shrink-0">
+                  <%= render(CorporationIconComponent.new(corporation: order.location.locatable.owner, classes: 'h-12 w-auto rounded-md')) %>
+                  <p class="sr-only"><%= order.location_name %></p>
+                </div>
+                <div class="ml-4 mt-4">
+                  <p class="text-gray-900">
+                    <%= order.location_name %>
+                  </p>
+                </div>
+              </dd>
+            </div>
+          </div>
+        </dl>
+
+        <dl class="mt-8 divide-y divide-gray-200 text-sm lg:mt-0 lg:col-span-5">
+          <div class="pb-2 flex items-center justify-between">
+            <dt class="text-gray-600">Subtotal</dt>
+            <dd class="font-medium text-gray-900"><%= number_to_isk(order.subtotal) %>&nbsp;ISK</dd>
+          </div>
+          <div class="py-2 flex items-center justify-between">
+            <dt class="text-gray-600">Multiplier</dt>
+            <dd class="font-medium text-gray-900"><%= number_with_precision(order.multiplier, precision: 2) %>%</dd>
+          </div>
+          <div class="py-2 flex items-center justify-between">
+            <dt class="text-gray-600">Subtotal with multiplier</dt>
+            <dd class="font-medium text-gray-900"><%= number_to_isk(@order.subtotal_with_multiplier) %>&nbsp;ISK</dd>
+          </div>
+          <div class="py-2 flex items-center justify-between">
+            <dt class="text-gray-600">Bonus</dt>
+            <dd class="font-medium text-gray-900"><%= number_to_isk(@order.bonus) %>&nbsp;ISK</dd>
+          </div>
+          <div class="pt-2 flex items-center justify-between">
+            <dt class="font-medium text-gray-900">Order total</dt>
+            <dd class="font-medium text-indigo-600"><%= number_to_isk(@order.total) if @order.persisted? %>&nbsp;ISK</dd>
+          </div>
+        </dl>
+      </div>
+    </div>
+
+    <% if order.kept? %>
+      <% if order.in_progress? && policy(order).update? %>
+        <div class="border-t border-gray-200 py-6 px-4 sm:px-6 lg:p-8">
+          <div data-controller="modal" data-modal-allow-background-close="false">
+            <%= button_to receive_procurement_order_path(order), class: 'w-full bg-indigo-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500', data: { action: 'click->modal#open' } do %>
+              Confirm Delivery
+            <% end %>
+
+            <div data-modal-target="container" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" class="hidden animated fadeIn fixed z-10 inset-0 overflow-y-auto" style="z-index: 9999;">
+              <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+                <div class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+                  <div class="sm:flex sm:items-start">
+                    <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                      <%= heroicon 'check', variant: :outline, options: { class: 'h-6 w-6 text-green-600' } %>
+                    </div>
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                      <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                        Confirm Delivery
+                      </h3>
+                      <div class="mt-2">
+                        <p class="text-sm text-gray-500">
+                          Are you sure you want to confirm delivery of this order? This action cannot be undone.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                    <%= button_to receive_procurement_order_path(order), class: 'w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm' do %>
+                      Confirm
+                    <% end %>
+                    <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm" data-action="click->modal#close">
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% elsif policy(order).accept? && order.available? %>
+        <div class="border-t border-gray-200 py-5 px-4 sm:px-6">
+          <div data-controller="modal" data-modal-allow-background-close="false">
+            <%= button_to receive_procurement_order_path(order), class: 'w-full bg-indigo-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500', data: { action: 'click->modal#open' } do %>
+              Accept Order
+            <% end %>
+
+            <div data-modal-target="container" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" class="hidden animated fadeIn fixed z-10 inset-0 overflow-y-auto" style="z-index: 9999;">
+              <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+                <div class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+                  <div class="sm:flex sm:items-start">
+                    <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                      <%= heroicon 'check', variant: :outline, options: { class: 'h-6 w-6 text-green-600' } %>
+                    </div>
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                      <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                        Accept Order
+                      </h3>
+                      <div class="mt-2">
+                        <p class="text-sm text-gray-500">
+                          Are you sure you want to accept this order?
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                    <%= button_to accept_procurement_order_path(order), class: 'w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm', data: { turbo_frame: '_top' } do %>
+                      Accept
+                    <% end %>
+                    <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm" data-action="click->modal#close">
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% elsif @order.in_progress? && policy(order).accept? && [current_user.character, current_user.corporation].include?(order.supplier) %>
+        <div class="border-t border-gray-200 py-5 px-4 sm:px-6">
+          <div data-controller="modal" data-modal-allow-background-close="false">
+            <%= button_to release_procurement_order_path(order), class: 'w-full bg-red-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-red-500', data: { action: 'click->modal#open' } do %>
+              Release Order
+            <% end %>
+
+            <div data-modal-target="container" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" class="hidden animated fadeIn fixed z-10 inset-0 overflow-y-auto" style="z-index: 9999;">
+              <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+                <div class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+                  <div class="sm:flex sm:items-start">
+                    <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                      <%= heroicon 'exclamation', variant: :outline, options: { class: 'h-6 w-6 text-red-600' } %>
+                    </div>
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                      <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+                        Release Order
+                      </h3>
+                      <div class="mt-2">
+                        <p class="text-sm text-gray-500">
+                          Are you sure you want to release this order? The order will be made available to other suppliers immediately. This action cannot be undone.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                    <%= button_to release_procurement_order_path(order), class: 'w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm', data: { turbo_frame: '_top' } do %>
+                      Release
+                    <% end %>
+                    <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm" data-action="click->modal#close">
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>

@@ -28,5 +28,11 @@ class Location < ApplicationRecord
 
   belongs_to :locatable, polymorphic: true
 
+  has_many :alliance_locations, inverse_of: :location
   has_many :markets, inverse_of: :source_location, foreign_key: :source_location_id
+  has_many :procurement_orders, inverse_of: :location
+
+  def locatable_sgid
+    locatable.to_signed_global_id
+  end
 end

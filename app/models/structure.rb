@@ -67,8 +67,10 @@ class Structure < ApplicationRecord
 
   has_many :market_locations, as: :location, dependent: :destroy
   has_many :markets, through: :market_locations
+  has_many :procurement_orders, as: :location
 
   delegate :name, to: :owner, prefix: true, allow_nil: true
+  delegate :name, to: :solar_system, prefix: true
   delegate :name, to: :type, prefix: true, allow_nil: true
 
   def available_esi_authorizations

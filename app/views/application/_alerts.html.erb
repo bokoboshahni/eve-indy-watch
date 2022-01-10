@@ -29,9 +29,20 @@
               <%= heroicon 'x-circle', variant: :solid, options: { class: 'h-5 w-5 text-red-400' } %>
             </div>
             <div class="ml-3">
-              <p class="text-sm font-medium text-green-800">
-                <%= flash[:error] %>
-              </p>
+              <% if errors.present? %>
+                <h3 class="text-sm font-medium text-red-800"><%= flash[:error] %></h3>
+                <div class="mt-2 text-sm text-red-700">
+                  <ul role="list" class="list-disc pl-5 space-y-1">
+                    <% errors.each do |error| %>
+                      <li><%= error.full_message %></li>
+                    <% end %>
+                  </ul>
+                </div>
+              <% else %>
+                <p class="text-sm font-medium text-red-800">
+                  <%= flash[:error] %>
+                </p>
+              <% end %>
             </div>
             <div class="ml-auto pl-3">
               <div class="-mx-1.5 -my-1.5">

@@ -46,13 +46,17 @@ class Character < ApplicationRecord
   has_one :user, inverse_of: :character, dependent: :restrict_with_exception
 
   has_many :accepted_contracts, class_name: 'Contract', as: :acceptor, dependent: :restrict_with_exception
+  has_many :alliances_as_procurement_order_requester, as: :procurement_order_requester
   has_many :assigned_contracts, class_name: 'Contract', as: :assignee, dependent: :restrict_with_exception
+  has_many :requested_procurement_orders, class_name: 'ProcurementOrder', as: :requester
   has_many :esi_authorizations, inverse_of: :character, dependent: :destroy
   has_many :fittings, as: :owner, dependent: :destroy
   has_many :issued_contracts, class_name: 'Contract', as: :issuer, dependent: :restrict_with_exception
   has_many :killmail_attackers, inverse_of: :character, dependent: :restrict_with_exception
   has_many :killmails, through: :killmail_attackers
   has_many :lossmails, class_name: 'Killmail', inverse_of: :character, dependent: :restrict_with_exception
+  has_many :supplied_procurement_orders, class_name: 'ProcurementOrder', as: :supplier
+  has_many :supplied_procurement_order_items, class_name: 'ProcurementOrderItem', as: :supplier
 
   def sync_from_esi!
     Character::SyncFromESI.call(id)

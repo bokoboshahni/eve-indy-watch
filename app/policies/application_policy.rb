@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
 class ApplicationPolicy
+  include ServiceHelpers
+
   class Scope
+    include ServiceHelpers
+
     def initialize(user, scope)
       @user = user
       @scope = scope
@@ -14,6 +18,8 @@ class ApplicationPolicy
     private
 
     attr_reader :user, :scope
+
+    delegate :admin?, :role?, to: :user
   end
 
   attr_reader :user, :record
@@ -51,9 +57,5 @@ class ApplicationPolicy
     admin?
   end
 
-  private
-
-  def admin?
-    user.admin?
-  end
+  delegate :admin?, :role?, to: :user
 end

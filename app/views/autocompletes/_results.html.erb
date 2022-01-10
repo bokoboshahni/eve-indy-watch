@@ -1,0 +1,10 @@
+<% results.each do |result| %>
+  <li class="text-gray-900 cursor-pointer select-none relative py-2 pl-3 pr-9 hover:bg-gray-50" id="listbox-option-<%= result.id %>"
+    role="option"
+    data-autocomplete-value="<%= result.id %>">
+    <div class="flex items-center">
+      <%= render(TypeIconComponent.new(type: result, classes: 'flex-shrink-0 h-6 w-6 rounded-sm')) if result.is_a?(Type) %>
+      <span class="font-normal ml-3 block truncate"><%= result.name %></span>
+    </div>
+  </li>
+<% end %>

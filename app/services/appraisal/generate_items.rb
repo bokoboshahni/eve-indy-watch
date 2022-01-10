@@ -33,6 +33,11 @@ class Appraisal < ApplicationRecord
                                        .transform_values! { |j| Oj.load(j) if j.present? }
 
           stats = market_stats.each_with_object({}) do |(type_id, type_stats), h|
+            unless type_stats
+              type_stats = {}
+              error "No current type stats for #{type_id} in #{market_id}"
+            end
+
             buy_attrs = type_stats[:buy]&.transform_keys! { |k| :"buy_#{k}" } || {}
             sell_attrs = type_stats[:sell]&.transform_keys! { |k| :"sell_#{k}" } || {}
 

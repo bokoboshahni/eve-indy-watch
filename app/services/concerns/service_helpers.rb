@@ -111,4 +111,12 @@ module ServiceHelpers
   def locations_writer
     Kredis.redis(config: :locations_writer)
   end
+
+  def main_alliance_id
+    app_config.main_alliance_id
+  end
+
+  def main_alliance
+    @main_alliance ||= Alliance.find(main_alliance_id)
+  end
 end

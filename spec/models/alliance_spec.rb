@@ -6,22 +6,24 @@
 #
 # ### Columns
 #
-# Name                        | Type               | Attributes
-# --------------------------- | ------------------ | ---------------------------
-# **`id`**                    | `bigint`           | `not null, primary key`
-# **`esi_expires_at`**        | `datetime`         | `not null`
-# **`esi_last_modified_at`**  | `datetime`         | `not null`
-# **`icon_url_128`**          | `text`             |
-# **`icon_url_64`**           | `text`             |
-# **`name`**                  | `text`             | `not null`
-# **`ticker`**                | `text`             | `not null`
-# **`zkb_fetched_at`**        | `datetime`         |
-# **`zkb_sync_enabled`**      | `boolean`          |
-# **`created_at`**            | `datetime`         | `not null`
-# **`updated_at`**            | `datetime`         | `not null`
-# **`api_corporation_id`**    | `bigint`           |
-# **`appraisal_market_id`**   | `bigint`           |
-# **`main_market_id`**        | `bigint`           |
+# Name                                    | Type               | Attributes
+# --------------------------------------- | ------------------ | ---------------------------
+# **`id`**                                | `bigint`           | `not null, primary key`
+# **`esi_expires_at`**                    | `datetime`         | `not null`
+# **`esi_last_modified_at`**              | `datetime`         | `not null`
+# **`icon_url_128`**                      | `text`             |
+# **`icon_url_64`**                       | `text`             |
+# **`name`**                              | `text`             | `not null`
+# **`procurement_order_requester_type`**  | `string`           |
+# **`ticker`**                            | `text`             | `not null`
+# **`zkb_fetched_at`**                    | `datetime`         |
+# **`zkb_sync_enabled`**                  | `boolean`          |
+# **`created_at`**                        | `datetime`         | `not null`
+# **`updated_at`**                        | `datetime`         | `not null`
+# **`api_corporation_id`**                | `bigint`           |
+# **`appraisal_market_id`**               | `bigint`           |
+# **`main_market_id`**                    | `bigint`           |
+# **`procurement_order_requester_id`**    | `bigint`           |
 #
 # ### Indexes
 #
@@ -29,6 +31,9 @@
 #     * **`appraisal_market_id`**
 # * `index_alliances_on_main_market_id`:
 #     * **`main_market_id`**
+# * `index_alliances_on_procurement_order_assignee`:
+#     * **`procurement_order_requester_type`**
+#     * **`procurement_order_requester_id`**
 #
 # ### Foreign Keys
 #

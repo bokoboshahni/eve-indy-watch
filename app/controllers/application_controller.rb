@@ -8,6 +8,9 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  helper_method :errors
+  attr_reader :errors
+
   def authenticate_user!
     return if logged_in?
 
@@ -74,5 +77,9 @@ class ApplicationController < ActionController::Base
 
   def check_rack_mini_profiler
     Rack::MiniProfiler.authorize_request if params[:rmp] && current_user&.admin?
+  end
+
+  def set_errors!(errors)
+    @errors = errors
   end
 end
