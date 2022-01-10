@@ -49,6 +49,8 @@ class Type < ApplicationRecord
                                     tsearch: { prefix: true }
                                   }
 
+  pg_search_scope :search_by_name, against: %i[name], using: { tsearch: { prefix: true } }
+
   belongs_to :group, inverse_of: :types
   belongs_to :market_group, inverse_of: :types, optional: true
 
@@ -76,8 +78,8 @@ class Type < ApplicationRecord
   has_many :killmail_items, inverse_of: :type, dependent: :restrict_with_exception
   has_many :lossmails, class_name: 'Killmail', inverse_of: :ship_type, dependent: :restrict_with_exception
   has_many :market_price_snapshots, inverse_of: :type, dependent: :destroy
-  has_many :region_histories, class_name: 'Statistics::RegionTypeHistory', inverse_of: :type,
-                              dependent: :restrict_with_exception
+  has_many :procurement_order_items, inverse_of: :type, dependent: :restrict_with_exception
+  has_many :region_histories, class_name: 'Statistics::RegionTypeHistory', inverse_of: :type, dependent: :restrict_with_exception
   has_many :stations, inverse_of: :type, dependent: :restrict_with_exception
   has_many :structures, inverse_of: :type, dependent: :restrict_with_exception
 

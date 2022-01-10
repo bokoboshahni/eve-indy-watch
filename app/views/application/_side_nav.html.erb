@@ -23,6 +23,13 @@
             Fittings
           <% end %>
 
+          <% if policy(ProcurementOrder).index? %>
+            <%= link_to procurement_orders_path, class: "#{sidebar_item_text_class('procurement_orders')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
+              <%= heroicon 'shopping-bag', variant: :outline, options: { class: "#{sidebar_item_icon_class('procurement_orders')} mr-3 flex-shrink-0 h-6 w-6" } %>
+              Procurement
+            <% end %>
+          <% end %>
+
           <% if current_user.admin? %>
             <%= link_to types_path, class: "#{sidebar_item_text_class('types')} group flex items-center px-2 py-2 text-sm font-medium rounded-md" do %>
               <%= heroicon 'chip', variant: :outline, options: { class: "#{sidebar_item_icon_class('types')} mr-3 flex-shrink-0 h-6 w-6" } %>

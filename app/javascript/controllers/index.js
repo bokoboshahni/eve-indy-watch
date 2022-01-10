@@ -21,3 +21,9 @@ application.register('tabs', Tabs)
 application.register('popover', Popover)
 application.register('toggle', Toggle)
 application.register('slideover', Slideover)
+
+import NestedForm from 'stimulus-rails-nested-form'
+application.register('nested-form', NestedForm)
+
+import Autocomplete from 'stimulus-autocomplete'
+application.register('autocomplete', Autocomplete)

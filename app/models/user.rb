@@ -39,8 +39,14 @@ class User < ApplicationRecord
                                   }
 
   ROLES = %w[
-    alliance.fittings.admin
-    corporation.fitting.admin
+    alliance.fittings.editor
+    alliance.orders.editor
+    character.orders.supplier
+    character.orders.editor
+    character.orders.viewer
+    corporation.fittings.editor
+    corporation.orders.editor
+    esi.authorizer
   ].freeze
 
   belongs_to :character, inverse_of: :user
@@ -48,6 +54,7 @@ class User < ApplicationRecord
   has_one :alliance, through: :character
   has_one :corporation, through: :character
 
+  has_many :supplied_procurement_orders, class_name: 'ProcurementOrder', as: :supplier
   has_many :esi_authorizations, inverse_of: :user, dependent: :destroy
   has_many :report_runs, class_name: 'Statistics::ReportRun', inverse_of: :user
 
@@ -57,7 +64,15 @@ class User < ApplicationRecord
   delegate :icon_url_256, :name, to: :corporation, prefix: true # rubocop:disable Naming/VariableNumber
   delegate :icon_url_128, :name, to: :alliance, prefix: true, allow_nil: true # rubocop:disable Naming/VariableNumber
 
-  def role?(name)
-    roles.include?(name)
+  def roles=(val)
+    self[:roles] = val.reject { |v| ROLES.exclude?(v) }
+  end
+
+  def role?(*names)
+    return true if admin?
+
+    names.any? do |name|
+      name.is_a?(Regexp) ? roles.grep(name).any? : roles.include?(name)
+    end
   end
 end

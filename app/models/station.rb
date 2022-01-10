@@ -48,7 +48,10 @@ class Station < ApplicationRecord
   has_one :constellation, through: :solar_system
   has_one :region, through: :constellation
 
+  has_many :procurement_orders, as: :location
+
   delegate :name, to: :owner, prefix: true
   delegate :name, to: :type, prefix: true
   delegate :orders_updated_at, to: :region
+  delegate :name, to: :solar_system, prefix: true
 end

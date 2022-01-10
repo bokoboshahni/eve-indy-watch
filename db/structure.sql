@@ -79,9 +79,45 @@ CREATE TYPE public.blueprint_activity AS ENUM (
 );
 
 
+--
+-- Name: procurement_order_item_status; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.procurement_order_item_status AS ENUM (
+    'available',
+    'in_progress',
+    'partially_delivered',
+    'delivered'
+);
+
+
+--
+-- Name: procurement_order_status; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.procurement_order_status AS ENUM (
+    'draft',
+    'available',
+    'in_progress',
+    'partially_delivered',
+    'delivered'
+);
+
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
+
+--
+-- Name: alliance_locations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.alliance_locations (
+    alliance_id bigint NOT NULL,
+    location_id bigint NOT NULL,
+    "default" boolean
+);
+
 
 --
 -- Name: alliances; Type: TABLE; Schema: public; Owner: -
@@ -101,7 +137,9 @@ CREATE TABLE public.alliances (
     appraisal_market_id bigint,
     main_market_id bigint,
     zkb_fetched_at timestamp without time zone,
-    zkb_sync_enabled boolean
+    zkb_sync_enabled boolean,
+    procurement_order_requester_type character varying,
+    procurement_order_requester_id bigint
 );
 
 
@@ -1180,6 +1218,98 @@ ALTER SEQUENCE public.pghero_query_stats_id_seq OWNED BY public.pghero_query_sta
 
 
 --
+-- Name: procurement_order_items; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.procurement_order_items (
+    id bigint NOT NULL,
+    order_id bigint NOT NULL,
+    type_id bigint NOT NULL,
+    supplier_type character varying,
+    supplier_id bigint,
+    accepted_at timestamp without time zone,
+    bonus numeric,
+    delivered_at timestamp without time zone,
+    multiplier numeric NOT NULL,
+    price numeric NOT NULL,
+    quantity_received bigint,
+    quantity_required bigint NOT NULL,
+    status public.procurement_order_item_status DEFAULT 'available'::public.procurement_order_item_status NOT NULL,
+    supplier_name text,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: procurement_order_items_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.procurement_order_items_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: procurement_order_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.procurement_order_items_id_seq OWNED BY public.procurement_order_items.id;
+
+
+--
+-- Name: procurement_orders; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.procurement_orders (
+    id bigint NOT NULL,
+    requester_type character varying NOT NULL,
+    requester_id bigint NOT NULL,
+    location_id bigint NOT NULL,
+    supplier_type character varying,
+    supplier_id bigint,
+    split_fulfillment_enabled boolean,
+    accepted_at timestamp without time zone,
+    appraisal_url text,
+    requester_name text,
+    deliver_by timestamp without time zone,
+    delivered_at timestamp without time zone,
+    discarded_at timestamp without time zone,
+    published_at timestamp without time zone,
+    notes text,
+    multiplier numeric NOT NULL,
+    bonus numeric,
+    status public.procurement_order_status NOT NULL,
+    supplier_name text,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    tracking_number bigint
+);
+
+
+--
+-- Name: procurement_orders_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.procurement_orders_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: procurement_orders_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.procurement_orders_id_seq OWNED BY public.procurement_orders.id;
+
+
+--
 -- Name: regions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1645,6 +1775,20 @@ ALTER TABLE ONLY public.pghero_query_stats ALTER COLUMN id SET DEFAULT nextval('
 
 
 --
+-- Name: procurement_order_items id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.procurement_order_items ALTER COLUMN id SET DEFAULT nextval('public.procurement_order_items_id_seq'::regclass);
+
+
+--
+-- Name: procurement_orders id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.procurement_orders ALTER COLUMN id SET DEFAULT nextval('public.procurement_orders_id_seq'::regclass);
+
+
+--
 -- Name: regions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1901,6 +2045,22 @@ ALTER TABLE ONLY public.pghero_query_stats
 
 
 --
+-- Name: procurement_order_items procurement_order_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.procurement_order_items
+    ADD CONSTRAINT procurement_order_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: procurement_orders procurement_orders_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.procurement_orders
+    ADD CONSTRAINT procurement_orders_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: regions regions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1973,6 +2133,20 @@ ALTER TABLE ONLY public.versions
 
 
 --
+-- Name: index_alliance_locations_on_alliance_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_alliance_locations_on_alliance_id ON public.alliance_locations USING btree (alliance_id);
+
+
+--
+-- Name: index_alliance_locations_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_alliance_locations_on_location_id ON public.alliance_locations USING btree (location_id);
+
+
+--
 -- Name: index_alliances_on_appraisal_market_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1984,6 +2158,13 @@ CREATE INDEX index_alliances_on_appraisal_market_id ON public.alliances USING bt
 --
 
 CREATE INDEX index_alliances_on_main_market_id ON public.alliances USING btree (main_market_id);
+
+
+--
+-- Name: index_alliances_on_procurement_order_assignee; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_alliances_on_procurement_order_assignee ON public.alliances USING btree (procurement_order_requester_type, procurement_order_requester_id);
 
 
 --
@@ -2470,6 +2651,55 @@ CREATE INDEX index_pghero_query_stats_on_database_and_captured_at ON public.pghe
 
 
 --
+-- Name: index_procurement_order_items_on_order_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_procurement_order_items_on_order_id ON public.procurement_order_items USING btree (order_id);
+
+
+--
+-- Name: index_procurement_order_items_on_supplier; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_procurement_order_items_on_supplier ON public.procurement_order_items USING btree (supplier_type, supplier_id);
+
+
+--
+-- Name: index_procurement_order_items_on_type_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_procurement_order_items_on_type_id ON public.procurement_order_items USING btree (type_id);
+
+
+--
+-- Name: index_procurement_orders_on_discarded_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_procurement_orders_on_discarded_at ON public.procurement_orders USING btree (discarded_at);
+
+
+--
+-- Name: index_procurement_orders_on_location_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_procurement_orders_on_location_id ON public.procurement_orders USING btree (location_id);
+
+
+--
+-- Name: index_procurement_orders_on_requester; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_procurement_orders_on_requester ON public.procurement_orders USING btree (requester_type, requester_id);
+
+
+--
+-- Name: index_procurement_orders_on_supplier; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_procurement_orders_on_supplier ON public.procurement_orders USING btree (supplier_type, supplier_id);
+
+
+--
 -- Name: index_regions_on_esi_authorization_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2544,6 +2774,13 @@ CREATE INDEX index_types_on_group_id ON public.types USING btree (group_id);
 --
 
 CREATE INDEX index_types_on_market_group_id ON public.types USING btree (market_group_id);
+
+
+--
+-- Name: index_unique_alliance_locations; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_unique_alliance_locations ON public.alliance_locations USING btree (alliance_id, location_id);
 
 
 --
@@ -2765,6 +3002,14 @@ ALTER TABLE ONLY public.killmail_attackers
 
 ALTER TABLE ONLY public.structures
     ADD CONSTRAINT fk_rails_625050ce6a FOREIGN KEY (solar_system_id) REFERENCES public.solar_systems(id);
+
+
+--
+-- Name: procurement_order_items fk_rails_62c3a68c78; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.procurement_order_items
+    ADD CONSTRAINT fk_rails_62c3a68c78 FOREIGN KEY (type_id) REFERENCES public.types(id);
 
 
 --
@@ -2992,6 +3237,14 @@ ALTER TABLE ONLY public.contract_items
 
 
 --
+-- Name: procurement_order_items fk_rails_e882a5dfb1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.procurement_order_items
+    ADD CONSTRAINT fk_rails_e882a5dfb1 FOREIGN KEY (order_id) REFERENCES public.procurement_orders(id);
+
+
+--
 -- Name: types fk_rails_f2443b6d92; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3098,6 +3351,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220107011531'),
 ('20220107183210'),
 ('20220107194531'),
-('20220109212932');
+('20220109212932'),
+('20220111150219'),
+('20220111150314'),
+('20220111214919');
 
 

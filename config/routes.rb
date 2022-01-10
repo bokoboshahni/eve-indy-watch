@@ -51,7 +51,23 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     end
   end
 
+  resources :procurement_orders, path: 'orders', only: %i[index new create show update destroy] do
+    collection do
+      get :item
+    end
+
+    member do
+      post :accept
+      post :receive
+      post :redraft
+      post :release
+    end
+  end
+
   resource :search, only: :show
+
+  get '/autocomplete/types', to: 'autocompletes#types'
+  get '/autocomplete/market-types', to: 'autocompletes#market_types'
 
   resource :settings, only: %i[show update destroy] do
     resources :esi_authorizations, path: 'authorizations', only: %i[create index destroy]

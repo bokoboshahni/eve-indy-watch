@@ -59,7 +59,9 @@ class Corporation < ApplicationRecord
   has_one :api_alliance, class_name: 'Alliance', inverse_of: :api_corporation,
                          foreign_key: :api_corporation_id
 
-  has_many :accepted_contractors, class_name: 'Contract', as: :acceptor, dependent: :restrict_with_exception
+  has_many :accepted_contracts, class_name: 'Contract', as: :acceptor, dependent: :restrict_with_exception
+  has_many :alliances_as_procurement_order_requester, as: :procurement_order_requester
+  has_many :requested_procurement_orders, class_name: 'ProcurementOrder', as: :requester
   has_many :characters, inverse_of: :corporation, dependent: :restrict_with_exception
   has_many :contract_events, inverse_of: :corporation, dependent: :restrict_with_exception
   has_many :fittings, as: :owner, dependent: :destroy
@@ -69,7 +71,9 @@ class Corporation < ApplicationRecord
   has_many :killmails, through: :killmail_attackers
   has_many :lossmails, class_name: 'Killmail', inverse_of: :corporation, dependent: :restrict_with_exception
   has_many :stations, inverse_of: :owner, dependent: :restrict_with_exception
-  has_many :structures, inverse_of: :owner, dependent: :restrict_with_exception
+  has_many :structures, inverse_of: :owner, foreign_key: :owner_id, dependent: :restrict_with_exception
+  has_many :supplied_procurement_orders, class_name: 'ProcurementOrder', as: :supplier
+  has_many :supplied_procurement_order_items, class_name: 'ProcurementOrderItem', as: :supplier
 
   scope :player, -> { where(npc: nil) }
 
