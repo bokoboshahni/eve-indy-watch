@@ -119,6 +119,8 @@ class Location < ApplicationRecord
             orders_writer.pipelined do
               orders_by_location_and_type = unique_orders.group_by { |o| "#{'%019d' % o['l']}.#{'%019d' % o['t']}" }
               orders_by_location_and_type.each do |(key, orders)|
+                next if orders.empty?
+
                 location_id, type_id = key.split('.')
 
                 order_set_key = "#{orders_key}.orders.#{location_id.to_i}.#{type_id.to_i}"
