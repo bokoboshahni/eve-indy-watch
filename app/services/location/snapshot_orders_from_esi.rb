@@ -117,23 +117,28 @@ class Location < ApplicationRecord
             metric: "#{METRIC_NAME}/write_redis"
           ) do
             orders_writer.pipelined do
-              orders_by_location_and_type = unique_orders.group_by { |o| "#{'%019d' % o['l']}.#{'%019d' % o['t']}" }
-              orders_by_location_and_type.each do |(key, orders)|
-                next if orders.empty?
+              # orders_by_location_and_type = unique_orders.group_by { |o| "#{'%019d' % o['l']}.#{'%019d' % o['t']}" }
 
-                location_id, type_id = key.split('.')
+              order_set_count = unique_orders.group_by { |o| o['l'] }.each_with_object(0) do |(location_id, orders), c|
+                orders_writer.sadd("#{orders_key}.location_ids", location_id)
 
-                order_set_key = "#{orders_key}.orders.#{location_id.to_i}.#{type_id.to_i}"
+                orders.group_by { |o| o['t'] }.each do |(type_id, orders)|
+                  orders_writer.sadd("#{orders_key}.type_ids", type_id)
 
-                orders_writer.set(order_set_key, Oj.dump(orders))
-                orders_writer.expireat(order_set_key, expiry)
+                  index_key = "#{'%019d' % location_id}:#{'%019d' % type_id}"
 
-                orders_writer.sadd("#{orders_key}.location_ids", location_id.to_i)
-                orders_writer.sadd("#{orders_key}.order_ids", orders.map { |o| o['o'] })
-                orders_writer.zadd("#{orders_key}.order_ids_by_location_id_and_type_id", orders.map { |o| [0, [location_id, type_id, o['o']].join(':')] })
-                orders_writer.zadd("#{orders_key}.order_set_keys_by_type", type_id.to_i, order_set_key)
-                orders_writer.sadd("#{orders_key}.type_ids", type_id.to_i)
-                orders_writer.sadd("#{orders_key}.type_ids_by_location.#{location_id.to_i}", type_id.to_i)
+                  order_set_key = "#{orders_key}.orders.#{location_id}.#{type_id}"
+
+                  orders_writer.set(order_set_key, Oj.dump(orders))
+                  orders_writer.expireat(order_set_key, expiry)
+
+                  orders_writer.sadd("#{orders_key}.order_ids", orders.map { |o| o['o'] })
+                  orders_writer.zadd("#{orders_key}.order_ids_by_location_id_and_type_id", orders.map { |o| [0, "#{index_key}:#{o['o']}"] })
+                  orders_writer.zadd("#{orders_key}.order_set_keys_by_type", type_id, order_set_key)
+                  orders_writer.sadd("#{orders_key}.type_ids_by_location.#{location_id}", type_id)
+
+                  c += 1
+                end
               end
 
               orders_writer.expireat("#{orders_key}.location_ids", expiry)
@@ -141,10 +146,9 @@ class Location < ApplicationRecord
               orders_writer.expireat("#{orders_key}.order_ids_by_location_id_and_type_id", expiry)
               orders_writer.expireat("#{orders_key}.order_set_keys_by_type", expiry)
               orders_writer.expireat("#{orders_key}.type_ids", expiry)
-
               orders_writer.expireat("#{orders_key}.type_ids_by_location", expiry)
 
-              orders_writer.set("#{orders_key}.order_set_count", orders_by_location_and_type.count)
+              orders_writer.set("#{orders_key}.order_set_count", order_set_count)
               orders_writer.expireat("#{orders_key}.order_set_count", expiry)
 
               orders_writer.zadd("orders.#{location_id}.snapshots", time_key, orders_key)
