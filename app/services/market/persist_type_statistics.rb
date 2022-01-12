@@ -10,8 +10,15 @@ class Market < ApplicationRecord
 
     def call
       stats_keys = type_ids.map { |t| "#{market_key}.types.#{t}.stats" }
-      stats_json = markets_reader.mget(*stats_keys)
-      stats = stats_json.map { |j| Oj.load(j) }
+      stats_json = markets_reader.mapped_mget(*stats_keys)
+      stats = stats_json.map do |(key, json)|
+        if json.nil?
+          error("No type statistics at #{key} for #{market_id} at #{time.to_s(:db)}")
+          next
+        end
+
+        Oj.load(json)
+      end
 
       columns = MarketTypeStats.column_names.map(&:to_sym)
 
