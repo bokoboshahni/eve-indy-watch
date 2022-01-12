@@ -31,5 +31,6 @@
     "stylelint-config-standard": "^24.0.0",
     "webpack-dev-server": "^3.11.3"
   },
-  "private": true
+  "private": true,
+  "version": "1.0.0"
 }
