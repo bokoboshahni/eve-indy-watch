@@ -89,7 +89,7 @@ group :development do
   gem 'ed25519', '~> 1.2'
   gem 'rubocop', '~> 1.23'
   gem 'rubocop-performance', '~> 1.12'
-  gem 'rubocop-rails', '~> 2.12'
+  gem 'rubocop-rails', '~> 2.13'
   gem 'rubocop-rspec', '~> 2.6'
   gem 'web-console', '>= 4.1.0'
 end
