@@ -1,5 +1,5 @@
       <template data-nested-form-target="template">
-        <%= f.fields_for :items, @order.items.build, child_inex: 'NEW_RECORD' do |item_fields| %>
+        <%= f.fields_for :items, @order.items.build, child_index: 'NEW_RECORD' do |item_fields| %>
           <%= render 'item_form', f: item_fields %>
         <% end %>
       </template>
