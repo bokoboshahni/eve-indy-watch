@@ -38,7 +38,7 @@ class ESIAuthorization < ApplicationRecord
       true
     end
 
-    def create_authorization!(character_id) # rubocop:disable Metrics/AbcSize
+    def create_authorization!(character_id)
       authorization_attrs = {
         access_token: auth_info.credentials.token,
         expires_at: Time.zone.at(auth_info.credentials.expires_at).to_datetime,

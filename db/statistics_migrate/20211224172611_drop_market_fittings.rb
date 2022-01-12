@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DropMarketFittings < ActiveRecord::Migration[6.1]
   def change
     drop_table :market_fittings

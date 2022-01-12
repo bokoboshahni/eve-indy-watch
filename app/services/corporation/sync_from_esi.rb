@@ -12,11 +12,11 @@ class Corporation < ApplicationRecord
       @corporation_id = corporation_id
     end
 
-    def call # rubocop:disable Metrics/AbcSize
+    def call
       Retriable.retriable on: [ActiveRecord::RecordNotUnique], tries: 10 do
         corp = Corporation.find_or_initialize_by(id: corporation_id)
         if corp&.esi_expires_at&.>= Time.zone.now
-          logger.debug("ESI response for corporation (#{corp.name}) #{corp.id} is not expired: #{corp.esi_expires_at.iso8601}") # rubocop:disable Metrics/LineLength
+          logger.debug("ESI response for corporation (#{corp.name}) #{corp.id} is not expired: #{corp.esi_expires_at.iso8601}")
           return corp
         end
 

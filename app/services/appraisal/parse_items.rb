@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Appraisal < ApplicationRecord
   class ParseItems < ApplicationService
     def initialize(original)

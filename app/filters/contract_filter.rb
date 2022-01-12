@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ContractFilter < ApplicationFilter
   self.sorters = {}
   self.facets = {}
@@ -29,7 +31,7 @@ class ContractFilter < ApplicationFilter
   attribute :max_volume, :integer
   attribute :sort, :string, default: 'title_asc'
 
-  def apply!(scope)
+  def apply!(scope) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     @scope ||=
       begin
         scope = scope.includes(contract_fittings: :fitting)
@@ -41,9 +43,15 @@ class ContractFilter < ApplicationFilter
         scope = scope.where('price <= ?', price) if max_price.present?
         scope = scope.where('volume >= ?', price) if min_price.present?
         scope = scope.where('volume <= ?', price) if max_price.present?
-        scope = scope.joins(:contract_fittings).where('contract_fittings.similarity >= ?', min_similarity) if min_similarity.present?
-        scope = scope.joins(:contract_fittings).where('contract_fittings.similarity <= ?', max_similarity) if max_similarity.present?
-        scope = scope.joins(contract_fittings: :fitting).where('fittings.id IN (?)', fitting_id) if fitting_id.any?
+        if min_similarity.present?
+          scope = scope.joins(:contract_fittings).where('contract_fittings.similarity >= ?',
+                                                        min_similarity)
+        end
+        if max_similarity.present?
+          scope = scope.joins(:contract_fittings).where('contract_fittings.similarity <= ?',
+                                                        max_similarity)
+        end
+        scope = scope.joins(contract_fittings: :fitting).where(fittings: { id: fitting_id }) if fitting_id.any?
         scope = scope.order(sorters[sort][:column] => sorters[sort][:direction], issued_at: :asc) if sorters[sort]
         scope
       end
@@ -54,7 +62,7 @@ class ContractFilter < ApplicationFilter
          .pluck(:end_location_name, :end_location_id)
          .uniq
          .reject { |e| e.first.nil? }
-         .sort_by { |e| e.first }
+         .sort_by(&:first)
   end
 
   def issuer_corporation_id_items

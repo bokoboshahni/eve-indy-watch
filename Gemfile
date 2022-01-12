@@ -10,6 +10,7 @@ gem 'dotenv-rails', '~> 2.7'
 gem 'active_median', '~> 0.3'
 gem 'activerecord-copy', '~> 1.1'
 gem 'activerecord-import', '~> 1.2'
+gem 'activerecord-nulldb-adapter', '~> 0.8'
 gem 'ahoy_matey', '~> 4.0'
 gem 'ancestry', '~> 4.1'
 gem 'awesome_print', '~> 1.9'
@@ -25,8 +26,8 @@ gem 'gelf', '~> 3.1'
 gem 'groupdate', '~> 5.2'
 gem 'heroicon', '~> 0.4'
 gem 'hiredis', '~> 0.6'
-gem 'http', '~> 5.0'
 gem 'hotwire-rails', '~> 0.1'
+gem 'http', '~> 5.0'
 gem 'jbuilder', '~> 2.7'
 gem 'kredis', '~> 1.0'
 gem 'listen', '~> 3.3'
@@ -72,6 +73,7 @@ gem 'view_component', '~> 2.46'
 gem 'webpacker', '~> 5.4.0'
 
 group :development, :test do
+  gem 'brakeman', '~> 5.2'
   gem 'byebug', '~> 11.1'
   gem 'rspec-rails', '~> 5.0'
 end
@@ -90,4 +92,9 @@ group :development do
   gem 'rubocop-rails', '~> 2.12'
   gem 'rubocop-rspec', '~> 2.6'
   gem 'web-console', '>= 4.1.0'
+end
+
+group :test do
+  gem 'simplecov', require: false
+  gem 'simplecov_json_formatter', require: false
 end

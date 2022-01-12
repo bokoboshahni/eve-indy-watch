@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class FittingFilter < ApplicationFilter
   self.sorters = {}
   self.facets = {}
@@ -17,7 +19,7 @@ class FittingFilter < ApplicationFilter
     @scope ||=
       begin
         scope = scope.search_by_all(query) if query.present?
-        scope = scope.joins(:type).where('types.group_id IN (?)', group_id) if group_id.any?
+        scope = scope.joins(:type).where(types: { group_id: group_id }) if group_id.any?
         scope = scope.where(type_id: type_id) if type_id.any?
         scope = scope.order(sorters[sort][:column] => sorters[sort][:direction]) if sorters[sort]
         scope

@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class CreateMarketTypeStats < ActiveRecord::Migration[6.1]
   def up
-    create_table :market_type_stats, id: :false, primary_key: %i[market_id type_id time] do |t|
+    create_table :market_type_stats, id: false, primary_key: %i[market_id type_id time] do |t|
       t.bigint :market_id, null: false
       t.bigint :type_id, null: false
       t.timestamp :time, null: false

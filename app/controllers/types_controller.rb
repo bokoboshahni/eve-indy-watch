@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TypesController < ApplicationController
   include Filterable
 

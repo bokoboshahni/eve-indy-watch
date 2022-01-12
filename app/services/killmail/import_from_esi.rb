@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Killmail < ApplicationRecord
   class ImportFromESI < ApplicationService
     def initialize(zkb_data)
@@ -6,7 +8,7 @@ class Killmail < ApplicationRecord
       @zkb_data = zkb_data
     end
 
-    def call
+    def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       killmail_hash = zkb_data['zkb']['hash']
       killmail_id = zkb_data['killmail_id']
 
@@ -18,7 +20,7 @@ class Killmail < ApplicationRecord
       esi_data = esi.get_killmail(killmail_hash: killmail_hash, killmail_id: killmail_id)
 
       victim = esi_data['victim']
-      attackers = esi_data['attackers'].map {|a| a.merge(killmail_id: killmail_id) }
+      attackers = esi_data['attackers'].map { |a| a.merge(killmail_id: killmail_id) }
 
       killmail = {
         id: killmail_id,

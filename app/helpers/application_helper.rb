@@ -11,9 +11,7 @@ module ApplicationHelper
     controller_name == item_name ? 'text-gray-300' : 'text-gray-400 group-hover:text-gray-300'
   end
 
-  def site_name
-    app_config.site_name
-  end
+  delegate :site_name, to: :app_config
 
   def number_to_isk(value)
     number_with_precision value, precision: 2, delimiter: ',', strip_insignificant_zeros: true

@@ -10,9 +10,9 @@ class Corporation < ApplicationRecord
 
       if data&.count&.positive?
         finished_contract_ids = Contract.select(:id)
-                                     .where(id: data.map { |c| c['contract_id'] })
-                                     .where(status: %w[deleted finished])
-                                     .pluck(:id)
+                                        .where(id: data.map { |c| c['contract_id'] })
+                                        .where(status: %w[deleted finished])
+                                        .pluck(:id)
 
         args = data.reject { |c| finished_contract_ids.include?(c['contract_id']) }.map do |c|
           [corporation_id, c.merge(esi_expires_at: expires, esi_last_modified_at: last_modified).to_json]

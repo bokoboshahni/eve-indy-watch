@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # ## Schema Information
 #
 # Table name: `appraisal_items`
@@ -61,7 +63,7 @@ class AppraisalItem < ApplicationRecord
 
   delegate :name, :packaged_volume, :volume, :icon_url, to: :type
 
-  self.column_names.grep(/price/).each do |stat|
+  column_names.grep(/price/).each do |stat|
     define_method :"total_#{stat}" do
       (send(stat) || 0.0) * (quantity.to_d || 0.0)
     end

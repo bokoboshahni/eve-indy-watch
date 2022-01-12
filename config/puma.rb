@@ -43,14 +43,14 @@ pidfile ENV.fetch('PIDFILE', 'tmp/pids/server.pid')
 plugin :tmp_restart
 
 after_worker_boot do
-  unless ENV['DISABLE_PROMETHEUS'].present?
+  if ENV['DISABLE_PROMETHEUS'].blank?
     require 'prometheus_exporter/instrumentation'
-    PrometheusExporter::Instrumentation::Process.start(type: "web")
+    PrometheusExporter::Instrumentation::Process.start(type: 'web')
     PrometheusExporter::Instrumentation::Puma.start
 
     PrometheusExporter::Instrumentation::ActiveRecord.start(
-      custom_labels: { type: "web" },
-      config_labels: [:database, :host]
+      custom_labels: { type: 'web' },
+      config_labels: %i[database host]
     )
   end
 end

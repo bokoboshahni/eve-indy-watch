@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CorporationFilter < ApplicationFilter
   self.sorters = {}
   self.facets = {}
@@ -25,6 +27,6 @@ class CorporationFilter < ApplicationFilter
   end
 
   def alliance_id_items
-    scope.order('a1.name').pluck('a1.name, a1.id').reject { |i| i.first.nil? }.sort_by { |i| i.first }.uniq
+    scope.order('a1.name').pluck('a1.name, a1.id').reject { |i| i.first.nil? }.sort_by(&:first).uniq
   end
 end

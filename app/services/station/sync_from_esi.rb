@@ -12,17 +12,23 @@ class Station < ApplicationRecord
       @station_id = station_id
     end
 
-    def call
+    def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       expires_key = "locations.#{station_id}.esi_expires"
       last_modified_key = "locations.#{station_id}.esi_last_modified"
 
       station = Station.find_by(id: station_id)
 
       if station&.esi_expires_at&.>= Time.zone.now
-        logger.debug("ESI response for station (#{station.name}) #{station.id} is not expired: #{station.esi_expires_at.iso8601}") # rubocop:disable Metrics/LineLength
+        logger.debug("ESI response for station (#{station.name}) #{station.id} is not expired: #{station.esi_expires_at.iso8601}")
 
-        locations_writer.set(expires_key, struct.esi_expires_at.to_s(:number)) if locations_reader.exists(expires_key).zero?
-        locations_writer.set(last_modified_key, struct.esi_last_modified_at.to_s(:number)) if locations_reader.exists(last_modified_key).zero?
+        if locations_reader.exists(expires_key).zero?
+          locations_writer.set(expires_key,
+                               struct.esi_expires_at.to_s(:number))
+        end
+        if locations_reader.exists(last_modified_key).zero?
+          locations_writer.set(last_modified_key,
+                               struct.esi_last_modified_at.to_s(:number))
+        end
 
         return struct
       end

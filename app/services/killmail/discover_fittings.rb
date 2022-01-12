@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Killmail < ApplicationRecord
   class DiscoverFittings < ApplicationService
     def initialize(killmail)

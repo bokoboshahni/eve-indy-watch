@@ -12,17 +12,17 @@ class Alliance < ApplicationRecord
       @alliance_id = alliance_id
     end
 
-    def call # rubocop:disable Metrics/AbcSize
+    def call
       Retriable.retriable on: [ActiveRecord::RecordNotUnique], tries: 10 do
         alliance = Alliance.find_by(id: alliance_id)
         if alliance&.esi_expires_at&.>= Time.zone.now
-          logger.debug("ESI response for alliance (#{alliance.name}) #{alliance.id} is not expired: #{alliance.esi_expires_at.iso8601}") # rubocop:disable Metrics/LineLength
+          logger.debug("ESI response for alliance (#{alliance.name}) #{alliance.id} is not expired: #{alliance.esi_expires_at.iso8601}")
           return alliance
         end
 
         alliance_attrs = alliance_attrs_from_esi
         alliance_attrs.merge!(alliance_icon_attrs_from_esi)
-        alliance.present? ? alliance.update!(alliance_attrs) : alliance = Alliance.create!(alliance_attrs.merge(id: alliance_id)) # rubocop:disable Metrics/LineLength
+        alliance.present? ? alliance.update!(alliance_attrs) : alliance = Alliance.create!(alliance_attrs.merge(id: alliance_id))
 
         debug("Synced alliance #{alliance_id} from ESI")
         alliance

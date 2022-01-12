@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'tempfile'
 
 class Location < ApplicationRecord
@@ -26,19 +28,19 @@ class Location < ApplicationRecord
     private
 
     ORDER_KEYS = {
-      'duration'      => 'd',
-      'is_buy_order'  => 's',
-      'issued'        => 'i',
-      'location_id'   => 'l',
-      'min_volume'    => 'vm',
-      'order_id'      => 'o',
-      'price'         => 'p',
-      'range'         => 'r',
-      'system_id'     => 'ss',
-      'type_id'       => 't',
+      'duration' => 'd',
+      'is_buy_order' => 's',
+      'issued' => 'i',
+      'location_id' => 'l',
+      'min_volume' => 'vm',
+      'order_id' => 'o',
+      'price' => 'p',
+      'range' => 'r',
+      'system_id' => 'ss',
+      'type_id' => 't',
       'volume_remain' => 'v',
-      'volume_total'  => 'vt'
-    }
+      'volume_total' => 'vt'
+    }.freeze
 
     METRIC_NAME = 'location/snapshot_orders_from_esi'
 
@@ -66,8 +68,8 @@ class Location < ApplicationRecord
       end
     end
 
-    def fetch_pages
-      duration = Benchmark.realtime do
+    def fetch_pages # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+      duration = Benchmark.realtime do # rubocop:disable Metrics/BlockLength
         FileUtils.mkdir_p(orders_dir)
 
         pages = []
@@ -75,7 +77,7 @@ class Location < ApplicationRecord
         @orders = []
 
         fetch_duration = Benchmark.realtime do
-          while pending_pages.any? do
+          while pending_pages.any?
             pending_pages.each do |page|
               req = Typhoeus::Request.new(location_url, params: { page: page }, headers: headers.merge(etag: etag))
               req.on_complete do |res|
@@ -86,9 +88,9 @@ class Location < ApplicationRecord
 
                 next if res.code != 200
 
-                next if res.body =~ /error/
+                next if /error/.match?(res.body)
 
-                next if res.body =~ /\A50\d/
+                next if /\A50\d/.match?(res.body)
 
                 next if res.body.strip.empty?
 
@@ -109,14 +111,17 @@ class Location < ApplicationRecord
 
         unique_orders = orders.uniq { |o| o['order_id'] }
                               .map! { |o| o.transform_keys! { |k| ORDER_KEYS[k] } }
-                              .map! { |o| o['i'] = o['i'].to_datetime.to_i; o }
+                              .map! do |o|
+          o['i'] = o['i'].to_datetime.to_i
+          o
+        end
         if unique_orders.any?
           expiry = app_config.order_snapshot_expiry.minutes.from_now.to_i
-          measure_info(
+          measure_info( # rubocop:disable Metrics/BlockLength
             "Wrote #{unique_orders.count} order(s) to Redis for #{log_name} at #{log_time}",
             metric: "#{METRIC_NAME}/write_redis"
           ) do
-            orders_writer.pipelined do
+            orders_writer.pipelined do # rubocop:disable Metrics/BlockLength
               order_set_count = unique_orders.group_by { |o| o['l'] }.each_with_object(0) do |(location_id, orders), c|
                 orders_writer.sadd("#{orders_key}.location_ids", location_id)
 
@@ -131,7 +136,9 @@ class Location < ApplicationRecord
                   orders_writer.expireat(order_set_key, expiry)
 
                   orders_writer.sadd("#{orders_key}.order_ids", orders.map { |o| o['o'] })
-                  orders_writer.zadd("#{orders_key}.order_ids_by_location_id_and_type_id", orders.map { |o| [0, "#{index_key}:#{o['o']}"] })
+                  orders_writer.zadd("#{orders_key}.order_ids_by_location_id_and_type_id", orders.map do |o|
+                                                                                             [0, "#{index_key}:#{o['o']}"]
+                                                                                           end)
                   orders_writer.zadd("#{orders_key}.order_set_keys_by_type", type_id, order_set_key)
                   orders_writer.sadd("#{orders_key}.type_ids_by_location.#{location_id}", type_id)
 
@@ -159,6 +166,8 @@ class Location < ApplicationRecord
           logger.info("No orders for #{log_name} at #{log_time}")
         end
 
+        next unless history_uploads_enabled?
+
         orders_file = "#{orders_dir}/#{time.to_s(:number)}.json"
         measure_info(
           "Wrote #{unique_orders.count} order(s) to #{orders_file} for #{log_name} at #{log_time}",
@@ -180,7 +189,7 @@ class Location < ApplicationRecord
           "Uploaded #{orders_file_bz2} to #{history_path} for #{log_name} at #{log_time}",
           metric: "#{METRIC_NAME}/upload_file"
         ) do
-          history_bucket.put_object(body: File.open("#{orders_file_bz2}"), key: history_path)
+          history_bucket.put_object(body: File.open(orders_file_bz2.to_s), key: history_path)
         end
 
         FileUtils.rm_rf(orders_file_bz2)
@@ -196,13 +205,11 @@ class Location < ApplicationRecord
       headers = default_headers
 
       if location.is_a?(Structure)
-        unless location.esi_authorized?
-          raise Error, "#{location.class.name} #{log_name} has no ESI authorization"
-        end
+        raise Error, "#{location.class.name} #{log_name} has no ESI authorization" unless location.esi_authorized?
 
         esi_authorize!(location.esi_authorization)
         access_token = location.esi_authorization.access_token
-        headers = headers.merge('Authorization': "Bearer #{access_token}") if location.is_a?(Structure)
+        headers = headers.merge(Authorization: "Bearer #{access_token}") if location.is_a?(Structure)
       end
 
       headers

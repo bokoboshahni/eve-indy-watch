@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Market < ApplicationRecord
   class CalculateTypeStatistics < ApplicationService
     def initialize(market_id, type_id, time, force: false)
@@ -9,33 +11,40 @@ class Market < ApplicationRecord
       @force = force
     end
 
-    def call
+    def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       if markets_writer.exists("#{type_key}.stats").to_i == 1 && !force
         debug("Market depth and order flow have already been calculated for #{log_name} at #{log_time}")
         return
       end
 
-      duration = Benchmark.realtime do
-        order_ids_duration = Benchmark.realtime do
+      duration = Benchmark.realtime do # rubocop:disable Metrics/BlockLength
+        order_ids_duration = Benchmark.realtime do # rubocop:disable Metrics/BlockLength
           current_orders_key = "orders.#{source_location_id}.#{time_key}"
-          previous_orders_key = orders_reader.zrevrangebyscore("orders.#{source_location_id}.snapshots", "(#{time_key}", "0", limit: [0, 1]).first
+          previous_orders_key = orders_reader.zrevrangebyscore("orders.#{source_location_id}.snapshots",
+                                                               "(#{time_key}", '0', limit: [0, 1]).first
 
           if market_regional?
-            current_orders_keys = orders_reader.zrangebyscore("#{current_orders_key}.order_set_keys_by_type", type_id, type_id)
+            current_orders_keys = orders_reader.zrangebyscore("#{current_orders_key}.order_set_keys_by_type", type_id,
+                                                              type_id)
             current_orders_json = orders_reader.mapped_mget(*current_orders_keys)
-            @current_orders = current_orders_json.each_with_object({}) do |(key, json), h|
-              h.merge!(Oj.load(json).each_with_object({}) { |o, h| h[o['o']] = o })
+            @current_orders = current_orders_json.each_with_object({}) do |(_key, json), h|
+              h.merge!(Oj.load(json).index_by { |o| o['o'] })
             end
 
             raise "No current orders for #{log_name} at #{log_time} from keys: #{current_orders_keys}" if current_orders.empty?
 
-            previous_orders_keys = orders_reader.zrangebyscore("#{previous_orders_key}.order_set_keys_by_type", type_id, type_id)
-            @previous_orders = previous_orders_keys.empty? ? {} : orders_reader.mget(*previous_orders_keys).each_with_object({}) do |json, h|
-              h.merge!(Oj.load(json).each_with_object({}) { |o, h| h[o['o']] = o })
-            end
+            previous_orders_keys = orders_reader.zrangebyscore("#{previous_orders_key}.order_set_keys_by_type",
+                                                               type_id, type_id)
+            @previous_orders = if previous_orders_keys.empty?
+                                 {}
+                               else
+                                 orders_reader.mget(*previous_orders_keys).each_with_object({}) do |json, h|
+                                   h.merge!(Oj.load(json).index_by { |o| o['o'] })
+                                 end
+                               end
           else
-            current_orders_keys = market_location_ids.each_with_object({}) do |location_id, h|
-              h[location_id] = "#{current_orders_key}.orders.#{location_id}.#{type_id}"
+            current_orders_keys = market_location_ids.index_with do |location_id|
+              "#{current_orders_key}.orders.#{location_id}.#{type_id}"
             end
 
             @current_orders = market_location_ids.each_with_object({}) do |location_id, h|
@@ -46,22 +55,28 @@ class Market < ApplicationRecord
                 next
               end
 
-              h.merge!(Oj.load(orders_json).each_with_object({}) { |o, h| h[o['o']] = o })
+              h.merge!(Oj.load(orders_json).index_by { |o| o['o'] })
             end
 
             raise "No current orders for #{log_name} at #{log_time} from keys: #{current_orders_keys}" if current_orders.empty?
 
-            @previous_orders = previous_orders_key.nil? ? {} : market_location_ids.each_with_object({}) do |location_id, h|
-              orders_key = "#{previous_orders_key}.orders.#{location_id}.#{type_id}"
-              orders_json = orders_reader.get(orders_key)
+            @previous_orders = if previous_orders_key.nil?
+                                 {}
+                               else
+                                 market_location_ids.each_with_object({}) do |location_id, h|
+                                   orders_key = "#{previous_orders_key}.orders.#{location_id}.#{type_id}"
+                                   orders_json = orders_reader.get(orders_key)
 
-              if orders_json.blank?
-                debug("No orders for #{orders_key} for #{log_name} at #{log_time}")
-                next
-              end
+                                   if orders_json.blank?
+                                     debug("No orders for #{orders_key} for #{log_name} at #{log_time}")
+                                     next
+                                   end
 
-              h.merge!(Oj.load(orders_json).each_with_object({}) { |o, h| h[o['o']] = o })
-            end
+                                   h.merge!(Oj.load(orders_json).index_by do |o|
+                                              o['o']
+                                            end)
+                                 end
+                               end
           end
         end
 
@@ -74,7 +89,7 @@ class Market < ApplicationRecord
         @deleted_orders = previous_orders.slice(*deleted_order_ids)
         # debug("Found #{deleted_orders.count} deleted order(s) in current snapshot for #{log_name} at #{log_time}}")
 
-        created_order_ids =  current_order_ids - previous_order_ids
+        created_order_ids = current_order_ids - previous_order_ids
         @created_orders = current_orders.slice(*created_order_ids)
         # debug("Found #{created_orders.count} created order(s) in current snapshot for #{log_name} at #{log_time}}")
 
@@ -88,8 +103,10 @@ class Market < ApplicationRecord
         end
         # debug("Found #{changed_orders.count} changed order(s) in current snapshot for #{log_name} at #{log_time}")
 
-        dom_duration = Benchmark.realtime do
-          @dom = current_orders.values.group_by { |o| o['s'] ? :buy : :sell }.each_with_object({}) do |(side, orders), h|
+        dom_duration = Benchmark.realtime do # rubocop:disable Metrics/BlockLength
+          @dom = current_orders.values.group_by do |o| # rubocop:disable Metrics/BlockLength
+                   o['s'] ? :buy : :sell
+                 end.each_with_object({}) do |(side, orders), h|
             threshold =
               case side
               when :buy
@@ -116,8 +133,10 @@ class Market < ApplicationRecord
 
             outliers = orders.count - trimmed_orders.count
 
-            depth = trimmed_orders.sort_by! { |o| o['p'] }.group_by { |o| o['p'] }.each_with_object({}) do |(price, orders), h|
-              volume = orders.map { |o| o['v'] }.sum
+            depth = trimmed_orders.sort_by! do |o|
+                      o['p']
+                    end.group_by { |o| o['p'] }.each_with_object({}) do |(price, orders), h|
+              volume = orders.sum { |o| o['v'] }
 
               next unless volume.positive?
 
@@ -148,8 +167,8 @@ class Market < ApplicationRecord
             }
           end
 
-          dom[:depth] = (Array(dom.dig(:buy, :depth)&.keys) + Array(dom.dig(:sell, :depth)&.keys)).compact.sort.each_with_object({}) do |price, dh|
-            dh[price] = {
+          dom[:depth] = (Array(dom.dig(:buy, :depth)&.keys) + Array(dom.dig(:sell, :depth)&.keys)).compact.sort.index_with do |price|
+            {
               buy: dom.dig(:buy, :depth, price),
               sell: dom.dig(:sell, :depth, price)
             }
@@ -160,8 +179,8 @@ class Market < ApplicationRecord
             dom[:mid_price] = ([dom[:sell][:price_min], dom[:buy][:price_max]].sum / 2.0).round(2)
           end
 
-          dom[:buy].delete(:depth) if dom[:buy]
-          dom[:sell].delete(:depth) if dom[:sell]
+          dom[:buy]&.delete(:depth)
+          dom[:sell]&.delete(:depth)
         end
 
         # debug(
@@ -169,10 +188,12 @@ class Market < ApplicationRecord
         #   metric: "#{METRIC_NAME}/dom", duration: dom_duration
         # )
 
-        order_flow_duration = Benchmark.realtime do
+        order_flow_duration = Benchmark.realtime do # rubocop:disable Metrics/BlockLength
           created_orders_by_side = created_orders.values.group_by { |o| o['s'] ? :buy : :sell }
 
-          @order_flow = changed_orders.values.group_by { |(_, co)| co['s'] ? :buy : :sell }.each_with_object({}) do |(side, orders), h|
+          @order_flow = changed_orders.values.group_by do |(_, co)|
+                          co['s'] ? :buy : :sell
+                        end.each_with_object({}) do |(side, orders), h|
             orders.map! do |o|
               po, co = o
 
@@ -180,14 +201,14 @@ class Market < ApplicationRecord
             end
 
             orders += created_orders_by_side.fetch(side, []).select { |o| o['v'] < o['vt'] }.map do |o|
-              o.merge('tr' => o['vt'] - o['v'] )
+              o.merge('tr' => o['vt'] - o['v'])
             end
 
             trade_count = orders.count
             volume_traded = orders.map { |o| o['tr'] }
 
-            levels = orders.sort_by! { |o| o['p'] }.group_by { |o| o['p'] }.each_with_object({}) do |(price, orders), h|
-              h[price] = orders.map { |o| o['tr'] }.sum
+            levels = orders.sort_by! { |o| o['p'] }.group_by { |o| o['p'] }.transform_values do |orders|
+              orders.sum { |o| o['tr'] }
             end
 
             h[side] = {
@@ -201,15 +222,15 @@ class Market < ApplicationRecord
             }
           end
 
-          order_flow[:levels] = (Array(order_flow.dig(:buy, :levels)&.keys) + Array(order_flow.dig(:sell, :levels)&.keys)).compact.sort.each_with_object({}) do |price, dh|
-            dh[price] = {
+          order_flow[:levels] = (Array(order_flow.dig(:buy, :levels)&.keys) + Array(order_flow.dig(:sell, :levels)&.keys)).compact.sort.index_with do |price|
+            {
               buy: order_flow.dig(:buy, :levels, price) || 0,
               sell: order_flow.dig(:sell, :levels, price) || 0
             }
           end
 
-          order_flow[:buy].delete(:levels) if order_flow[:buy]
-          order_flow[:sell].delete(:levels) if order_flow[:sell]
+          order_flow[:buy]&.delete(:levels)
+          order_flow[:sell]&.delete(:levels)
         end
 
         # debug(
@@ -217,8 +238,8 @@ class Market < ApplicationRecord
         #   metric: "#{METRIC_NAME}/order_flow", duration: order_flow_duration * 1000.0
         # )
 
-        redis_duration = Benchmark.realtime do
-          markets_writer.pipelined do
+        redis_duration = Benchmark.realtime do # rubocop:disable Metrics/BlockLength
+          markets_writer.pipelined do # rubocop:disable Metrics/BlockLength
             expiry = app_config.market_snapshot_expiry.minutes.from_now.to_i
 
             stats = {
@@ -290,13 +311,8 @@ class Market < ApplicationRecord
 
     METRIC_NAME = 'market/calculate_type_statistics'
 
-    attr_reader :market_id, :type_id, :time, :force
-
-    attr_reader :current_orders, :previous_orders, :current_order_ids_with_location, :previous_order_ids_with_location
-
-    attr_reader :deleted_orders, :created_orders, :changed_orders
-
-    attr_reader :order_flow, :dom
+    attr_reader :market_id, :type_id, :time, :force, :current_orders, :previous_orders,
+                :current_order_ids_with_location, :previous_order_ids_with_location, :deleted_orders, :created_orders, :changed_orders, :order_flow, :dom
 
     def market_location_ids
       @market_location_ids ||= markets_reader.smembers("markets.#{market_id}.location_ids").map(&:to_i)

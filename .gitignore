@@ -10,7 +10,6 @@
 # Ignore the default SQLite database.
 /db/*.sqlite3
 /db/*.sqlite3-*
-/db/statistics_structure.sql
 
 # Ignore all logfiles and tempfiles.
 /log/*
@@ -43,3 +42,5 @@ yarn-debug.log*
 
 tmp/sde
 tmp/sde.zip
+
+coverage/

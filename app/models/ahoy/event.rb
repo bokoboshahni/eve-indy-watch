@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # ## Schema Information
 #
 # Table name: `ahoy_events`
@@ -22,10 +24,12 @@
 # * `index_ahoy_events_on_visit_id`:
 #     * **`visit_id`**
 #
-class Ahoy::Event < Statistics::ApplicationRecord
-  include Ahoy::QueryMethods
+module Ahoy
+  class Event < Statistics::ApplicationRecord
+    include Ahoy::QueryMethods
 
-  self.table_name = "ahoy_events"
+    self.table_name = 'ahoy_events'
 
-  belongs_to :visit
+    belongs_to :visit
+  end
 end

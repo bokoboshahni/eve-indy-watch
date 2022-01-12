@@ -9,7 +9,7 @@ class Contract < ApplicationRecord
       @data = data
     end
 
-    def call # rubocop:disable Metrics/AbcSize
+    def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       contract_id = data['contract_id']
       record = Contract.find_or_initialize_by(id: contract_id)
 
@@ -18,14 +18,14 @@ class Contract < ApplicationRecord
         return record
       end
 
-      corporation.transaction do
+      corporation.transaction do # rubocop:disable Metrics/BlockLength
         entity_keys = %w[acceptor_id assignee_id issuer_id issuer_corporation_id]
         entity_ids = entity_keys.each_with_object(Set.new) { |k, s| s.add(data[k]) if data[k] }
-        entities = entity_ids.each_with_object({}) { |id, h| h[id] = find_and_sync_entity(id) }
+        entities = entity_ids.index_with { |id| find_and_sync_entity(id) }
 
         location_keys = %w[start_location_id end_location_id]
         location_ids = location_keys.each_with_object(Set.new) { |k, s| s.add(data[k]) if data[k] }
-        locations = location_ids.each_with_object({}) { |id, h| h[id] = find_and_sync_location(id) }
+        locations = location_ids.index_with { |id| find_and_sync_location(id) }
 
         contract = map_contract(data, entities, locations)
         record.attributes = contract
@@ -73,7 +73,7 @@ class Contract < ApplicationRecord
 
     delegate :id, :name, to: :corporation, prefix: true
 
-    def map_contract(data, entities, locations)
+    def map_contract(data, entities, locations) # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       acceptor = entities[data['acceptor_id']]
       assignee = entities[data['assignee_id']]
       end_location = locations[data['end_location_id']]
@@ -115,7 +115,7 @@ class Contract < ApplicationRecord
       }
     end
 
-    def find_and_sync_entity(id)
+    def find_and_sync_entity(id) # rubocop:disable Metrics/MethodLength
       Retriable.retriable on: [Character::SyncFromESI::Error, Corporation::SyncFromESI::Error,
                                Alliance::SyncFromESI::Error] do
         case id

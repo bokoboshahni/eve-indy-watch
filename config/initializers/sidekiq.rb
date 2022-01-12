@@ -7,7 +7,7 @@ Sidekiq::Throttled.setup!
 
 SidekiqUniqueJobs.config.lock_info = true
 
-Sidekiq.configure_server do |config|
+Sidekiq.configure_server do |config| # rubocop:disable Metrics/BlockLength
   config.redis = { url: ENV.fetch('SIDEKIQ_REDIS_URL', 'redis://localhost:6379/1'), driver: :hiredis }
 
   config.error_handlers.pop
@@ -20,15 +20,15 @@ Sidekiq.configure_server do |config|
   end
 
   config.server_middleware do |chain|
-    chain.add PrometheusExporter::Instrumentation::Sidekiq unless ENV['DISABLE_PROMETHEUS'].present?
+    chain.add PrometheusExporter::Instrumentation::Sidekiq if ENV['DISABLE_PROMETHEUS'].blank?
     chain.add SidekiqUniqueJobs::Middleware::Server
   end
 
   config.on :startup do
-    unless ENV['DISABLE_PROMETHEUS'].present?
+    if ENV['DISABLE_PROMETHEUS'].blank?
       PrometheusExporter::Instrumentation::ActiveRecord.start(
-        custom_labels: { type: "sidekiq" },
-        config_labels: [:database, :host]
+        custom_labels: { type: 'sidekiq' },
+        config_labels: %i[database host]
       )
       PrometheusExporter::Instrumentation::Process.start type: 'sidekiq'
       PrometheusExporter::Instrumentation::SidekiqProcess.start
@@ -37,7 +37,7 @@ Sidekiq.configure_server do |config|
     end
   end
 
-  config.death_handlers << PrometheusExporter::Instrumentation::Sidekiq.death_handler unless ENV['DISABLE_PROMETHEUS'].present?
+  config.death_handlers << PrometheusExporter::Instrumentation::Sidekiq.death_handler if ENV['DISABLE_PROMETHEUS'].blank?
 
   SidekiqUniqueJobs::Server.configure(config)
 

@@ -9,7 +9,7 @@ class AdminConstraint
   end
 end
 
-Rails.application.routes.draw do
+Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   mount Sidekiq::Web => '/admin/sidekiq', constraints: AdminConstraint.new
   mount PgHero::Engine => '/admin/pghero', constraints: AdminConstraint.new
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Alliance < ApplicationRecord
   class FetchKillmailsFromZKB < ApplicationService
     def initialize(alliance, year: nil, month: nil)
@@ -19,12 +21,14 @@ class Alliance < ApplicationRecord
           data = resp.json
 
           break if data.empty?
+
           debug "Parsed #{data.count} killmail(s) from #{url}"
 
           killmails.push(*data)
           page_count += 1
 
           break if data.count < 200
+
           sleep(10)
         end
         killmails
@@ -33,7 +37,7 @@ class Alliance < ApplicationRecord
 
     private
 
-    ZKB_BASE_URL = "https://zkillboard.com/api"
+    ZKB_BASE_URL = 'https://zkillboard.com/api'
 
     attr_reader :alliance, :year, :month
 

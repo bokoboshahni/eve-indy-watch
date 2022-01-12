@@ -1,0 +1,4 @@
+node_modules
+public/openapi
+public/workbox-*.js
+public/sw.js

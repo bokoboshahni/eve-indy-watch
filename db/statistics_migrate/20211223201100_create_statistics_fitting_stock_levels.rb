@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateStatisticsFittingStockLevels < ActiveRecord::Migration[6.1]
   def up
     create_table :fitting_stock_levels, id: false, primary_key: %i[fitting_id market_id time] do |t|
@@ -22,7 +24,8 @@ class CreateStatisticsFittingStockLevels < ActiveRecord::Migration[6.1]
       t.integer :market_quantity
       t.timestamp :market_time
 
-      t.index %i[fitting_id market_id time], unique: true, name: :index_unique_fitting_stock_levels, order: { time: :desc }
+      t.index %i[fitting_id market_id time], unique: true, name: :index_unique_fitting_stock_levels,
+                                             order: { time: :desc }
     end
 
     execute "SELECT create_hypertable('fitting_stock_levels', 'time', chunk_time_interval => INTERVAL '7 days');"
@@ -40,7 +43,8 @@ class CreateStatisticsFittingStockLevels < ActiveRecord::Migration[6.1]
       t.decimal :market_sell_price
       t.integer :market_sell_volume, null: false
 
-      t.index %i[fitting_id market_id type_id time], unique: true, name: :index_unique_fitting_stock_level_items, order: { time: :desc }
+      t.index %i[fitting_id market_id type_id time], unique: true, name: :index_unique_fitting_stock_level_items,
+                                                     order: { time: :desc }
     end
 
     execute "SELECT create_hypertable('fitting_stock_level_items', 'time', chunk_time_interval => INTERVAL '7 days');"
@@ -70,14 +74,16 @@ class CreateStatisticsFittingStockLevels < ActiveRecord::Migration[6.1]
       t.integer :market_quantity
       t.timestamp :market_time
 
-      t.index %i[fitting_id market_id time interval], unique: true, name: :index_unique_fitting_stock_level_summaries, order: { time: :desc }
+      t.index %i[fitting_id market_id time interval], unique: true, name: :index_unique_fitting_stock_level_summaries,
+                                                      order: { time: :desc }
     end
 
     execute "SELECT create_hypertable('fitting_stock_level_summaries', 'time', chunk_time_interval => INTERVAL '1 month');"
 
     execute "SELECT add_retention_policy('fitting_stock_level_summaries', INTERVAL '5 years');"
 
-    create_table :fitting_stock_level_summary_items, id: false, primary_key: %i[fitting_id market_id type_id time interval] do |t|
+    create_table :fitting_stock_level_summary_items, id: false,
+                                                     primary_key: %i[fitting_id market_id type_id time interval] do |t|
       t.references :fitting, null: false, index: false
       t.references :market, null: false, index: false
       t.references :type, null: false, index: false
@@ -89,7 +95,8 @@ class CreateStatisticsFittingStockLevels < ActiveRecord::Migration[6.1]
       t.decimal :market_sell_price
       t.integer :market_sell_volume, null: false
 
-      t.index %i[fitting_id market_id type_id time interval], unique: true, name: :index_unique_fitting_stock_level_summary_items, order: { time: :desc }
+      t.index %i[fitting_id market_id type_id time interval], unique: true,
+                                                              name: :index_unique_fitting_stock_level_summary_items, order: { time: :desc }
     end
 
     execute "SELECT create_hypertable('fitting_stock_level_summary_items', 'time', chunk_time_interval => INTERVAL '1 month');"

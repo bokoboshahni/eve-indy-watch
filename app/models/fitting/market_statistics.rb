@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Fitting < ApplicationRecord
   module MarketStatistics
     extend ActiveSupport::Concern
@@ -6,7 +8,7 @@ class Fitting < ApplicationRecord
       has_many :market_stats, class_name: 'Statistics::MarketFitting', inverse_of: :market
     end
 
-    def latest_market_stats(market, scope = nil)
+    def latest_market_stats(market, _scope = nil)
       @latest_market_stats ||= {}
       @latest_market_stats[market.id] ||= market_stats.find_by(market_id: market.id, time: market.orders_updated_at)
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ContractItemsInaccessibleReport < ApplicationReport
   self.title = 'Open Contracts with Inaccessible Items'
 

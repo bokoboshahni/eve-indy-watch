@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Statistics
   module FittingStockLevelCalculations
     extend ActiveSupport::Concern
@@ -50,7 +52,7 @@ module Statistics
     end
 
     def out_of_stock?
-      total_quantity == 0
+      total_quantity.zero?
     end
   end
 end

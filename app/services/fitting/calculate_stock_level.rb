@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Fitting < ApplicationRecord
   class CalculateStockLevel < ApplicationService
     def initialize(fitting_id, market_id, market_time, time, interval = nil)
@@ -11,7 +13,7 @@ class Fitting < ApplicationRecord
       @interval = interval
     end
 
-    def call
+    def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       @time = time.beginning_of_day if interval
 
       stock_level = {
@@ -79,7 +81,7 @@ class Fitting < ApplicationRecord
       }
     end
 
-    def market_stock_level
+    def market_stock_level # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       result = {}
 
       market_key = "markets.#{market_id}.#{market_time.to_s(:number)}"
@@ -101,16 +103,14 @@ class Fitting < ApplicationRecord
             market_sell_volume: market_item.dig(:sell, :volume_sum).to_i
           )
         else
-          stock_item.merge!(
-            fitting_quantity: 0,
-            market_sell_volume: 0
-          )
+          stock_item[:fitting_quantity] = 0
+          stock_item[:market_sell_volume] = 0
         end
 
         h[item_id] = stock_item
       end
 
-      match_quantities = result[:items_attributes].values.map { |i| i[:fitting_quantity] }
+      match_quantities = result[:items_attributes].values.pluck(:fitting_quantity)
       full_matches = match_quantities.uniq.each_with_object([]) do |n, a|
         a << n if match_quantities.all? { |q| q.to_i >= n.to_i }
       end
@@ -118,7 +118,7 @@ class Fitting < ApplicationRecord
       result[:market_quantity] = full_matches.max || 0
 
       %i[market_buy_price market_sell_price].each do |stat|
-        result[stat] = result[:items_attributes].values.map { |i| i[stat] }.compact.sum
+        result[stat] = result[:items_attributes].values.filter_map { |i| i[stat] }.sum
       end
 
       result
@@ -133,7 +133,7 @@ class Fitting < ApplicationRecord
     end
 
     def contract_fittings
-      fitting.contract_fittings.joins(:contract).where('contracts.end_location_id IN (?)', location_ids)
+      fitting.contract_fittings.joins(:contract).where(contracts: { end_location_id: location_ids })
     end
   end
 end

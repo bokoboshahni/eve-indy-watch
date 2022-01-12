@@ -6,11 +6,11 @@ class TabLinkComponent < ApplicationComponent
 
   DEFAULT_CLASS_NAME =
 
-  def initialize(href:, turbo_frame: nil, class_name: nil)
-    @href = href
-    @turbo_frame = turbo_frame
-    @class_name = class_name
-  end
+    def initialize(href:, turbo_frame: nil, class_name: nil)
+      @href = href
+      @turbo_frame = turbo_frame
+      @class_name = class_name
+    end
 
   def call
     options = { class: class_name }

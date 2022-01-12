@@ -77,11 +77,11 @@ class Contract < ApplicationRecord
   MULTISEARCH_FIELDS = %i[
     title acceptor_name assignee_name end_location_name issuer_name
     issuer_corporation_name start_location_name fitting_names item_names
-  ]
+  ].freeze
 
   self.inheritance_column = nil
 
-  multisearchable against: MULTISEARCH_FIELDS, if: -> r { r.outstanding? && r.item_exchange? }
+  multisearchable against: MULTISEARCH_FIELDS, if: ->(r) { r.outstanding? && r.item_exchange? }
 
   pg_search_scope :search_by_all, against: %i[title acceptor_name assignee_name end_location_name start_location_name],
                                   associated_against: {
@@ -122,9 +122,9 @@ class Contract < ApplicationRecord
 
   scope :items_inaccessible, -> { where(type: 'item_exchange').where("esi_items_exception->>'m' LIKE '(403)%'") }
 
-  scope :at, -> id { where(end_location_id: id) }
+  scope :at, ->(id) { where(end_location_id: id) }
 
-  scope :assigned_to, -> id { where(assignee_id: id) }
+  scope :assigned_to, ->(id) { where(assignee_id: id) }
 
   def courier?
     type == 'courier'
@@ -238,7 +238,7 @@ class Contract < ApplicationRecord
     if fittings.pluck(:type_id).uniq.count == 1
       fittings.first.type.icon_url
     else
-      "https://images.evetech.net/types/3468/icon"
+      'https://images.evetech.net/types/3468/icon'
     end
   end
 

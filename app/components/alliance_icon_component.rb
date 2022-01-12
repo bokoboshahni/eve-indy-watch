@@ -15,6 +15,6 @@ class AllianceIconComponent < ApplicationComponent
   def icon_url
     return alliance.icon_url_128 if alliance.icon_url_128
 
-    return asset_pack_path('media/images/alliance-default.png')
+    asset_pack_path('media/images/alliance-default.png')
   end
 end

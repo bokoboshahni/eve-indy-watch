@@ -55,10 +55,10 @@ module ServiceHelpers
 
   def httpx
     @httpx ||= HTTPX.with_headers(httpx_default_headers)
-                      .plugin(:authentication)
-                      .plugin(:persistent)
-                      .plugin(:response_cache)
-                      .plugin(:retries)
+                    .plugin(:authentication)
+                    .plugin(:persistent)
+                    .plugin(:response_cache)
+                    .plugin(:retries)
   end
 
   def httpx_authenticated(authorization)
@@ -82,6 +82,10 @@ module ServiceHelpers
 
   def history_bucket
     @history_bucket ||= history_bucket_resource.bucket(app_config.history_bucket_name)
+  end
+
+  def history_uploads_enabled?
+    app_config.history_bucket_name.present?
   end
 
   def markets_reader

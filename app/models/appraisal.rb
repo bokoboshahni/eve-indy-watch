@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # ## Schema Information
 #
 # Table name: `appraisals`
@@ -43,9 +45,9 @@
 #     * **`user_id => users.id`**
 #
 class Appraisal < ApplicationRecord
-  PRICE_PERIODS = %w[immediate]
-  PRICE_TYPES = %w[buy sell split]
-  PRICE_STATS = %w[five_pct_price_avg five_pct_price_med avg min med max]
+  PRICE_PERIODS = %w[immediate].freeze
+  PRICE_TYPES = %w[buy sell split].freeze
+  PRICE_STATS = %w[five_pct_price_avg five_pct_price_med avg min med max].freeze
 
   DEFAULT_PRICE_PERIOD = 'immediate'
   DEFAULT_PRICE_TYPE = 'sell'
@@ -79,16 +81,16 @@ class Appraisal < ApplicationRecord
 
   AppraisalItem.column_names.grep(/price/).each do |stat|
     define_method :"total_#{stat}" do
-      items.map(&:"total_#{stat}").sum * (price_modifier || 1.0)
+      items.sum(&:"total_#{stat}") * (price_modifier || 1.0)
     end
   end
 
   def total_packaged_volume
-    items.includes(:type).map(&:total_packaged_volume).sum
+    items.includes(:type).sum(&:total_packaged_volume)
   end
 
   def total_volume
-    items.includes(:type).map(&:total_volume).sum
+    items.includes(:type).sum(&:total_volume)
   end
 
   private
@@ -96,18 +98,18 @@ class Appraisal < ApplicationRecord
   CODE_ALPHABET = '0123456789abcdefghjkmnopqrstvwxyzABCDEFGHJKMNPQRSTVWXYZ'
 
   def generate_code
-    self.code = Nanoid.generate(size: 6, alphabet: CODE_ALPHABET) unless code.present?
+    self.code = Nanoid.generate(size: 6, alphabet: CODE_ALPHABET) if code.blank?
   end
 
   def ensure_price_period
-    self.price_period = DEFAULT_PRICE_PERIOD unless price_period.present?
+    self.price_period = DEFAULT_PRICE_PERIOD if price_period.blank?
   end
 
   def ensure_price_type
-    self.price_type = DEFAULT_PRICE_TYPE unless price_type.present?
+    self.price_type = DEFAULT_PRICE_TYPE if price_type.blank?
   end
 
   def ensure_price_stat
-    self.price_stat = DEFAULT_PRICE_STAT unless price_stat.present?
+    self.price_stat = DEFAULT_PRICE_STAT if price_stat.blank?
   end
 end

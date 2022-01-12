@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # ## Schema Information
 #
 # Table name: `killmails`
@@ -86,8 +88,8 @@ class Killmail < ApplicationRecord
 
   def fitting_items
     scope = items.joins(:flag, type: { group: :category })
-                 .where('categories.name IN (?)', Category::MODULE_CATEGORY_NAMES)
-                 .where('inventory_flags.name IN (?)', KillmailItem::FITTING_FLAG_NAMES)
+                 .where(categories: { name: Category::MODULE_CATEGORY_NAMES })
+                 .where(inventory_flags: { name: KillmailItem::FITTING_FLAG_NAMES })
                  .select(:type_id, :quantity_destroyed, :quantity_dropped)
     compact_items(scope)
   end

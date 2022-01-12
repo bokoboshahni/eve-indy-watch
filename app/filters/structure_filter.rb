@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StructureFilter < ApplicationFilter
   self.sorters = {}
   self.facets = {}

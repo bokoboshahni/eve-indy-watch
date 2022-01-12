@@ -63,8 +63,10 @@ class Type < ApplicationRecord
   has_many :blueprint_activities, foreign_key: :blueprint_type_id
   has_many :blueprint_materials, inverse_of: :blueprint_type, foreign_key: :blueprint_type_id
   has_many :blueprint_products, inverse_of: :blueprint_type, foreign_key: :blueprint_type_id
-  has_many :blueprint_required_materials, class_name: 'BlueprintMaterial', inverse_of: :material_type, foreign_key: :material_type_id
-  has_many :blueprint_required_skills, class_name: 'BlueprintSkill', inverse_of: :skill_type, foreign_key: :skill_type_id
+  has_many :blueprint_required_materials, class_name: 'BlueprintMaterial', inverse_of: :material_type,
+                                          foreign_key: :material_type_id
+  has_many :blueprint_required_skills, class_name: 'BlueprintSkill', inverse_of: :skill_type,
+                                       foreign_key: :skill_type_id
   has_many :blueprint_skills, inverse_of: :blueprint_type, foreign_key: :blueprint_type_id
   has_many :contract_items, inverse_of: :type, dependent: :restrict_with_exception
   has_many :fitting_items, inverse_of: :type, dependent: :restrict_with_exception
@@ -74,7 +76,8 @@ class Type < ApplicationRecord
   has_many :killmail_items, inverse_of: :type, dependent: :restrict_with_exception
   has_many :lossmails, class_name: 'Killmail', inverse_of: :ship_type, dependent: :restrict_with_exception
   has_many :market_price_snapshots, inverse_of: :type, dependent: :destroy
-  has_many :region_histories, class_name: 'Statistics::RegionTypeHistory', inverse_of: :type, dependent: :restrict_with_exception
+  has_many :region_histories, class_name: 'Statistics::RegionTypeHistory', inverse_of: :type,
+                              dependent: :restrict_with_exception
   has_many :stations, inverse_of: :type, dependent: :restrict_with_exception
   has_many :structures, inverse_of: :type, dependent: :restrict_with_exception
 
@@ -114,7 +117,7 @@ class Type < ApplicationRecord
   end
 
   def market_stats(market, time: nil)
-    time = markets_reader.get("markets.#{market.id}.latest") unless time
+    time ||= markets_reader.get("markets.#{market.id}.latest")
 
     return {} unless time
 
@@ -132,7 +135,7 @@ class Type < ApplicationRecord
   end
 
   def market_split_price(market, time: nil)
-    market_stats(market, time: time).dig(:mid_price)
+    market_stats(market, time: time)[:mid_price]
   end
 
   def market_volume(market, time: nil)

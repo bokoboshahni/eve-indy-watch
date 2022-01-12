@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GlobalSearch < ApplicationService
   def initialize(query)
     super
@@ -14,7 +16,7 @@ class GlobalSearch < ApplicationService
 
   private
 
-  SEARCHABLE_TYPES = %w[Contract Fitting]
+  SEARCHABLE_TYPES = %w[Contract Fitting].freeze
 
   attr_reader :query
 end
