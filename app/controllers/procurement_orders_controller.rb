@@ -175,7 +175,7 @@ class ProcurementOrdersController < ApplicationController
     params.require(:procurement_order).permit(
       :appraisal_url,
       :requester_gid, :deliver_by,
-      :location_id, :notes, :bonus, :multiplier, :price,
+      :location_id, :notes, :bonus, :multiplier,
       items_attributes: %i[type_id quantity_required price _destroy id]
     )
   end
