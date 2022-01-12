@@ -111,14 +111,12 @@ class Location < ApplicationRecord
                               .map! { |o| o.transform_keys! { |k| ORDER_KEYS[k] } }
                               .map! { |o| o['i'] = o['i'].to_datetime.to_i; o }
         if unique_orders.any?
-          expiry = 10.minutes.from_now.to_i
+          expiry = app_config.order_snapshot_expiry.minutes.from_now.to_i
           measure_info(
             "Wrote #{unique_orders.count} order(s) to Redis for #{log_name} at #{log_time}",
             metric: "#{METRIC_NAME}/write_redis"
           ) do
             orders_writer.pipelined do
-              # orders_by_location_and_type = unique_orders.group_by { |o| "#{'%019d' % o['l']}.#{'%019d' % o['t']}" }
-
               order_set_count = unique_orders.group_by { |o| o['l'] }.each_with_object(0) do |(location_id, orders), c|
                 orders_writer.sadd("#{orders_key}.location_ids", location_id)
 

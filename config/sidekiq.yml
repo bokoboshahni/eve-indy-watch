@@ -53,11 +53,11 @@
     description: "Ingest market locations and run aggregations for all markets"
 
   expire_order_snapshot_keys:
-    cron: '0 * * * *'
+    cron: '*/15 * * * *'
     class: 'Location::ExpireSnapshotKeysWorker'
     description: "Scan orders database to ensure old keys are expired"
 
   expire_market_snapshot_keys:
-    cron: '0 * * * *'
+    cron: '*/15 * * * *'
     class: 'Market::ExpireSnapshotKeysWorker'
     description: "Scan markets database to ensure old keys are expired"

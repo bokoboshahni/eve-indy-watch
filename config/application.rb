@@ -62,5 +62,7 @@ module EVEIndyWatch
     config.x.app.history_bucket_secret_access_key = ENV['HISTORY_BUCKET_SECRET_ACCESS_KEY']
     config.x.app.history_bucket_endpoint = ENV['HISTORY_BUCKET_ENDPOINT']
     config.x.app.history_bucket_region = ENV['HISTORY_BUCKET_REGION']
+    config.x.app.order_snapshot_expiry = ENV.fetch('ORDER_SNAPSHOT_EXPIRY', 10).to_i
+    config.x.app.market_snapshot_expiry = ENV.fetch('MARKET_SNAPSHOT_EXPIRY', 10).to_i
   end
 end

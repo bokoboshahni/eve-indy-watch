@@ -219,7 +219,7 @@ class Market < ApplicationRecord
 
         redis_duration = Benchmark.realtime do
           markets_writer.pipelined do
-            expiry = 15.minutes.from_now.to_i
+            expiry = app_config.market_snapshot_expiry.minutes.from_now.to_i
 
             stats = {
               time: time.to_s(:number),
