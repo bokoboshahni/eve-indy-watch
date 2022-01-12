@@ -19,6 +19,7 @@ class Market < ApplicationRecord
 
         Oj.load(json)
       end
+      stats.compact!
 
       columns = MarketTypeStats.column_names.map(&:to_sym)
 
