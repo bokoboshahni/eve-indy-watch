@@ -4,10 +4,10 @@ class SSOController < ApplicationController
   skip_before_action :verify_authenticity_token, only: %i[create]
 
   def new
-    unless logged_in?
-      repost '/auth/eve', options: { authenticity_token: :auto }
-    else
+    if logged_in?
       redirect_to dashboard_path
+    else
+      repost '/auth/eve', options: { authenticity_token: :auto }
     end
   end
 

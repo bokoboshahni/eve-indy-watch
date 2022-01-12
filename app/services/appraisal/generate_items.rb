@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Appraisal < ApplicationRecord
   class GenerateItems < ApplicationService
     def initialize(items, market, time)
@@ -20,7 +22,7 @@ class Appraisal < ApplicationRecord
 
     delegate :id, to: :market, prefix: true
 
-    def stats
+    def stats # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       @stats ||=
         begin
           market_key = "markets.#{market_id}.#{time.to_s(:number)}"
@@ -45,7 +47,7 @@ class Appraisal < ApplicationRecord
 
           stats.transform_values! { |s| s.slice(*AppraisalItem.column_names.map(&:to_sym)) }
 
-          ap stats
+          Rails.logger.debug stats
 
           stats
         end

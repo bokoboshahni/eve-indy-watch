@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateStatisticsRegionTypeHistories < ActiveRecord::Migration[6.1]
   def up
     create_table :region_type_histories, id: false, primary_key: %i[region_id type_id date] do |t|

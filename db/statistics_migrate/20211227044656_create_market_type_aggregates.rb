@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class CreateMarketTypeAggregates < ActiveRecord::Migration[6.1]
   disable_ddl_transaction!
 
   def up
-    execute <<-SQL
+    execute <<-SQL.squish
       CREATE MATERIALIZED VIEW market_type_daily_summaries
       WITH (
         timescaledb.continuous
@@ -37,7 +39,7 @@ class CreateMarketTypeAggregates < ActiveRecord::Migration[6.1]
       GROUP BY market_id, type_id, time_bucket('1 day', time);
     SQL
 
-    execute <<~SQL
+    execute <<~SQL.squish
       SELECT add_continuous_aggregate_policy(
         'market_type_daily_summaries',
         start_offset => INTERVAL '3 days',

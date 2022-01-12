@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateMarketTypes < ActiveRecord::Migration[6.1]
   def up
     create_table :market_types, id: false do |t|

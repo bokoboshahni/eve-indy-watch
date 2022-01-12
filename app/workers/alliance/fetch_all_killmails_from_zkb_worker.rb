@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Alliance < ApplicationRecord
   class FetchAllKillmailsFromZKBWorker < ApplicationWorker
     sidekiq_options lock: :until_and_while_executing, on_conflict: :log

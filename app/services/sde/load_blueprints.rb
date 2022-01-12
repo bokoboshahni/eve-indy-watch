@@ -14,7 +14,7 @@ module SDE
       skills = []
 
       yaml(source_path).each do |(blueprint_type_id, blueprint)|
-        blueprint['activities'].each_with_object([]) do |(activity_name, activity)|
+        blueprint['activities'].each do |(activity_name, activity)|
           activity_key = { blueprint_type_id: blueprint_type_id, activity: activity_name }
 
           Array(activity['materials']).each do |m|
@@ -34,11 +34,11 @@ module SDE
 
         type_updates << {
           id: blueprint_type_id,
-          max_production_limit: blueprint['max_production_limit'],
+          max_production_limit: blueprint['max_production_limit']
         }
       end
 
-      Type.transaction do
+      Type.transaction do # rubocop:disable Metrics/BlockLength
         Type.import(
           type_updates,
           on_duplicate_key_update: {
@@ -81,7 +81,6 @@ module SDE
       end
     end
 
-    def import_records
-    end
+    def import_records; end
   end
 end

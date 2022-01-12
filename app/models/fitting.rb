@@ -46,8 +46,8 @@ class Fitting < ApplicationRecord
   include MarketStatistics
 
   SERVICE_LEVELS = [
-    '50',
-  ]
+    '50'
+  ].freeze
 
   multisearchable against: %i[name owner_name type_name item_names], if: :kept?
 
@@ -79,7 +79,8 @@ class Fitting < ApplicationRecord
 
   def current_stock_level(market)
     @current_stock_level ||= {}
-    @current_stock_level[market.id] ||= stock_levels.find_by(market_id: market.id, time: current_stock_level_time(market))
+    @current_stock_level[market.id] ||= stock_levels.find_by(market_id: market.id,
+                                                             time: current_stock_level_time(market))
   end
 
   def type_ids
@@ -136,7 +137,7 @@ class Fitting < ApplicationRecord
   def total_available
     [
       contracts_on_hand&.count,
-      market_on_hand(main_market),
+      market_on_hand(main_market)
     ].compact.sum
   end
 
@@ -156,7 +157,7 @@ class Fitting < ApplicationRecord
   def demand_daily_avg(period = nil)
     all_demand = [
       contracts_sold_daily_avg(period),
-      killmail_losses_daily_avg(period),
+      killmail_losses_daily_avg(period)
     ]
     all_demand << regional_sales_daily_avg(period)
     all_demand.compact.sum

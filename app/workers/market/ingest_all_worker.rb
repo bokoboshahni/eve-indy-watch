@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Market < ApplicationRecord
   class IngestAllWorker < ApplicationWorker
     sidekiq_options retries: 3, lock: :until_executed

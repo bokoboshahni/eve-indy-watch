@@ -12,11 +12,11 @@ class Character < ApplicationRecord
       @character_id = character_id
     end
 
-    def call # rubocop:disable Metrics/AbcSize
+    def call
       Retriable.retriable on: [ActiveRecord::RecordNotUnique], tries: 10 do
         char = Character.find_by(id: character_id)
         if char&.esi_expires_at&.>= Time.zone.now
-          logger.debug("ESI response for character (#{char.name}) #{char.id} is not expired: #{char.esi_expires_at.iso8601}") # rubocop:disable Metrics/LineLength
+          logger.debug("ESI response for character (#{char.name}) #{char.id} is not expired: #{char.esi_expires_at.iso8601}")
           return char
         end
 

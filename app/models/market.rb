@@ -85,7 +85,7 @@ class Market < ApplicationRecord
 
   def latest_orders
     if regional?
-      scope = MarketOrder.joins(solar_system: { constellation: :region }).where('regions.id IN (?)', regions.pluck(:id))
+      scope = MarketOrder.joins(solar_system: { constellation: :region }).where(regions: { id: regions.pluck(:id) })
       time = scope.maximum(:time)
       scope.where(time: time)
     else
@@ -109,7 +109,7 @@ class Market < ApplicationRecord
     AggregateTypeStats.call(self, time, batch)
   end
 
-  def aggregate_type_stats_async(time, batch)
+  def aggregate_type_stats_async(time, _batch)
     AggregateTypeStatsWorker.perform_async(id, time, batch_id)
   end
 
@@ -128,8 +128,9 @@ class Market < ApplicationRecord
   def snapshot_keys
     return [] unless markets_reader.exists("markets.#{id}.snapshots") == 1
 
-    markets_reader.zrangebyscore("markets.#{id}.snapshots", 0, latest_snapshot_time.to_s(:number).to_i, with_scores: true)
-                  .to_h.invert.transform_keys { |k| k.to_i }
+    markets_reader.zrangebyscore("markets.#{id}.snapshots", 0, latest_snapshot_time.to_s(:number).to_i,
+                                 with_scores: true)
+                  .to_h.invert.transform_keys(&:to_i)
   end
 
   def calculate_type_statistics_async(time, force: false)

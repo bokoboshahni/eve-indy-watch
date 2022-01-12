@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Market < ApplicationRecord
   class PersistTypeStatisticsWorker < ApplicationWorker
     def perform(market_id, type_ids, time)

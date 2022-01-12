@@ -23,7 +23,7 @@ class Contract < ApplicationRecord
         end
     end
 
-    def call # rubocop:disable Metrics/AbcSize
+    def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       if contract.esi_items_synced?
         debug("Items have already been fetched for contract #{contract_id}")
         return

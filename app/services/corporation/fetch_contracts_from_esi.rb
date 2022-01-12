@@ -8,7 +8,7 @@ class Corporation < ApplicationRecord
       @corporation = corporation
     end
 
-    def call # rubocop:disable Metrics/AbcSize
+    def call
       unless corporation.esi_contracts_expired?
         debug("#{corporation.log_name} contracts do not expire until #{corporation.esi_contracts_expires_at}")
         return []

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # ## Schema Information
 #
 # Table name: `fitting_stock_level_summaries`
@@ -59,9 +61,9 @@ module Statistics
     scope :last_7_days, -> { where(time: 7.days.ago.beginning_of_day..Time.zone.now.beginning_of_day) }
     scope :last_30_days, -> { where(time: 30.days.ago.beginning_of_day..Time.zone.now.beginning_of_day) }
 
-    scope :by_fitting, -> id { where(fitting_id: id) }
-    scope :by_market, -> id { where(market_id: id) }
+    scope :by_fitting, ->(id) { where(fitting_id: id) }
+    scope :by_market, ->(id) { where(market_id: id) }
 
-    scope :by_fitting_and_market, -> (fitting_id, market_id) { where(fitting_id: fitting_id, market_id: market_id) }
+    scope :by_fitting_and_market, ->(fitting_id, market_id) { where(fitting_id: fitting_id, market_id: market_id) }
   end
 end

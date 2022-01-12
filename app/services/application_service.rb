@@ -15,7 +15,7 @@ class ApplicationService
     end
   end
 
-  def initialize(*args, **kwargs)
+  def initialize(*_args, **kwargs)
     new_logger = kwargs.delete(:logger)
     @logger = new_logger if new_logger
   end

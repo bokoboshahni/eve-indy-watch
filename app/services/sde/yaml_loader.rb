@@ -50,7 +50,7 @@ module SDE
       end
     end
 
-    def record(data, id, select, optional: [], rename: {}, extra: {}) # rubocop:disable Metrics/AbcSize, Metrics/ParameterLists
+    def record(data, id, select, optional: [], rename: {}, extra: {}) # rubocop:disable Metrics/ParameterLists
       debug("Loading record: #{data}")
       rec = data.slice(*select).transform_keys { |k| rename.fetch(k, k) }
 

@@ -11,7 +11,7 @@ module Admin
 
       scope = Structure.includes(owner: :alliance)
       @filter = filter_for('Structure')
-      @pagy, @structures= pagy(@filter.apply!(scope))
+      @pagy, @structures = pagy(@filter.apply!(scope))
 
       if turbo_frame_request?
         render partial: 'structures', locals: { structures: @structures, filter: @filter, paginator: @pagy }

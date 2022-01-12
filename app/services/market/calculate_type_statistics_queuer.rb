@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Market < ApplicationRecord
   class CalculateTypeStatisticsQueuer < ApplicationService
     def initialize(market, time, force: false)
@@ -8,7 +10,7 @@ class Market < ApplicationRecord
       @force = force
     end
 
-    def call
+    def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       market.update_ingestion_info!
 
       time_key = time.to_s(:number)
@@ -31,11 +33,11 @@ class Market < ApplicationRecord
         end
 
       begin
-        args = type_ids.uniq.each_slice((type_ids.size / 100.0).round).to_a.each_with_object([]) do |type_ids, a|
+        args = type_ids.uniq.each_slice((type_ids.size / 100.0).round).to_a.each_with_object([]) do |type_ids, a| # rubocop:disable Lint/ShadowingOuterLocalVariable
           a << [market.id, type_ids, time_key, force]
         end
       rescue ArgumentError => e
-        raise "No types for #{log_name} at #{time.to_s(:db)}" if e.message =~ /slice size/
+        raise "No types for #{log_name} at #{time.to_s(:db)}" if /slice size/.match?(e.message)
       end
 
       unless args.any?

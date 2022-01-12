@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class Location < ApplicationRecord
   class SnapshotOrdersFromESIWorker < ApplicationWorker
     sidekiq_options retries: 3, lock: :until_executed
 
     def perform(location_id)
       time =
-        if (10_000_000..11_000_000) === location_id
+        if (10_000_000..11_000_000).cover?(location_id)
           Location::SnapshotOrdersFromESI.call(Region.find(location_id))
         else
           Location::SnapshotOrdersFromESI.call(Structure.find(location_id))

@@ -48,7 +48,7 @@ class ContractFitting < ApplicationRecord
   scope :outstanding, -> { joins(:contract).where("contracts.status = 'outstanding'") }
 
   def types
-    Type.find(items.keys).each_with_object({}) { |t, h| h[t.id] = t }
+    Type.find(items.keys).index_by(&:id)
   end
 
   def items_comparison
@@ -57,7 +57,7 @@ class ContractFitting < ApplicationRecord
         contract_items = contract.compact_items
         fitting_items = fitting.compact_items
 
-        items = fitting_items.transform_keys(&:to_i).each_with_object([]) do |(type_id, contract_qty), a|
+        items = fitting_items.transform_keys(&:to_i).each_with_object([]) do |(type_id, _contract_qty), a|
           a << {
             type: types[type_id],
             contract_quantity: contract_items[type_id],

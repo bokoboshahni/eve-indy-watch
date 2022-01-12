@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RegionPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve

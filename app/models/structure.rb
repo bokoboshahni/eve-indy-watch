@@ -73,7 +73,7 @@ class Structure < ApplicationRecord
 
   def available_esi_authorizations
     rel = ESIAuthorization.includes(:character).joins(character: :corporation)
-    rel.where('corporation_id IN (?)', [owner_id, owner&.alliance&.api_corporation_id].compact)
+    rel.where(corporation_id: [owner_id, owner&.alliance&.api_corporation_id].compact)
     rel.order('characters.name')
   end
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Fitting < ApplicationRecord
   class CalculateAllStockLevelsWorker < ApplicationWorker
     def perform(interval = nil)
@@ -10,7 +12,7 @@ class Fitting < ApplicationRecord
           error "Market #{market.log_name} has no snapshot in Redis"
           next
         end
-        
+
         jobs = market.fittings.pluck(:id).map { |fitting_id| [fitting_id, market.id, market_time, time, interval] }
         a.push(*jobs)
       end

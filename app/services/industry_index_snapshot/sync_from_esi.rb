@@ -6,7 +6,7 @@ class IndustryIndexSnapshot < ApplicationRecord
 
     class Error < RuntimeError; end
 
-    def call # rubocop:disable Metrics/AbcSize
+    def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       esi_retriable do
         last_expires = IndustryIndexSnapshot.distinct(:esi_expires_at).order('esi_expires_at DESC')&.first&.esi_expires_at
         if last_expires&.> Time.zone.now

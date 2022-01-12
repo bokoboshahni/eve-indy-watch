@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationFilter
   include ActiveModel::Model
   include ActiveModel::Attributes
@@ -24,8 +26,7 @@ class ApplicationFilter
     facets[name.to_sym] = opts
   end
 
-  def apply!(_scope)
-  end
+  def apply!(_scope); end
 
   def clear!
     @session[:filters] ||= {}
@@ -44,7 +45,7 @@ class ApplicationFilter
 
   def active?
     @session[:filters][filter_resource_class] ||= {}
-    @session[:filters][filter_resource_class].except('sort').values.any? { |v| v.present? }
+    @session[:filters][filter_resource_class].except('sort').values.any?(&:present?)
   end
 
   def active_for?(attribute, value = true)

@@ -3,7 +3,7 @@
 class ActionButtonComponent < ApplicationComponent
   attr_reader :color, :href, :margin
 
-  def initialize(color: 'indigo', href:, margin: nil)
+  def initialize(href:, color: 'indigo', margin: nil)
     @color = color
     @href = href
     @margin = margin

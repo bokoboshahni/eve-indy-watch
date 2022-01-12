@@ -19,7 +19,7 @@ class Fitting < ApplicationRecord
         h[fit_item] = contract_qty.zero? ? 0 : contract_qty / fit_qty
       end
 
-      similarity = match_items.values.select(&:positive?).count.to_d / match_items.count.to_d
+      similarity = match_items.values.count(&:positive?).to_d / match_items.count.to_d
 
       match_quantities = match_items.values
       full_matches = match_quantities.uniq.each_with_object([]) do |n, a|

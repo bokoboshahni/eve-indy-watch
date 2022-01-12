@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Admin
   class ReportsController < AdminController
     def index
@@ -8,7 +10,7 @@ module Admin
       @report = ApplicationReport.report(params[:id])
       @results = @report.run(current_user)
 
-      render @report.name.gsub(/Report\z/, '').underscore
+      render @report.name.delete_suffix('Report').underscore
     end
   end
 end

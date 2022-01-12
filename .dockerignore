@@ -1,0 +1,14 @@
+coverage/
+log/*.log
+node_modules
+tmp/screenshots
+tmp/cache
+tmp/fittings
+tmp/miniprofiler
+tmp/pids/*.pid
+tmp/sockets
+tmp/sde
+tmp/orders
+tmp/icons
+tmp/*.zip
+vendor/bundle

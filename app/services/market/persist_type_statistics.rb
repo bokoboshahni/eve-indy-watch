@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Market < ApplicationRecord
   class PersistTypeStatistics < ApplicationService
     def initialize(market_id, type_ids, time)
@@ -8,7 +10,7 @@ class Market < ApplicationRecord
       @time = time
     end
 
-    def call
+    def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       stats_keys = type_ids.map { |t| "#{market_key}.types.#{t}.stats" }
       stats_json = markets_reader.mapped_mget(*stats_keys)
       stats = stats_json.map do |(key, json)|

@@ -11,7 +11,7 @@ module Admin
 
       scope = Corporation.includes(:alliance)
       @filter = filter_for('Corporation')
-      @pagy, @corporations= pagy(@filter.apply!(scope))
+      @pagy, @corporations = pagy(@filter.apply!(scope))
 
       if turbo_frame_request?
         render partial: 'corporations', locals: { corporations: @corporations, filter: @filter, paginator: @pagy }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :data do
   task backfill_market_location_sources: :environment do
     MarketLocation.find_each do |market_location|

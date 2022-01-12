@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Filterable
   extend ActiveSupport::Concern
 
@@ -35,6 +37,6 @@ module Filterable
     filter_class.attribute_types.each_key do |name|
       filter_class.facets[name.to_sym]&.fetch(:array) ? array_names << name.to_sym : names << name
     end
-    params.permit(*names, **array_names.each_with_object({}) { |n, h| h[n] = [] })
+    params.permit(*names, **array_names.index_with { |_n| [] })
   end
 end

@@ -54,7 +54,7 @@ class Fitting < ApplicationRecord
       [type, name]
     end
 
-    def parse_lines(lines)
+    def parse_lines(lines) # rubocop:disable Metrics/MethodLength
       lines.each_with_object([]) do |line, a|
         next if line.blank? || line =~ STUB_PATTERN
 

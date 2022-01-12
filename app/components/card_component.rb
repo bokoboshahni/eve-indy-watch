@@ -1,10 +1,7 @@
 # frozen_string_literal: true
 
 class CardComponent < ApplicationComponent
-  attr_reader :title
-
-  attr_reader :body_class_names
-  attr_reader :footer_bg, :footer_padding
+  attr_reader :title, :body_class_names, :footer_bg, :footer_padding
 
   renders_one :header
   renders_one :body
@@ -21,7 +18,7 @@ class CardComponent < ApplicationComponent
   end
 
   def header_class_names
-    "px-4 py-5 sm:px-6"
+    'px-4 py-5 sm:px-6'
   end
 
   def footer_class_names

@@ -13,16 +13,22 @@ class Structure < ApplicationRecord
       @authorization = authorization
     end
 
-    def call # rubocop:disable Metrics/AbcSize
+    def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       expires_key = "locations.#{structure_id}.esi_expires"
       last_modified_key = "locations.#{structure_id}.esi_last_modified"
 
       struct = Structure.find_by(id: structure_id)
       if struct&.esi_expires_at&.>= Time.zone.now
-        logger.debug("ESI response for structure (#{struct.name}) #{struct.id} is not expired: #{struct.esi_expires_at.iso8601}") # rubocop:disable Metrics/LineLength
+        logger.debug("ESI response for structure (#{struct.name}) #{struct.id} is not expired: #{struct.esi_expires_at.iso8601}")
 
-        locations_writer.set(expires_key, struct.esi_expires_at.to_s(:number)) if locations_reader.exists(expires_key).zero?
-        locations_writer.set(last_modified_key, struct.esi_last_modified_at.to_s(:number)) if locations_reader.exists(last_modified_key).zero?
+        if locations_reader.exists(expires_key).zero?
+          locations_writer.set(expires_key,
+                               struct.esi_expires_at.to_s(:number))
+        end
+        if locations_reader.exists(last_modified_key).zero?
+          locations_writer.set(last_modified_key,
+                               struct.esi_last_modified_at.to_s(:number))
+        end
 
         return struct
       end
@@ -47,7 +53,7 @@ class Structure < ApplicationRecord
 
     attr_reader :authorization, :structure_id
 
-    def structure_attrs_from_esi
+    def structure_attrs_from_esi # rubocop:disable Metrics/MethodLength
       esi_retriable do
         esi_authorize!(authorization)
         auth = { Authorization: "Bearer #{authorization.access_token}" }

@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 module TypesHelper
   def market_order_range(val)
     if val.to_i.to_s == val
-      return pluralize(val.to_i, 'jump')
+      pluralize(val.to_i, 'jump')
     elsif val == 'solarsystem'
-      return 'System'
+      'System'
     else
       val.titleize
     end

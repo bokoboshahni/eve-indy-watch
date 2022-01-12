@@ -1,5 +1,9 @@
-class Ahoy::Store < Ahoy::DatabaseStore
-  def authenticate(_data); end
+# frozen_string_literal: true
+
+module Ahoy
+  class Store < Ahoy::DatabaseStore
+    def authenticate(_data); end
+  end
 end
 
 Ahoy.mask_ips = true

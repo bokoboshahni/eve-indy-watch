@@ -15,6 +15,6 @@ class CharacterPortraitComponent < ApplicationComponent
   def icon_url
     return character.portrait_url_256 if character.portrait_url_256
 
-    return asset_pack_path('media/images/character-default.png')
+    asset_pack_path('media/images/character-default.png')
   end
 end

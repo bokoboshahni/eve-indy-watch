@@ -1,2 +1,6 @@
-module Admin::DashboardsHelper
+# frozen_string_literal: true
+
+module Admin
+  module DashboardsHelper
+  end
 end

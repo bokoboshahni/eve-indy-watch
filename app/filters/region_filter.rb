@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RegionFilter < ApplicationFilter
   self.sorters = {}
   self.facets = {}

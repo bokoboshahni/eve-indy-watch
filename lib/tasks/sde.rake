@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-namespace :sde do # rubocop:disable Metrics/BlockLength
+namespace :sde do
   desc 'Downloads the latest EVE static data export'
   task download: :environment do
     SDE::DownloadSDE.call(Rails.root.join('tmp'))
@@ -9,7 +9,7 @@ namespace :sde do # rubocop:disable Metrics/BlockLength
   desc 'Loads the EVE static data export into the database'
   task load: %w[sde:load:corporations sde:load:items sde:load:map sde:load:inventory_flags sde:load:industry]
 
-  namespace :load do # rubocop:disable Metrics/BlockLength
+  namespace :load do
     task map: %i[regions constellations solar_systems stations]
 
     task items: %i[categories groups market_groups types]

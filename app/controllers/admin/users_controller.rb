@@ -42,7 +42,7 @@ module Admin
     end
 
     def user_params
-      params.require(:user).permit(:admin, :esi_authorizations_enabled, roles: [])
+      params.require(:user).permit(:esi_authorizations_enabled, roles: [])
     end
   end
 end

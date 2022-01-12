@@ -47,7 +47,7 @@ class Corporation < ApplicationRecord
 
   pg_search_scope :search_by_all, against: %i[name],
                                   associated_against: {
-                                    alliance: :name,
+                                    alliance: :name
                                   },
                                   using: {
                                     tsearch: { prefix: true }
@@ -76,8 +76,7 @@ class Corporation < ApplicationRecord
   delegate :name, to: :alliance, prefix: true, allow_nil: true
 
   def available_esi_authorizations
-    ESIAuthorization.includes(:character).joins(character: :corporation).where('corporation_id = ?',
-                                                                               id).order('characters.name')
+    ESIAuthorization.includes(:character).joins(character: :corporation).where(corporation_id: id).order('characters.name')
   end
 
   def esi_contracts_expired?

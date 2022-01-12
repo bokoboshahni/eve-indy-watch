@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationReport
   class_attribute :title
   class_attribute :description
@@ -7,11 +9,9 @@ class ApplicationReport
     exception = nil
     results = nil
     duration = Benchmark.realtime do
-      begin
-        results = new(*args, **kwargs).run
-      rescue StandardError => e
-        exception = e
-      end
+      results = new(*args, **kwargs).run
+    rescue StandardError => e
+      exception = e
     end
     status = exception ? 'error' : 'success'
 

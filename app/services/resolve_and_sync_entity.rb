@@ -7,7 +7,7 @@ class ResolveAndSyncEntity < ApplicationService
     @id = id
   end
 
-  def call
+  def call # rubocop:disable Metrics/MethodLength
     Retriable.retriable on: [Character::SyncFromESI::Error, Corporation::SyncFromESI::Error,
                              Alliance::SyncFromESI::Error] do
       case id
@@ -31,8 +31,6 @@ class ResolveAndSyncEntity < ApplicationService
             end
           end
         end
-      else
-        Character::SyncFromESI.call(id)
       end
     end
   end

@@ -59,8 +59,8 @@ class FittingsController < ApplicationController
 
   def stock_levels
     stock_levels = @fitting.stock_levels.where(market_id: market_param)
-                                        .where('time >= ?', 24.hours.ago)
-                                        .order(time: :asc)
+                           .where('time >= ?', 24.hours.ago)
+                           .order(time: :asc)
     render json: stock_levels.to_json
   end
 

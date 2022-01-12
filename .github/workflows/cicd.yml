@@ -1,0 +1,269 @@
+name: CICD
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  release:
+    types: [published]
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    if: github.event_name != 'release'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+
+      - name: Ruby gem cache
+        uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+
+      - name: Install gems
+        run: |
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
+
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Find yarn cache location
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Yarn package cache
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install yarn packages
+        run: |
+          yarn install --pure-lockfile
+
+      - name: Run linters
+        run: |
+          bundle exec rubocop -P
+          yarn stylelint app/javascript/**/*.scss
+          yarn eslint app/javascript
+          yarn prettier --check app/javascript/**/*.{scss,js}
+
+  security:
+    name: Security
+    runs-on: ubuntu-latest
+    if: github.event_name != 'release'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+
+      - name: Ruby gem cache
+        uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+
+      - name: Install gems
+        run: |
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
+
+      - name: Run security checks
+        run: |
+          bundle exec brakeman -q -w2
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    if: github.event_name != 'release'
+    services:
+      postgres:
+        image: timescale/timescaledb:latest-pg14
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+
+      - name: Ruby gem cache
+        uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+
+      - name: Install gems
+        run: |
+          bundle config path vendor/bundle
+          bundle install --jobs 4 --retry 3
+
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Find yarn cache location
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - name: Yarn package cache
+        uses: actions/cache@v2.1.6
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install yarn packages
+        run: |
+          yarn install --pure-lockfile
+
+      - name: Run tests
+        env:
+          RAILS_ENV: test
+        run: |
+          export SITE_NAME="EVE Indy Watch"
+          export ADMIN_CHARACTER_IDS=2119309952
+          export ALLOWED_ALLIANCE_IDS=99010079,99003214
+          export ESI_CLIENT_ID='dummy'
+          export ESI_CLIENT_SECRET='dummy'
+          export ESI_REDIRECT_URI=http://localhost:3000/auth/eve/callback
+          export LOCKBOX_MASTER_KEY=$(bin/rails lockbox_key)
+          export REDIS_URL=redis://redis:6379/0
+          export MAIN_ALLIANCE_ID=99003214
+          export MARKETS_READER_REDIS_URL=redis://redis:6379/1
+          export MARKETS_WRITER_REDIS_URL=redis://redis:6379/1
+          export ORDERS_READER_REDIS_URL=redis://redis:6379/2
+          export ORDERS_WRITER_REDIS_URL=redis://redis:6379/2
+          export LOCATIONS_READER_REDIS_URL=redis://redis:6379/3
+          export LOCATIONS_WRITER_REDIS_URL=redis://redis:6379/3
+          export SECRET_KEY_BASE=$(bin/rails secret)
+          export RAILS_ASSET_HOST=''
+          export DATABASE_URL=postgres://postgres:postgres@localhost:5432/eve_indy_watch
+          export STATISTICS_DATABASE_URL=postgres://postgres:postgres@localhost:5432/eve_indy_watch_stats
+          bin/rails db:setup
+          bundle exec rspec
+
+  build-and-push-image:
+    name: Build and Push Image
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: bokoboshahni/eve-indy-watch
+          tags: |
+            type=edge,branch=main
+            type=sha,prefix=edge-,format=short
+            type=semver,pattern={{version}}
+            type=semver,pattern={{version}}-alpine
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}.{{minor}}-alpine
+            type=semver,pattern={{major}},enable=${{ !startsWith(github.ref, 'refs/tags/v0.') }}
+            type=semver,pattern={{major}}-alpine,enable=${{ !startsWith(github.ref, 'refs/tags/v0.') }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new
+
+      -
+        # Temp fix
+        # https://github.com/docker/build-push-action/issues/252
+        # https://github.com/moby/buildkit/issues/1896
+        name: Move cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    needs:
+      - build-and-push-image
+      - lint
+      - security
+      - test
+    if: github.event_name != 'release' && needs.lint.result == 'success' && needs.security.result == 'success' && needs.test.result == 'success'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Release
+        env:
+          GIT_AUTHOR_NAME: "Bokobo Shahni"
+          GIT_AUTHOR_EMAIL: "shahni@bokobo.space"
+          GIT_COMMITTER_NAME: "Bokobo Shahni"
+          GIT_COMMITTER_EMAIL: "shahni@bokobo.space"
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          npx -p @semantic-release/changelog -p @semantic-release/git -p semantic-release semantic-release ${{ github.event_name == 'pull_request' && '--dry-run' || ' ' }}

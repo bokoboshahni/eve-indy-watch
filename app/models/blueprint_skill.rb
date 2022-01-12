@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # ## Schema Information
 #
 # Table name: `blueprint_skills`
@@ -34,7 +36,7 @@ class BlueprintSkill < ApplicationRecord
     research_material
     research_time
     reaction
-  ].each_with_object({}) { |v, h| h[v] = v.to_s }
+  ].index_with(&:to_s)
 
   # belongs_to :blueprint_activity, inverse_of: :skills
   belongs_to :blueprint_type, class_name: 'Type', inverse_of: :blueprint_skills

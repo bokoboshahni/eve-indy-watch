@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Region < ApplicationRecord
   class ImportTypeHistory < ApplicationService
     def initialize(region, type)
@@ -7,7 +9,7 @@ class Region < ApplicationRecord
       @type = type
     end
 
-    def call
+    def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       unless region.type_history_expired?(type)
         debug("Type histories have already been imported for #{type.log_name} in #{region.log_name} on #{Date.today}")
         return
@@ -22,9 +24,9 @@ class Region < ApplicationRecord
 
           raise "##{res.code}: #{res.body}" if res.code != 200
 
-          raise "##{res.code}: #{res.body}" if res.body =~ /error/
+          raise "##{res.code}: #{res.body}" if /error/.match?(res.body)
 
-          raise "##{res.code}: #{res.body}" if res.body =~ /\A50\d/
+          raise "##{res.code}: #{res.body}" if /\A50\d/.match?(res.body)
 
           raise "##{res.code}: (empty body)" if res.body.strip.empty?
 
