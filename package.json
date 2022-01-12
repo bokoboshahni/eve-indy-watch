@@ -1,4 +1,5 @@
 {
+  "name": "eve-indy-watch",
   "dependencies": {
     "@fullhuman/postcss-purgecss": "^4.0.3",
     "@hotwired/stimulus": "^3.0.1",
