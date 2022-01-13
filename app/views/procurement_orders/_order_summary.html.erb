@@ -178,7 +178,7 @@
             </div>
           </div>
         </div>
-      <% elsif policy(order).accept? && order.available? %>
+      <% elsif policy(order).accept? && order.available? && order.requester != current_user.character %>
         <div class="border-t border-gray-200 py-5 px-4 sm:px-6">
           <div data-controller="modal" data-modal-allow-background-close="false">
             <%= button_to receive_procurement_order_path(order), class: 'w-full bg-indigo-600 border border-transparent rounded-md shadow-sm py-3 px-4 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500', data: { action: 'click->modal#open' } do %>
