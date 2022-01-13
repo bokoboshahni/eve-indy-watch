@@ -13,7 +13,7 @@
 # **`acceptor_name`**               | `text`             |
 # **`acceptor_type`**               | `string`           |
 # **`assignee_name`**               | `text`             |
-# **`assignee_type`**               | `string`           | `not null`
+# **`assignee_type`**               | `text`             |
 # **`availability`**                | `text`             | `not null`
 # **`buyout`**                      | `decimal(, )`      |
 # **`collateral`**                  | `decimal(, )`      |
@@ -40,7 +40,7 @@
 # **`created_at`**                  | `datetime`         | `not null`
 # **`updated_at`**                  | `datetime`         | `not null`
 # **`acceptor_id`**                 | `bigint`           |
-# **`assignee_id`**                 | `bigint`           | `not null`
+# **`assignee_id`**                 | `bigint`           |
 # **`end_location_id`**             | `bigint`           |
 # **`issuer_corporation_id`**       | `bigint`           | `not null`
 # **`issuer_id`**                   | `bigint`           | `not null`

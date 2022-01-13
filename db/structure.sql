@@ -547,8 +547,8 @@ CREATE TABLE public.contracts (
     id bigint NOT NULL,
     acceptor_type character varying,
     acceptor_id bigint,
-    assignee_type character varying NOT NULL,
-    assignee_id bigint NOT NULL,
+    assignee_type text,
+    assignee_id bigint,
     end_location_type character varying,
     end_location_id bigint,
     issuer_id bigint NOT NULL,
@@ -3354,6 +3354,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220109212932'),
 ('20220111150219'),
 ('20220111150314'),
-('20220111214919');
+('20220111214919'),
+('20220113151030');
 
 
