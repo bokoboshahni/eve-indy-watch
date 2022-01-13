@@ -8,15 +8,9 @@ export default class extends Controller {
 
   connect() {
     document.addEventListener('autocomplete.change', this.autocomplete.bind(this))
-
-    // if(this.typeTarget.value) {
-    //   this.autocomplete(null)
-    // }
   }
 
   autocomplete(event) {
-    console.log(event)
-
     this.autocompleteTarget.classList.add('hidden')
 
     const url = "/orders/item?type_id=" + this.typeTarget.value
@@ -31,7 +25,7 @@ export default class extends Controller {
         this.groupTarget.innerHTML = data.group.name
         this.subtotalTarget.innerHTML = appraisalSellPrice.toLocaleString()
         this.quantityTarget.value = 1
-        this.priceTarget.value = appraisalSellPrice
+        this.priceTarget.value = appraisalSellPrice.toFixed(2)
         this.subtotalFieldTarget.value = appraisalSellPrice
         this.subtotalFieldTarget.dispatchEvent(new Event('change'))
 
@@ -53,7 +47,7 @@ export default class extends Controller {
 
   calculateTotal(_event) {
     const subtotal = (Math.round(((Number(this.quantityTarget.value) * Number(this.priceTarget.value)) + Number.EPSILON) * 100) / 100)
-    this.priceTarget.innerHTML = subtotal.toLocaleString()
+    this.subtotalTarget.innerHTML = subtotal.toLocaleString()
     this.subtotalFieldTarget.value = subtotal
     this.subtotalFieldTarget.dispatchEvent(new Event('change'))
   }
