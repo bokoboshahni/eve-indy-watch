@@ -3,7 +3,8 @@
   data-controller="autocomplete order-item" data-autocomplete-url-value="<%= autocomplete_market_types_path %>" data-autocomplete-min-length-value="3"
 >
   <% item = f.object %>
-  <div class="flex-1 flex flex-col py-3 <%= 'hidden' if item.persisted? %>" data-order-item-target="autocomplete">
+  <% show_item = item.persisted? || (item.type_id && item.errors.any?) %>
+  <div class="flex-1 flex flex-col py-3 <%= 'hidden' if show_item %>" data-order-item-target="autocomplete">
     <div class="flex items-center justify-between space-x-3">
       <div class="grow relative rounded-md shadow-sm">
         <%= f.label :type_id, 'Item', class: 'sr-only' %>
@@ -26,9 +27,9 @@
     </div>
   </div>
 
-  <div class="flex py-3 <%= 'hidden' unless item.persisted? %>" data-order-item-target="item">
+  <div class="flex py-3 <%= 'hidden' unless show_item %>" data-order-item-target="item">
     <div class="flex-shrink-0">
-      <% if item.persisted? %>
+      <% if show_item %>
         <%= render(TypeIconComponent.new(type: item.type, classes: 'w-8 h-8 rounded-md object-center object-cover')) %>
       <% else %>
         <img src="" alt="" class="w-8 h-8 rounded-md object-center object-cover" data-order-item-target="icon">
@@ -39,15 +40,15 @@
       <div class="relative pr-9 sm:grid sm:grid-cols-2 sm:gap-x-6 sm:pr-0">
         <div>
           <div class="flex justify-between">
-            <h3 class="text-sm font-medium text-gray-700" data-order-item-target="name"><%= item.name if item.persisted? %></h3>
+            <h3 class="text-sm font-medium text-gray-700" data-order-item-target="name"><%= item.name if show_item %></h3>
           </div>
           <div class="mt-1 flex text-sm">
-            <p class="text-gray-500" data-order-item-target="category"><%= item.category_name if item.persisted? %></p>
+            <p class="text-gray-500" data-order-item-target="category"><%= item.category_name if show_item %></p>
 
-            <p class="ml-4 pl-4 border-l border-gray-200 text-gray-500" data-order-item-target="group"><%= item.group_name if item.persisted? %></p>
+            <p class="ml-4 pl-4 border-l border-gray-200 text-gray-500" data-order-item-target="group"><%= item.group_name if show_item %></p>
           </div>
-          <p class="mt-1 text-sm font-medium text-gray-900"><span data-order-item-target="subtotal"><%= number_to_isk(item.subtotal) if item.persisted? %></span> ISK</p>
-          <%= hidden_field_tag :item_subtotal, item.persisted? ? item.subtotal : '', data: { order_item_target: 'subtotalField', order_target: 'itemSubtotal', action: 'change->order#calculateTotal' } %>
+          <p class="mt-1 text-sm font-medium text-gray-900"><span data-order-item-target="subtotal"><%= number_to_isk(item.subtotal) if show_item %></span> ISK</p>
+          <%= hidden_field_tag :item_subtotal, show_item ? item.subtotal : '', data: { order_item_target: 'subtotalField', order_target: 'itemSubtotal', action: 'change->order#calculateTotal' } %>
         </div>
 
         <div class="mt-4 sm:mt-0 flex items-center">
@@ -67,13 +68,13 @@
         <p class="flex items-center text-sm text-gray-700 space-x-2">
           <% market_name = main_alliance.appraisal_market_name %>
           <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-red-100 text-red-800">
-            <span class=font-medium"><%= market_name %> Sell:</span>&nbsp;<span data-order-item-target="sellPrice"><%= number_to_isk(item.type.market_sell_price(main_alliance.appraisal_market)) if item.persisted? %></span>
+            <span class=font-medium"><%= market_name %> Sell:</span>&nbsp;<span data-order-item-target="sellPrice"><%= number_to_isk(item.type.market_sell_price(main_alliance.appraisal_market)) if show_item %></span>
           </span>
           <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
-            <span class=font-medium"><%= market_name %> Buy:</span>&nbsp;<span data-order-item-target="buyPrice"><%= number_to_isk(item.type.market_buy_price(main_alliance.appraisal_market)) if item.persisted? %></span>
+            <span class=font-medium"><%= market_name %> Buy:</span>&nbsp;<span data-order-item-target="buyPrice"><%= number_to_isk(item.type.market_buy_price(main_alliance.appraisal_market)) if show_item %></span>
           </span>
           <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">
-            <span class=font-medium"><%= market_name %> Split:</span>&nbsp;<span data-order-item-target="splitPrice"><%= number_to_isk(item.type.market_split_price(main_alliance.appraisal_market)) if item.persisted? %></span>
+            <span class=font-medium"><%= market_name %> Split:</span>&nbsp;<span data-order-item-target="splitPrice"><%= number_to_isk(item.type.market_split_price(main_alliance.appraisal_market)) if show_item %></span>
           </span>
         </p>
         <div class="ml-4">

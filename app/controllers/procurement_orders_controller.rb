@@ -51,7 +51,7 @@ class ProcurementOrdersController < ApplicationController
     end
 
     if @order.save
-      flash[:success] = "Procurement order ##{@order.id} #{publishing? ? 'published' : 'created'} successfully."
+      flash[:success] = "Procurement order ##{@order.number} #{publishing? ? 'published' : 'created'} successfully."
       redirect_to procurement_order_path(@order)
     else
       flash[:error] = "Error #{publishing? ? 'publishing' : 'creating'} procurement order."
@@ -69,10 +69,11 @@ class ProcurementOrdersController < ApplicationController
     end
 
     if @order.update(update_params)
-      flash[:success] = "Procurement order ##{@order.id} #{publishing? ? 'published' : 'saved'} successfully."
+      flash[:success] = "Procurement order ##{@order.number} #{publishing? ? 'published' : 'saved'} successfully."
       redirect_to procurement_order_path(@order)
     else
       flash[:error] = "Error #{publishing? ? 'publishing' : 'saving'} procurement order #{@order.number}."
+      @order.status = :draft
       set_errors!(@order.errors)
       render :show
     end
