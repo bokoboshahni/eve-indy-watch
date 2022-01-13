@@ -1,164 +1,163 @@
-      <template data-nested-form-target="template">
-        <%= f.fields_for :items, @order.items.build, child_index: 'NEW_RECORD' do |item_fields| %>
-          <%= render 'item_form', f: item_fields %>
-        <% end %>
-      </template>
+<template data-nested-form-target="template">
+  <%= f.fields_for :items, @order.items.build, child_index: 'NEW_RECORD' do |item_fields| %>
+    <%= render 'item_form', f: item_fields %>
+  <% end %>
+</template>
 
-      <section aria-labelledby="info-heading">
-        <h3 id="info-heading" class="sr-only">
-          Order Information
-        </h3>
-        <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6 pb-6">
-          <div class="sm:col-span-6">
-            <%= f.label :notes, 'Order notes', class: 'block text-sm font-medium text-gray-700' %>
-            <div class="mt-1">
-              <%= f.text_area :notes, rows: 4, class: 'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md' %>
-            </div>
-          </div>
-
-          <div class="sm:col-span-6">
-            <%= f.label :requester_id, 'Deliver to', class: 'block text-sm font-medium text-gray-700' %>
-            <fieldset class="mt-1">
-              <legend class="sr-only">Requester</legend>
-              <div class="space-y-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-4">
-                <div class="flex items-center">
-                  <%= f.label :requester_gid, class: 'text-sm font-medium text-gray-700 flex flex-row-reverse items-center', value: current_user.character.to_global_id do %>
-                    <span class="block ml-3"><%= current_user.name %></span>
-                    <%= f.radio_button :requester_gid, current_user.character.to_global_id, checked: true, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300' %>
-                  <% end %>
-                </div>
-
-                <% if current_user.role?('corporation.orders.editor') %>
-                  <div class="flex items-center">
-                    <%= f.label :requester_gid, class: 'text-sm font-medium text-gray-700 flex flex-row-reverse items-center', value: current_user.corporation.to_global_id do %>
-                      <span class="block ml-3"><%= current_user.corporation_name %></span>
-                      <%= f.radio_button :requester_gid, current_user.corporation.to_global_id, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300' %>
-                    <% end %>
-                  </div>
-                <% end %>
-
-                <% if main_alliance.procurement_order_requester && current_user.role?('alliance.orders.editor') %>
-                  <div class="flex items-center">
-                    <%= f.label :requester_gid, class: 'text-sm font-medium text-gray-700 flex flex-row-reverse items-center', value: main_alliance.to_global_id do %>
-                      <span class="block ml-3"><%= main_alliance.name %> (<%= main_alliance.procurement_order_requester_name %>)</span>
-                      <%= f.radio_button :requester_gid, main_alliance.to_global_id, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300' %>
-                    <% end %>
-                  </div>
-                <% end %>
-              </div>
-            </fieldset>
-          </div>
-
-          <div class="sm:col-span-6">
-            <%= f.label :location_id, 'Delivery location', class: 'block text-sm font-medium text-gray-700' %>
-            <div class="mt-1">
-              <%= f.collection_select :location_id, main_alliance.locations.order(:name), :id, :name, { selected: main_alliance.default_location.id }, { class: 'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md' } %>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section aria-labelledby="items-heading" class="pt-6">
-        <header class="flex items-center justify-between space-x-5">
-          <div class="flex-1 min-w-0">
-            <h3 id="info-heading" class="text-lg leading-6 font-medium text-gray-900">
-              Items
-            </h3>
-          </div>
-          <div class="ml-4">
-            <button type="button"
-              class="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              data-action="nested-form#add"
-            >
-              <%= heroicon 'plus-sm', variant: :outline, options: { class: 'h-5 w-5' } %>
-            </button>
-          </div>
-        </header>
-
-        <div class="mt-6 pb-4">
-          <ul>
-            <%= f.fields_for :items do |item_fields| %>
-              <%= render 'item_form', f: item_fields %>
-            <% end %>
-            <div data-nested-form-target="target"></div>
-          </ul>
-        </div>
-      </section>
-
-    <section aria-labelledby="summary-heading" class="pt-8 pb-6">
-      <h3 id="summary-heading" class="sr-only">
-        Order Summary
-      </h3>
-
-      <div class="bg-gray-100 rounded-lg sm:p-6">
-        <div class="flow-root">
-          <dl class="-my-4 text-sm divide-y divide-gray-200">
-            <div class="py-2 flex items-center justify-between">
-              <dt class="text-gray-600">
-                Subtotal
-              </dt>
-              <dd class="font-medium text-gray-900">
-                <span data-order-target="subtotal"><%= number_to_isk(@order.subtotal) if @order.persisted? %></span>
-                &nbsp;ISK
-              </dd>
-            </div>
-            <div class="py-2 flex items-center justify-between">
-              <dt class="text-gray-600">
-                Multiplier
-              </dt>
-              <dd class="font-medium text-gray-900">
-                <div class="flex space-x-2 items-center justify-between block">
-                  <%= f.label :multiplier, 'Multiplier', class: 'sr-only' %>
-                  <div class="inline-block relative rounded-md shadow-sm">
-                    <%= f.number_field :multiplier, value: 100.0, min: 0, step: 5.0, class: 'focus:ring-indigo-500 focus:border-indigo-500 block w-48 pr-12 sm:text-xs border-gray-300 rounded-md', data: { order_target: 'multiplier', action: 'input->order#calculateTotal' } %>
-                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                      <span class="text-gray-500 sm:text-xs" id="multiplier-unit">
-                        %
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </dd>
-            </div>
-            <div class="py-2 flex items-center justify-between">
-              <dt class="text-gray-600">
-                Subtotal with multiplier
-              </dt>
-              <dd class="font-medium text-gray-900">
-                <span data-order-target="subtotalWithMultiplier"><%= number_to_isk(@order.subtotal_with_multiplier) if @order.persisted? %></span>
-                &nbsp;ISK
-              </dd>
-            </div>
-            <div class="py-2 flex items-center justify-between">
-              <dt class="text-gray-600">
-                Bonus
-              </dt>
-              <dd class="font-medium text-gray-900">
-                <div class="flex space-x-1 items-center justify-between block">
-                  <%= f.label :bonus, 'Bonus', class: 'sr-only' %>
-                  <div class="inline-block relative rounded-md shadow-sm">
-                    <%= f.number_field :bonus, value: 0, min: 0, step: 1_000_000.0, class: 'focus:ring-indigo-500 focus:border-indigo-500 block w-48 pr-12 sm:text-xs border-gray-300 rounded-md', data: { order_target: 'bonus', action: 'input->order#calculateTotal' } %>
-                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                      <span class="text-gray-500 sm:text-xs" id="bonus-unit">
-                        ISK
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </dd>
-            </div>
-            <div class="py-2 flex items-center justify-between">
-              <dt class="text-base font-medium text-gray-900">
-                Order total
-              </dt>
-              <dd class="text-base font-medium text-gray-900">
-                <span data-order-target="total"><%= number_to_isk(@order.total) if @order.persisted? %></span>
-                &nbsp;ISK
-              </dd>
-              <%= hidden_field_tag :price, '', data: { order_target: 'price' } %>
-            </div>
-          </dl>
-        </div>
+<section aria-labelledby="info-heading">
+  <h3 id="info-heading" class="sr-only">
+    Order Information
+  </h3>
+  <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6 pb-6">
+    <div class="sm:col-span-6">
+      <%= f.label :notes, 'Order notes', class: 'block text-sm font-medium text-gray-700' %>
+      <div class="mt-1">
+        <%= f.text_area :notes, rows: 4, class: 'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md' %>
       </div>
-    </section>
+    </div>
 
+    <div class="sm:col-span-6">
+      <%= f.label :requester_id, 'Deliver to', class: 'block text-sm font-medium text-gray-700' %>
+      <fieldset class="mt-1">
+        <legend class="sr-only">Requester</legend>
+        <div class="space-y-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-4">
+          <div class="flex items-center">
+            <%= f.label :requester_gid, class: 'text-sm font-medium text-gray-700 flex flex-row-reverse items-center', value: current_user.character.to_global_id do %>
+              <span class="block ml-3"><%= current_user.name %></span>
+              <%= f.radio_button :requester_gid, current_user.character.to_global_id, checked: true, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300' %>
+            <% end %>
+          </div>
+
+          <% if current_user.role?('corporation.orders.editor') %>
+            <div class="flex items-center">
+              <%= f.label :requester_gid, class: 'text-sm font-medium text-gray-700 flex flex-row-reverse items-center', value: current_user.corporation.to_global_id do %>
+                <span class="block ml-3"><%= current_user.corporation_name %></span>
+                <%= f.radio_button :requester_gid, current_user.corporation.to_global_id, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300' %>
+              <% end %>
+            </div>
+          <% end %>
+
+          <% if main_alliance.procurement_order_requester && current_user.role?('alliance.orders.editor') %>
+            <div class="flex items-center">
+              <%= f.label :requester_gid, class: 'text-sm font-medium text-gray-700 flex flex-row-reverse items-center', value: main_alliance.to_global_id do %>
+                <span class="block ml-3"><%= main_alliance.name %> (<%= main_alliance.procurement_order_requester_name %>)</span>
+                <%= f.radio_button :requester_gid, main_alliance.to_global_id, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300' %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="sm:col-span-6">
+      <%= f.label :location_id, 'Delivery location', class: 'block text-sm font-medium text-gray-700' %>
+      <div class="mt-1">
+        <%= f.collection_select :location_id, main_alliance.locations.order(:name), :id, :name, { selected: main_alliance.default_location.id }, { class: 'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md' } %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="items-heading" class="pt-6">
+  <header class="flex items-center justify-between space-x-5">
+    <div class="flex-1 min-w-0">
+      <h3 id="info-heading" class="text-lg leading-6 font-medium text-gray-900">
+        Items
+      </h3>
+    </div>
+    <div class="ml-4">
+      <button type="button"
+        class="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        data-action="nested-form#add"
+      >
+        <%= heroicon 'plus-sm', variant: :outline, options: { class: 'h-5 w-5' } %>
+      </button>
+    </div>
+  </header>
+
+  <div class="mt-6 pb-4">
+    <ul>
+      <%= f.fields_for :items do |item_fields| %>
+        <%= render 'item_form', f: item_fields %>
+      <% end %>
+      <div data-nested-form-target="target"></div>
+    </ul>
+  </div>
+</section>
+
+<section aria-labelledby="summary-heading" class="pt-8 pb-6">
+  <h3 id="summary-heading" class="sr-only">
+    Order Summary
+  </h3>
+
+  <div class="bg-gray-100 rounded-lg sm:p-6">
+    <div class="flow-root">
+      <dl class="-my-4 text-sm divide-y divide-gray-200">
+        <div class="py-2 flex items-center justify-between">
+          <dt class="text-gray-600">
+            Subtotal
+          </dt>
+          <dd class="font-medium text-gray-900">
+            <span data-order-target="subtotal"><%= number_to_isk(@order.subtotal) if @order.persisted? %></span>
+            &nbsp;ISK
+          </dd>
+        </div>
+        <div class="py-2 flex items-center justify-between">
+          <dt class="text-gray-600">
+            Multiplier
+          </dt>
+          <dd class="font-medium text-gray-900">
+            <div class="flex space-x-2 items-center justify-between block">
+              <%= f.label :multiplier, 'Multiplier', class: 'sr-only' %>
+              <div class="inline-block relative rounded-md shadow-sm">
+                <%= f.number_field :multiplier, value: 100.0, min: 0, step: 5.0, class: 'focus:ring-indigo-500 focus:border-indigo-500 block w-48 pr-12 sm:text-xs border-gray-300 rounded-md', data: { order_target: 'multiplier', action: 'input->order#calculateTotal' } %>
+                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                  <span class="text-gray-500 sm:text-xs" id="multiplier-unit">
+                    %
+                  </span>
+                </div>
+              </div>
+            </div>
+          </dd>
+        </div>
+        <div class="py-2 flex items-center justify-between">
+          <dt class="text-gray-600">
+            Subtotal with multiplier
+          </dt>
+          <dd class="font-medium text-gray-900">
+            <span data-order-target="subtotalWithMultiplier"><%= number_to_isk(@order.subtotal_with_multiplier) if @order.persisted? %></span>
+            &nbsp;ISK
+          </dd>
+        </div>
+        <div class="py-2 flex items-center justify-between">
+          <dt class="text-gray-600">
+            Bonus
+          </dt>
+          <dd class="font-medium text-gray-900">
+            <div class="flex space-x-1 items-center justify-between block">
+              <%= f.label :bonus, 'Bonus', class: 'sr-only' %>
+              <div class="inline-block relative rounded-md shadow-sm">
+                <%= f.number_field :bonus, value: 0, min: 0, step: 1_000_000.0, class: 'focus:ring-indigo-500 focus:border-indigo-500 block w-48 pr-12 sm:text-xs border-gray-300 rounded-md', data: { order_target: 'bonus', action: 'input->order#calculateTotal' } %>
+                <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                  <span class="text-gray-500 sm:text-xs" id="bonus-unit">
+                    ISK
+                  </span>
+                </div>
+              </div>
+            </div>
+          </dd>
+        </div>
+        <div class="py-2 flex items-center justify-between">
+          <dt class="text-base font-medium text-gray-900">
+            Order total
+          </dt>
+          <dd class="text-base font-medium text-indigo-600">
+            <span data-order-target="total"><%= number_to_isk(@order.total) if @order.persisted? %></span>
+            &nbsp;ISK
+          </dd>
+          <%= hidden_field_tag :price, '', data: { order_target: 'price' } %>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>
