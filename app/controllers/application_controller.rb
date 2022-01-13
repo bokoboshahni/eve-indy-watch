@@ -82,4 +82,18 @@ class ApplicationController < ActionController::Base
   def set_errors!(errors)
     @errors = errors
   end
+
+  def app_package
+    @app_package = Oj.load(File.read(Rails.root.join('package.json')))
+  end
+
+  helper_method :app_version
+  def app_version
+    app_package['version']
+  end
+
+  helper_method :app_version_url
+  def app_version_url
+    "https://github.com/bokoboshahni/eve-indy-watch/releases/tag/v#{app_version}"
+  end
 end
