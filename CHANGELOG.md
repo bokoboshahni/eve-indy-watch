@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+## [1.1.1](https://github.com/bokoboshahni/eve-indy-watch/compare/v1.1.0...v1.1.1) (2022-01-13)
+
+
+### Bug Fixes
+
+* allow nil assignee for public contracts ([97fd3cc](https://github.com/bokoboshahni/eve-indy-watch/commit/97fd3cca0ef206ea52ea12391c9010c63bac8be0))
+
 # [1.1.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v1.0.2...v1.1.0) (2022-01-13)
 
 
