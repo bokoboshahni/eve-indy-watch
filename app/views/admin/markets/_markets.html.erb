@@ -47,12 +47,18 @@
               <%= market.regional? ? '1' : market.market_locations.count %>
             </div>
           <% end %>
-          <% tr.cell padding: 'px-4 py-1' do %>
+          <%
+            orders_classes = market.orders_last_modified >= 10.minutes.ago ? 'bg-green-300' : 'bg-red-300'
+            tr.cell padding: 'px-4 py-1', classes: orders_classes do
+          %>
             <div class="text-xs font-medium text-gray-900">
               <%= local_time market.orders_last_modified, format: :db if market.orders_last_modified %>
             </div>
           <% end %>
-          <% tr.cell padding: 'px-4 py-1' do %>
+          <%
+            snapshot_classes = (market.orders_last_modified - market.latest_snapshot_time) <= 600 ?  'bg-green-300' : 'bg-red-300'
+            tr.cell padding: 'px-4 py-1', classes: snapshot_classes do
+          %>
             <div class="text-xs font-medium text-gray-900">
               <%= local_time market.latest_snapshot_time, format: :db if market.latest_snapshot_time %>
             </div>
