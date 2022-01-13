@@ -48,7 +48,8 @@ class Market < ApplicationRecord
             end
 
             @current_orders = market_location_ids.each_with_object({}) do |location_id, h|
-              orders_json = orders_reader.get(current_orders_keys[location_id])
+              orders_key = current_orders_keys[location_id]
+              orders_json = orders_reader.get(orders_key)
 
               if orders_json.blank?
                 error("No orders for #{orders_key} for #{log_name} at #{log_time}")
