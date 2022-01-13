@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Capistrano
-  module Prometheus
+  class Prometheus < Capistrano::Plugin
     class Systemd < Capistrano::Plugin
       include PrometheusCommon
 
