@@ -7,8 +7,8 @@ class ProcurementOrderPolicy < ApplicationPolicy
 
       new_scope = scope.where(requester_id: user.character_id)
       new_scope = new_scope.or(scope.where(supplier_id: user.character_id, status: %i[in_progress delivered]))
-      new_scope = new_scope.or(scope.where(requester_id: user.corporation_id, status: :draft)) if role?('corporation.orders.editor')
-      new_scope = new_scope.or(scope.where(requester_id: user.alliance_id, status: :draft)) if role?('alliance.orders.editor')
+      new_scope = new_scope.or(scope.where(requester_id: user.corporation_id, status: %i[in_progress delivered draft])) if role?('corporation.orders.editor')
+      new_scope = new_scope.or(scope.where(requester_id: user.alliance_id, status: %i[in_progress delivered draft])) if role?('alliance.orders.editor')
       new_scope.or(scope.available.where.not(status: :draft))
     end
   end
