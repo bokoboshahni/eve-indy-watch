@@ -1,5 +1,20 @@
 # EVE Indy Watch Changelog
 
+# [1.1.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v1.0.2...v1.1.0) (2022-01-13)
+
+
+### Bug Fixes
+
+* don't show accept button if requester is same as user character ([6750604](https://github.com/bokoboshahni/eve-indy-watch/commit/675060481b634173cab88701a441a5f58b1a9094))
+* duplicate order items on create ([b119323](https://github.com/bokoboshahni/eve-indy-watch/commit/b119323f412e48d213dae6c193e9f4764d9a6949))
+
+
+### Features
+
+* banner for delivered orders ([acf6b63](https://github.com/bokoboshahni/eve-indy-watch/commit/acf6b638aa2b2a2716bd3923fbe5d889cfaafcb2))
+* modal for draft delete button ([e2cc1d5](https://github.com/bokoboshahni/eve-indy-watch/commit/e2cc1d54a8b3c53d6fefaf298122359ade05282f))
+* procurement orders mvp ([385f0e3](https://github.com/bokoboshahni/eve-indy-watch/commit/385f0e3b2527b4fc8ab16c3dd0a4d8e5d9d478c0))
+
 ## [1.0.2](https://github.com/bokoboshahni/eve-indy-watch/compare/v1.0.1...v1.0.2) (2022-01-13)
 
 
