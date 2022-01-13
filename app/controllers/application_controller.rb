@@ -36,7 +36,7 @@ class ApplicationController < ActionController::Base
 
   def not_authorized
     flash[:error] = "You aren't allowed to do that."
-    redirect_to(request.referrer || root_path)
+    redirect_to(request.referer || root_path)
   end
 
   helper_method :main_alliance
