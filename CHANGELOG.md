@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+## [1.3.4](https://github.com/bokoboshahni/eve-indy-watch/compare/v1.3.3...v1.3.4) (2022-01-13)
+
+
+### Bug Fixes
+
+* procurement order ui tweaks ([#28](https://github.com/bokoboshahni/eve-indy-watch/issues/28)) ([05a29bf](https://github.com/bokoboshahni/eve-indy-watch/commit/05a29bf843a0f56c4970a16d0000632e10b339ea))
+
 ## [1.3.3](https://github.com/bokoboshahni/eve-indy-watch/compare/v1.3.2...v1.3.3) (2022-01-13)
 
 
