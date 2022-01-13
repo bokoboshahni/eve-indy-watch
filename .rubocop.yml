@@ -54,3 +54,7 @@ Style/Documentation:
 
 Layout/LineLength:
   Max: 180
+
+Rails/RakeEnvironment:
+  Exclude:
+    - 'lib/capistrano/**/*.rake'

@@ -5,7 +5,7 @@ git_plugin = self
 namespace :prometheus do
   namespace :systemd do
     desc 'Config Prometheus systemd service'
-    task config: :environment do
+    task :config do
       on roles(fetch(:prometheus_role)) do |role|
         upload_compiled_template = lambda do |template_name, unit_filename|
           git_plugin.template_prometheus template_name, "#{fetch(:tmp_dir)}/#{unit_filename}", role
@@ -25,7 +25,7 @@ namespace :prometheus do
     end
 
     desc 'Generate service configuration locally'
-    task generate_config_locally: :environment do
+    task :generate_config_locally do
       fake_role = Struct.new(:hostname)
       run_locally do
         File.write('prometheus.service',
@@ -34,7 +34,7 @@ namespace :prometheus do
     end
 
     desc 'Enable Prometheus systemd service'
-    task enable: :environment do
+    task :enable do
       on roles(fetch(:prometheus_role)) do
         git_plugin.execute_systemd('enable', fetch(:prometheus_service_unit_name))
 
@@ -43,7 +43,7 @@ namespace :prometheus do
     end
 
     desc 'Disable Prometheus systemd service'
-    task disable: :environment do
+    task :disable do
       on roles(fetch(:prometheus_role)) do
         git_plugin.execute_systemd('disable', fetch(:prometheus_service_unit_name))
       end
@@ -51,28 +51,28 @@ namespace :prometheus do
   end
 
   desc 'Start Prometheus service via systemd'
-  task start: :environment do
+  task :start do
     on roles(fetch(:prometheus_role)) do
       git_plugin.execute_systemd('start', fetch(:prometheus_service_unit_name))
     end
   end
 
   desc 'Stop Prometheus service via systemd'
-  task stop: :environment do
+  task :stop do
     on roles(fetch(:prometheus_role)) do
       git_plugin.execute_systemd('stop', fetch(:prometheus_service_unit_name))
     end
   end
 
   desc 'Restart Prometheus service via systemd'
-  task restart: :environment do
+  task :restart do
     on roles(fetch(:prometheus_role)) do
       git_plugin.execute_systemd('restart', fetch(:prometheus_service_unit_name))
     end
   end
 
   desc 'Get Prometheus service status via systemd'
-  task status: :environment do
+  task :status do
     on roles(fetch(:prometheus_role)) do
       git_plugin.execute_systemd('status', fetch(:prometheus_service_unit_name))
     end
