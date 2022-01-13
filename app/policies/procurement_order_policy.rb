@@ -55,6 +55,20 @@ class ProcurementOrderPolicy < ApplicationPolicy
     role?('character.orders.supplier')
   end
 
+  def receive?
+    update?
+  end
+
+  def redraft?
+    update?
+  end
+
+  def release?
+    return true if record.supplier == user.character
+
+    false
+  end
+
   private
 
   def any_orders_role?
