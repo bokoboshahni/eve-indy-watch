@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [1.3.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v1.2.0...v1.3.0) (2022-01-13)
+
+
+### Features
+
+* show app version in side nav ([daa9afc](https://github.com/bokoboshahni/eve-indy-watch/commit/daa9afca6e8e8d0e806e223e637a3afdc1d59fa4))
+
 # [1.2.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v1.1.1...v1.2.0) (2022-01-13)
 
 
