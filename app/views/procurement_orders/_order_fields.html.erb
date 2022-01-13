@@ -155,7 +155,7 @@
                 <span data-order-target="total"><%= number_to_isk(@order.total) if @order.persisted? %></span>
                 &nbsp;ISK
               </dd>
-              <%= hidden_field_tag :price, data: { order_target: 'price' } %>
+              <%= hidden_field_tag :price, '', data: { order_target: 'price' } %>
             </div>
           </dl>
         </div>
