@@ -14,7 +14,7 @@ gem 'activerecord-nulldb-adapter', '~> 0.8'
 gem 'ahoy_matey', '~> 4.0'
 gem 'ancestry', '~> 4.1'
 gem 'awesome_print', '~> 1.9'
-gem 'aws-sdk-s3', '~> 1.110'
+gem 'aws-sdk-s3', '~> 1.111'
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'composite_primary_keys', '~> 13.0'
 gem 'discard', '~> 1.2'
