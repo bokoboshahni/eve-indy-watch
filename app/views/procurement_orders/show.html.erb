@@ -136,7 +136,13 @@
   <% elsif @order.in_progress? && current_user.character == @order.supplier %>
     <div class="max-w-3xl">
       <p class="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl">Order accepted.</p>
-      <p class="mt-2 text-base text-gray-500">You have agreed to supply order #<%= @order.number %>. Once you've completed the order, create an item exchange contract to <span class="font-medium text-gray-900"><%= @order.requester_name %></span> at <span class="font-medium text-gray-900"><%= @order.location_name %></span> for <span class="font-medium text-gray-900"><%= number_to_isk @order.total %> ISK</span> with <span class="font-medium text-gray-900"><%= @order.tracking_number %></span> as the contract description.</p>
+      <p class="mt-2 text-base text-gray-500">
+        You have agreed to supply order #<%= @order.number %>.
+        Once you've completed the order, create an item exchange contract to <span class="font-medium text-gray-900"><%= @order.requester.is_a?(Alliance) ? @order.requester.procurement_order_requester.name : @order.requester_name %></span>
+        at <span class="font-medium text-gray-900"><%= @order.location_name %></span>
+        for <span class="font-medium text-gray-900"><%= number_to_isk @order.total %> ISK</span>
+        with <span class="font-medium text-gray-900"><%= @order.tracking_number %></span> as the contract description.
+      </p>
 
       <!--
       <dl class="mt-12 text-sm font-medium">
