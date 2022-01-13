@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [1.2.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v1.1.1...v1.2.0) (2022-01-13)
+
+
+### Features
+
+* visual indicator of market sync healthiness ([0712050](https://github.com/bokoboshahni/eve-indy-watch/commit/0712050c8dcb901e861fd8de4480d8576dcb2361))
+
 ## [1.1.1](https://github.com/bokoboshahni/eve-indy-watch/compare/v1.1.0...v1.1.1) (2022-01-13)
 
 
