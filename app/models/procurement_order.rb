@@ -25,6 +25,7 @@
 # **`supplier_name`**              | `text`             |
 # **`supplier_type`**              | `string`           |
 # **`tracking_number`**            | `bigint`           |
+# **`visibility`**                 | `enum`             |
 # **`created_at`**                 | `datetime`         | `not null`
 # **`updated_at`**                 | `datetime`         | `not null`
 # **`location_id`**                | `bigint`           | `not null`
@@ -50,6 +51,8 @@ class ProcurementOrder < ApplicationRecord
 
   STATUSES = %i[draft available in_progress delivered].freeze
 
+  VISIBILITIES = %i[everyone corporation alliance].freeze
+
   has_paper_trail
 
   multisearchable against: %i[requester_name supplier_name location_name item_names notes], if: ->(r) { r.kept? }
@@ -64,6 +67,8 @@ class ProcurementOrder < ApplicationRecord
 
   enum status: STATUSES.index_with(&:to_s)
 
+  enum visibility: VISIBILITIES.index_with(&:to_s)
+
   attribute :multiplier, :decimal, default: 100.0
 
   belongs_to :requester, polymorphic: true, inverse_of: :requested_procurement_orders
@@ -76,6 +81,7 @@ class ProcurementOrder < ApplicationRecord
   validates :bonus, allow_blank: true, format: { with: /\A\d+(?:\.\d{0,2})?\z/ }, numericality: { greater_than_or_equal_to: 0 }
   validates :multiplier, presence: true, format: { with: /\A\d+(?:\.\d{0,2})?\z/ }, numericality: { greater_than: 0 }
   validates :status, presence: true, inclusion: { in: statuses.keys }
+  validates :visibility, presence: true, inclusion: { in: visibilities.keys }
   validates_associated :items
 
   validate :validate_already_accepted, on: :update

@@ -170,7 +170,7 @@ class ProcurementOrdersController < ApplicationController
   def create_params
     params.require(:procurement_order).permit(
       :appraisal_url,
-      :requester_gid, :deliver_by,
+      :requester_gid, :deliver_by, :visibility,
       :location_id, :notes, :bonus, :multiplier,
       items_attributes: %i[type_id quantity_required price]
     )
@@ -179,7 +179,7 @@ class ProcurementOrdersController < ApplicationController
   def update_params
     params.require(:procurement_order).permit(
       :appraisal_url,
-      :requester_gid, :deliver_by,
+      :requester_gid, :deliver_by, :visibility,
       :location_id, :notes, :bonus, :multiplier,
       items_attributes: %i[type_id quantity_required price _destroy id]
     )
