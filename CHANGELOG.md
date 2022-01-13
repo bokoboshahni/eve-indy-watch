@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+## [1.3.2](https://github.com/bokoboshahni/eve-indy-watch/compare/v1.3.1...v1.3.2) (2022-01-13)
+
+
+### Bug Fixes
+
+* use alliance procurement order requester ([#25](https://github.com/bokoboshahni/eve-indy-watch/issues/25)) ([2f60576](https://github.com/bokoboshahni/eve-indy-watch/commit/2f605763215c1aab5b8625da74fa35bcabf759a8))
+
 ## [1.3.1](https://github.com/bokoboshahni/eve-indy-watch/compare/v1.3.0...v1.3.1) (2022-01-13)
 
 
