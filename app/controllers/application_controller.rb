@@ -6,6 +6,8 @@ class ApplicationController < ActionController::Base
 
   before_action :check_rack_mini_profiler
 
+  rescue_from Pundit::NotAuthorizedError, with: :not_authorized
+
   protected
 
   helper_method :errors
@@ -30,6 +32,11 @@ class ApplicationController < ActionController::Base
   helper_method :logged_in?
   def logged_in?
     current_user.present?
+  end
+
+  def not_authorized
+    flash[:error] = "You aren't allowed to do that."
+    redirect_to(request.referrer || root_path)
   end
 
   helper_method :main_alliance
