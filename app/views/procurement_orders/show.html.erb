@@ -19,6 +19,19 @@
         </div>
       </div>
     </div>
+  <% elsif @order.delivered? %>
+    <div class="bg-indigo-50 border-l-4 border-indigo-400 p-4">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <%= heroicon 'truck', variant: :solid, options: { class: 'h-5 w-5 text-indigo-400' } %>
+        </div>
+        <div class="ml-3">
+          <p class="text-sm text-indigo-700">
+            This order was delivered <%= local_time @order.delivered_at, format: :long %>.
+          </p>
+        </div>
+      </div>
+    </div>
   <% elsif @order.available? %>
     <div class="max-w-3xl">
       <p class="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl">Available</p>
