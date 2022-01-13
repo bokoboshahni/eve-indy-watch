@@ -46,7 +46,7 @@ class Market < ApplicationRecord
         MarketTypeStats.import(records, raise_error: true, on_duplicate_key_ignore: true)
       end
 
-      debug(
+      info(
         "Persisted type statistics for #{type_ids.count} type(s) for market #{market_id} at #{time.to_s(:db)}",
         metric: METRIC_NAME, duration: import_duration * 1000.0
       )

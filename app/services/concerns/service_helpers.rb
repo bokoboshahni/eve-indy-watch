@@ -9,7 +9,7 @@ module ServiceHelpers
 
   protected
 
-  delegate :debug, :error, :info, :measure_info, :trace, :warn, to: :logger
+  delegate :debug, :error, :info, :measure_debug, :measure_info, :trace, :warn, to: :logger
 
   def cmd
     @cmd ||= TTY::Command.new(output: logger)

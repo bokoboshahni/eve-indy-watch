@@ -16,7 +16,7 @@ class Market < ApplicationRecord
       time_key = time.to_s(:number)
       existing_snapshot = market.snapshot_keys[time_key.to_i]
       if existing_snapshot && !force
-        warn("Market statistics have already been generated for #{log_name} at #{time.to_s(:db)}")
+        debug("Market statistics have already been generated for #{log_name} at #{time.to_s(:db)}")
         return
       end
 
