@@ -139,7 +139,7 @@ class ProcurementOrder < ApplicationRecord
   end
 
   def subtotal_with_multiplier
-    subtotal * (multiplier / 100.0)
+    subtotal.to_d * (multiplier.to_d / 100.0)
   end
 
   def item_names
@@ -147,7 +147,7 @@ class ProcurementOrder < ApplicationRecord
   end
 
   def total
-    subtotal_with_multiplier + bonus
+    subtotal_with_multiplier.to_d + bonus.to_d
   end
 
   def volume

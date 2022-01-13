@@ -7,6 +7,7 @@ class ProcurementOrdersController < ApplicationController
   before_action :find_order, only: %i[show edit update destroy accept release receive redraft]
 
   def index
+    authorize(ProcurementOrder)
     # store_filters!('ProcurementOrder')
 
     scope =
@@ -38,10 +39,12 @@ class ProcurementOrdersController < ApplicationController
 
   def new
     @order = ProcurementOrder.new
+    authorize(@order)
   end
 
   def create
     @order = ProcurementOrder.new(create_params)
+    authorize(@order)
 
     if publishing?
       @order.status = :available
@@ -157,6 +160,7 @@ class ProcurementOrdersController < ApplicationController
 
   def find_order
     @order = policy_scope(ProcurementOrder).find(params[:id] || params[:procurement_order_id])
+    authorize(@order)
   end
 
   def publishing?
