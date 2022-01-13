@@ -20,7 +20,9 @@ class Contract < ApplicationRecord
 
       corporation.transaction do # rubocop:disable Metrics/BlockLength
         entity_keys = %w[acceptor_id assignee_id issuer_id issuer_corporation_id]
-        entity_ids = entity_keys.each_with_object(Set.new) { |k, s| s.add(data[k]) if data[k] }
+        entity_ids = entity_keys.each_with_object(Set.new) do |k, s|
+          s.add(data[k]) if !data[k].zero? && data[k]
+        end
         entities = entity_ids.index_with { |id| find_and_sync_entity(id) }
 
         location_keys = %w[start_location_id end_location_id]

@@ -13,7 +13,7 @@
 # **`acceptor_name`**               | `text`             |
 # **`acceptor_type`**               | `string`           |
 # **`assignee_name`**               | `text`             |
-# **`assignee_type`**               | `string`           | `not null`
+# **`assignee_type`**               | `text`             |
 # **`availability`**                | `text`             | `not null`
 # **`buyout`**                      | `decimal(, )`      |
 # **`collateral`**                  | `decimal(, )`      |
@@ -40,7 +40,7 @@
 # **`created_at`**                  | `datetime`         | `not null`
 # **`updated_at`**                  | `datetime`         | `not null`
 # **`acceptor_id`**                 | `bigint`           |
-# **`assignee_id`**                 | `bigint`           | `not null`
+# **`assignee_id`**                 | `bigint`           |
 # **`end_location_id`**             | `bigint`           |
 # **`issuer_corporation_id`**       | `bigint`           | `not null`
 # **`issuer_id`**                   | `bigint`           | `not null`
@@ -98,7 +98,7 @@ class Contract < ApplicationRecord
                   versions: { class_name: 'ContractVersion' }
 
   belongs_to :acceptor, polymorphic: true, optional: true
-  belongs_to :assignee, polymorphic: true
+  belongs_to :assignee, polymorphic: true, optional: true
   belongs_to :end_location, polymorphic: true, optional: true
   belongs_to :issuer, class_name: 'Character', inverse_of: :issued_contracts
   belongs_to :issuer_corporation, class_name: 'Corporation', inverse_of: :issued_contracts
@@ -125,6 +125,10 @@ class Contract < ApplicationRecord
   scope :at, ->(id) { where(end_location_id: id) }
 
   scope :assigned_to, ->(id) { where(assignee_id: id) }
+
+  def public?
+    assignee.blank? && availability == 'public'
+  end
 
   def courier?
     type == 'courier'
