@@ -103,7 +103,7 @@ class Location < ApplicationRecord
           end
         end
 
-        info(
+        debug(
           "Fetched #{orders.count} order(s) from ESI for #{log_name} at #{log_time}",
           metric: "#{METRIC_NAME}/fetch",
           duration: fetch_duration * 1000
@@ -163,13 +163,13 @@ class Location < ApplicationRecord
             orders_writer.set("orders.#{location_id}.esi_expires", expires.to_s(:number))
           end
         else
-          logger.info("No orders for #{log_name} at #{log_time}")
+          debug("No orders for #{log_name} at #{log_time}")
         end
 
         next unless history_uploads_enabled?
 
         orders_file = "#{orders_dir}/#{time.to_s(:number)}.json"
-        measure_info(
+        measure_debug(
           "Wrote #{unique_orders.count} order(s) to #{orders_file} for #{log_name} at #{log_time}",
           metric: "#{METRIC_NAME}/write_file"
         ) do
@@ -177,7 +177,7 @@ class Location < ApplicationRecord
         end
 
         orders_file_bz2 = "#{orders_file}.bz2"
-        measure_info(
+        measure_debug(
           "Compressed #{orders_file} to #{orders_file_bz2} for #{log_name} at #{log_time}",
           metric: "#{METRIC_NAME}/compress_file"
         ) do
@@ -185,7 +185,7 @@ class Location < ApplicationRecord
         end
 
         history_path = "orders/#{location_id}/#{time.year}/#{time.month}/#{time.day}/#{File.basename(orders_file_bz2)}"
-        measure_info(
+        measure_debug(
           "Uploaded #{orders_file_bz2} to #{history_path} for #{log_name} at #{log_time}",
           metric: "#{METRIC_NAME}/upload_file"
         ) do

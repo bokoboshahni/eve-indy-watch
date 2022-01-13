@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Market < ApplicationRecord
-  class CalculateTypeStatistics < ApplicationService
+  class CalculateTypeStatistics < ApplicationService # rubocop:disable Metrics/ClassLength
     def initialize(market_id, type_id, time, force: false)
       super
 
@@ -13,7 +13,7 @@ class Market < ApplicationRecord
 
     def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       if markets_writer.exists("#{type_key}.stats").to_i == 1 && !force
-        debug("Market depth and order flow have already been calculated for #{log_name} at #{log_time}")
+        warn("Market depth and order flow have already been calculated for #{log_name} at #{log_time}")
         return
       end
 
@@ -51,7 +51,7 @@ class Market < ApplicationRecord
               orders_json = orders_reader.get(current_orders_keys[location_id])
 
               if orders_json.blank?
-                # trace("No orders for #{orders_key} for #{log_name} at #{log_time}")
+                error("No orders for #{orders_key} for #{log_name} at #{log_time}")
                 next
               end
 
@@ -80,18 +80,18 @@ class Market < ApplicationRecord
           end
         end
 
-        # debug(
-        #   "Loaded #{current_order_ids.count} current order(s) and #{previous_order_ids.count} previous order(s) from Redis for #{log_name} at #{log_time}",
-        #   metric: "#{METRIC_NAME}/load_orders", duration: order_ids_duration * 1000.0
-        # )
+        debug(
+          "Loaded #{current_order_ids.count} current order(s) and #{previous_order_ids.count} previous order(s) from Redis for #{log_name} at #{log_time}",
+          metric: "#{METRIC_NAME}/load_orders", duration: order_ids_duration * 1000.0
+        )
 
         deleted_order_ids = previous_order_ids - current_order_ids
         @deleted_orders = previous_orders.slice(*deleted_order_ids)
-        # debug("Found #{deleted_orders.count} deleted order(s) in current snapshot for #{log_name} at #{log_time}}")
+        debug("Found #{deleted_orders.count} deleted order(s) in current snapshot for #{log_name} at #{log_time}}")
 
         created_order_ids = current_order_ids - previous_order_ids
         @created_orders = current_orders.slice(*created_order_ids)
-        # debug("Found #{created_orders.count} created order(s) in current snapshot for #{log_name} at #{log_time}}")
+        debug("Found #{created_orders.count} created order(s) in current snapshot for #{log_name} at #{log_time}}")
 
         other_order_ids = current_order_ids - created_order_ids - deleted_order_ids
         @changed_orders = current_orders.slice(*other_order_ids).each_with_object({}) do |(id, co), h|
@@ -101,7 +101,7 @@ class Market < ApplicationRecord
 
           h[id] = [po, co]
         end
-        # debug("Found #{changed_orders.count} changed order(s) in current snapshot for #{log_name} at #{log_time}")
+        debug("Found #{changed_orders.count} changed order(s) in current snapshot for #{log_name} at #{log_time}")
 
         dom_duration = Benchmark.realtime do # rubocop:disable Metrics/BlockLength
           @dom = current_orders.values.group_by do |o| # rubocop:disable Metrics/BlockLength
@@ -183,10 +183,10 @@ class Market < ApplicationRecord
           dom[:sell]&.delete(:depth)
         end
 
-        # debug(
-        #   "Calculated depth of market for #{current_orders.count} order(s) for #{log_name} at #{log_time}",
-        #   metric: "#{METRIC_NAME}/dom", duration: dom_duration
-        # )
+        debug(
+          "Calculated depth of market for #{current_orders.count} order(s) for #{log_name} at #{log_time}",
+          metric: "#{METRIC_NAME}/dom", duration: dom_duration
+        )
 
         order_flow_duration = Benchmark.realtime do # rubocop:disable Metrics/BlockLength
           created_orders_by_side = created_orders.values.group_by { |o| o['s'] ? :buy : :sell }
@@ -233,10 +233,10 @@ class Market < ApplicationRecord
           order_flow[:sell]&.delete(:levels)
         end
 
-        # debug(
-        #   "Calculated order flow for #{order_flow[:levels].count} price levels from current snapshot for #{log_name} at #{log_time}",
-        #   metric: "#{METRIC_NAME}/order_flow", duration: order_flow_duration * 1000.0
-        # )
+        debug(
+          "Calculated order flow for #{order_flow[:levels].count} price levels from current snapshot for #{log_name} at #{log_time}",
+          metric: "#{METRIC_NAME}/order_flow", duration: order_flow_duration * 1000.0
+        )
 
         redis_duration = Benchmark.realtime do # rubocop:disable Metrics/BlockLength
           markets_writer.pipelined do # rubocop:disable Metrics/BlockLength
@@ -298,13 +298,13 @@ class Market < ApplicationRecord
           end
         end
 
-        # debug(
-        #   "Wrote depth of market and order flow for #{current_orders.count} order(s) to #{market_key}.#{type_id}.stats Redis for #{log_name} at #{log_time}",
-        #   metric: "#{METRIC_NAME}/write_redis", duration: redis_duration
-        # )
+        debug(
+          "Wrote depth of market and order flow for #{current_orders.count} order(s) to #{market_key}.#{type_id}.stats Redis for #{log_name} at #{log_time}",
+          metric: "#{METRIC_NAME}/write_redis", duration: redis_duration
+        )
       end
 
-      # debug("Calculated depth of market and order flow for #{log_name} at #{log_time}", metric: METRIC_NAME, duration: duration * 1000.0)
+      info("Calculated market statistics for #{log_name} at #{log_time}", metric: METRIC_NAME, duration: duration * 1000.0)
     end
 
     private
