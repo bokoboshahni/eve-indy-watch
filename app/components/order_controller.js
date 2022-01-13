@@ -8,7 +8,7 @@ export default class extends Controller {
     this.subtotalTarget.innerHTML = (Math.round((subtotal + Number.EPSILON) * 100) / 100).toLocaleString()
 
     const subtotalWithMultiplier = (Number(this.multiplierTarget.value) / 100) * subtotal
-    this.subtotalWithMultiplierTarget.innerHTML = subtotalWithMultiplier.toLocaleString() + ' ISK'
+    this.subtotalWithMultiplierTarget.innerHTML = subtotalWithMultiplier.toLocaleString()
 
     const bonus = Number(this.bonusTarget.value)
 
