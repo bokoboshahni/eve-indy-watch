@@ -86,11 +86,6 @@
 </section>
 
 <section aria-labelledby="items-heading" class="pt-6">
-  <template data-nested-form-target="template">
-    <%= f.fields_for :items, @order.items.build, child_index: 'NEW_RECORD' do |item_fields| %>
-      <%= render 'item_form', f: item_fields %>
-    <% end %>
-  </template>
 
   <header class="flex items-center justify-between space-x-5">
     <div class="flex-1 min-w-0">
@@ -109,7 +104,7 @@
   </header>
 
   <div class="mt-6 pb-4">
-    <ul>
+    <ul data-order-target="items">
       <%= f.fields_for :items do |item_fields| %>
         <%= render 'item_form', f: item_fields %>
       <% end %>
@@ -193,4 +188,9 @@
       </dl>
     </div>
   </div>
+  <template data-nested-form-target="template">
+    <%= f.fields_for :items, @order.items.build, child_index: 'NEW_RECORD' do |item_fields| %>
+      <%= render 'item_form', f: item_fields %>
+    <% end %>
+  </template>
 </section>
