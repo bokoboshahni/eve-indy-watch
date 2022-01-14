@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [1.4.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v1.3.4...v1.4.0) (2022-01-14)
+
+
+### Features
+
+* add visibility to procurement orders ([#29](https://github.com/bokoboshahni/eve-indy-watch/issues/29)) ([dd9c7d6](https://github.com/bokoboshahni/eve-indy-watch/commit/dd9c7d6c9be4fe8d17c2e08932f4cc9d82121c6c))
+
 ## [1.3.4](https://github.com/bokoboshahni/eve-indy-watch/compare/v1.3.3...v1.3.4) (2022-01-13)
 
 
