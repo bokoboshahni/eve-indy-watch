@@ -2934,7 +2934,7 @@ CREATE UNIQUE INDEX index_unique_fitting_stock_level_items ON public.fitting_sto
 -- Name: index_unique_fitting_stock_levels; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_unique_fitting_stock_levels ON public.fitting_stock_levels USING btree (fitting_id, market_id, "interval", "time" DESC);
+CREATE UNIQUE INDEX index_unique_fitting_stock_levels ON public.fitting_stock_levels USING btree (fitting_id, market_id, "interval", market_time DESC);
 
 
 --
@@ -3477,6 +3477,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220113151030'),
 ('20220113222032'),
 ('20220114201731'),
-('20220114202413');
+('20220114202413'),
+('20220115015439');
 
 

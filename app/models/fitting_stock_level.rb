@@ -39,12 +39,16 @@
 #     * **`fitting_id`**
 #     * **`market_id`**
 #     * **`interval`**
-#     * **`time DESC`**
+#     * **`market_time DESC`**
 #
 class FittingStockLevel < ApplicationRecord
   include FittingStockLevelCalculations
 
   self.primary_keys = :fitting_id, :market_id, :interval, :time
+
+  INTERVALS = %i[live end_of_day end_of_week end_of_month].freeze
+
+  enum interval: INTERVALS.index_with(&:to_s)
 
   belongs_to :fitting, inverse_of: :stock_levels, touch: true
   belongs_to :market, inverse_of: :fitting_stock_levels
@@ -54,9 +58,7 @@ class FittingStockLevel < ApplicationRecord
 
   accepts_nested_attributes_for :items
 
-  scope :end_of_day, -> { where(interval: 'daily') }
-  scope :end_of_week, -> { where(interval: 'weekly') }
-  scope :end_of_month, -> { where(interval: 'monthly') }
+  validates :interval, presence: true, inclusion: { in: intervals.keys }
 
   scope :last_7_days, -> { where(time: 7.days.ago.beginning_of_day..Time.zone.now.beginning_of_day) }
   scope :last_30_days, -> { where(time: 30.days.ago.beginning_of_day..Time.zone.now.beginning_of_day) }

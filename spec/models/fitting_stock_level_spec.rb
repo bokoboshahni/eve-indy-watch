@@ -39,7 +39,7 @@
 #     * **`fitting_id`**
 #     * **`market_id`**
 #     * **`interval`**
-#     * **`time DESC`**
+#     * **`market_time DESC`**
 #
 require 'rails_helper'
 

@@ -11,7 +11,7 @@ class CreateFittingStockLevels < ActiveRecord::Migration[6.1]
       );
     SQL
 
-    create_table :fitting_stock_levels, id: false, primary_key: %i[fitting_id market_id interval time] do |t|
+    create_table :fitting_stock_levels, id: false, primary_key: %i[fitting_id market_id interval time] do |t| # rubocop:disable Rails/CreateTableWithTimestamps
       t.references :fitting, null: false
       t.references :market, null: false
       t.column :interval, :fitting_stock_level_interval, null: false
@@ -37,7 +37,7 @@ class CreateFittingStockLevels < ActiveRecord::Migration[6.1]
       t.index %i[fitting_id market_id interval time], order: { time: :desc }, unique: true, name: :index_unique_fitting_stock_levels
     end
 
-    create_table :fitting_stock_level_items, id: false, primary_key: %i[fitting_id market_id type_id interval time] do |t|
+    create_table :fitting_stock_level_items, id: false, primary_key: %i[fitting_id market_id type_id interval time] do |t| # rubocop:disable Rails/CreateTableWithTimestamps
       t.references :fitting, null: false
       t.references :market, null: false
       t.references :type, null: false

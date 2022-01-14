@@ -17,18 +17,16 @@ class Fitting < ApplicationRecord
       @time = time.prev_day.beginning_of_day unless interval == :live
 
       stock_level = {
-        fitting_id: fitting_id,
         market_id: market_id,
         time: time,
-        market_time: market_time
+        market_time: market_time,
+        interval: interval
       }
 
       stock_level.merge!(contract_stock_level) if contract_stock_level_enabled?
       stock_level.merge!(market_stock_level) if market_stock_level_enabled?
 
-      stock_level[:interval] = interval
-
-      FittingStockLevel.create!(stock_level)
+      fitting.stock_levels.create!(stock_level)
     rescue ActiveRecord::RecordNotUnique
       error(
         "Stock level record already exists for #{fitting.log_name} in #{market.log_name} at #{time} and market " \
