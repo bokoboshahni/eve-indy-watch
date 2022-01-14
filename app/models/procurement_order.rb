@@ -84,9 +84,12 @@ class ProcurementOrder < ApplicationRecord
   validates :visibility, presence: true, inclusion: { in: visibilities.keys }
   validates_associated :items
 
-  validate :validate_already_accepted, on: :update
+  # validate :validate_accept, on: :update
+  validate :validate_publish
+  # validate :validate_receive, on: :update
   validate :validate_redraft, on: :update
-  validate :validate_has_items
+
+  validate :validate_updates_while_in_progress, on: :update
 
   delegate :name, to: :location, prefix: true
 
@@ -167,22 +170,40 @@ class ProcurementOrder < ApplicationRecord
     self.supplier_name = supplier&.name
   end
 
+  def validate_updates_while_in_progress
+    return unless in_progress?
+
+    # Supplier cannot be changed once an order is in progress
+    errors.add(:base, "Procurement order #{number} has already been accepted.") if supplier_id_changed? && supplier_id_was != nil
+  end
+
+  # def validate_accept
+  #   return unless in_progress? && status_changed?
+  # end
+
+  # def validate_receive
+  #   return unless delivered? && status_was == :in_progress
+  # end
+
   def validate_redraft
-    return unless status_changed?
+    return unless draft? && status_changed?
 
-    errors.add(:base, "Procurement order #{number} has a status of #{status_was.humanize.downcase} and cannot be edited.") if status == :draft && status_was != :available
+    unless status_was == :available
+      self.status = :available
+      errors.add(:base, "Procurement order #{number} has a status of #{status_was.humanize.downcase} and cannot be edited.")
+    end
   end
 
-  def validate_already_accepted
-    return unless in_progress? && supplier_changed?
+  # def validate_release
+  #   return unless available? && status_was == :in_progress
+  # end
 
-    errors.add(:base, "Procurement order #{number} has already been accepted.")
-  end
+  def validate_publish
+    return unless available? && status_changed?
 
-  def validate_has_items
-    return unless available? && items.empty?
-
-    self.status = :draft
-    errors.add(:base, 'Cannot publish procurement order with no items.')
+    if items.empty?
+      self.status = :draft
+      errors.add(:base, 'Cannot publish procurement order with no items.')
+    end
   end
 end
