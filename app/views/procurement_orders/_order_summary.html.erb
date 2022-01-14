@@ -72,11 +72,11 @@
               <dd class="-ml-2 -mt-4 flex flex-wrap items-center">
                 <div class="ml-2 mt-4 flex-shrink-0">
                   <% if order.requester.is_a?(Character) %>
-                    <%= render(CharacterPortraitComponent.new(character: order.requester, classes: 'h-12 w-auto rounded-md')) %>
+                    <%= render(CharacterPortraitComponent.new(character: order.requester, classes: 'h-8 w-auto rounded-md')) %>
                   <% elsif order.requester.is_a?(Corporation) %>
-                    <%= render(CorporationIconComponent.new(corporation: order.requester, classes: 'h-12 w-auto rounded-md')) %>
+                    <%= render(CorporationIconComponent.new(corporation: order.requester, classes: 'h-8 w-auto rounded-md')) %>
                   <% elsif order.requester.is_a?(Alliance) %>
-                    <%= render(AllianceIconComponent.new(alliance: order.requester, classes: 'h-12 w-auto rounded-md')) %>
+                    <%= render(AllianceIconComponent.new(alliance: order.requester, classes: 'h-8 w-auto rounded-md')) %>
                   <% end %>
                   <p class="sr-only"><%= order.requester.name %></p>
                 </div>
@@ -97,7 +97,7 @@
             <div class="mt-3">
               <dd class="-ml-2 -mt-4 flex flex-wrap items-center">
                 <div class="ml-2 mt-4 flex-shrink-0">
-                  <%= render(CorporationIconComponent.new(corporation: order.location.locatable.owner, classes: 'h-12 w-auto rounded-md')) %>
+                  <%= render(CorporationIconComponent.new(corporation: order.location.locatable.owner, classes: 'h-8 w-auto rounded-md')) %>
                   <p class="sr-only"><%= order.location_name %></p>
                 </div>
                 <div class="ml-4 mt-4">
@@ -108,6 +108,16 @@
               </dd>
             </div>
           </div>
+          <% if order.notes.present? %>
+          <div class="col-span-2">
+            <dt class="font-medium text-gray-900">Order notes</dt>
+            <div class="mt-3">
+              <p class="text-gray-900 text-xs prose whitespace-normal overflow-y-scroll max-h-24">
+                <%= order.notes %>
+              </p>
+            </div>
+          </div>
+          <% end %>
         </dl>
 
         <dl class="mt-8 divide-y divide-gray-200 text-sm lg:mt-0 lg:col-span-5">
@@ -123,10 +133,12 @@
             <dt class="text-gray-600">Subtotal with multiplier</dt>
             <dd class="font-medium text-gray-900"><%= number_to_isk(@order.subtotal_with_multiplier) %>&nbsp;ISK</dd>
           </div>
-          <div class="py-2 flex items-center justify-between">
-            <dt class="text-gray-600">Bonus</dt>
-            <dd class="font-medium text-gray-900"><%= number_to_isk(@order.bonus) %>&nbsp;ISK</dd>
-          </div>
+          <% if @order.bonus.positive? %>
+            <div class="py-2 flex items-center justify-between">
+              <dt class="text-gray-600">Bonus</dt>
+              <dd class="font-medium text-gray-900"><%= number_to_isk(@order.bonus) %>&nbsp;ISK</dd>
+            </div>
+          <% end %>
           <div class="pt-2 flex items-center justify-between">
             <dt class="font-medium text-gray-900">Order total</dt>
             <dd class="font-medium text-indigo-600"><%= number_to_isk(@order.total) if @order.persisted? %>&nbsp;ISK</dd>

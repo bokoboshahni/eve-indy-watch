@@ -4,7 +4,7 @@ class ProcurementOrdersController < ApplicationController
   include Filterable
 
   before_action :authenticate_user!
-  before_action :find_order, only: %i[show edit update destroy accept release receive redraft]
+  before_action :find_order, only: %i[show edit update destroy accept release receive redraft list_items_card]
 
   def index
     authorize(ProcurementOrder)
@@ -130,7 +130,7 @@ class ProcurementOrdersController < ApplicationController
     if @order.redraft!
       flash[:success] = "Procurement order #{@order.number} moved back to draft."
     else
-      flash[:error] = "Error movinv procurement order #{@order.number} back to draft."
+      flash[:error] = "Error moving procurement order #{@order.number} back to draft."
       set_errors!(@order.errors)
     end
 
@@ -156,6 +156,12 @@ class ProcurementOrdersController < ApplicationController
     render json: JSON.pretty_generate(json)
   end
 
+  def list_items_card
+    @items = @order.items.includes(:type)
+
+    render layout: false
+  end
+
   private
 
   def find_order
@@ -170,7 +176,7 @@ class ProcurementOrdersController < ApplicationController
   def create_params
     params.require(:procurement_order).permit(
       :appraisal_url,
-      :requester_gid, :deliver_by,
+      :requester_gid, :deliver_by, :visibility,
       :location_id, :notes, :bonus, :multiplier,
       items_attributes: %i[type_id quantity_required price]
     )
@@ -179,7 +185,7 @@ class ProcurementOrdersController < ApplicationController
   def update_params
     params.require(:procurement_order).permit(
       :appraisal_url,
-      :requester_gid, :deliver_by,
+      :requester_gid, :deliver_by, :visibility,
       :location_id, :notes, :bonus, :multiplier,
       items_attributes: %i[type_id quantity_required price _destroy id]
     )

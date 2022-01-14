@@ -2,14 +2,16 @@
 
 class ProcurementOrderPolicy < ApplicationPolicy
   class Scope < Scope
-    def resolve
+    def resolve # rubocop:disable Metrics/AbcSize
       return scope if user.admin?
 
       new_scope = scope.where(requester_id: user.character_id)
       new_scope = new_scope.or(scope.where(supplier_id: user.character_id, status: %i[in_progress delivered]))
       new_scope = new_scope.or(scope.where(requester_id: user.corporation_id, status: %i[in_progress delivered draft])) if role?('corporation.orders.editor')
       new_scope = new_scope.or(scope.where(requester_id: user.alliance_id, status: %i[in_progress delivered draft])) if role?('alliance.orders.editor')
-      new_scope.or(scope.available.where.not(status: :draft))
+      new_scope = new_scope.or(scope.available.where.not(status: :draft).where(requester_id: user.corporation_id, visibility: :corporation))
+      new_scope = new_scope.or(scope.available.where.not(status: :draft).where(requester_id: user.alliance_id, visibility: :alliance))
+      new_scope.or(scope.available.where.not(status: :draft).where("visibility = 'everyone' OR visibility IS NULL"))
     end
   end
 
@@ -23,7 +25,13 @@ class ProcurementOrderPolicy < ApplicationPolicy
     role?(/orders\.editor/)
   end
 
-  def show?
+  def show? # rubocop:disable Metrics/AbcSize
+    return true if admin?
+
+    return false if record.visibility == :corporation && record.requester != user.corporation
+
+    return false if record.visibility == :alliance && record.requester != user.alliance
+
     return true if role?('character.orders.editor') && record.requester == user.character
 
     return true if role?('alliance.orders.editor') && record.requester == user.alliance
@@ -67,6 +75,10 @@ class ProcurementOrderPolicy < ApplicationPolicy
     return true if record.supplier == user.character
 
     false
+  end
+
+  def list_items_card?
+    show?
   end
 
   private

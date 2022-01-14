@@ -15,18 +15,20 @@
       <fieldset class="mt-1">
         <legend class="sr-only">Requester</legend>
         <div class="space-y-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-4">
-          <div class="flex items-center">
-            <%= f.label :requester_gid, class: 'text-sm font-medium text-gray-700 flex flex-row-reverse items-center', value: current_user.character.to_global_id do %>
-              <span class="block ml-3"><%= current_user.name %></span>
-              <%= f.radio_button :requester_gid, current_user.character.to_global_id, checked: true, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300' %>
-            <% end %>
-          </div>
+          <% if current_user.role?('character.orders.editor') %>
+            <div class="flex items-center">
+              <%= f.label :requester_gid, class: 'text-sm font-medium text-gray-700 flex flex-row-reverse items-center', value: current_user.character.to_global_id do %>
+                <span class="block ml-3"><%= current_user.name %></span>
+                <%= f.radio_button :requester_gid, current_user.character.to_global_id, checked: true, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300' %>
+              <% end %>
+            </div>
+          <% end %>
 
           <% if current_user.role?('corporation.orders.editor') %>
             <div class="flex items-center">
               <%= f.label :requester_gid, class: 'text-sm font-medium text-gray-700 flex flex-row-reverse items-center', value: current_user.corporation.to_global_id do %>
                 <span class="block ml-3"><%= current_user.corporation_name %></span>
-                <%= f.radio_button :requester_gid, current_user.corporation.to_global_id, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300' %>
+                <%= f.radio_button :requester_gid, current_user.corporation.to_global_id, checked: !current_user.role?('character.orders.editor'), class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300' %>
               <% end %>
             </div>
           <% end %>
@@ -35,7 +37,38 @@
             <div class="flex items-center">
               <%= f.label :requester_gid, class: 'text-sm font-medium text-gray-700 flex flex-row-reverse items-center', value: main_alliance.to_global_id do %>
                 <span class="block ml-3"><%= main_alliance.name %> (<%= main_alliance.procurement_order_requester_name %>)</span>
-                <%= f.radio_button :requester_gid, main_alliance.to_global_id, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300' %>
+                <%= f.radio_button :requester_gid, main_alliance.to_global_id, checked: !current_user.role?('character.orders.editor') && !current_user.role?('corporation.orders.editor'), class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300' %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="sm:col-span-6">
+      <%= f.label :visibility, 'Visibility', class: 'block text-sm font-medium text-gray-700' %>
+      <fieldset class="mt-1">
+        <legend class="sr-only">Visibility</legend>
+        <div class="space-y-4 sm:flex sm:items-center sm:space-y-0 sm:space-x-4">
+          <div class="flex items-center">
+            <%= f.label :visibility, class: 'text-sm font-medium text-gray-700 flex flex-row-reverse items-center', value: :everyone do %>
+              <span class="block ml-3">Everyone</span>
+              <%= f.radio_button :visibility, :everyone, checked: true, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300' %>
+            <% end %>
+          </div>
+
+          <div class="flex items-center">
+            <%= f.label :visibility, class: 'text-sm font-medium text-gray-700 flex flex-row-reverse items-center', value: :corporation do %>
+              <span class="block ml-3"><%= current_user.corporation_name %></span>
+              <%= f.radio_button :visibility, :corporation, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300' %>
+            <% end %>
+          </div>
+
+          <% if current_user.alliance %>
+            <div class="flex items-center">
+              <%= f.label :visibility, class: 'text-sm font-medium text-gray-700 flex flex-row-reverse items-center', value: :alliance do %>
+                <span class="block ml-3"><%= current_user.alliance_name %></span>
+                <%= f.radio_button :visibility, :alliance, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300' %>
               <% end %>
             </div>
           <% end %>
@@ -53,11 +86,6 @@
 </section>
 
 <section aria-labelledby="items-heading" class="pt-6">
-  <template data-nested-form-target="template">
-    <%= f.fields_for :items, @order.items.build, child_index: 'NEW_RECORD' do |item_fields| %>
-      <%= render 'item_form', f: item_fields %>
-    <% end %>
-  </template>
 
   <header class="flex items-center justify-between space-x-5">
     <div class="flex-1 min-w-0">
@@ -76,7 +104,7 @@
   </header>
 
   <div class="mt-6 pb-4">
-    <ul>
+    <ul data-order-target="items">
       <%= f.fields_for :items do |item_fields| %>
         <%= render 'item_form', f: item_fields %>
       <% end %>
@@ -160,4 +188,9 @@
       </dl>
     </div>
   </div>
+  <template data-nested-form-target="template">
+    <%= f.fields_for :items, @order.items.build, child_index: 'NEW_RECORD' do |item_fields| %>
+      <%= render 'item_form', f: item_fields %>
+    <% end %>
+  </template>
 </section>

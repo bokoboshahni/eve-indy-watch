@@ -25,6 +25,7 @@
 # **`supplier_name`**              | `text`             |
 # **`supplier_type`**              | `string`           |
 # **`tracking_number`**            | `bigint`           |
+# **`visibility`**                 | `enum`             |
 # **`created_at`**                 | `datetime`         | `not null`
 # **`updated_at`**                 | `datetime`         | `not null`
 # **`location_id`**                | `bigint`           | `not null`
@@ -50,6 +51,8 @@ class ProcurementOrder < ApplicationRecord
 
   STATUSES = %i[draft available in_progress delivered].freeze
 
+  VISIBILITIES = %i[everyone corporation alliance].freeze
+
   has_paper_trail
 
   multisearchable against: %i[requester_name supplier_name location_name item_names notes], if: ->(r) { r.kept? }
@@ -64,6 +67,8 @@ class ProcurementOrder < ApplicationRecord
 
   enum status: STATUSES.index_with(&:to_s)
 
+  enum visibility: VISIBILITIES.index_with(&:to_s)
+
   attribute :multiplier, :decimal, default: 100.0
 
   belongs_to :requester, polymorphic: true, inverse_of: :requested_procurement_orders
@@ -76,11 +81,15 @@ class ProcurementOrder < ApplicationRecord
   validates :bonus, allow_blank: true, format: { with: /\A\d+(?:\.\d{0,2})?\z/ }, numericality: { greater_than_or_equal_to: 0 }
   validates :multiplier, presence: true, format: { with: /\A\d+(?:\.\d{0,2})?\z/ }, numericality: { greater_than: 0 }
   validates :status, presence: true, inclusion: { in: statuses.keys }
+  validates :visibility, presence: true, inclusion: { in: visibilities.keys }
   validates_associated :items
 
-  validate :validate_already_accepted, on: :update
+  # validate :validate_accept, on: :update
+  validate :validate_publish
+  # validate :validate_receive, on: :update
   validate :validate_redraft, on: :update
-  validate :validate_has_items
+
+  validate :validate_updates_while_in_progress, on: :update
 
   delegate :name, to: :location, prefix: true
 
@@ -161,20 +170,38 @@ class ProcurementOrder < ApplicationRecord
     self.supplier_name = supplier&.name
   end
 
+  def validate_updates_while_in_progress
+    return unless in_progress?
+
+    # Supplier cannot be changed once an order is in progress
+    errors.add(:base, "Procurement order #{number} has already been accepted.") if supplier_id_changed? && !supplier_id_was.nil?
+  end
+
+  # def validate_accept
+  #   return unless in_progress? && status_changed?
+  # end
+
+  # def validate_receive
+  #   return unless delivered? && status_was == :in_progress
+  # end
+
   def validate_redraft
-    return unless status_changed?
+    return unless draft? && status_changed?
 
-    errors.add(:base, "Procurement order #{number} has a status of #{status_was.humanize.downcase} and cannot be edited.") if status == :draft && status_was != :available
+    return unless status_was == :available
+
+    self.status = :available
+    errors.add(:base, "Procurement order #{number} has a status of #{status_was.humanize.downcase} and cannot be edited.")
   end
 
-  def validate_already_accepted
-    return unless status == :accepted && supplier_changed?
+  # def validate_release
+  #   return unless available? && status_was == :in_progress
+  # end
 
-    errors.add(:base, "Procurement order #{number} has already been accepted.")
-  end
+  def validate_publish
+    return unless available? && status_changed?
 
-  def validate_has_items
-    return unless available? && items.empty?
+    return unless items.empty?
 
     self.status = :draft
     errors.add(:base, 'Cannot publish procurement order with no items.')

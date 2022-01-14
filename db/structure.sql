@@ -104,6 +104,17 @@ CREATE TYPE public.procurement_order_status AS ENUM (
 );
 
 
+--
+-- Name: procurement_order_visibility; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.procurement_order_visibility AS ENUM (
+    'everyone',
+    'corporation',
+    'alliance'
+);
+
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -1286,7 +1297,8 @@ CREATE TABLE public.procurement_orders (
     supplier_name text,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    tracking_number bigint
+    tracking_number bigint,
+    visibility public.procurement_order_visibility
 );
 
 
@@ -3355,6 +3367,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220111150219'),
 ('20220111150314'),
 ('20220111214919'),
-('20220113151030');
+('20220113151030'),
+('20220113222032');
 
 

@@ -23,6 +23,19 @@ CREATE EXTENSION IF NOT EXISTS timescaledb WITH SCHEMA public;
 COMMENT ON EXTENSION timescaledb IS 'Enables scalable inserts and complex queries for time-series data';
 
 
+--
+-- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION pg_stat_statements IS 'track planning and execution statistics of all SQL statements executed';
+
 
 SET default_tablespace = '';
 
@@ -92,6 +105,395 @@ CREATE TABLE public.market_type_stats (
     flow jsonb
 );
 
+
+--
+-- Name: _hyper_12_10_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_10_chunk (
+    CONSTRAINT constraint_10 CHECK ((("time" >= '2022-01-10 19:00:00'::timestamp without time zone) AND ("time" < '2022-01-10 20:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_11_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_11_chunk (
+    CONSTRAINT constraint_11 CHECK ((("time" >= '2022-01-10 20:00:00'::timestamp without time zone) AND ("time" < '2022-01-10 21:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_12_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_12_chunk (
+    CONSTRAINT constraint_12 CHECK ((("time" >= '2022-01-10 21:00:00'::timestamp without time zone) AND ("time" < '2022-01-10 22:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_13_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_13_chunk (
+    CONSTRAINT constraint_13 CHECK ((("time" >= '2022-01-10 22:00:00'::timestamp without time zone) AND ("time" < '2022-01-10 23:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_14_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_14_chunk (
+    CONSTRAINT constraint_14 CHECK ((("time" >= '2022-01-10 23:00:00'::timestamp without time zone) AND ("time" < '2022-01-11 00:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_15_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_15_chunk (
+    CONSTRAINT constraint_15 CHECK ((("time" >= '2022-01-11 00:00:00'::timestamp without time zone) AND ("time" < '2022-01-11 01:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_16_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_16_chunk (
+    CONSTRAINT constraint_16 CHECK ((("time" >= '2022-01-11 01:00:00'::timestamp without time zone) AND ("time" < '2022-01-11 02:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_17_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_17_chunk (
+    CONSTRAINT constraint_17 CHECK ((("time" >= '2022-01-11 13:00:00'::timestamp without time zone) AND ("time" < '2022-01-11 14:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_18_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_18_chunk (
+    CONSTRAINT constraint_18 CHECK ((("time" >= '2022-01-11 14:00:00'::timestamp without time zone) AND ("time" < '2022-01-11 15:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_19_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_19_chunk (
+    CONSTRAINT constraint_19 CHECK ((("time" >= '2022-01-11 15:00:00'::timestamp without time zone) AND ("time" < '2022-01-11 16:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_20_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_20_chunk (
+    CONSTRAINT constraint_20 CHECK ((("time" >= '2022-01-11 16:00:00'::timestamp without time zone) AND ("time" < '2022-01-11 17:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_21_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_21_chunk (
+    CONSTRAINT constraint_21 CHECK ((("time" >= '2022-01-11 17:00:00'::timestamp without time zone) AND ("time" < '2022-01-11 18:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_22_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_22_chunk (
+    CONSTRAINT constraint_22 CHECK ((("time" >= '2022-01-11 18:00:00'::timestamp without time zone) AND ("time" < '2022-01-11 19:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_23_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_23_chunk (
+    CONSTRAINT constraint_23 CHECK ((("time" >= '2022-01-11 19:00:00'::timestamp without time zone) AND ("time" < '2022-01-11 20:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_24_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_24_chunk (
+    CONSTRAINT constraint_24 CHECK ((("time" >= '2022-01-11 20:00:00'::timestamp without time zone) AND ("time" < '2022-01-11 21:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_25_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_25_chunk (
+    CONSTRAINT constraint_25 CHECK ((("time" >= '2022-01-11 21:00:00'::timestamp without time zone) AND ("time" < '2022-01-11 22:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_26_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_26_chunk (
+    CONSTRAINT constraint_26 CHECK ((("time" >= '2022-01-11 22:00:00'::timestamp without time zone) AND ("time" < '2022-01-11 23:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_27_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_27_chunk (
+    CONSTRAINT constraint_27 CHECK ((("time" >= '2022-01-11 23:00:00'::timestamp without time zone) AND ("time" < '2022-01-12 00:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_28_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_28_chunk (
+    CONSTRAINT constraint_28 CHECK ((("time" >= '2022-01-12 00:00:00'::timestamp without time zone) AND ("time" < '2022-01-12 01:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_29_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_29_chunk (
+    CONSTRAINT constraint_29 CHECK ((("time" >= '2022-01-12 14:00:00'::timestamp without time zone) AND ("time" < '2022-01-12 15:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_30_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_30_chunk (
+    CONSTRAINT constraint_30 CHECK ((("time" >= '2022-01-12 13:00:00'::timestamp without time zone) AND ("time" < '2022-01-12 14:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_31_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_31_chunk (
+    CONSTRAINT constraint_31 CHECK ((("time" >= '2022-01-12 15:00:00'::timestamp without time zone) AND ("time" < '2022-01-12 16:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_32_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_32_chunk (
+    CONSTRAINT constraint_32 CHECK ((("time" >= '2022-01-12 16:00:00'::timestamp without time zone) AND ("time" < '2022-01-12 17:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_33_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_33_chunk (
+    CONSTRAINT constraint_33 CHECK ((("time" >= '2022-01-12 17:00:00'::timestamp without time zone) AND ("time" < '2022-01-12 18:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_34_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_34_chunk (
+    CONSTRAINT constraint_34 CHECK ((("time" >= '2022-01-13 14:00:00'::timestamp without time zone) AND ("time" < '2022-01-13 15:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_35_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_35_chunk (
+    CONSTRAINT constraint_35 CHECK ((("time" >= '2022-01-13 15:00:00'::timestamp without time zone) AND ("time" < '2022-01-13 16:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_36_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_36_chunk (
+    CONSTRAINT constraint_36 CHECK ((("time" >= '2022-01-13 16:00:00'::timestamp without time zone) AND ("time" < '2022-01-13 17:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_37_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_37_chunk (
+    CONSTRAINT constraint_37 CHECK ((("time" >= '2022-01-13 17:00:00'::timestamp without time zone) AND ("time" < '2022-01-13 18:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_38_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_38_chunk (
+    CONSTRAINT constraint_38 CHECK ((("time" >= '2022-01-13 18:00:00'::timestamp without time zone) AND ("time" < '2022-01-13 19:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_39_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_39_chunk (
+    CONSTRAINT constraint_39 CHECK ((("time" >= '2022-01-13 19:00:00'::timestamp without time zone) AND ("time" < '2022-01-13 20:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_40_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_40_chunk (
+    CONSTRAINT constraint_40 CHECK ((("time" >= '2022-01-13 20:00:00'::timestamp without time zone) AND ("time" < '2022-01-13 21:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_41_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_41_chunk (
+    CONSTRAINT constraint_41 CHECK ((("time" >= '2022-01-13 21:00:00'::timestamp without time zone) AND ("time" < '2022-01-13 22:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_42_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_42_chunk (
+    CONSTRAINT constraint_42 CHECK ((("time" >= '2022-01-13 22:00:00'::timestamp without time zone) AND ("time" < '2022-01-13 23:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_4_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_4_chunk (
+    CONSTRAINT constraint_4 CHECK ((("time" >= '2022-01-10 13:00:00'::timestamp without time zone) AND ("time" < '2022-01-10 14:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_5_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_5_chunk (
+    CONSTRAINT constraint_5 CHECK ((("time" >= '2022-01-10 14:00:00'::timestamp without time zone) AND ("time" < '2022-01-10 15:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_6_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_6_chunk (
+    CONSTRAINT constraint_6 CHECK ((("time" >= '2022-01-10 15:00:00'::timestamp without time zone) AND ("time" < '2022-01-10 16:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_7_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_7_chunk (
+    CONSTRAINT constraint_7 CHECK ((("time" >= '2022-01-10 16:00:00'::timestamp without time zone) AND ("time" < '2022-01-10 17:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_8_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_8_chunk (
+    CONSTRAINT constraint_8 CHECK ((("time" >= '2022-01-10 17:00:00'::timestamp without time zone) AND ("time" < '2022-01-10 18:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
+
+
+--
+-- Name: _hyper_12_9_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_12_9_chunk (
+    CONSTRAINT constraint_9 CHECK ((("time" >= '2022-01-10 18:00:00'::timestamp without time zone) AND ("time" < '2022-01-10 19:00:00'::timestamp without time zone)))
+)
+INHERITS (public.market_type_stats);
 
 
 --
@@ -346,6 +748,317 @@ ALTER TABLE ONLY public.ahoy_visits ALTER COLUMN id SET DEFAULT nextval('public.
 ALTER TABLE ONLY public.report_runs ALTER COLUMN id SET DEFAULT nextval('public.report_runs_id_seq'::regclass);
 
 
+--
+-- Name: _hyper_12_10_chunk 10_7_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_10_chunk
+    ADD CONSTRAINT "10_7_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_11_chunk 11_8_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_11_chunk
+    ADD CONSTRAINT "11_8_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_12_chunk 12_9_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_12_chunk
+    ADD CONSTRAINT "12_9_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_13_chunk 13_10_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_13_chunk
+    ADD CONSTRAINT "13_10_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_14_chunk 14_11_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_14_chunk
+    ADD CONSTRAINT "14_11_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_15_chunk 15_12_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_15_chunk
+    ADD CONSTRAINT "15_12_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_16_chunk 16_13_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_16_chunk
+    ADD CONSTRAINT "16_13_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_17_chunk 17_14_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_17_chunk
+    ADD CONSTRAINT "17_14_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_18_chunk 18_15_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_18_chunk
+    ADD CONSTRAINT "18_15_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_19_chunk 19_16_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_19_chunk
+    ADD CONSTRAINT "19_16_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_20_chunk 20_17_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_20_chunk
+    ADD CONSTRAINT "20_17_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_21_chunk 21_18_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_21_chunk
+    ADD CONSTRAINT "21_18_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_22_chunk 22_19_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_22_chunk
+    ADD CONSTRAINT "22_19_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_23_chunk 23_20_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_23_chunk
+    ADD CONSTRAINT "23_20_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_24_chunk 24_21_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_24_chunk
+    ADD CONSTRAINT "24_21_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_25_chunk 25_22_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_25_chunk
+    ADD CONSTRAINT "25_22_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_26_chunk 26_23_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_26_chunk
+    ADD CONSTRAINT "26_23_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_27_chunk 27_24_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_27_chunk
+    ADD CONSTRAINT "27_24_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_28_chunk 28_25_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_28_chunk
+    ADD CONSTRAINT "28_25_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_29_chunk 29_26_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_29_chunk
+    ADD CONSTRAINT "29_26_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_30_chunk 30_27_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_30_chunk
+    ADD CONSTRAINT "30_27_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_31_chunk 31_28_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_31_chunk
+    ADD CONSTRAINT "31_28_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_32_chunk 32_29_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_32_chunk
+    ADD CONSTRAINT "32_29_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_33_chunk 33_30_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_33_chunk
+    ADD CONSTRAINT "33_30_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_34_chunk 34_31_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_34_chunk
+    ADD CONSTRAINT "34_31_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_35_chunk 35_32_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_35_chunk
+    ADD CONSTRAINT "35_32_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_36_chunk 36_33_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_36_chunk
+    ADD CONSTRAINT "36_33_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_37_chunk 37_34_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_37_chunk
+    ADD CONSTRAINT "37_34_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_38_chunk 38_35_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_38_chunk
+    ADD CONSTRAINT "38_35_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_39_chunk 39_36_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_39_chunk
+    ADD CONSTRAINT "39_36_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_40_chunk 40_37_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_40_chunk
+    ADD CONSTRAINT "40_37_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_41_chunk 41_38_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_41_chunk
+    ADD CONSTRAINT "41_38_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_42_chunk 42_39_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_42_chunk
+    ADD CONSTRAINT "42_39_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_4_chunk 4_1_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_4_chunk
+    ADD CONSTRAINT "4_1_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_5_chunk 5_2_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_5_chunk
+    ADD CONSTRAINT "5_2_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_6_chunk 6_3_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_6_chunk
+    ADD CONSTRAINT "6_3_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_7_chunk 7_4_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_7_chunk
+    ADD CONSTRAINT "7_4_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_8_chunk 8_5_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_8_chunk
+    ADD CONSTRAINT "8_5_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
+
+--
+-- Name: _hyper_12_9_chunk 9_6_market_type_stats_pkey; Type: CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_12_9_chunk
+    ADD CONSTRAINT "9_6_market_type_stats_pkey" PRIMARY KEY (market_id, type_id, "time");
+
 
 --
 -- Name: ahoy_events ahoy_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
@@ -393,6 +1106,552 @@ ALTER TABLE ONLY public.report_runs
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: _hyper_12_10_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_10_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_10_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_10_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_10_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_10_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_11_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_11_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_11_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_11_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_11_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_11_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_12_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_12_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_12_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_12_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_12_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_12_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_13_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_13_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_13_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_13_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_13_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_13_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_14_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_14_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_14_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_14_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_14_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_14_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_15_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_15_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_15_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_15_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_15_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_15_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_16_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_16_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_16_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_16_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_16_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_16_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_17_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_17_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_17_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_17_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_17_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_17_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_18_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_18_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_18_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_18_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_18_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_18_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_19_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_19_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_19_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_19_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_19_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_19_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_20_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_20_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_20_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_20_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_20_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_20_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_21_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_21_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_21_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_21_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_21_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_21_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_22_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_22_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_22_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_22_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_22_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_22_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_23_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_23_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_23_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_23_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_23_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_23_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_24_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_24_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_24_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_24_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_24_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_24_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_25_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_25_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_25_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_25_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_25_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_25_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_26_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_26_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_26_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_26_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_26_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_26_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_27_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_27_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_27_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_27_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_27_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_27_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_28_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_28_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_28_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_28_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_28_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_28_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_29_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_29_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_29_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_29_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_29_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_29_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_30_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_30_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_30_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_30_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_30_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_30_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_31_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_31_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_31_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_31_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_31_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_31_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_32_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_32_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_32_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_32_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_32_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_32_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_33_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_33_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_33_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_33_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_33_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_33_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_34_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_34_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_34_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_34_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_34_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_34_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_35_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_35_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_35_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_35_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_35_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_35_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_36_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_36_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_36_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_36_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_36_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_36_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_37_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_37_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_37_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_37_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_37_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_37_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_38_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_38_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_38_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_38_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_38_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_38_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_39_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_39_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_39_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_39_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_39_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_39_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_40_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_40_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_40_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_40_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_40_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_40_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_41_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_41_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_41_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_41_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_41_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_41_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_42_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_42_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_42_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_42_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_42_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_42_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_4_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_4_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_4_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_4_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_4_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_4_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_5_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_5_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_5_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_5_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_5_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_5_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_6_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_6_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_6_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_6_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_6_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_6_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_7_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_7_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_7_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_7_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_7_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_7_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_8_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_8_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_8_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_8_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_8_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_8_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_12_9_chunk_index_unique_market_type_stats; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_12_9_chunk_index_unique_market_type_stats ON _timescaledb_internal._hyper_12_9_chunk USING btree (market_id, type_id, "time" DESC);
+
+
+--
+-- Name: _hyper_12_9_chunk_market_type_stats_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_12_9_chunk_market_type_stats_time_idx ON _timescaledb_internal._hyper_12_9_chunk USING btree ("time" DESC);
 
 
 --
@@ -521,31 +1780,46 @@ CREATE INDEX market_type_stats_time_idx ON public.market_type_stats USING btree 
 CREATE INDEX region_type_histories_date_idx ON public.region_type_histories USING btree (date DESC);
 
 
+--
+-- Name: fitting_stock_level_items ts_insert_blocker; Type: TRIGGER; Schema: public; Owner: -
+--
 
-SELECT public.create_hypertable('public.region_type_histories', 'date');
+CREATE TRIGGER ts_insert_blocker BEFORE INSERT ON public.fitting_stock_level_items FOR EACH ROW EXECUTE FUNCTION _timescaledb_internal.insert_blocker();
 
-SELECT public.add_retention_policy('public.region_type_histories', interval '5 years');
 
-SELECT public.create_hypertable('public.fitting_stock_levels', 'time', chunk_time_interval => INTERVAL '7 days');
+--
+-- Name: fitting_stock_level_summaries ts_insert_blocker; Type: TRIGGER; Schema: public; Owner: -
+--
 
-SELECT public.add_retention_policy('public.fitting_stock_levels', INTERVAL '7 days');
+CREATE TRIGGER ts_insert_blocker BEFORE INSERT ON public.fitting_stock_level_summaries FOR EACH ROW EXECUTE FUNCTION _timescaledb_internal.insert_blocker();
 
-SELECT public.create_hypertable('public.fitting_stock_level_items', 'time', chunk_time_interval => INTERVAL '7 days');
 
-SELECT public.add_retention_policy('public.fitting_stock_level_items', INTERVAL '7 days');
+--
+-- Name: fitting_stock_level_summary_items ts_insert_blocker; Type: TRIGGER; Schema: public; Owner: -
+--
 
-SELECT public.create_hypertable('public.fitting_stock_level_summaries', 'time', chunk_time_interval => INTERVAL '1 month');
+CREATE TRIGGER ts_insert_blocker BEFORE INSERT ON public.fitting_stock_level_summary_items FOR EACH ROW EXECUTE FUNCTION _timescaledb_internal.insert_blocker();
 
-SELECT public.add_retention_policy('public.fitting_stock_level_summaries', INTERVAL '5 years');
 
-SELECT public.create_hypertable('public.fitting_stock_level_summary_items', 'time', chunk_time_interval => INTERVAL '1 month');
+--
+-- Name: fitting_stock_levels ts_insert_blocker; Type: TRIGGER; Schema: public; Owner: -
+--
 
-SELECT public.add_retention_policy('public.fitting_stock_level_summary_items', INTERVAL '5 years');
+CREATE TRIGGER ts_insert_blocker BEFORE INSERT ON public.fitting_stock_levels FOR EACH ROW EXECUTE FUNCTION _timescaledb_internal.insert_blocker();
 
-SELECT public.create_hypertable('public.market_type_stats', 'time', chunk_time_interval => INTERVAL '1 hour');
 
-SELECT public.add_retention_policy('public.market_type_stats', INTERVAL '36 hours');
+--
+-- Name: market_type_stats ts_insert_blocker; Type: TRIGGER; Schema: public; Owner: -
+--
 
+CREATE TRIGGER ts_insert_blocker BEFORE INSERT ON public.market_type_stats FOR EACH ROW EXECUTE FUNCTION _timescaledb_internal.insert_blocker();
+
+
+--
+-- Name: region_type_histories ts_insert_blocker; Type: TRIGGER; Schema: public; Owner: -
+--
+
+CREATE TRIGGER ts_insert_blocker BEFORE INSERT ON public.region_type_histories FOR EACH ROW EXECUTE FUNCTION _timescaledb_internal.insert_blocker();
 
 
 --
