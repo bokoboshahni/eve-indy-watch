@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+## [1.4.1](https://github.com/bokoboshahni/eve-indy-watch/compare/v1.4.0...v1.4.1) (2022-01-14)
+
+
+### Bug Fixes
+
+* remove bad api call ([#34](https://github.com/bokoboshahni/eve-indy-watch/issues/34)) ([de9f204](https://github.com/bokoboshahni/eve-indy-watch/commit/de9f20452ebef4bbca0ce1626f2e0a02739f4095))
+
 # [1.4.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v1.3.4...v1.4.0) (2022-01-14)
 
 
