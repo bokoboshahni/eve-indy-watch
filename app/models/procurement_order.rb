@@ -174,7 +174,7 @@ class ProcurementOrder < ApplicationRecord
     return unless in_progress?
 
     # Supplier cannot be changed once an order is in progress
-    errors.add(:base, "Procurement order #{number} has already been accepted.") if supplier_id_changed? && supplier_id_was != nil
+    errors.add(:base, "Procurement order #{number} has already been accepted.") if supplier_id_changed? && !supplier_id_was.nil?
   end
 
   # def validate_accept
@@ -188,10 +188,10 @@ class ProcurementOrder < ApplicationRecord
   def validate_redraft
     return unless draft? && status_changed?
 
-    unless status_was == :available
-      self.status = :available
-      errors.add(:base, "Procurement order #{number} has a status of #{status_was.humanize.downcase} and cannot be edited.")
-    end
+    return unless status_was == :available
+
+    self.status = :available
+    errors.add(:base, "Procurement order #{number} has a status of #{status_was.humanize.downcase} and cannot be edited.")
   end
 
   # def validate_release
@@ -201,9 +201,9 @@ class ProcurementOrder < ApplicationRecord
   def validate_publish
     return unless available? && status_changed?
 
-    if items.empty?
-      self.status = :draft
-      errors.add(:base, 'Cannot publish procurement order with no items.')
-    end
+    return unless items.empty?
+
+    self.status = :draft
+    errors.add(:base, 'Cannot publish procurement order with no items.')
   end
 end
