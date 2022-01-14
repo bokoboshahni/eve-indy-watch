@@ -52,7 +52,6 @@ class Contract < ApplicationRecord
       end
 
       esi_retriable do
-        esi.get_contracts_public_items_contract(contract_id: contract_id)
         authorization = corporation.esi_authorization
 
         raise Error, "Unable to find authorization for contract #{contract_id}" unless authorization
