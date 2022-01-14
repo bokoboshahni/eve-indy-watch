@@ -11,8 +11,6 @@ class Market < ApplicationRecord
 
         error("No order sets found for #{type_id} for #{market_id} at #{time.to_s(:db)}")
       end
-
-      Market::PersistTypeStatisticsWorker.perform_async(market_id, type_ids, time.to_s(:number).to_i)
     end
   end
 end
