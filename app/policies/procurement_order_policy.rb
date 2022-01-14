@@ -26,6 +26,8 @@ class ProcurementOrderPolicy < ApplicationPolicy
   end
 
   def show? # rubocop:disable Metrics/AbcSize
+    return true if admin?
+
     return false if record.visibility == :corporation && record.requester != user.corporation
 
     return false if record.visibility == :alliance && record.requester != user.alliance
