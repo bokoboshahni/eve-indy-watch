@@ -1,15 +1,23 @@
 # frozen_string_literal: true
 
 namespace :sde do
+  namespace :download do
+    desc 'Downloads the latest EVE static data export (does not check for existing download)'
+    task force: :environment do
+      FileUtils.rm_f(Rails.root.join('tmp/sde.checksum.txt'))
+      SDE::DownloadSDE.call(Rails.root.join('tmp'))
+    end
+  end
+
   desc 'Downloads the latest EVE static data export'
   task download: :environment do
     SDE::DownloadSDE.call(Rails.root.join('tmp'))
   end
 
   desc 'Loads the EVE static data export into the database'
-  task load: %w[sde:load:corporations sde:load:items sde:load:map sde:load:inventory_flags sde:load:industry]
+  task import: %w[sde:import:corporations sde:import:items sde:import:map sde:import:inventory_flags sde:import:industry]
 
-  namespace :load do
+  namespace :import do
     task map: %i[regions constellations solar_systems stations]
 
     task items: %i[categories groups market_groups types]

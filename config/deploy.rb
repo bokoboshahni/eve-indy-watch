@@ -63,7 +63,7 @@ namespace :sde do
   end
 
   desc 'Load the SDE'
-  task :load do
+  task :import do
     on roles(:db) do
       within release_path do
         with rails_env: fetch(:rails_env) do
@@ -74,7 +74,7 @@ namespace :sde do
   end
 
   desc 'Update to the latest SDE'
-  task update: %i[download load]
+  task update: %i[download import]
 end
 
 namespace :fittings do
