@@ -133,10 +133,12 @@
             <dt class="text-gray-600">Subtotal with multiplier</dt>
             <dd class="font-medium text-gray-900"><%= number_to_isk(@order.subtotal_with_multiplier) %>&nbsp;ISK</dd>
           </div>
-          <div class="py-2 flex items-center justify-between">
-            <dt class="text-gray-600">Bonus</dt>
-            <dd class="font-medium text-gray-900"><%= number_to_isk(@order.bonus) %>&nbsp;ISK</dd>
-          </div>
+          <% if @order.bonus.positive? %>
+            <div class="py-2 flex items-center justify-between">
+              <dt class="text-gray-600">Bonus</dt>
+              <dd class="font-medium text-gray-900"><%= number_to_isk(@order.bonus) %>&nbsp;ISK</dd>
+            </div>
+          <% end %>
           <div class="pt-2 flex items-center justify-between">
             <dt class="font-medium text-gray-900">Order total</dt>
             <dd class="font-medium text-indigo-600"><%= number_to_isk(@order.total) if @order.persisted? %>&nbsp;ISK</dd>
