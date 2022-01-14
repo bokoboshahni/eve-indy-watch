@@ -174,7 +174,7 @@ class ProcurementOrder < ApplicationRecord
   end
 
   def validate_already_accepted
-    return unless status == :accepted && supplier_changed?
+    return unless in_progress? && supplier_changed?
 
     errors.add(:base, "Procurement order #{number} has already been accepted.")
   end

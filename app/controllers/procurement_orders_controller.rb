@@ -4,7 +4,7 @@ class ProcurementOrdersController < ApplicationController
   include Filterable
 
   before_action :authenticate_user!
-  before_action :find_order, only: %i[show edit update destroy accept release receive redraft]
+  before_action :find_order, only: %i[show edit update destroy accept release receive redraft list_items_card]
 
   def index
     authorize(ProcurementOrder)
@@ -130,7 +130,7 @@ class ProcurementOrdersController < ApplicationController
     if @order.redraft!
       flash[:success] = "Procurement order #{@order.number} moved back to draft."
     else
-      flash[:error] = "Error movinv procurement order #{@order.number} back to draft."
+      flash[:error] = "Error moving procurement order #{@order.number} back to draft."
       set_errors!(@order.errors)
     end
 
@@ -154,6 +154,12 @@ class ProcurementOrdersController < ApplicationController
     )
 
     render json: JSON.pretty_generate(json)
+  end
+
+  def list_items_card
+    @items = @order.items.includes(:type)
+
+    render layout: false
   end
 
   private

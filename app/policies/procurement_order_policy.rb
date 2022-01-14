@@ -25,7 +25,7 @@ class ProcurementOrderPolicy < ApplicationPolicy
     role?(/orders\.editor/)
   end
 
-  def show? # ruboop:disable Metrics/AbcSize
+  def show? # rubocop:disable Metrics/AbcSize
     return false if record.visibility == :corporation && record.requester != user.corporation
 
     return false if record.visibility == :alliance && record.requester != user.alliance
@@ -73,6 +73,10 @@ class ProcurementOrderPolicy < ApplicationPolicy
     return true if record.supplier == user.character
 
     false
+  end
+
+  def list_items_card?
+    show?
   end
 
   private

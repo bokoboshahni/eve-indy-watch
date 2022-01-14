@@ -61,6 +61,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
       post :receive
       post :redraft
       post :release
+      get :list_items_card
     end
   end
 
