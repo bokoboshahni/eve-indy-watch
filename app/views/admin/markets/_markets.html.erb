@@ -48,7 +48,7 @@
             </div>
           <% end %>
           <%
-            orders_classes = market.orders_last_modified >= 10.minutes.ago ? 'bg-green-300' : 'bg-red-300'
+            orders_classes = market.orders_last_modified.to_i >= 10.minutes.ago.to_i ? 'bg-green-300' : 'bg-red-300'
             tr.cell padding: 'px-4 py-1', classes: orders_classes do
           %>
             <div class="text-xs font-medium text-gray-900">
@@ -56,7 +56,7 @@
             </div>
           <% end %>
           <%
-            snapshot_classes = (market.orders_last_modified - market.latest_snapshot_time) <= 600 ?  'bg-green-300' : 'bg-red-300'
+            snapshot_classes = market.latest_snapshot_time.to_i >= 10.minutes.ago.to_i ? 'bg-green-300' : 'bg-red-300'
             tr.cell padding: 'px-4 py-1', classes: snapshot_classes do
           %>
             <div class="text-xs font-medium text-gray-900">

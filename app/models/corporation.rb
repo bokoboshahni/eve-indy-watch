@@ -80,7 +80,7 @@ class Corporation < ApplicationRecord
   delegate :name, to: :alliance, prefix: true, allow_nil: true
 
   def available_esi_authorizations
-    ESIAuthorization.includes(:character).joins(character: :corporation).where(corporation_id: id).order('characters.name')
+    ESIAuthorization.includes(:character).joins(:character).where('characters.corporation_id': id).order('characters.name')
   end
 
   def esi_contracts_expired?
