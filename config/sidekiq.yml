@@ -27,24 +27,30 @@
   calculate_live_stock_levels:
     cron: '*/5 * * * *'
     class: 'Fitting::CalculateAllStockLevelsWorker'
+    args: ['live']
     description: "Calculate live stock levels"
+
+  prune_live_stock_levels:
+    cron: '*/5 * * * *'
+    class: 'Fitting::PruneLiveStockLevelsWorker'
+    description: "Prune live stock levels older than the configured time"
 
   calculate_end_of_day_stock_levels:
     cron: '0 11 * * *'
     class: 'Fitting::CalculateAllStockLevelsWorker'
-    args: ['daily']
+    args: ['end_of_day']
     description: "Calculate end-of-day stock levels"
 
   calculate_end_of_week_stock_levels:
     cron: '0 11 * * 7'
     class: 'Fitting::CalculateAllStockLevelsWorker'
-    args: ['weekly']
+    args: ['end_of_week']
     description: "Calculate end-of-week stock levels"
 
   calculate_end_of_month_stock_levels:
     cron: '0 11 1 * *'
     class: 'Fitting::CalculateAllStockLevelsWorker'
-    args: ['monthly']
+    args: ['end_of_month']
     description: "Calculate end-of-month stock levels"
 
   ingest_all_markets:

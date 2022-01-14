@@ -80,6 +80,18 @@ CREATE TYPE public.blueprint_activity AS ENUM (
 
 
 --
+-- Name: fitting_stock_level_interval; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.fitting_stock_level_interval AS ENUM (
+    'live',
+    'end_of_day',
+    'end_of_week',
+    'end_of_month'
+);
+
+
+--
 -- Name: procurement_order_item_status; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -741,6 +753,51 @@ CREATE TABLE public.fitting_markets (
 
 
 --
+-- Name: fitting_stock_level_items; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.fitting_stock_level_items (
+    fitting_id bigint NOT NULL,
+    market_id bigint NOT NULL,
+    type_id bigint NOT NULL,
+    "interval" public.fitting_stock_level_interval NOT NULL,
+    "time" timestamp without time zone NOT NULL,
+    fitting_quantity integer,
+    market_buy_price numeric,
+    market_sell_price numeric,
+    market_sell_volume bigint
+);
+
+
+--
+-- Name: fitting_stock_levels; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.fitting_stock_levels (
+    fitting_id bigint NOT NULL,
+    market_id bigint NOT NULL,
+    "interval" public.fitting_stock_level_interval NOT NULL,
+    "time" timestamp without time zone NOT NULL,
+    contract_match_quantity integer,
+    contract_match_threshold numeric,
+    contract_price_avg numeric,
+    contract_price_max numeric,
+    contract_price_med numeric,
+    contract_price_min numeric,
+    contract_price_sum numeric,
+    contract_similarity_avg numeric,
+    contract_similarity_max numeric,
+    contract_similarity_med numeric,
+    contract_similarity_min numeric,
+    contract_total_quantity integer,
+    market_buy_price numeric,
+    market_quantity integer,
+    market_sell_price numeric,
+    market_time timestamp without time zone
+);
+
+
+--
 -- Name: fittings; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -757,7 +814,8 @@ CREATE TABLE public.fittings (
     pinned boolean,
     safety_stock integer,
     contract_match_threshold numeric,
-    killmail_match_threshold numeric
+    killmail_match_threshold numeric,
+    inventory_enabled boolean
 );
 
 
@@ -2446,6 +2504,41 @@ CREATE INDEX index_fitting_items_on_type_id ON public.fitting_items USING btree 
 
 
 --
+-- Name: index_fitting_stock_level_items_on_fitting_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_fitting_stock_level_items_on_fitting_id ON public.fitting_stock_level_items USING btree (fitting_id);
+
+
+--
+-- Name: index_fitting_stock_level_items_on_market_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_fitting_stock_level_items_on_market_id ON public.fitting_stock_level_items USING btree (market_id);
+
+
+--
+-- Name: index_fitting_stock_level_items_on_type_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_fitting_stock_level_items_on_type_id ON public.fitting_stock_level_items USING btree (type_id);
+
+
+--
+-- Name: index_fitting_stock_levels_on_fitting_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_fitting_stock_levels_on_fitting_id ON public.fitting_stock_levels USING btree (fitting_id);
+
+
+--
+-- Name: index_fitting_stock_levels_on_market_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_fitting_stock_levels_on_market_id ON public.fitting_stock_levels USING btree (market_id);
+
+
+--
 -- Name: index_fittings_on_discarded_at; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -2828,6 +2921,20 @@ CREATE UNIQUE INDEX index_unique_blueprint_skills ON public.blueprint_skills USI
 --
 
 CREATE UNIQUE INDEX index_unique_contract_fittings ON public.contract_fittings USING btree (contract_id, fitting_id);
+
+
+--
+-- Name: index_unique_fitting_stock_level_items; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_unique_fitting_stock_level_items ON public.fitting_stock_level_items USING btree (fitting_id, market_id, type_id, "interval", "time" DESC);
+
+
+--
+-- Name: index_unique_fitting_stock_levels; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_unique_fitting_stock_levels ON public.fitting_stock_levels USING btree (fitting_id, market_id, "interval", "time" DESC);
 
 
 --
@@ -3368,6 +3475,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220111150314'),
 ('20220111214919'),
 ('20220113151030'),
-('20220113222032');
+('20220113222032'),
+('20220114201731'),
+('20220114202413');
 
 

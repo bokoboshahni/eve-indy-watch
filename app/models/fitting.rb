@@ -11,6 +11,7 @@
 # **`id`**                        | `bigint`           | `not null, primary key`
 # **`contract_match_threshold`**  | `decimal(, )`      |
 # **`discarded_at`**              | `datetime`         |
+# **`inventory_enabled`**         | `boolean`          |
 # **`killmail_match_threshold`**  | `decimal(, )`      |
 # **`name`**                      | `text`             | `not null`
 # **`original`**                  | `text`             |
@@ -51,6 +52,14 @@ class Fitting < ApplicationRecord
 
   multisearchable against: %i[name owner_name type_name item_names], if: :kept?
 
+  pg_search_scope :search_by_all, against: %i[name],
+                                  associated_against: {
+                                    types: :name
+                                  },
+                                  using: {
+                                    tsearch: { prefix: true }
+                                  }
+
   has_paper_trail
 
   belongs_to :owner, polymorphic: true
@@ -60,27 +69,27 @@ class Fitting < ApplicationRecord
   has_many :items, class_name: 'FittingItem', inverse_of: :fitting, dependent: :destroy
   has_many :types, through: :items
   has_many :markets, through: :fitting_markets
-  has_many :stock_level_summaries, class_name: 'Statistics::FittingStockLevelSummary', inverse_of: :fitting
-  has_many :stock_levels, class_name: 'Statistics::FittingStockLevel', inverse_of: :fitting
+  has_many :stock_levels, class_name: 'FittingStockLevel', inverse_of: :fitting
 
   accepts_nested_attributes_for :items, allow_destroy: true
 
   scope :pinned, -> { where(pinned: true) }
+  scope :with_inventory_tracking, -> { where(inventory_enabled: true) }
 
   delegate :appraisal_market, :main_market, to: :owner
 
   delegate :name, to: :owner, prefix: true
   delegate :name, to: :type, prefix: true
 
-  def current_stock_level_time(market)
+  def current_stock_level_time(market, interval: :live)
     @current_stock_level_time ||= {}
-    @current_stock_level_time[market.id] ||= stock_levels.where(market_id: market.id).maximum(:time)
+    @current_stock_level_time[market.id] ||= stock_levels.where(market_id: market.id, interval: interval).maximum(:time)
   end
 
-  def current_stock_level(market)
+  def current_stock_level(market, interval: :live)
     @current_stock_level ||= {}
     @current_stock_level[market.id] ||= stock_levels.find_by(market_id: market.id,
-                                                             time: current_stock_level_time(market))
+                                                             time: current_stock_level_time(market, interval: interval))
   end
 
   def type_ids
@@ -167,7 +176,7 @@ class Fitting < ApplicationRecord
     (type.lead_time_days * demand_daily_avg(period)).round
   end
 
-  def calculate_stock_level(market, market_time, time, interval = nil)
+  def calculate_stock_level(market, market_time, time, interval: :live)
     CalculateStockLevel.call(id, market.id, market_time, time, interval)
   end
 end

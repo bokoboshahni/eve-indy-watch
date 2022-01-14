@@ -18,6 +18,8 @@ class FittingFilter < ApplicationFilter
   def apply!(scope)
     @scope ||=
       begin
+        scope = scope.joins('INNER JOIN types t1 ON t1.id = fittings.type_id')
+        scope = scope.joins('INNER JOIN groups g1 ON g1.id = t1.group_id')
         scope = scope.search_by_all(query) if query.present?
         scope = scope.joins(:type).where(types: { group_id: group_id }) if group_id.any?
         scope = scope.where(type_id: type_id) if type_id.any?
@@ -27,10 +29,10 @@ class FittingFilter < ApplicationFilter
   end
 
   def group_id_items
-    Group.where(id: scope.joins(:type).pluck('types.group_id')).distinct.order(:name).pluck(:name, :id)
+    scope.order('g1.name').pluck('g1.name, g1.id').uniq
   end
 
   def type_id_items
-    Type.where(id: scope.pluck(:type_id)).distinct.order(:name).pluck(:name, :id)
+    scope.order('t1.name').pluck('t1.name, t1.id').uniq
   end
 end

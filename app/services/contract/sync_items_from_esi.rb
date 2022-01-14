@@ -8,10 +8,11 @@ class Contract < ApplicationRecord
 
     class Error < RuntimeError; end
 
-    def initialize(contract)
+    def initialize(contract, force: false)
       super
 
       @contract = contract
+      @force = force
       @corporation =
         case contract.assignee
         when Alliance
@@ -26,17 +27,17 @@ class Contract < ApplicationRecord
     end
 
     def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-      if contract.esi_items_synced?
+      if contract.esi_items_synced? && !force
         debug("Items have already been fetched for contract #{contract_id}")
         return
       end
 
-      if contract.esi_items_unavailable?
+      if contract.esi_items_unavailable? && !force
         debug("Items are not available in ESI for contract #{contract_id}")
         return
       end
 
-      if contract.esi_items_inaccessible?
+      if contract.esi_items_inaccessible? && !force
         debug("Items are not accessible in ESI for contract #{contract_id}")
         return
       end
@@ -88,7 +89,7 @@ class Contract < ApplicationRecord
 
     private
 
-    attr_reader :contract, :corporation
+    attr_reader :contract, :corporation, :force
 
     delegate :assignee, :id, to: :contract, prefix: true
     delegate :id, to: :corporation, prefix: true
