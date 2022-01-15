@@ -12,9 +12,9 @@
 # **`accepted_at`**                | `datetime`         |
 # **`appraisal_url`**              | `text`             |
 # **`bonus`**                      | `decimal(, )`      |
-# **`deliver_by`**                 | `datetime`         |
 # **`delivered_at`**               | `datetime`         |
 # **`discarded_at`**               | `datetime`         |
+# **`estimated_completion_at`**    | `datetime`         |
 # **`multiplier`**                 | `decimal(, )`      | `not null`
 # **`notes`**                      | `text`             |
 # **`published_at`**               | `datetime`         |
@@ -24,6 +24,7 @@
 # **`status`**                     | `enum`             | `not null`
 # **`supplier_name`**              | `text`             |
 # **`supplier_type`**              | `string`           |
+# **`target_completion_at`**       | `datetime`         |
 # **`tracking_number`**            | `bigint`           |
 # **`visibility`**                 | `enum`             |
 # **`created_at`**                 | `datetime`         | `not null`
@@ -78,6 +79,8 @@ class ProcurementOrder < ApplicationRecord
   has_many :items, class_name: 'ProcurementOrderItem', inverse_of: :order, foreign_key: :order_id, dependent: :destroy
   accepts_nested_attributes_for :items, allow_destroy: true, reject_if: ->(a) { a[:type_id].blank? || a[:quantity_required].blank? || a[:price].blank? }
 
+  scope :unconfirmed, -> { in_progress.where.not(delivered_at: nil) }
+
   validates :bonus, allow_blank: true, format: { with: /\A\d+(?:\.\d{0,2})?\z/ }, numericality: { greater_than_or_equal_to: 0 }
   validates :multiplier, presence: true, format: { with: /\A\d+(?:\.\d{0,2})?\z/ }, numericality: { greater_than: 0 }
   validates :status, presence: true, inclusion: { in: statuses.keys }
@@ -95,9 +98,20 @@ class ProcurementOrder < ApplicationRecord
 
   before_validation :ensure_requester_and_supplier_names
 
-  def accept!(supplier)
-    self.tracking_number = Nanoid.generate(size: 15, alphabet: '1234567890').to_i
-    update(supplier: supplier, status: :in_progress, accepted_at: Time.zone.now)
+  def accept!(supplier, estimated_completion_at = nil)
+    tracking_number = Nanoid.generate(size: 15, alphabet: '1234567890').to_i
+
+    update(
+      supplier: supplier,
+      status: :in_progress,
+      accepted_at: Time.zone.now,
+      estimated_completion_at: estimated_completion_at,
+      tracking_number: tracking_number
+    )
+  end
+
+  def deliver!
+    update(delivered_at: Time.zone.now)
   end
 
   def release!
@@ -161,6 +175,10 @@ class ProcurementOrder < ApplicationRecord
 
   def volume
     items.joins(:type).pluck(:quantity_required, :'types.packaged_volume', :'types.volume').sum { |i| i[0] * (i[1] || i[2]) }
+  end
+
+  def delivered_unconfirmed?
+    in_progress? && delivered_at
   end
 
   private

@@ -3,21 +3,5 @@
     <%= render 'order_summary_items', order: order %>
 
     <%= render 'order_summary_info', order: order %>
-
-    <% if order.kept? %>
-      <% if order.in_progress? && policy(order).update? %>
-        <div class="border-t border-gray-200 py-6 px-4 sm:px-6 lg:p-8">
-          <%= render 'receive_modal', order: order %>
-        </div>
-      <% elsif policy(order).accept? && order.available? && order.requester != current_user.character %>
-        <div class="border-t border-gray-200 py-5 px-4 sm:px-6">
-          <%= render 'accept_modal', order: order %>
-        </div>
-      <% elsif @order.in_progress? && policy(order).accept? && [current_user.character, current_user.corporation].include?(order.supplier) %>
-        <div class="border-t border-gray-200 py-5 px-4 sm:px-6">
-          <%= render 'release_modal', order: order %>
-        </div>
-      <% end %>
-    <% end %>
   </div>
 </div>

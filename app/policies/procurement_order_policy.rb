@@ -21,6 +21,10 @@ class ProcurementOrderPolicy < ApplicationPolicy
     false
   end
 
+  def history?
+    index?
+  end
+
   def create?
     role?(/orders\.editor/)
   end
@@ -61,6 +65,10 @@ class ProcurementOrderPolicy < ApplicationPolicy
 
   def accept?
     role?('character.orders.supplier')
+  end
+
+  def deliver?
+    role?('character.orders.supplier') && record.supplier == user.character
   end
 
   def receive?

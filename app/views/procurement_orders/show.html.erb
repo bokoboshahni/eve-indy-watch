@@ -27,28 +27,41 @@
         </div>
         <div class="ml-3">
           <p class="text-sm text-indigo-700">
-            This order was delivered <%= local_time @order.delivered_at, format: :long %>.
+            This order was delivered by <span class="font-medium"><%= @order.supplier_name %></span> on <%= local_time @order.delivered_at, format: :long_date %>.
           </p>
         </div>
       </div>
     </div>
   <% elsif @order.available? %>
     <div class="max-w-3xl">
-      <p class="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl">Available</p>
+      <p class="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl">Available.</p>
       <p class="mt-2 text-base text-gray-500">Order #<%= @order.number %> is currently waiting for a supplier.</p>
 
-      <% if policy(@order).update? %>
+      <% if policy(@order).update? && @order.requester == current_user.character %>
         <div class="mt-12 flex max-w-md">
-          <%= render 'redraft_modal', order: @order %>
-          <%= render 'cancel_modal', order: @order %>
+          <%= render 'redraft_modal', order: @order, table: false %>
+          <%= render 'cancel_modal', order: @order, table: false %>
+        </div>
+      <% elsif policy(@order).accept? && @order.requester != current_user.character %>
+        <div class="mt-12 flex max-w-md">
+          <%= render 'accept_modal', order: @order, table: false %>
         </div>
       <% end %>
     </div>
   <% elsif @order.in_progress? && policy(@order).update? %>
     <div class="max-w-3xl">
-      <p class="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl">It's on the way!</p>
-      <p class="mt-2 text-base text-gray-500">Your order #<%= @order.number %> has been accepted by <span class="font-medium"><%= @order.supplier_name %></span> and will be with you soon.</p>
-      <p class="mt-2 text-base text-gray-500">Keep an eye out in your contracts and mark the order as delivered below once you've accepted the contract.</dt>
+      <% if @order.delivered_at %>
+        <p class="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl">Delivered!</p>
+        <p class="mt-2 text-base text-gray-500">Your order #<%= @order.number %> has been delivered by <span class="font-medium"><%= @order.supplier_name %></span>.</p>
+        <p class="mt-2 text-base font-bold">Once you've verified and accepted the contract, please confirm the delivery below.</p>
+
+        <div class="mt-12 flex max-w-md">
+          <%= render 'receive_modal', order: @order, table: false %>
+        </div>
+      <% else %>
+        <p class="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl">It's on the way!</p>
+        <p class="mt-2 text-base text-gray-500">Your order #<%= @order.number %> has been accepted by <span class="font-medium"><%= @order.supplier_name %></span> and will be with you soon.</p>
+      <% end %>
 
       <!--
       <dl class="mt-12 text-sm font-medium">
@@ -59,21 +72,32 @@
     </div>
   <% elsif @order.in_progress? && current_user.character == @order.supplier %>
     <div class="max-w-3xl">
-      <p class="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl">Order accepted.</p>
-      <p class="mt-2 text-base text-gray-500">
-        You have agreed to supply order #<%= @order.number %>.
-        Once you've completed the order, create an item exchange contract to <span class="font-medium text-gray-900"><%= @order.requester.is_a?(Alliance) ? @order.requester.procurement_order_requester.name : @order.requester_name %></span>
-        at <span class="font-medium text-gray-900"><%= @order.location_name %></span>
-        for <span class="font-medium text-gray-900"><%= number_to_isk @order.total %> ISK</span>
-        with <span class="font-medium text-gray-900"><%= @order.tracking_number %></span> as the contract description.
-      </p>
+      <% if @order.delivered_at %>
+        <p class="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl">Waiting for confirmation.</p>
+        <p class="mt-2 text-base text-gray-500">
+          You have delivered order #<%= @order.number %>. but it is still waiting for <span class="font-medium text-gray-900"><%= @order.requester.is_a?(Alliance) ? @order.requester.procurement_order_requester.name : @order.requester_name %></span> to confirm it.
+        </p>
+      <% else %>
+        <p class="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl">Order accepted.</p>
+        <p class="mt-2 text-base text-gray-500">
+          You have agreed to supply order #<%= @order.number %>.
+          Once you've completed the order, create an item exchange contract to <span class="font-medium text-gray-900"><%= @order.requester.is_a?(Alliance) ? @order.requester.procurement_order_requester.name : @order.requester_name %></span>
+          at <span class="font-medium text-gray-900"><%= @order.location_name %></span>
+          for <span class="font-medium text-gray-900"><%= number_to_isk @order.total %> ISK</span>
+          with <span class="font-medium text-gray-900"><%= @order.tracking_number %></span> as the contract description.
+        </p>
 
-      <!--
-      <dl class="mt-12 text-sm font-medium">
-        <dt class="text-gray-900">Tracking number</dt>
-        <dd class="text-indigo-600 mt-2"><%= @order.tracking_number %></dd>
-      </dl>
-      -->
+        <!--
+        <dl class="mt-12 text-sm font-medium">
+          <dt class="text-gray-900">Tracking number</dt>
+          <dd class="text-indigo-600 mt-2"><%= @order.tracking_number %></dd>
+        </dl>
+        -->
+        <div class="mt-12 flex max-w-md">
+          <%= render 'deliver_modal', order: @order, table: false %>
+          <%= render 'release_modal', order: @order, table: false %>
+        </div>
+      <% end %>
     </div>
   <% end %>
 
@@ -83,7 +107,7 @@
       <p class="text-xs text-gray-600 block">Updated <%= local_time @order.updated_at, class: 'font-medium text-gray-900', format: :long_date %></p>
     </div>
     <div>
-      <% render('delete_modal', order: @order) if @order.draft? && @order.kept? && policy(@order).destroy? %>
+      <% render('delete_modal', order: @order, table: false) if @order.draft? && @order.kept? && policy(@order).destroy? %>
     </div>
   </div>
 

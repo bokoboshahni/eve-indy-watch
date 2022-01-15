@@ -2,7 +2,10 @@
   <% if header %>
     <%= content_tag :div, header, class: header_class_names %>
   <% elsif title %>
-    <div class="px-4 py-5 sm:px-6">
+    <div class="<%= header_class_names %> flex items-center">
+      <% if ball %>
+        <div class="flex-shrink-0 w-3 h-3 rounded-full <%= ball_color %> mr-2" aria-hidden="true"></div>
+      <% end %>
       <div class="-ml-4 -mt-4 flex justify-between items-center flex-wrap sm:flex-nowrap">
         <div class="ml-4 mt-4">
           <h3 class="text-lg leading-6 font-medium text-gray-900">

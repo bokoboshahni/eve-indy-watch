@@ -4,24 +4,31 @@ class ProcurementOrdersController < ApplicationController
   include Filterable
 
   before_action :authenticate_user!
-  before_action :find_order, only: %i[show edit update destroy accept release receive redraft list_items_card]
+  before_action :find_order, only: %i[show edit update destroy accept deliver release receive redraft list_items_card]
 
-  def index
+  def index # rubocop:disable Metrics/AbcSize
+    authorize(ProcurementOrder)
+
+    @pagy, @available_orders = pagy(policy_scope(ProcurementOrder.kept.available.order(updated_at: :desc)))
+    @draft_orders = policy_scope(ProcurementOrder.kept.draft.order(updated_at: :desc))
+    @in_progress_orders = policy_scope(ProcurementOrder.kept.in_progress.where.not(supplier: current_user.character).where(delivered_at: nil))
+    @unconfirmed_orders = policy_scope(ProcurementOrder.kept.unconfirmed.where.not(supplier: current_user.character))
+    @delivered_orders = policy_scope(ProcurementOrder.kept.delivered)
+    @supplied_orders = policy_scope(current_user.character.supplied_procurement_orders.kept.in_progress.order(accepted_at: :desc))
+  end
+
+  def history
     authorize(ProcurementOrder)
     # store_filters!('ProcurementOrder')
 
     scope =
       case params[:tab]
-      when 'available'
-        policy_scope(ProcurementOrder.kept.available)
       when 'drafts'
-        policy_scope(ProcurementOrder.kept.draft)
-      when 'in_progress'
-        policy_scope(ProcurementOrder.kept.in_progress)
+        policy_scope(ProcurementOrder.kept.draft.order(updated_at: :desc))
       when 'delivered'
-        policy_scope(ProcurementOrder.kept.delivered)
+        policy_scope(ProcurementOrder.kept.delivered.order(delivered_at: :desc))
       else
-        policy_scope(ProcurementOrder.kept.available)
+        policy_scope(ProcurementOrder.kept.delivered.order(delivered_at: :desc))
       end
 
     # @filter = filter_for('ProcurementOrder')
@@ -31,9 +38,9 @@ class ProcurementOrdersController < ApplicationController
 
     if turbo_frame_request?
       # render partial: 'orders', locals: { orders: @orders, filter: @filter, paginator: @pagy }
-      render partial: 'orders', locals: { orders: @orders, paginator: @pagy }
+      render partial: 'orders_history', locals: { orders: @orders, paginator: @pagy }
     else
-      render :index
+      render :history
     end
   end
 
@@ -99,6 +106,17 @@ class ProcurementOrdersController < ApplicationController
       redirect_to procurement_order_path(@order)
     else
       flash[:error] = "Error accepting procurement order #{@order.number}."
+      set_errors!(@order.errors)
+      render :show
+    end
+  end
+
+  def deliver
+    if @order.deliver!
+      flash[:success] = "Procurement order #{@order.number} delivered."
+      redirect_to procurement_order_path(@order)
+    else
+      flash[:error] = "Error delivering procurement order #{@order.number}."
       set_errors!(@order.errors)
       render :show
     end
@@ -185,7 +203,7 @@ class ProcurementOrdersController < ApplicationController
   def update_params
     params.require(:procurement_order).permit(
       :appraisal_url,
-      :requester_gid, :deliver_by, :visibility,
+      :requester_gid, :target_completion_at, :visibility,
       :location_id, :notes, :bonus, :multiplier,
       items_attributes: %i[type_id quantity_required price _destroy id]
     )

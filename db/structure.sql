@@ -1344,7 +1344,7 @@ CREATE TABLE public.procurement_orders (
     accepted_at timestamp without time zone,
     appraisal_url text,
     requester_name text,
-    deliver_by timestamp without time zone,
+    target_completion_at timestamp without time zone,
     delivered_at timestamp without time zone,
     discarded_at timestamp without time zone,
     published_at timestamp without time zone,
@@ -1356,7 +1356,8 @@ CREATE TABLE public.procurement_orders (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     tracking_number bigint,
-    visibility public.procurement_order_visibility
+    visibility public.procurement_order_visibility,
+    estimated_completion_at timestamp without time zone
 );
 
 
@@ -3478,6 +3479,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220113222032'),
 ('20220114201731'),
 ('20220114202413'),
-('20220115015439');
+('20220115015439'),
+('20220115162150'),
+('20220115163821');
 
 

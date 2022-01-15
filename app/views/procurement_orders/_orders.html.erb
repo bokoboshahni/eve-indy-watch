@@ -9,26 +9,26 @@
         <% default_counter_class = 'bg-gray-100 text-gray-900' %>
 
         <% available_count = policy_scope(ProcurementOrder.kept.available).count %>
-        <%= link_to procurement_orders_path(tab: 'available'), class: "#{current_tab == 'available' ? current_link_class : default_link_class} whitespace-nowrap flex py-4 px-1 border-b-2 font-medium text-sm", data: { turbo_frame: 'orders' } do %>
+        <%= link_to history_procurement_orders_path(tab: 'available'), class: "#{current_tab == 'available' ? current_link_class : default_link_class} whitespace-nowrap flex py-4 px-1 border-b-2 font-medium text-sm", data: { turbo_frame: 'orders' } do %>
           Available
           <% if available_count > 0 %><span class="<%= current_tab == 'available' ? current_counter_class : default_counter_class %> hidden ml-3 py-0.5 px-2.5 rounded-full text-xs font-medium md:inline-block"><%= available_count %></span><% end %>
         <% end %>
 
         <% in_progress_count = policy_scope(ProcurementOrder.kept.in_progress).count %>
-        <%= link_to procurement_orders_path(tab: 'in_progress'), class: "#{current_tab == 'in_progress' ? current_link_class : default_link_class} whitespace-nowrap flex py-4 px-1 border-b-2 font-medium text-sm", data: { turbo_frame: 'orders' } do %>
+        <%= link_to history_procurement_orders_path(tab: 'in_progress'), class: "#{current_tab == 'in_progress' ? current_link_class : default_link_class} whitespace-nowrap flex py-4 px-1 border-b-2 font-medium text-sm", data: { turbo_frame: 'orders' } do %>
           In Progress
           <% if in_progress_count > 0 %><span class="<%= current_tab == 'in_progress' ? current_counter_class : default_counter_class %> hidden ml-3 py-0.5 px-2.5 rounded-full text-xs font-medium md:inline-block"><%= in_progress_count %></span><% end %>
         <% end %>
 
         <% delivered_count = policy_scope(ProcurementOrder.kept.delivered).count %>
-        <%= link_to procurement_orders_path(tab: 'delivered'), class: "#{current_tab == 'delivered' ? current_link_class : default_link_class} whitespace-nowrap flex py-4 px-1 border-b-2 font-medium text-sm", data: { turbo_frame: 'orders' } do %>
+        <%= link_to history_procurement_orders_path(tab: 'delivered'), class: "#{current_tab == 'delivered' ? current_link_class : default_link_class} whitespace-nowrap flex py-4 px-1 border-b-2 font-medium text-sm", data: { turbo_frame: 'orders' } do %>
           Delivered
           <% if delivered_count > 0 %><span class="<%= current_tab == 'delivered' ? current_counter_class : default_counter_class %> hidden ml-3 py-0.5 px-2.5 rounded-full text-xs font-medium md:inline-block"><%= delivered_count %></span><% end %>
         <% end %>
 
         <% if policy(ProcurementOrder).create? %>
           <% draft_count = policy_scope(ProcurementOrder.kept.draft).count %>
-          <%= link_to procurement_orders_path(tab: 'drafts'), class: "#{current_tab == 'drafts' ? current_link_class : default_link_class} whitespace-nowrap flex py-4 px-1 border-b-2 font-medium text-sm", data: { turbo_frame: 'orders' } do %>
+          <%= link_to history_procurement_orders_path(tab: 'drafts'), class: "#{current_tab == 'drafts' ? current_link_class : default_link_class} whitespace-nowrap flex py-4 px-1 border-b-2 font-medium text-sm", data: { turbo_frame: 'orders' } do %>
             Drafts
             <% if draft_count > 0 %><span class="<%= current_tab == 'drafts' ? current_counter_class : default_counter_class %> hidden ml-3 py-0.5 px-2.5 rounded-full text-xs font-medium md:inline-block"><%= draft_count %></span><% end %>
           <% end %>
@@ -38,69 +38,6 @@
   </div>
 
   <div class="mt-8">
-    <% if @orders.any? %>
-      <%= render(CardComponent.new(body_class_names: 'rounded-lg', footer_padding: 'px-2 py-2')) do |c| %>
-        <% c.body do %>
-          <%= render(TableComponent.new(layout: 'auto')) do |t| %>
-            <% t.header padding: 'px-4 py-2', width: 'w-36' do %>Order #<% end %>
-            <% t.header padding: 'px-4 py-2' do %>Item(s)<% end %>
-            <% t.header padding: 'px-4 py-2', width: 'w-24' do %>Quantity<% end %>
-            <% t.header padding: 'px-4 py-2', width: 'w-48' do %>Requester<% end %>
-            <% t.header padding: 'px-4 py-2', width: 'w-48' do %>Location<% end %>
-            <% t.header padding: 'px-4 py-2', width: 'w-36' do %>Price<% end %>
-            <% if %w[in_progress delivered].include?(current_tab) %><% t.header padding: 'px-4 py-2', width: 'w-48' do %>Supplier<% end %><% end %>
-            <% t.header padding: 'px-4 py-2', width: 'w-36' do %>Date<% end %>
-
-            <% orders.each do |order| %>
-              <% t.row do |tr| %>
-                <% tr.cell padding: 'px-4 py-1' do %>
-                  <%= link_to order.number, procurement_order_path(order), class: 'font-medium', data: { turbo_frame: '_top' } %>
-                <% end %>
-                <% tr.cell padding: 'px-4 py-1' do %>
-                  <% if order.items.count == 1 %>
-                    <%= order.items.first.name %>
-                  <% elsif order.items.count >= 1 %>
-                    <%= render HovercardComponent.new(url: list_items_card_procurement_order_path(order), class_name: 'inline-block') do %>
-                      <%= link_to procurement_order_path(order), class: "font-medium", data: { turbo_frame: '_top' } do %>
-                        (<%= pluralize(order.items.count, 'item') %>)
-                      <% end %>
-                    <% end %>
-                  <% end %>
-                <% end %>
-                <% tr.cell padding: 'px-4 py-1' do %>
-                  <% if order.items.count == 1 %>
-                    <%= order.items.first.quantity_required %>
-                  <% elsif order.items.count >= 1 %>
-                    <%= render HovercardComponent.new(url: list_items_card_procurement_order_path(order), class_name: 'inline-block') do %>
-                      <%= link_to procurement_order_path(order), class: "font-medium", data: { turbo_frame: '_top' } do %>
-                        (<%= pluralize(order.items.count, 'item') %>)
-                      <% end %>
-                    <% end %>
-                  <% end %>
-                <% end %>
-                <% tr.cell padding: 'px-4 py-1' do %><%= order.requester_name %><% end %>
-                <% tr.cell padding: 'px-4 py-1' do %><%= order.location_name %><% end %>
-                <% tr.cell padding: 'px-4 py-1' do %><%= number_to_isk order.total %><% end %>
-                <% if %w[in_progress delivered].include?(current_tab) %><% tr.cell padding: 'px-4 py-2' do %><%= order.supplier_name %><% end %><% end %>
-                <% tr.cell padding: 'px-4 py-1' do %>
-                  <%= local_time order.created_at, format: :iso8601_date %>
-                <% end %>
-              <% end %>
-            <% end %>
-          <% end %>
-        <% end %>
-
-        <% c.footer do %>
-          <%= render(PaginatorComponent.new(pagy: paginator)) %>
-        <% end %>
-      <% end %>
-    <% else %>
-      <div class="text-center">
-        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-          <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
-        </svg>
-        <h3 class="mt-2 text-sm font-medium text-gray-900">No orders</h3>
-      </div>
-    <% end %>
+    <%= render 'orders_table', orders: orders, paginator: paginator, current_tab: current_tab %>
   </div>
 <% end %>

@@ -14,8 +14,65 @@
       <%= render(ActionButtonComponent.new(href: new_procurement_order_path, margin: 'ml-2').with_content('New order')) %>
     <% end %>
   <% end %>
+
+  <% if policy(ProcurementOrder).create? || current_user.role?('character.orders.supplier') %>
+    <% c.action do %>
+      <%= link_to 'Order history', history_procurement_orders_path, class: 'ml-2 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
+    <% end %>
+  <% end %>
 <% end %>
 
-<div class="max-w-7xl mt-4 mx-auto px-4 sm:px-6 md:px-8">
-  <%= render 'orders', orders: @orders, paginator: @pagy %>
+<div class="max-w-7xl mt-4 mx-auto px-4 sm:px-6 md:px-8 space-y-8">
+  <% if @unconfirmed_orders.any? %>
+    <section>
+      <%= render(CardComponent.new(title: 'Requires Confirmation', ball: true, ball_color: 'bg-yellow-500', body_class_names: 'rounded-lg', footer_padding: 'px-2 py-2')) do |c| %>
+        <% c.body do %>
+          <%= render 'orders_dashboard_table', orders: @unconfirmed_orders, status: false, actions: true, supplier: true %>
+        <% end %>
+      <% end %>
+    </section>
+  <% end %>
+
+  <% if @supplied_orders.any? %>
+    <section>
+      <%= render(CardComponent.new(title: 'Accepted by Me', ball: true, ball_color: 'bg-blue-500', body_class_names: 'rounded-lg', footer_padding: 'px-2 py-2')) do |c| %>
+        <% c.body do %>
+          <%= render 'orders_dashboard_table', orders: @supplied_orders, status: true, actions: true, supplier: false %>
+        <% end %>
+      <% end %>
+    </section>
+  <% end %>
+
+  <% if @in_progress_orders.any? %>
+    <section>
+      <%= render(CardComponent.new(title: 'In Progress', ball: true, ball_color: 'bg-blue-500', body_class_names: 'rounded-lg', footer_padding: 'px-2 py-2')) do |c| %>
+        <% c.body do %>
+          <%= render 'orders_dashboard_table', orders: @in_progress_orders, status: false, actions: false, supplier: true %>
+        <% end %>
+      <% end %>
+    </section>
+  <% end %>
+
+  <section>
+    <%= render(CardComponent.new(title: 'Available Orders', ball: true, ball_color: 'bg-pink-500', body_class_names: 'rounded-lg', footer_padding: 'px-2 py-2')) do |c| %>
+      <% c.body do %>
+        <%= render 'orders_dashboard_table', orders: @available_orders, status: false, actions: true, supplier: false %>
+      <% end %>
+      <% if @available_orders.any? %>
+        <% c.footer do %>
+          <%= render(PaginatorComponent.new(pagy: @pagy)) %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </section>
+
+  <% if @draft_orders.any? %>
+    <section>
+      <%= render(CardComponent.new(title: 'Drafts', ball: true, ball_color: 'bg-gray-500', body_class_names: 'rounded-lg', footer_padding: 'px-2 py-2')) do |c| %>
+        <% c.body do %>
+          <%= render 'orders_dashboard_table', orders: @draft_orders, status: false, actions: true, supplier: false %>
+        <% end %>
+      <% end %>
+    </section>
+  <% end %>
 </div>

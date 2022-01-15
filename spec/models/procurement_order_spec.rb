@@ -12,9 +12,9 @@
 # **`accepted_at`**                | `datetime`         |
 # **`appraisal_url`**              | `text`             |
 # **`bonus`**                      | `decimal(, )`      |
-# **`deliver_by`**                 | `datetime`         |
 # **`delivered_at`**               | `datetime`         |
 # **`discarded_at`**               | `datetime`         |
+# **`estimated_completion_at`**    | `datetime`         |
 # **`multiplier`**                 | `decimal(, )`      | `not null`
 # **`notes`**                      | `text`             |
 # **`published_at`**               | `datetime`         |
@@ -24,6 +24,7 @@
 # **`status`**                     | `enum`             | `not null`
 # **`supplier_name`**              | `text`             |
 # **`supplier_type`**              | `string`           |
+# **`target_completion_at`**       | `datetime`         |
 # **`tracking_number`**            | `bigint`           |
 # **`visibility`**                 | `enum`             |
 # **`created_at`**                 | `datetime`         | `not null`
