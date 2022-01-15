@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [1.5.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v1.4.1...v1.5.0) (2022-01-15)
+
+
+### Features
+
+* stock levels in primary db ([#35](https://github.com/bokoboshahni/eve-indy-watch/issues/35)) ([41452bd](https://github.com/bokoboshahni/eve-indy-watch/commit/41452bd62d8675be9b3200a93a541a105c5d2afe))
+
 ## [1.4.1](https://github.com/bokoboshahni/eve-indy-watch/compare/v1.4.0...v1.4.1) (2022-01-14)
 
 
