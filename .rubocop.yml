@@ -58,3 +58,7 @@ Layout/LineLength:
 Rails/RakeEnvironment:
   Exclude:
     - 'lib/capistrano/**/*.rake'
+
+Rails/SkipsModelValidations:
+  Exclude:
+    - 'lib/tasks/data.rake'

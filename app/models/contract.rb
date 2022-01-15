@@ -162,10 +162,10 @@ class Contract < ApplicationRecord
     items.includes(:type).pluck('types.name')
   end
 
-  def sync_items_from_esi!
-    return unless esi_items_unsynced?
+  def sync_items_from_esi!(force: false)
+    return unless esi_items_unsynced? || force
 
-    Contract::SyncItemsFromESI.call(self)
+    Contract::SyncItemsFromESI.call(self, force: force)
   end
 
   def sync_items_from_esi_async

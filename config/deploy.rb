@@ -114,6 +114,17 @@ namespace :data do
       end
     end
   end
+
+  desc 'Migrate fitting stock levels'
+  task :migrate_fitting_stock_levels do
+    on roles(:app) do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, 'data:migrate_fitting_stock_levels'
+        end
+      end
+    end
+  end
 end
 
 before 'deploy:migrate', 'deploy:db_schema_load' if ENV['DB_SCHEMA_LOAD']

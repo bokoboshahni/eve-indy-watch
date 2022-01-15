@@ -5,8 +5,6 @@
   <% end %>
 <% end %>
 
-<% stock = @fitting.current_stock_level(@fitting.owner.main_market) %>
-
 <div class="max-w-3xl mx-auto px-4 sm:px-6 md:flex md:items-center md:justify-between md:space-x-5 lg:max-w-7xl lg:px-8">
   <div class="flex items-center space-x-5">
     <div class="flex-shrink-0">
@@ -26,36 +24,61 @@
 </div>
 
 <div class="mt-8 max-w-3xl mx-auto grid grid-cols-1 gap-6 sm:px-6 lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
-  <div class="space-y-6 lg:col-start-1 lg:col-span-2">
-    <% if stock.total_quantity.zero? %>
-      <section>
-        <div class="bg-red-50 border-l-4 border-red-400 p-4">
-          <div class="flex">
-            <div class="flex-shrink-0">
-              <%= heroicon 'exclamation', variant: :solid, options: { class: 'h-5 w-5 text-red-400' } %>
+  <% if @fitting.inventory_enabled? %>
+    <div class="space-y-6 lg:col-start-1 lg:col-span-2">
+      <% if @stock %>
+        <% if @stock.total_quantity.zero? %>
+          <section>
+            <div class="bg-red-50 border-l-4 border-red-400 p-4">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <%= heroicon 'exclamation', variant: :solid, options: { class: 'h-5 w-5 text-red-400' } %>
+                </div>
+                <div class="ml-3">
+                  <p class="text-sm text-red-700">
+                    Out of stock on contract and <%= @fitting.main_market.name %> market.
+                  </p>
+                </div>
+              </div>
             </div>
-            <div class="ml-3">
-              <p class="text-sm text-red-700">
-                Out of stock on contract and <%= @fitting.main_market.name %> market.
-              </p>
+          </section>
+        <% end %>
+
+        <section>
+          <%= render 'fitting_stats', fitting: @fitting, stock: @stock %>
+        </section>
+
+        <section>
+          <%= render 'fitting_markets', fitting: @fitting %>
+        </section>
+
+        <section>
+          <%= render 'fitting_contracts', fitting: @fitting, stock: @stock, contract_fittings: @contract_fittings %>
+        </section>
+      <% else %>
+        <section>
+          <div class="bg-red-50 border-l-4 border-red-400 p-4">
+            <div class="flex">
+              <div class="flex-shrink-0">
+                <%= heroicon 'exclamation', variant: :solid, options: { class: 'h-5 w-5 text-red-400' } %>
+              </div>
+              <div class="ml-3">
+                <p class="text-sm text-red-700">
+                  No stock level available on alliance market.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
-    <% end %>
-
-    <section>
-      <%= render 'fitting_stats', fitting: @fitting, stock: stock %>
-    </section>
-
-    <section>
-      <%= render 'fitting_markets', fitting: @fitting %>
-    </section>
-
-    <section>
-      <%= render 'fitting_contracts', fitting: @fitting, stock: stock, contract_fittings: @contract_fittings %>
-    </section>
-  </div>
+        </section>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="w-full border-2 border-gray-300 rounded-lg p-12 text-center col-span-2">
+      <span class="mt-2 block text-sm font-medium text-gray-900">
+        Inventory tracking is not enabled for this fitting.
+      </span>
+    </div>
+  <% end %>
 
   <div class="lg:col-start-3 lg:col-span-1 space-y-6">
     <%= render 'fitting_info', fitting: @fitting %>

@@ -11,6 +11,7 @@
 # **`id`**                        | `bigint`           | `not null, primary key`
 # **`contract_match_threshold`**  | `decimal(, )`      |
 # **`discarded_at`**              | `datetime`         |
+# **`inventory_enabled`**         | `boolean`          |
 # **`killmail_match_threshold`**  | `decimal(, )`      |
 # **`name`**                      | `text`             | `not null`
 # **`original`**                  | `text`             |

@@ -68,10 +68,11 @@ class FittingsController < ApplicationController
 
   def find_fitting
     @fitting = authorize(Fitting.find(params[:id]))
+    @stock = @fitting.current_stock_level(@fitting.owner.main_market)
   end
 
   def fitting_params
-    params.require(:fitting).permit(:name, :contract_match_threshold, :killmail_match_threshold, :pinned, :safety_stock)
+    params.require(:fitting).permit(:name, :contract_match_threshold, :killmail_match_threshold, :pinned, :safety_stock, :inventory_enabled)
   end
 
   def market_param

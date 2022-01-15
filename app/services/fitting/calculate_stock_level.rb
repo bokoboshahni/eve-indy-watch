@@ -2,47 +2,36 @@
 
 class Fitting < ApplicationRecord
   class CalculateStockLevel < ApplicationService
-    def initialize(fitting_id, market_id, market_time, time, interval = nil)
+    def initialize(fitting_id, market_id, market_time, time, interval)
       super
 
       @fitting = Fitting.eager_load(:items).find(fitting_id)
+      @fitting_market = FittingMarket.find([fitting_id, market_id])
       @market = Market.find(market_id)
-      @fitting_market = FittingMarket.find_by!(fitting_id: fitting_id, market_id: market_id)
       @market_time = market_time
       @time = time
-      @interval = interval
+      @interval = interval.to_sym
     end
 
-    def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
-      @time = time.beginning_of_day if interval
+    def call
+      @time = time.prev_day.beginning_of_day unless interval == :live
 
       stock_level = {
-        fitting_id: fitting_id,
         market_id: market_id,
         time: time,
-        market_time: market_time
+        market_time: market_time,
+        interval: interval
       }
-
-      if interval && stock_level_class.exists?(stock_level.merge(interval: interval))
-        error(
-          "Stock level record already exists for #{fitting.log_name} in #{market.log_name} at #{time} and market " \
-          "time #{market_time} for '#{interval} interval"
-        )
-        return
-      elsif stock_level_class.exists?(stock_level)
-        error(
-          "Stock level record already exists for #{fitting.log_name} in #{market.log_name} at #{time} and market " \
-          "time #{market_time}"
-        )
-        return
-      end
 
       stock_level.merge!(contract_stock_level) if contract_stock_level_enabled?
       stock_level.merge!(market_stock_level) if market_stock_level_enabled?
 
-      stock_level[:interval] = interval if interval
-
-      stock_level_class.create!(stock_level)
+      fitting.stock_levels.create!(stock_level)
+    rescue ActiveRecord::RecordNotUnique
+      error(
+        "Stock level record already exists for #{fitting.log_name} in #{market.log_name} at #{time} and market " \
+        "time #{market_time} for '#{interval} interval"
+      )
     end
 
     private
@@ -58,10 +47,6 @@ class Fitting < ApplicationRecord
 
     def location_ids
       @location_ids ||= markets_reader.smembers("markets.#{market_id}.location_ids").map(&:to_i)
-    end
-
-    def stock_level_class
-      interval.present? ? Statistics::FittingStockLevelSummary : Statistics::FittingStockLevel
     end
 
     def contract_stock_level
@@ -92,7 +77,7 @@ class Fitting < ApplicationRecord
                                    .transform_values! { |j| Oj.load(j) if j.present? }
 
       result[:items_attributes] = compact_items.each_with_object({}) do |(item_id, fitting_qty), h|
-        stock_item = { fitting_id: fitting_id, market_id: market_id, type_id: item_id, time: time }
+        stock_item = { fitting_id: fitting_id, market_id: market_id, type_id: item_id, interval: interval, time: time }
         market_item = market_stats[item_id]
 
         if market_item
