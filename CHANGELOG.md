@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [1.9.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v1.8.0...v1.9.0) (2022-01-16)
+
+
+### Features
+
+* move report runs to primary db ([#42](https://github.com/bokoboshahni/eve-indy-watch/issues/42)) ([82ab92a](https://github.com/bokoboshahni/eve-indy-watch/commit/82ab92a2e3f940149ad1c11c626eb482b16784c8))
+
 # [1.8.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v1.7.0...v1.8.0) (2022-01-16)
 
 
