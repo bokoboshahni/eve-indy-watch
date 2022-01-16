@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [1.8.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v1.7.0...v1.8.0) (2022-01-16)
+
+
+### Features
+
+* move region type histories to primary db ([#39](https://github.com/bokoboshahni/eve-indy-watch/issues/39)) ([b7b955a](https://github.com/bokoboshahni/eve-indy-watch/commit/b7b955a1222c3ecc57daf6d155e1e25c89b1c962))
+
 # [1.7.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v1.6.0...v1.7.0) (2022-01-16)
 
 
