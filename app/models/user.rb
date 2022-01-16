@@ -56,7 +56,7 @@ class User < ApplicationRecord
 
   has_many :supplied_procurement_orders, class_name: 'ProcurementOrder', as: :supplier
   has_many :esi_authorizations, inverse_of: :user, dependent: :destroy
-  has_many :report_runs, class_name: 'Statistics::ReportRun', inverse_of: :user
+  has_many :report_runs, inverse_of: :user
 
   delegate :id, :name, to: :alliance, prefix: true, allow_nil: true
   delegate :id, :name, to: :corporation, prefix: true

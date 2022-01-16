@@ -10,20 +10,6 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Name: timescaledb; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS timescaledb WITH SCHEMA public;
-
-
---
--- Name: EXTENSION timescaledb; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION timescaledb IS 'Enables scalable inserts and complex queries for time-series data';
-
-
---
 -- Name: fuzzystrmatch; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -124,6 +110,16 @@ CREATE TYPE public.procurement_order_visibility AS ENUM (
     'everyone',
     'corporation',
     'alliance'
+);
+
+
+--
+-- Name: report_run_status; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.report_run_status AS ENUM (
+    'error',
+    'success'
 );
 
 
@@ -1505,6 +1501,41 @@ ALTER SEQUENCE public.regions_id_seq OWNED BY public.regions.id;
 
 
 --
+-- Name: report_runs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.report_runs (
+    id bigint NOT NULL,
+    user_id bigint,
+    duration interval NOT NULL,
+    exception jsonb,
+    report text NOT NULL,
+    started_at timestamp without time zone NOT NULL,
+    status public.report_run_status NOT NULL,
+    created_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: report_runs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.report_runs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: report_runs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.report_runs_id_seq OWNED BY public.report_runs.id;
+
+
+--
 -- Name: rollups; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1968,6 +1999,13 @@ ALTER TABLE ONLY public.regions ALTER COLUMN id SET DEFAULT nextval('public.regi
 
 
 --
+-- Name: report_runs id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.report_runs ALTER COLUMN id SET DEFAULT nextval('public.report_runs_id_seq'::regclass);
+
+
+--
 -- Name: rollups id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2254,6 +2292,14 @@ ALTER TABLE ONLY public.procurement_orders
 
 ALTER TABLE ONLY public.regions
     ADD CONSTRAINT regions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: report_runs report_runs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.report_runs
+    ADD CONSTRAINT report_runs_pkey PRIMARY KEY (id);
 
 
 --
@@ -2958,6 +3004,13 @@ CREATE INDEX index_regions_on_esi_authorization_id ON public.regions USING btree
 
 
 --
+-- Name: index_report_runs_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_report_runs_on_user_id ON public.report_runs USING btree (user_id);
+
+
+--
 -- Name: index_solar_systems_on_constellation_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3642,6 +3695,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220115162150'),
 ('20220115163821'),
 ('20220116024530'),
-('20220116032254');
+('20220116032254'),
+('20220116033406');
 
 
