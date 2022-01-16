@@ -27,10 +27,9 @@
 #     * **`visit_token`**
 #
 module Ahoy
-  class Visit < Statistics::ApplicationRecord
-    self.table_name = 'ahoy_visits'
+  class Visit < ApplicationRecord
+    self.table_name = :ahoy_visits
 
     has_many :events, class_name: 'Ahoy::Event'
-    belongs_to :user, optional: true
   end
 end
