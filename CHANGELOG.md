@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [2.1.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.0.0...v2.1.0) (2022-01-16)
+
+
+### Features
+
+* docker-compose dev environment ([#44](https://github.com/bokoboshahni/eve-indy-watch/issues/44)) ([719710f](https://github.com/bokoboshahni/eve-indy-watch/commit/719710fad9aaed2a9638513b1dc37afade4aaa8c))
+
 # [2.0.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v1.9.0...v2.0.0) (2022-01-16)
 
 
