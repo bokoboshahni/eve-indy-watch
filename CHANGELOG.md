@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [2.2.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.1.2...v2.2.0) (2022-01-16)
+
+
+### Features
+
+* make prometheus opt-in instead of opt-out ([#46](https://github.com/bokoboshahni/eve-indy-watch/issues/46)) ([6c8b659](https://github.com/bokoboshahni/eve-indy-watch/commit/6c8b659dbe19d68eae2a154524e18833adc6ffce))
+
 ## [2.1.2](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.1.1...v2.1.2) (2022-01-16)
 
 
