@@ -51,7 +51,7 @@ class Region < ApplicationRecord
   has_many :solar_systems, through: :constellations
   has_many :stations, through: :solar_systems
   has_many :structures, through: :solar_systems
-  has_many :type_histories, class_name: 'Statistics::RegionTypeHistory', inverse_of: :region,
+  has_many :type_histories, class_name: 'RegionTypeHistory', inverse_of: :region,
                             dependent: :restrict_with_exception
 
   scope :new_eden, -> { where(id: 10_000_000..11_000_000) }
@@ -63,8 +63,8 @@ class Region < ApplicationRecord
   end
 
   def type_history_expired?(type)
-    latest = Statistics::RegionTypeHistory.where(region_id: id, type_id: type.id)
-                                          .maximum(:date)
+    latest = RegionTypeHistory.where(region_id: id, type_id: type.id)
+                              .maximum(:date)
 
     return true unless latest
 

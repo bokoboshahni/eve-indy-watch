@@ -38,7 +38,7 @@ class Region < ApplicationRecord
 
       return if records.empty?
 
-      Statistics::RegionTypeHistory.import(
+      RegionTypeHistory.import(
         records,
         validate: false,
         on_duplicate_key_update: {

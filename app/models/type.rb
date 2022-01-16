@@ -79,7 +79,7 @@ class Type < ApplicationRecord
   has_many :lossmails, class_name: 'Killmail', inverse_of: :ship_type, dependent: :restrict_with_exception
   has_many :market_price_snapshots, inverse_of: :type, dependent: :destroy
   has_many :procurement_order_items, inverse_of: :type, dependent: :restrict_with_exception
-  has_many :region_histories, class_name: 'Statistics::RegionTypeHistory', inverse_of: :type, dependent: :restrict_with_exception
+  has_many :region_histories, class_name: 'RegionTypeHistory', inverse_of: :type, dependent: :restrict_with_exception
   has_many :stations, inverse_of: :type, dependent: :restrict_with_exception
   has_many :structures, inverse_of: :type, dependent: :restrict_with_exception
 
