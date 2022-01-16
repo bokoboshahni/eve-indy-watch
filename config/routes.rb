@@ -53,11 +53,13 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
 
   resources :procurement_orders, path: 'orders', only: %i[index new create show update destroy] do
     collection do
+      get :history
       get :item
     end
 
     member do
       post :accept
+      post :deliver
       post :receive
       post :redraft
       post :release

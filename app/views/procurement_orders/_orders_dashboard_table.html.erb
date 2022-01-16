@@ -1,0 +1,90 @@
+<% if orders.any? %>
+  <%= render(CardComponent.new(body_class_names: 'rounded-lg', footer_padding: 'px-2 py-2')) do |c| %>
+    <% c.body do %>
+      <%= render(TableComponent.new(layout: 'auto rounded-lg')) do |t| %>
+        <% t.header padding: 'px-4 py-3', width: 'w-36' do %>Order #<% end %>
+        <% t.header padding: 'px-4 py-3' do %>Item(s)<% end %>
+        <% t.header padding: 'px-4 py-3', width: 'w-24' do %>Quantity<% end %>
+        <% t.header padding: 'px-4 py-3', width: 'w-48' do %>Requester<% end %>
+        <% t.header padding: 'px-4 py-3', width: 'w-48' do %>Location<% end %>
+        <% t.header padding: 'px-4 py-3', width: 'w-36' do %>Price<% end %>
+        <% if supplier %><% t.header padding: 'px-4 py-2', width: 'w-48' do %>Supplier<% end %><% end %>
+        <% t.header padding: 'px-4 py-3', width: 'w-36' do %>Updated<% end %>
+        <% if status %><% t.header padding: 'px-4 py-3', width: 'w-48' do %>Status<% end %><% end %>
+        <% if actions %><% t.header padding: 'px-4 py-3 relative', width: 'w-24' do %><span class="sr-only">Actions</span><% end %><% end %>
+
+        <% orders.each do |order| %>
+          <% t.row do |tr| %>
+            <% tr.cell padding: 'px-4 py-3' do %>
+              <%= link_to order.number, procurement_order_path(order), class: 'font-medium', data: { turbo_frame: '_top' } %>
+            <% end %>
+            <% tr.cell padding: 'px-4 py-3' do %>
+              <% if order.items.count == 1 %>
+                <span class="text-ellipsis"><%= order.items.first.name %></span>
+              <% elsif order.items.count >= 1 %>
+                <%= render HovercardComponent.new(url: list_items_card_procurement_order_path(order), class_name: 'inline-block') do %>
+                  <%= link_to procurement_order_path(order), class: "font-medium", data: { turbo_frame: '_top' } do %>
+                    (<%= pluralize(order.items.count, 'item') %>)
+                  <% end %>
+                <% end %>
+              <% end %>
+            <% end %>
+            <% tr.cell padding: 'px-4 py-3' do %>
+              <% if order.items.count == 1 %>
+                <%= order.items.first.quantity_required %>
+              <% elsif order.items.count >= 1 %>
+                <%= render HovercardComponent.new(url: list_items_card_procurement_order_path(order), class_name: 'inline-block') do %>
+                  <%= link_to procurement_order_path(order), class: "font-medium", data: { turbo_frame: '_top' } do %>
+                    (<%= pluralize(order.items.count, 'item') %>)
+                  <% end %>
+                <% end %>
+              <% end %>
+            <% end %>
+            <% tr.cell padding: 'px-4 py-3' do %><%= order.requester_name %><% end %>
+            <% tr.cell padding: 'px-4 py-3' do %><%= order.location_name %><% end %>
+            <% tr.cell padding: 'px-4 py-3' do %><%= number_to_isk order.total %><% end %>
+            <% if supplier %><% tr.cell padding: 'px-4 py-2' do %><%= order.supplier_name %><% end %><% end %>
+            <% tr.cell padding: 'px-4 py-3' do %>
+              <%= local_time order.updated_at, format: :iso8601_date %>
+            <% end %>
+            <% if status %>
+              <% tr.cell padding: 'px-4 py-3 whitespace-nowrap' do %>
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= procurement_order_status_bg_color(order) %> <%= procurement_order_status_text_color(order) %>">
+                  <% if order.delivered_unconfirmed? %>
+                    Unconfirmed delivery
+                  <% else %>
+                    <%= order.status.humanize %>
+                  <% end %>
+                </span>
+              <% end %>
+            <% end %>
+            <% if actions %>
+              <% tr.cell padding: 'px-4 py-3 text-right' do %>
+                <% if order.available? %>
+                  <% if policy(order).update? && order.requester == current_user.character %>
+                    <%= render 'redraft_modal', order: order, table: true %>
+                  <% elsif policy(order).accept? && order.requester != current_user.character %>
+                    <%= render 'accept_modal', order: order, table: true %>
+                  <% end %>
+                <% elsif order.in_progress? && policy(order).update? && order.delivered_at %>
+                  <%= render 'receive_modal', order: order, table: true %>
+                <% elsif order.in_progress? && current_user.character == order.supplier && !order.delivered_at %>
+                  <%= render 'deliver_modal', order: order, table: true %>
+                <% elsif order.draft? %>
+                  <%= link_to 'Edit', procurement_order_path(order), class: 'cursor-pointer inline-flex items-center px-3 py-0.5 rounded-full bg-indigo-50 text-xs font-medium text-indigo-700 hover:bg-indigo-100' %>
+                <% end %>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% else %>
+  <div class="text-center p-4">
+    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+      <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+    </svg>
+    <h3 class="mt-2 text-sm font-medium text-gray-900">No orders</h3>
+  </div>
+<% end %>

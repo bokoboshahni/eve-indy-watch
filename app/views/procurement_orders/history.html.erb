@@ -1,0 +1,22 @@
+<% content_for :breadcrumbs do %>
+  <%= render(BreadcrumbsComponent.new) do |c| %>
+    <%= c.item href: procurement_orders_path do %>Procurement Orders<% end %>
+    <%= c.item href: history_procurement_orders_path do %>History<% end %>
+  <% end %>
+<% end %>
+
+<%= render PageHeadingComponent.new(title: 'Procurement Orders') do |c| %>
+  <%#= c.action do %>
+    <%#= render(DataTableSorterComponent.new(name: :orders, filter: @filter)) %>
+  <%# end %>
+
+  <% if policy(ProcurementOrder).create? %>
+    <% c.action do %>
+      <%= render(ActionButtonComponent.new(href: new_procurement_order_path, margin: 'ml-2').with_content('New order')) %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<div class="max-w-7xl mt-4 mx-auto px-4 sm:px-6 md:px-8">
+  <%= render 'orders_history', orders: @orders, paginator: @pagy %>
+</div>
