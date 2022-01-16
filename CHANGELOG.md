@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [1.7.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v1.6.0...v1.7.0) (2022-01-16)
+
+
+### Features
+
+* move ahoy to primary db ([#38](https://github.com/bokoboshahni/eve-indy-watch/issues/38)) ([1dd1e1a](https://github.com/bokoboshahni/eve-indy-watch/commit/1dd1e1a63071a5410d7ea16ed17654f88ada2217))
+
 # [1.6.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v1.5.0...v1.6.0) (2022-01-16)
 
 
