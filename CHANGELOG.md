@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+## [2.1.2](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.1.1...v2.1.2) (2022-01-16)
+
+
+### Bug Fixes
+
+* load stations from moons properly ([#47](https://github.com/bokoboshahni/eve-indy-watch/issues/47)) ([d21b115](https://github.com/bokoboshahni/eve-indy-watch/commit/d21b11565178fcd05199cc1f34373ce992f33a9f))
+
 ## [2.1.1](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.1.0...v2.1.1) (2022-01-16)
 
 
