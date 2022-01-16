@@ -15,7 +15,7 @@ class ApplicationReport
     end
     status = exception ? 'error' : 'success'
 
-    report_run = Statistics::ReportRun.create!(
+    report_run = ReportRun.create!(
       report: report_name,
       user: user,
       status: status,
@@ -47,6 +47,6 @@ class ApplicationReport
   end
 
   def self.last_run
-    Statistics::ReportRun.order(started_at: :desc).find_by(report: report_name)
+    ReportRun.order(started_at: :desc).find_by(report: report_name)
   end
 end
