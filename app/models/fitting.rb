@@ -44,7 +44,6 @@ class Fitting < ApplicationRecord
 
   include ContractStatistics
   include KillmailStatistics
-  include MarketStatistics
 
   SERVICE_LEVELS = [
     '50'

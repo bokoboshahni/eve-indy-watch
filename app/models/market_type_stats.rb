@@ -75,7 +75,7 @@
 # * `market_type_stats_time_idx`:
 #     * **`time`**
 #
-class MarketTypeStats < StatisticsRecord
+class MarketTypeStats < ApplicationRecord
   self.inheritance_column = nil
   self.primary_keys = :market_id, :type_id, :time
 

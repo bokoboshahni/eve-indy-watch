@@ -14,11 +14,6 @@ Lint/DuplicateBranch:
     - 'app/services/contract/sync_from_esi.rb'
 
 # Offense count: 1
-Lint/DuplicateHashKey:
-  Exclude:
-    - 'app/models/statistics/fitting_stock_level.rb'
-
-# Offense count: 1
 Lint/EachWithObjectArgument:
   Exclude:
     - 'app/services/location/snapshot_orders_from_esi.rb'
