@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [1.6.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v1.5.0...v1.6.0) (2022-01-16)
+
+
+### Features
+
+* procurement order delivery workflow ([#37](https://github.com/bokoboshahni/eve-indy-watch/issues/37)) ([6bbffb4](https://github.com/bokoboshahni/eve-indy-watch/commit/6bbffb4c4b1d4c855f0d7441015ad7c18f8d6a5c))
+
 # [1.5.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v1.4.1...v1.5.0) (2022-01-15)
 
 
