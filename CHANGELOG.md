@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [2.3.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.2.1...v2.3.0) (2022-01-16)
+
+
+### Features
+
+* sso redirect ([#50](https://github.com/bokoboshahni/eve-indy-watch/issues/50)) ([0144a77](https://github.com/bokoboshahni/eve-indy-watch/commit/0144a77052499ff204fde4930c3d9c88398ac8a1))
+
 ## [2.2.1](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.2.0...v2.2.1) (2022-01-16)
 
 
