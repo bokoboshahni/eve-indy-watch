@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+## [2.2.1](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.2.0...v2.2.1) (2022-01-16)
+
+
+### Bug Fixes
+
+* link webpack correctly in docker-compose environments ([#49](https://github.com/bokoboshahni/eve-indy-watch/issues/49)) ([1f9f0aa](https://github.com/bokoboshahni/eve-indy-watch/commit/1f9f0aaf82372d0911c3ea20dd98095622d971d7))
+
 # [2.2.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.1.2...v2.2.0) (2022-01-16)
 
 
