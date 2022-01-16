@@ -51,6 +51,7 @@ services:
       - MARKETS_WRITER_REDIS_URL=redis://redis-data:6379/2
       - LOCATIONS_READER_REDIS_URL=redis://redis-data:6379/3
       - LOCATIONS_WRITER_REDIS_URL=redis://redis-data:6379/3
+      - WEBPACKER_DEV_SERVER_HOST=webpack
     volumes:
       - .:/app
     depends_on:
@@ -107,3 +108,6 @@ services:
     restart: always
     ports:
       - "3035:3035"
+    environment:
+      - WEBPACKER_DEV_SERVER_HOST=0.0.0.0
+
