@@ -1,0 +1,109 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:14
+    volumes:
+      - ./tmp/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgres
+    restart: always
+  redis-queue:
+    image: redis:6
+    volumes:
+      - ./tmp/volumes/redis-queue:/data
+    command: redis-server --save 60 1 --loglevel warning
+    restart: always
+  redis-sessions:
+    image: redis:6
+    volumes:
+      - ./tmp/volumes/redis-sessions:/data
+    command: redis-server --save 60 1 --loglevel warning
+    restart: always
+  redis-data:
+    image: redis:6
+    volumes:
+      - ./tmp/volumes/redis-data:/data
+    command: redis-server --save 60 1 --loglevel warning --maxmemory 8gb --maxmemory-policy volatile-ttl
+    restart: always
+  redis-cache:
+    image: redis:6
+    volumes:
+      - ./tmp/volumes/redis-cache:/data
+    command: redis-server --maxmemory 1gb --maxmemory-policy allkeys-lru
+    restart: always
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: bundle exec puma -t 5:5 -p 3000 -e development -C config/puma.rb
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/eve_indy_watch
+      - QUEUE_REDIS_URL=redis://redis-queue:6379/0
+      - SESSIONS_REDIS_URL=redis://redis-sessions:6379/0
+      - CACHE_REDIS_URL=redis://redis-cache:6379/0
+      - ORDERS_READER_REDIS_URL=redis://redis-data:6379/1
+      - ORDERS_WRITER_REDIS_URL=redis://redis-data:6379/1
+      - MARKETS_READER_REDIS_URL=redis://redis-data:6379/2
+      - MARKETS_WRITER_REDIS_URL=redis://redis-data:6379/2
+      - LOCATIONS_READER_REDIS_URL=redis://redis-data:6379/3
+      - LOCATIONS_WRITER_REDIS_URL=redis://redis-data:6379/3
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+      - redis-queue
+      - redis-sessions
+      - redis-data
+      - redis-cache
+    restart: always
+    ports:
+      - "3000:3000"
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: bundle exec sidekiq -c 25
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/eve_indy_watch
+      - QUEUE_REDIS_URL=redis://redis-queue:6379/0
+      - SESSIONS_REDIS_URL=redis://redis-sessions:6379/0
+      - CACHE_REDIS_URL=redis://redis-cache:6379/0
+      - ORDERS_READER_REDIS_URL=redis://redis-data:6379/1
+      - ORDERS_WRITER_REDIS_URL=redis://redis-data:6379/1
+      - MARKETS_READER_REDIS_URL=redis://redis-data:6379/2
+      - MARKETS_WRITER_REDIS_URL=redis://redis-data:6379/2
+      - LOCATIONS_READER_REDIS_URL=redis://redis-data:6379/3
+      - LOCATIONS_WRITER_REDIS_URL=redis://redis-data:6379/3
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+      - redis-queue
+      - redis-sessions
+      - redis-data
+      - redis-cache
+    restart: always
+  webpack:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: bin/webpack-dev-server
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+      - redis-queue
+      - redis-sessions
+      - redis-data
+      - redis-cache
+    restart: always
+    ports:
+      - "3035:3035"
