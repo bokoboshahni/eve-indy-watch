@@ -1,5 +1,17 @@
 # EVE Indy Watch Changelog
 
+# [2.0.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v1.9.0...v2.0.0) (2022-01-16)
+
+
+### Features
+
+* decommission timescaledb ([#43](https://github.com/bokoboshahni/eve-indy-watch/issues/43)) ([8da1d48](https://github.com/bokoboshahni/eve-indy-watch/commit/8da1d4855a0cd01eeadd00b4ea0d1c0758c76b8e)), closes [#33](https://github.com/bokoboshahni/eve-indy-watch/issues/33)
+
+
+### BREAKING CHANGES
+
+* remove usage of timescaledb completely
+
 # [1.9.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v1.8.0...v1.9.0) (2022-01-16)
 
 
