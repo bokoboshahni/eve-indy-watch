@@ -10,6 +10,20 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
+-- Name: timescaledb; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS timescaledb WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION timescaledb; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION timescaledb IS 'Enables scalable inserts and complex queries for time-series data';
+
+
+--
 -- Name: fuzzystrmatch; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -1435,6 +1449,22 @@ CREATE SEQUENCE public.procurement_orders_id_seq
 --
 
 ALTER SEQUENCE public.procurement_orders_id_seq OWNED BY public.procurement_orders.id;
+
+
+--
+-- Name: region_type_histories; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.region_type_histories (
+    region_id bigint NOT NULL,
+    type_id bigint NOT NULL,
+    date date NOT NULL,
+    average numeric,
+    highest numeric,
+    lowest numeric,
+    order_count bigint,
+    volume bigint
+);
 
 
 --
@@ -2907,6 +2937,20 @@ CREATE INDEX index_procurement_orders_on_supplier ON public.procurement_orders U
 
 
 --
+-- Name: index_region_type_histories_on_region_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_region_type_histories_on_region_id ON public.region_type_histories USING btree (region_id);
+
+
+--
+-- Name: index_region_type_histories_on_type_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_region_type_histories_on_type_id ON public.region_type_histories USING btree (type_id);
+
+
+--
 -- Name: index_regions_on_esi_authorization_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3058,6 +3102,13 @@ CREATE UNIQUE INDEX index_unique_locations ON public.locations USING btree (loca
 --
 
 CREATE UNIQUE INDEX index_unique_market_price_snapshots ON public.market_price_snapshots USING btree (type_id, esi_last_modified_at);
+
+
+--
+-- Name: index_unique_region_type_histories; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_unique_region_type_histories ON public.region_type_histories USING btree (region_id, type_id, date);
 
 
 --
@@ -3590,6 +3641,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220115015439'),
 ('20220115162150'),
 ('20220115163821'),
-('20220116024530');
+('20220116024530'),
+('20220116032254');
 
 

@@ -9,16 +9,13 @@
 # Name              | Type               | Attributes
 # ----------------- | ------------------ | ---------------------------
 # **`id`**          | `bigint`           | `not null, primary key`
-# **`name`**        | `string`           |
+# **`name`**        | `text`             |
 # **`properties`**  | `jsonb`            |
 # **`time`**        | `datetime`         |
 # **`visit_id`**    | `bigint`           |
 #
 # ### Indexes
 #
-# * `index_ahoy_events_on_name_and_time`:
-#     * **`name`**
-#     * **`time`**
 # * `index_ahoy_events_on_properties` (_using_ gin):
 #     * **`properties`**
 # * `index_ahoy_events_on_visit_id`:

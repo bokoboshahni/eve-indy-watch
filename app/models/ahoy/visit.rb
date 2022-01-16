@@ -9,21 +9,21 @@
 # Name                    | Type               | Attributes
 # ----------------------- | ------------------ | ---------------------------
 # **`id`**                | `bigint`           | `not null, primary key`
-# **`browser`**           | `string`           |
-# **`device_type`**       | `string`           |
-# **`ip`**                | `string`           |
+# **`browser`**           | `text`             |
+# **`device_type`**       | `text`             |
+# **`ip`**                | `text`             |
 # **`landing_page`**      | `text`             |
-# **`os`**                | `string`           |
+# **`os`**                | `text`             |
 # **`referrer`**          | `text`             |
-# **`referring_domain`**  | `string`           |
+# **`referring_domain`**  | `text`             |
 # **`started_at`**        | `datetime`         |
 # **`user_agent`**        | `text`             |
-# **`visit_token`**       | `string`           |
-# **`visitor_token`**     | `string`           |
+# **`visit_token`**       | `text`             |
+# **`visitor_token`**     | `text`             |
 #
 # ### Indexes
 #
-# * `index_ahoy_visits_on_visit_token` (_unique_):
+# * `index_unique_visit_tokens` (_unique_):
 #     * **`visit_token`**
 #
 module Ahoy
