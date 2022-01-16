@@ -16,6 +16,7 @@ class ApplicationController < ActionController::Base
   def authenticate_user!
     return if logged_in?
 
+    session[:redirect_to] = request.url
     flash[:error] = 'You must be logged in to do that.'
     redirect_to root_path
   end
