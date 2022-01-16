@@ -121,7 +121,7 @@ class Location < ApplicationRecord
             "Wrote #{unique_orders.count} order(s) to Redis for #{log_name} at #{log_time}",
             metric: "#{METRIC_NAME}/write_redis"
           ) do
-            orders_writer.pipelined do # rubocop:disable Metrics/BlockLength
+            orders_writer.pipelined do
               order_set_count = unique_orders.group_by { |o| o['l'] }.each_with_object(0) do |(location_id, orders), c|
                 orders_writer.sadd("#{orders_key}.location_ids", location_id)
 
@@ -136,22 +136,20 @@ class Location < ApplicationRecord
                   orders_writer.expireat(order_set_key, expiry)
 
                   orders_writer.sadd("#{orders_key}.order_ids", orders.map { |o| o['o'] })
-                  orders_writer.zadd("#{orders_key}.order_ids_by_location_id_and_type_id", orders.map do |o|
-                                                                                             [0, "#{index_key}:#{o['o']}"]
-                                                                                           end)
                   orders_writer.zadd("#{orders_key}.order_set_keys_by_type", type_id, order_set_key)
+
                   orders_writer.sadd("#{orders_key}.type_ids_by_location.#{location_id}", type_id)
 
                   c += 1
                 end
+
+                orders_writer.expireat("#{orders_key}.type_ids_by_location.#{location_id}", expiry)
               end
 
               orders_writer.expireat("#{orders_key}.location_ids", expiry)
               orders_writer.expireat("#{orders_key}.order_ids", expiry)
-              orders_writer.expireat("#{orders_key}.order_ids_by_location_id_and_type_id", expiry)
               orders_writer.expireat("#{orders_key}.order_set_keys_by_type", expiry)
               orders_writer.expireat("#{orders_key}.type_ids", expiry)
-              orders_writer.expireat("#{orders_key}.type_ids_by_location", expiry)
 
               orders_writer.set("#{orders_key}.order_set_count", order_set_count)
               orders_writer.expireat("#{orders_key}.order_set_count", expiry)
