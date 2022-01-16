@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'prometheus_exporter/instrumentation'
+require 'prometheus_exporter/instrumentation' if ENV['ENABLE_PROMETHEUS'].present?
 
 require 'sidekiq/throttled'
 Sidekiq::Throttled.setup!
@@ -42,7 +42,7 @@ Sidekiq.configure_server do |config| # rubocop:disable Metrics/BlockLength
   SidekiqUniqueJobs::Server.configure(config)
 
   at_exit do
-    PrometheusExporter::Client.default.stop(wait_timeout_seconds: 10)
+    PrometheusExporter::Client.default.stop(wait_timeout_seconds: 10) if ENV['ENABLE_PROMETHEUS'].present?
   end
 end
 
