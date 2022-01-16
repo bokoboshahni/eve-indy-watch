@@ -3,36 +3,15 @@ _primary: &primary
   url: <%= ENV['ASSET_PRECOMPILE'].present? ? 'nulldb://user:pass@127.0.0.1/dbname' : ENV.fetch('DATABASE_URL', 'eve_indy_watch') %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 25 } %>
 
-_statistics: &statistics
-  adapter: postgres
-  url: <%= ENV['ASSET_PRECOMPILE'].present? ? 'nulldb://user:pass@127.0.0.1/dbname' : ENV.fetch('STATISTICS_DATABASE_URL', ENV.fetch('TIMESCALE_URL', 'eve_indy_watch_stats')) %>
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 25 } %>
-  schema_dump: false
-  migrations_paths:
-    - db/statistics_migrate
-
 development:
-  primary:
-    <<: *primary
-  statistics:
-    <<: *statistics
+  <<: *primary
 
 test:
-  primary:
-    <<: *primary
-    url: <%= ENV['ASSET_PRECOMPILE'].present? ? 'nulldb://user:pass@127.0.0.1/dbname' : ENV.fetch('DATABASE_URL', 'eve_indy_watch') + '_test' %>
-  statistics:
-    <<: *statistics
-    url: <%= ENV['ASSET_PRECOMPILE'].present? ? 'nulldb://user:pass@127.0.0.1/dbname' : ENV.fetch('STATISTICS_DATABASE_URL', ENV.fetch('TIMESCALE_URL', 'eve_indy_watch_stats')) + '_test' %>
+  <<: *primary
+  url: <%= ENV['ASSET_PRECOMPILE'].present? ? 'nulldb://user:pass@127.0.0.1/dbname' : ENV.fetch('DATABASE_URL', 'eve_indy_watch') + '_test' %>
 
 staging:
-  primary:
-    <<: *primary
-  statistics:
-    <<: *statistics
+  <<: *primary
 
 production:
-  primary:
-    <<: *primary
-  statistics:
-    <<: *statistics
+  <<: *primary

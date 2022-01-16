@@ -16,19 +16,16 @@ Metrics/AbcSize:
   Exclude:
     - 'app/services/sde/**/*.rb'
     - 'db/migrate/*'
-    - 'db/statistics_migrate/*'
     - 'lib/**/*.rake'
 
 Metrics/BlockLength:
   Exclude:
     - 'db/migrate/*'
-    - 'db/statistics_migrate/*'
     - 'lib/**/*.rake'
 
 Metrics/ClassLength:
   Exclude:
     - 'db/migrate/*'
-    - 'db/statistics_migrate/*'
     - 'lib/**/*.rake'
 
 Metrics/CyclomaticComplexity:
@@ -46,7 +43,6 @@ Metrics/MethodLength:
   Exclude:
     - 'app/services/sde/**/*.rb'
     - 'db/migrate/*'
-    - 'db/statistics_migrate/*'
     - 'lib/**/*.rake'
 
 Style/Documentation:

@@ -96,7 +96,7 @@ jobs:
     if: github.event_name != 'release'
     services:
       postgres:
-        image: timescale/timescaledb:latest-pg14
+        image: postgres:14
         env:
           POSTGRES_PASSWORD: postgres
         ports: ["5432:5432"]
@@ -176,7 +176,6 @@ jobs:
           export SECRET_KEY_BASE=$(bin/rails secret)
           export RAILS_ASSET_HOST=''
           export DATABASE_URL=postgres://postgres:postgres@localhost:5432/eve_indy_watch
-          export STATISTICS_DATABASE_URL=postgres://postgres:postgres@localhost:5432/eve_indy_watch_stats
           bin/rails db:setup
           bundle exec rspec
 

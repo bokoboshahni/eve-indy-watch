@@ -161,7 +161,7 @@ class Type < ApplicationRecord
   end
 
   def regional_history(region, period)
-    Statistics::RegionTypeHistory.where(region_id: region.id, type_id: id, date: build_period(period))
+    RegionTypeHistory.where(region_id: region.id, type_id: id, date: build_period(period))
   end
 
   def regional_sales_daily_avg(region, period = nil)
