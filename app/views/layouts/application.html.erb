@@ -26,7 +26,9 @@
 
           <main class="flex-1 pb-8">
             <% if content_for?(:breadcrumbs) %><%= yield :breadcrumbs if content_for?(:breadcrumbs) %><% end %>
-            <%= render 'application/alerts' %>
+            <div class="max-w-7xl mx-auto">
+              <%= render 'application/alerts' %>
+            </div>
             <div class="py-6">
               <%= content_for?(:main) ? yield(:main) : yield %>
             </div>
