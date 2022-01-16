@@ -12,7 +12,7 @@ module SDE
         stations = solar_system['planets'].values.each_with_object({}) do |planet, h|
           h.merge!(planet.fetch('npc_stations', {}))
 
-          planet.fetch('moons', {}).each_value { |moon| h.merge!(moon.fetch('npcStations', {})) }
+          planet.fetch('moons', {}).each_value { |moon| h.merge!(moon.fetch('npc_stations', {})) }
         end
 
         stations.each do |(id, station)|
