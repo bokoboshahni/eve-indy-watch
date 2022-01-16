@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+## [2.1.1](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.1.0...v2.1.1) (2022-01-16)
+
+
+### Bug Fixes
+
+* ensure all snapshot keys are expired ([#45](https://github.com/bokoboshahni/eve-indy-watch/issues/45)) ([4885e2f](https://github.com/bokoboshahni/eve-indy-watch/commit/4885e2f2bd373074ba8bcfb2414f5ba9fe95fc62))
+
 # [2.1.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.0.0...v2.1.0) (2022-01-16)
 
 
