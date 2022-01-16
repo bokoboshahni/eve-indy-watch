@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [2.4.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.3.0...v2.4.0) (2022-01-16)
+
+
+### Features
+
+* onboarding ([#51](https://github.com/bokoboshahni/eve-indy-watch/issues/51)) ([cbf7960](https://github.com/bokoboshahni/eve-indy-watch/commit/cbf79603da2241e88937ac6878d7242abc71ea78))
+
 # [2.3.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.2.1...v2.3.0) (2022-01-16)
 
 
