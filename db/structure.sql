@@ -24,20 +24,6 @@ COMMENT ON EXTENSION fuzzystrmatch IS 'determine similarities and distance betwe
 
 
 --
--- Name: pg_stat_statements; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS pg_stat_statements WITH SCHEMA public;
-
-
---
--- Name: EXTENSION pg_stat_statements; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION pg_stat_statements IS 'track planning and execution statistics of all SQL statements executed';
-
-
---
 -- Name: pg_trgm; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -130,6 +116,77 @@ CREATE TYPE public.procurement_order_visibility AS ENUM (
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
+
+--
+-- Name: ahoy_events; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.ahoy_events (
+    id bigint NOT NULL,
+    visit_id bigint,
+    name text,
+    properties jsonb,
+    "time" timestamp without time zone
+);
+
+
+--
+-- Name: ahoy_events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.ahoy_events_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: ahoy_events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.ahoy_events_id_seq OWNED BY public.ahoy_events.id;
+
+
+--
+-- Name: ahoy_visits; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.ahoy_visits (
+    id bigint NOT NULL,
+    browser text,
+    device_type text,
+    ip text,
+    landing_page text,
+    os text,
+    referrer text,
+    referring_domain text,
+    started_at timestamp without time zone,
+    user_agent text,
+    visit_token text,
+    visitor_token text
+);
+
+
+--
+-- Name: ahoy_visits_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.ahoy_visits_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: ahoy_visits_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.ahoy_visits_id_seq OWNED BY public.ahoy_visits.id;
+
 
 --
 -- Name: alliance_locations; Type: TABLE; Schema: public; Owner: -
@@ -1678,6 +1735,20 @@ ALTER SEQUENCE public.versions_id_seq OWNED BY public.versions.id;
 
 
 --
+-- Name: ahoy_events id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ahoy_events ALTER COLUMN id SET DEFAULT nextval('public.ahoy_events_id_seq'::regclass);
+
+
+--
+-- Name: ahoy_visits id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ahoy_visits ALTER COLUMN id SET DEFAULT nextval('public.ahoy_visits_id_seq'::regclass);
+
+
+--
 -- Name: alliances id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1913,6 +1984,22 @@ ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_
 --
 
 ALTER TABLE ONLY public.versions ALTER COLUMN id SET DEFAULT nextval('public.versions_id_seq'::regclass);
+
+
+--
+-- Name: ahoy_events ahoy_events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ahoy_events
+    ADD CONSTRAINT ahoy_events_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ahoy_visits ahoy_visits_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ahoy_visits
+    ADD CONSTRAINT ahoy_visits_pkey PRIMARY KEY (id);
 
 
 --
@@ -2201,6 +2288,20 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.versions
     ADD CONSTRAINT versions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_ahoy_events_on_properties; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ahoy_events_on_properties ON public.ahoy_events USING gin (properties);
+
+
+--
+-- Name: index_ahoy_events_on_visit_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ahoy_events_on_visit_id ON public.ahoy_events USING btree (visit_id);
 
 
 --
@@ -2967,6 +3068,13 @@ CREATE UNIQUE INDEX index_unique_rollups ON public.rollups USING btree (name, "i
 
 
 --
+-- Name: index_unique_visit_tokens; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_unique_visit_tokens ON public.ahoy_visits USING btree (visit_token);
+
+
+--
 -- Name: index_users_on_character_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3481,6 +3589,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220114202413'),
 ('20220115015439'),
 ('20220115162150'),
-('20220115163821');
+('20220115163821'),
+('20220116024530');
 
 
