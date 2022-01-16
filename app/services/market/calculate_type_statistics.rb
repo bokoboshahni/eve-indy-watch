@@ -289,7 +289,7 @@ class Market < ApplicationRecord
             markets_writer.expireat("#{type_key}.stats", expiry)
 
             markets_writer.sadd("markets.#{market_id}.#{time_key}.type_ids", type_id)
-            markets_writer.zadd("markets.#{market_id}.type_stats.#{type_id}", time_key.to_i, "#{type_key}.stats")
+            markets_writer.expireat("markets.#{market_id}.#{time_key}.type_ids", expiry)
 
             markets_writer.incr("markets.#{market_id}.#{time_key}.type_count")
             markets_writer.expireat("markets.#{market_id}.#{time_key}.type_count", expiry)
