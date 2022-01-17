@@ -1,5 +1,24 @@
 # EVE Indy Watch Changelog
 
+# [2.7.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.6.1...v2.7.0) (2022-01-17)
+
+
+### Bug Fixes
+
+* authorize create procurement order correctly ([61ac8aa](https://github.com/bokoboshahni/eve-indy-watch/commit/61ac8aaca12d15d7d679cc1db56da6c1e849e359))
+* delete button not showing ([233b0c9](https://github.com/bokoboshahni/eve-indy-watch/commit/233b0c9f8c86cec8bad86321995e77f7dff5a30d))
+* expire order snapshot lock after 5 minutes ([06ded94](https://github.com/bokoboshahni/eve-indy-watch/commit/06ded94d4c9a24358a12a1a620281e1e977b2f76))
+* new order item resets other items ([c828373](https://github.com/bokoboshahni/eve-indy-watch/commit/c828373ee0001f19eb57b612afb3e93b90aaf765)), closes [#88](https://github.com/bokoboshahni/eve-indy-watch/issues/88)
+* use current user alliance ([4e1ce09](https://github.com/bokoboshahni/eve-indy-watch/commit/4e1ce097781e257ef27a8224b732667072f3b682))
+
+
+### Features
+
+* add undeliver workflow ([a7149e7](https://github.com/bokoboshahni/eve-indy-watch/commit/a7149e7f395810e0a6338c688d4e45eb6a0797a9))
+* allow deletion of orders from table ([cb76d2d](https://github.com/bokoboshahni/eve-indy-watch/commit/cb76d2def88ec98573c309950507c08bdcfedcea))
+* rename amount to total ([7dfefd7](https://github.com/bokoboshahni/eve-indy-watch/commit/7dfefd7e16da7673cb5fe293c739d688f5a516f2))
+* rename price to total ([3e2cc14](https://github.com/bokoboshahni/eve-indy-watch/commit/3e2cc14f0018d1ccf36a8828f5bdc17359664c8f))
+
 ## [2.6.1](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.6.0...v2.6.1) (2022-01-17)
 
 
