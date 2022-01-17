@@ -1,48 +1,24 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = [
-    'autocomplete', 'item', 'icon', 'name', 'category', 'group', 'type', 'subtotal', 'price', 'quantity', 'subtotalField',
-    'buyPrice', 'sellPrice', 'splitPrice'
-  ]
+  static targets = ['subtotal', 'price', 'quantity', 'subtotalField', 'destroy']
 
-  connect() {
-    document.addEventListener('autocomplete.change', this.autocomplete.bind(this))
+  static values = {
+    persisted: Boolean
   }
 
-  autocomplete(event) {
-    this.autocompleteTarget.classList.add('hidden')
+  remove(event) {
+    event.preventDefault()
 
-    const url = "/orders/item?type_id=" + this.typeTarget.value
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        const appraisalSellPrice = data.appraisal_sell_price || 0.0
+    this.subtotalFieldTarget.value = 0
+    this.subtotalFieldTarget.dispatchEvent(new Event('change'))
 
-        this.iconTarget.src = data.icon_url
-        this.nameTarget.innerHTML = data.name
-        this.categoryTarget.innerHTML = data.category.name
-        this.groupTarget.innerHTML = data.group.name
-        this.subtotalTarget.innerHTML = appraisalSellPrice.toLocaleString()
-        this.quantityTarget.value = 1
-        this.priceTarget.value = appraisalSellPrice.toFixed(2)
-        this.subtotalFieldTarget.value = appraisalSellPrice
-        this.subtotalFieldTarget.dispatchEvent(new Event('change'))
-
-        if(data.appraisal_buy_price) {
-          this.buyPriceTarget.innerHTML = data.appraisal_buy_price.toLocaleString()
-        }
-
-        if(data.appraisal_mid_price) {
-          this.sellPriceTarget.innerHTML = data.appraisal_sell_price.toLocaleString()
-        }
-
-        if(data.appraisal_mid_price) {
-          this.splitPriceTarget.innerHTML = data.appraisal_mid_price.toLocaleString()
-        }
-
-        this.itemTarget.classList.remove('hidden')
-      })
+    if (this.persistedValue) {
+      this.element.classList.add('hidden')
+      this.destroyTarget.value = '1'
+    } else {
+      this.element.remove()
+    }
   }
 
   calculateTotal(_event) {

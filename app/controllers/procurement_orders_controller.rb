@@ -157,21 +157,16 @@ class ProcurementOrdersController < ApplicationController
 
   def item
     type = Type.find(params[:type_id])
-    appraisal_pricing = type.market_stats(main_alliance.appraisal_market)
-    alliance_pricing = type.market_stats(main_alliance.main_market)
-    json = type.as_json(include: %i[category group market_group]).merge(
-      icon_url: type.icon_url,
-      appraisal_pricing: appraisal_pricing,
-      appraisal_buy_price: appraisal_pricing.dig(:buy, :price_max),
-      appraisal_sell_price: appraisal_pricing.dig(:sell, :price_min),
-      appraisal_mid_price: appraisal_pricing[:mid_price],
-      alliance_pricing: alliance_pricing,
-      alliance_buy_price: alliance_pricing.dig(:buy, :price_max),
-      alliance_sell_price: alliance_pricing.dig(:sell, :price_min),
-      alliance_mid_price: alliance_pricing[:mid_price]
-    )
+    order_id = params[:order_id]
+    price = type.market_sell_price(main_alliance.appraisal_market)
+    if order_id.present?
+      order = ProcurementOrder.find(order_id)
+      @item = order.items.build(type: type, price: price, quantity_required: 1)
+    else
+      @item = ProcurementOrderItem.new(type: type, price: price, quantity_required: 1)
+    end
 
-    render json: JSON.pretty_generate(json)
+    render partial: 'new_item', item: @item
   end
 
   def list_items_card
