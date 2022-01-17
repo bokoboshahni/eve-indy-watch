@@ -3,14 +3,14 @@
   <% if policy(order).update? %>
     <% t.header padding: 'px-4 py-4', width: 'w-36' do %>Unit Price<% end %>
     <% t.header padding: 'px-4 py-4', width: 'w-24' do %>Quantity<% end %>
-    <% t.header padding: 'px-4 py-4', width: 'w-36' do %>Amount<% end %>
+    <% t.header padding: 'px-4 py-4', width: 'w-36' do %>Total<% end %>
     <% t.header padding: 'px-4 py-4', width: 'w-1' do %><span class="sr-only">Actions</span><% end %>
   <% else %>
     <% t.header padding: 'px-4 py-4', width: 'w-24' do %>Quantity<% end %>
     <% t.header padding: 'px-4 py-4', width: 'w-36' do %>Unit Price<% end %>
     <% t.header padding: 'px-4 py-4', width: 'w-24' do %>Multiplier<% end %>
     <% t.header padding: 'px-4 py-4', width: 'w-24' do %>Bonus<% end %>
-    <% t.header padding: 'px-4 py-4', width: 'w-36' do %>Amount<% end %>
+    <% t.header padding: 'px-4 py-4', width: 'w-36' do %>Total<% end %>
   <% end %>
 
   <% order.items.each do |item| %>
