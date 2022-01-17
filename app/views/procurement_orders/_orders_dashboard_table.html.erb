@@ -60,19 +60,23 @@
             <% end %>
             <% if actions %>
               <% tr.cell padding: 'px-4 py-3 text-right' do %>
-                <% if order.available? %>
-                  <% if policy(order).update? && order.requester == current_user.character %>
-                    <%= render 'redraft_modal', order: order, table: true %>
-                  <% elsif policy(order).accept? && order.requester != current_user.character %>
-                    <%= render 'accept_modal', order: order, table: true %>
+                <div class="flex space-x-1">
+                  <% if order.available? %>
+                    <% if policy(order).update? %>
+                      <%= render 'redraft_modal', order: order, table: true %>
+                    <% end %>
+                    <% if policy(order).accept? && order.requester != current_user.character %>
+                      <%= render 'accept_modal', order: order, table: true %>
+                    <% end %>
+                  <% elsif order.in_progress? && policy(order).update? && order.delivered_at %>
+                    <%= render 'receive_modal', order: order, table: true %>
+                  <% elsif order.in_progress? && current_user.character == order.supplier && !order.delivered_at %>
+                    <%= render 'deliver_modal', order: order, table: true %>
+                  <% elsif order.draft? %>
+                    <%= link_to 'Edit', procurement_order_path(order), class: 'cursor-pointer inline-flex items-center px-3 py-0.5 rounded-full bg-indigo-50 text-xs font-medium text-indigo-700 hover:bg-indigo-100' %>
+                    <%= render 'delete_modal', order: order, table: true %>
                   <% end %>
-                <% elsif order.in_progress? && policy(order).update? && order.delivered_at %>
-                  <%= render 'receive_modal', order: order, table: true %>
-                <% elsif order.in_progress? && current_user.character == order.supplier && !order.delivered_at %>
-                  <%= render 'deliver_modal', order: order, table: true %>
-                <% elsif order.draft? %>
-                  <%= link_to 'Edit', procurement_order_path(order), class: 'cursor-pointer inline-flex items-center px-3 py-0.5 rounded-full bg-indigo-50 text-xs font-medium text-indigo-700 hover:bg-indigo-100' %>
-                <% end %>
+                </div>
               <% end %>
             <% end %>
           <% end %>
@@ -82,7 +86,7 @@
   <% end %>
 <% else %>
   <div class="text-center p-4">
-    <%= heroicon 'document', variant: 'solid', options: { class: 'mx-auto h-12 w-12 text-gray-400' } %>
+    <%= heroicon 'cube-transparent', variant: :outline, options: { class: 'mx-auto h-12 w-12 text-gray-400' } %>
     <h3 class="mt-2 text-sm font-medium text-gray-900">No orders</h3>
   </div>
 <% end %>
