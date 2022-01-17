@@ -23,7 +23,7 @@ gem 'enumerable-statistics', '~> 2.0'
 gem 'esi-sdk', '~> 2.1'
 gem 'flamegraph', '~> 0.9'
 gem 'gelf', '~> 3.1', require: false
-gem 'groupdate', '~> 5.2'
+gem 'groupdate', '~> 6.0'
 gem 'heroicon', '~> 0.4'
 gem 'hiredis', '~> 0.6'
 gem 'hotwire-rails', '~> 0.1'
