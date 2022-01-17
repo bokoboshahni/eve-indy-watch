@@ -69,6 +69,10 @@ class Structure < ApplicationRecord
   has_many :markets, through: :market_locations
   has_many :procurement_orders, as: :location
 
+  has_one :constellation, through: :solar_system
+  has_one :location, as: :locatable
+  has_one :region, through: :constellation
+
   delegate :name, to: :owner, prefix: true, allow_nil: true
   delegate :name, to: :solar_system, prefix: true
   delegate :name, to: :type, prefix: true, allow_nil: true
@@ -89,5 +93,9 @@ class Structure < ApplicationRecord
 
   def orders_expires
     orders_reader.get("orders.#{id}.esi_expires")&.to_datetime
+  end
+
+  def snapshot_orders_async
+    Location::SnapshotOrdersFromESIWorker.perform_async(id)
   end
 end
