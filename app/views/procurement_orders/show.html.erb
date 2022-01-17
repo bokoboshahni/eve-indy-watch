@@ -56,6 +56,10 @@
         <p class="mt-2 text-base text-gray-500">
           You have delivered order #<%= @order.number %>. but it is still waiting for <span class="font-medium text-gray-900"><%= @order.requester.is_a?(Alliance) ? @order.requester.procurement_order_requester.name : @order.requester_name %></span> to confirm it.
         </p>
+
+        <div class="mt-12 flex max-w-md">
+          <%= render 'undeliver_modal', order: @order, table: false %>
+        </div>
       <% else %>
         <p class="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl">Order accepted.</p>
         <p class="mt-2 text-base text-gray-500">
@@ -72,7 +76,7 @@
           <dd class="text-indigo-600 mt-2"><%= @order.tracking_number %></dd>
         </dl>
         -->
-        <div class="mt-12 flex max-w-md">
+        <div class="mt-12 flex max-w-md space-x-3">
           <%= render 'deliver_modal', order: @order, table: false %>
           <%= render 'release_modal', order: @order, table: false %>
         </div>

@@ -83,6 +83,10 @@ class ProcurementOrderPolicy < ApplicationPolicy
     role?('character.orders.supplier') && record.supplier == user.character
   end
 
+  def undeliver?
+    record.supplier == user.character
+  end
+
   def receive?
     update?
   end

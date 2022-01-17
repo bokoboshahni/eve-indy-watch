@@ -14,7 +14,7 @@
           <% if delivered_count > 0 %><span class="<%= current_tab == 'delivered' ? current_counter_class : default_counter_class %> hidden ml-3 py-0.5 px-2.5 rounded-full text-xs font-medium md:inline-block"><%= delivered_count %></span><% end %>
         <% end %>
 
-        <% if policy(ProcurementOrder).create? %>
+        <% if policy(ProcurementOrder).new? %>
           <% draft_count = policy_scope(ProcurementOrder.kept.draft).count %>
           <%= link_to history_procurement_orders_path(tab: 'drafts'), class: "#{current_tab == 'drafts' ? current_link_class : default_link_class} whitespace-nowrap flex py-4 px-1 border-b-2 font-medium text-sm", data: { turbo_frame: 'orders' } do %>
             Drafts

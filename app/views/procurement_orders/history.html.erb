@@ -10,7 +10,7 @@
     <%#= render(DataTableSorterComponent.new(name: :orders, filter: @filter)) %>
   <%# end %>
 
-  <% if policy(ProcurementOrder).create? %>
+  <% if policy(ProcurementOrder).new? %>
     <% c.action do %>
       <%= render(ActionButtonComponent.new(href: new_procurement_order_path, margin: 'ml-2').with_content('New order')) %>
     <% end %>

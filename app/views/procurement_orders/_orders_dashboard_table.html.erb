@@ -68,10 +68,12 @@
                     <% if policy(order).accept? && order.requester != current_user.character %>
                       <%= render 'accept_modal', order: order, table: true %>
                     <% end %>
-                  <% elsif order.in_progress? && policy(order).update? && order.delivered_at %>
-                    <%= render 'receive_modal', order: order, table: true %>
+                  <% elsif order.in_progress? && current_user.character == order.supplier && order.delivered_at %>
+                    <%= render 'undeliver_modal', order: order, table: true %>
                   <% elsif order.in_progress? && current_user.character == order.supplier && !order.delivered_at %>
                     <%= render 'deliver_modal', order: order, table: true %>
+                  <% elsif order.in_progress? && policy(order).update? && order.delivered_at %>
+                    <%= render 'receive_modal', order: order, table: true %>
                   <% elsif order.draft? %>
                     <%= link_to 'Edit', procurement_order_path(order), class: 'cursor-pointer inline-flex items-center px-3 py-0.5 rounded-full bg-indigo-50 text-xs font-medium text-indigo-700 hover:bg-indigo-100' %>
                     <%= render 'delete_modal', order: order, table: true %>
