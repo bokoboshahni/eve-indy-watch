@@ -7,8 +7,17 @@ def app_config
   @app_config ||= Rails.application.config.x.app
 end
 
-def esi
-  @esi ||= ESI::Client.new(user_agent: app_config.user_agent)
+def esi_config
+  @esi_config ||= Rails.application.config.x.esi
+end
+
+def esi_client
+  @esi_client ||= ESI::Client.new(user_agent: app_config.user_agent)
+end
+
+def esi_authorize!(authorization)
+  authorization.refresh_token!
+  { Authorization: "Bearer #{authorization.access_token}" }
 end
 
 def markets_reader
