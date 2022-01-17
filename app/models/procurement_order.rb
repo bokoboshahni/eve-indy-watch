@@ -114,6 +114,10 @@ class ProcurementOrder < ApplicationRecord
     update(delivered_at: Time.zone.now)
   end
 
+  def undeliver!
+    update(delivered_at: nil)
+  end
+
   def release!
     update(supplier: nil, status: :available, accepted_at: nil)
   end

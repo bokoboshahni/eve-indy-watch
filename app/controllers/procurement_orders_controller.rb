@@ -4,7 +4,7 @@ class ProcurementOrdersController < ApplicationController
   include Filterable
 
   before_action :authenticate_user!
-  before_action :find_order, only: %i[show edit update destroy accept deliver release receive redraft list_items_card]
+  before_action :find_order, only: %i[show edit update destroy accept deliver undeliver release receive redraft list_items_card]
 
   def index # rubocop:disable Metrics/AbcSize
     authorize(ProcurementOrder)
@@ -118,6 +118,18 @@ class ProcurementOrdersController < ApplicationController
     else
       flash[:error] = "Error delivering procurement order #{@order.number}."
       set_errors!(@order.errors)
+      render :show
+    end
+  end
+
+  def undeliver
+    if @order.undeliver!
+      flash[:success] = "Procurement order #{@order.number} undelivered."
+      redirect_to procurement_order_path(@order)
+    else
+      flash[:error] = "Error undelivering procurement order #{@order.number}."
+      set_errors!(@order.errors)
+      @order.delivered_at = @order.delivered_at_was
       render :show
     end
   end

@@ -60,6 +60,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     member do
       post :accept
       post :deliver
+      post :undeliver
       post :receive
       post :redraft
       post :release
