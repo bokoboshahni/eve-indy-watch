@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+## [2.5.1](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.5.0...v2.5.1) (2022-01-17)
+
+
+### Bug Fixes
+
+* breadcrumb label ([#73](https://github.com/bokoboshahni/eve-indy-watch/issues/73)) ([b26da0c](https://github.com/bokoboshahni/eve-indy-watch/commit/b26da0cd4265c94d12fe594f104d03ed6320a50e))
+
 # [2.5.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.4.0...v2.5.0) (2022-01-17)
 
 
