@@ -4,58 +4,64 @@ services:
   postgres:
     image: postgres:14
     volumes:
-      - ./tmp/db:/var/lib/postgresql/data
+      - postgres:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: postgres
     restart: always
   redis-queue:
     image: redis:6
     volumes:
-      - ./tmp/volumes/redis-queue:/data
+      - redis-queue:/data
     command: redis-server --save 60 1 --loglevel warning
     restart: always
   redis-sessions:
     image: redis:6
     volumes:
-      - ./tmp/volumes/redis-sessions:/data
+      - redis-sessions:/data
     command: redis-server --save 60 1 --loglevel warning
     restart: always
   redis-data:
     image: redis:6
     volumes:
-      - ./tmp/volumes/redis-data:/data
+      - redis-data:/data
     # 4gb is enough for all major trade hubs and trade hub regions
     command: redis-server --save 60 1 --loglevel warning --maxmemory 4gb --maxmemory-policy volatile-ttl
     restart: always
   redis-cache:
     image: redis:6
     volumes:
-      - ./tmp/volumes/redis-cache:/data
+      - redis-cache:/data
     command: redis-server --maxmemory 1gb --maxmemory-policy allkeys-lru
     restart: always
 
   web:
+    stdin_open: true
+    tty: true
     build:
       context: .
       dockerfile: Dockerfile.dev
     command: bundle exec puma -t 5:5 -p 3000 -e development -C config/puma.rb
     env_file:
       - .env
-    environment:
-      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/eve_indy_watch
-      - QUEUE_REDIS_URL=redis://redis-queue:6379/0
-      - SESSIONS_REDIS_URL=redis://redis-sessions:6379/0
-      - CACHE_REDIS_URL=redis://redis-cache:6379/0
-      - ORDERS_READER_REDIS_URL=redis://redis-data:6379/1
-      - ORDERS_WRITER_REDIS_URL=redis://redis-data:6379/1
-      - MARKETS_READER_REDIS_URL=redis://redis-data:6379/2
-      - MARKETS_WRITER_REDIS_URL=redis://redis-data:6379/2
-      - LOCATIONS_READER_REDIS_URL=redis://redis-data:6379/3
-      - LOCATIONS_WRITER_REDIS_URL=redis://redis-data:6379/3
-      - WEBPACKER_DEV_SERVER_HOST=webpack
+    environment: &env
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/eve_indy_watch
+      QUEUE_REDIS_URL: redis://redis-queue:6379/0
+      SESSIONS_REDIS_URL: redis://redis-sessions:6379/0
+      CACHE_REDIS_URL: redis://redis-cache:6379/0
+      ORDERS_READER_REDIS_URL: redis://redis-data:6379/1
+      ORDERS_WRITER_REDIS_URL: redis://redis-data:6379/1
+      MARKETS_READER_REDIS_URL: redis://redis-data:6379/2
+      MARKETS_WRITER_REDIS_URL: redis://redis-data:6379/2
+      LOCATIONS_READER_REDIS_URL: redis://redis-data:6379/3
+      LOCATIONS_WRITER_REDIS_URL: redis://redis-data:6379/3
+      WEBPACKER_DEV_SERVER_HOST: webpack
     volumes:
       - .:/app
-    depends_on:
+      - rails_cache:/app/tmp/cache
+      - bundle:/usr/local/bundle
+      - node_modules:/app/node_modules
+      - packs:/app/public/packs
+    depends_on: &depends
       - postgres
       - redis-queue
       - redis-sessions
@@ -64,7 +70,13 @@ services:
     restart: always
     ports:
       - "3000:3000"
+    tmpfs:
+      - /tmp
+      - /app/tmp/pids
+
   worker:
+    stdin_open: true
+    tty: true
     build:
       context: .
       dockerfile: Dockerfile.dev
@@ -72,18 +84,13 @@ services:
     env_file:
       - .env
     environment:
-      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/eve_indy_watch
-      - QUEUE_REDIS_URL=redis://redis-queue:6379/0
-      - SESSIONS_REDIS_URL=redis://redis-sessions:6379/0
-      - CACHE_REDIS_URL=redis://redis-cache:6379/0
-      - ORDERS_READER_REDIS_URL=redis://redis-data:6379/1
-      - ORDERS_WRITER_REDIS_URL=redis://redis-data:6379/1
-      - MARKETS_READER_REDIS_URL=redis://redis-data:6379/2
-      - MARKETS_WRITER_REDIS_URL=redis://redis-data:6379/2
-      - LOCATIONS_READER_REDIS_URL=redis://redis-data:6379/3
-      - LOCATIONS_WRITER_REDIS_URL=redis://redis-data:6379/3
+      <<: *env
     volumes:
       - .:/app
+      - rails_cache:/app/tmp/cache
+      - bundle:/usr/local/bundle
+      - node_modules:/app/node_modules
+      - packs:/app/public/packs
     depends_on:
       - postgres
       - redis-queue
@@ -91,6 +98,7 @@ services:
       - redis-data
       - redis-cache
     restart: always
+
   webpack:
     build:
       context: .
@@ -98,8 +106,15 @@ services:
     command: bin/webpack-dev-server
     env_file:
       - .env
+    environment:
+      <<: *env
+      WEBPACKER_DEV_SERVER_HOST: 0.0.0.0
     volumes:
       - .:/app
+      - rails_cache:/app/tmp/cache
+      - bundle:/usr/local/bundle
+      - node_modules:/app/node_modules
+      - packs:/app/public/packs
     depends_on:
       - postgres
       - redis-queue
@@ -109,6 +124,14 @@ services:
     restart: always
     ports:
       - "3035:3035"
-    environment:
-      - WEBPACKER_DEV_SERVER_HOST=0.0.0.0
 
+volumes:
+  postgres:
+  redis-queue:
+  redis-cache:
+  redis-data:
+  redis-sessions:
+  rails_cache:
+  bundle:
+  node_modules:
+  packs:
