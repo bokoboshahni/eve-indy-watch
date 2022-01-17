@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [2.6.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.5.1...v2.6.0) (2022-01-17)
+
+
+### Features
+
+* add bash to dev containers ([#74](https://github.com/bokoboshahni/eve-indy-watch/issues/74)) ([a35fc4f](https://github.com/bokoboshahni/eve-indy-watch/commit/a35fc4f5646be23122d46f6e0b06f441fecf3aac))
+
 ## [2.5.1](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.5.0...v2.5.1) (2022-01-17)
 
 
