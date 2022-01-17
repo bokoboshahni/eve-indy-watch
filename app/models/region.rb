@@ -54,6 +54,8 @@ class Region < ApplicationRecord
   has_many :type_histories, class_name: 'RegionTypeHistory', inverse_of: :region,
                             dependent: :restrict_with_exception
 
+  has_one :location, as: :locatable
+
   scope :new_eden, -> { where(id: 10_000_000..11_000_000) }
 
   delegate :available_esi_authorizations, to: :main_alliance
