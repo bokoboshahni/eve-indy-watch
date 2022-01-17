@@ -80,6 +80,26 @@ Use the `web` or `worker` service to open a Rails console:
 docker-compose run --rm web bin/rails c
 ```
 
+### Making ESI requests
+
+Requests to ESI endpoints that don't need authentication can be made simply from the Rails console with:
+
+```
+esi.get_character(character_id: User.first.character_id) # Returns JSON response directly
+
+esi.get_character_raw(character_id: User.first.character_id) # Returns full response object
+```
+
+See the [API documentation](https://bokoboshahni.github.io/esi-sdk-ruby/ESI/Client.html) for [esi-sdk-ruby](https://github.com/bokoboshahni/esi-sdk-ruby) for a list of all methods.
+
+For authenticated requests:
+
+```
+structure = main_alliance.default_location.locatable
+headers = esi_authorize!(structure.esi_authorization)
+JSON.parse(esi_client.get_universe_structure_raw(structure_id: structure.id, headers: headers).body)
+```
+
 ## Bash shell
 
 Use the `web` or `worker` service to open a Bash shell:
