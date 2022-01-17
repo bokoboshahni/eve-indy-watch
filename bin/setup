@@ -17,7 +17,7 @@ FileUtils.chdir APP_ROOT do
   system! 'docker-compose run --rm web yarn install'
 
   puts "\n== Preparing database =="
-  system! 'docker-compose run --rm web bin/rails db:prepare sde:download sde:import'
+  system! 'docker-compose run --rm web bin/rails db:setup sde:download sde:import'
 
   puts "\n== Starting application server =="
   system! 'docker-compose up -d'

@@ -4,6 +4,8 @@ EVE Indy Watch recommends Docker Compose for local development, and includes a D
 
 ## First time setup
 
-Ensure all variables in `.env.example` have valid values and then run:
-
-* `docker-compose run --rm worker db:setup sde:download sde:import data:create_jita_market`
+* `cp .env.example .env`
+* Edit `.env` as needed
+* `./bin/setup`
+* Wait a bit after the setup script that `webpack` has done its job
+* Point your browser to http://0.0.0.0:3000
