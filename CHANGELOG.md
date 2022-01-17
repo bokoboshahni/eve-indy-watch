@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+## [2.6.1](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.6.0...v2.6.1) (2022-01-17)
+
+
+### Bug Fixes
+
+* web console from docker environment ([#87](https://github.com/bokoboshahni/eve-indy-watch/issues/87)) ([1921125](https://github.com/bokoboshahni/eve-indy-watch/commit/19211254d935758bc0c28d4978c93b5245c38c2f))
+
 # [2.6.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.5.1...v2.6.0) (2022-01-17)
 
 
