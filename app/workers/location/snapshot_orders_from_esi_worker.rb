@@ -2,7 +2,7 @@
 
 class Location < ApplicationRecord
   class SnapshotOrdersFromESIWorker < ApplicationWorker
-    sidekiq_options retries: 3, lock: :until_executed
+    sidekiq_options retries: 3, lock: :until_executed, lock_ttl: 5.minutes.to_i
 
     def perform(location_id) # rubocop:disable Metrics/MethodLength
       time =
