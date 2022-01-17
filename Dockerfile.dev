@@ -17,15 +17,5 @@ RUN apk add --no-cache \
 
 WORKDIR /app
 
-COPY package.json yarn.lock /app/
-RUN yarn install --frozen-lockfile
-
-COPY Gemfile* /app/
-RUN gem install bundler -v 2.2.23 && gem cleanup bundler
-RUN bundle config --local frozen 1 && \
-    bundle install -j4 --retry 3
-
-EXPOSE 3000
-EXPOSE 3035
-
-CMD ["bundle", "exec", "rails", "console"]
+RUN gem update --system && \
+    gem install bundler -v 2.3.5
