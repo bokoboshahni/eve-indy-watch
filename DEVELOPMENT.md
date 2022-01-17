@@ -109,3 +109,17 @@ docker-compose run --rm web bash
 ```
 
 It's useful to keep this container running in order to run tests, if only using Docker for development.
+
+## Troubleshooting
+
+### Tailing development logs
+
+Logs are written to the same file for both the `web` and `worker` services:
+
+```
+docker-compose run --rm web log/development.log
+
+# Or
+
+docker-compose run --rm worker log/development.log
+```
