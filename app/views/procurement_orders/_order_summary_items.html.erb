@@ -1,15 +1,13 @@
 <%= render(TableComponent.new(layout: 'auto')) do |t| %>
   <% t.header padding: 'px-4 py-2' do %>Item<% end %>
   <% if policy(order).update? %>
-    <% t.header padding: 'px-4 py-4', width: 'w-36' do %>Unit Price<% end %>
     <% t.header padding: 'px-4 py-4', width: 'w-24' do %>Quantity<% end %>
+    <% t.header padding: 'px-4 py-4', width: 'w-36' do %>Unit Price<% end %>
     <% t.header padding: 'px-4 py-4', width: 'w-36' do %>Total<% end %>
     <% t.header padding: 'px-4 py-4', width: 'w-1' do %><span class="sr-only">Actions</span><% end %>
   <% else %>
     <% t.header padding: 'px-4 py-4', width: 'w-24' do %>Quantity<% end %>
     <% t.header padding: 'px-4 py-4', width: 'w-36' do %>Unit Price<% end %>
-    <% t.header padding: 'px-4 py-4', width: 'w-24' do %>Multiplier<% end %>
-    <% t.header padding: 'px-4 py-4', width: 'w-24' do %>Bonus<% end %>
     <% t.header padding: 'px-4 py-4', width: 'w-36' do %>Total<% end %>
   <% end %>
 
@@ -32,10 +30,10 @@
       <% end %>
       <% if policy(order).update? %>
         <% tr.cell padding: 'px-4 py-4' do %>
-          <%= number_to_isk item.price %>
+          <%= number_to_m3 item.quantity_required %>
         <% end %>
         <% tr.cell padding: 'px-4 py-4' do %>
-          <%= number_to_m3 item.quantity_required %>
+          <%= number_to_isk item.price %>
         <% end %>
         <% tr.cell padding: 'px-4 py-4' do %>
           <%= number_to_isk item.total %>
@@ -45,13 +43,7 @@
           <%= number_to_m3 item.quantity_required %>
         <% end %>
         <% tr.cell padding: 'px-4 py-4' do %>
-          <%= number_to_isk item.price %>
-        <% end %>
-        <% tr.cell padding: 'px-4 py-4' do %>
-          <%= number_with_precision item.multiplier, precision: 2 %>
-        <% end %>
-        <% tr.cell padding: 'px-4 py-4' do %>
-          <%= number_to_isk item.bonus %>
+          <%= number_to_isk item.price_with_multiplier %>
         <% end %>
         <% tr.cell padding: 'px-4 py-4' do %>
           <%= number_to_isk item.total %>
