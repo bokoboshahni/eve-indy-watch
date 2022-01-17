@@ -6,7 +6,9 @@ class ApplicationRecord < ActiveRecord::Base
   connects_to database: { reading: :primary, writing: :primary }
 
   def log_name
-    "#{name} (#{id})"
+    return "#{name} (#{id})" if respond_to?(:name)
+
+    "#{self.class.name}##{id}"
   end
 
   protected

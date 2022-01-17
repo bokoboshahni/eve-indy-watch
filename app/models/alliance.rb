@@ -88,10 +88,6 @@ class Alliance < ApplicationRecord
     rel.order('characters.name')
   end
 
-  def log_name
-    "#{name} (#{id})"
-  end
-
   def zkb_killmails_expired?
     return true if zkb_expires_at.blank?
 
