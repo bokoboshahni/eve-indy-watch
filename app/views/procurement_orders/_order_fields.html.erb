@@ -19,7 +19,7 @@
             <div class="flex items-center">
               <%= f.label :requester_gid, class: 'text-sm font-medium text-gray-700 flex flex-row-reverse items-center', value: current_user.character.to_global_id do %>
                 <span class="block ml-3"><%= current_user.name %></span>
-                <%= f.radio_button :requester_gid, current_user.character.to_global_id, checked: true, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300' %>
+                <%= f.radio_button :requester_gid, current_user.character.to_global_id, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300' %>
               <% end %>
             </div>
           <% end %>
@@ -28,7 +28,7 @@
             <div class="flex items-center">
               <%= f.label :requester_gid, class: 'text-sm font-medium text-gray-700 flex flex-row-reverse items-center', value: current_user.corporation.to_global_id do %>
                 <span class="block ml-3"><%= current_user.corporation_name %></span>
-                <%= f.radio_button :requester_gid, current_user.corporation.to_global_id, checked: !current_user.role?('character.orders.editor'), class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300' %>
+                <%= f.radio_button :requester_gid, current_user.corporation.to_global_id, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300' %>
               <% end %>
             </div>
           <% end %>
@@ -37,7 +37,7 @@
             <div class="flex items-center">
               <%= f.label :requester_gid, class: 'text-sm font-medium text-gray-700 flex flex-row-reverse items-center', value: main_alliance.to_global_id do %>
                 <span class="block ml-3"><%= main_alliance.name %> (<%= main_alliance.procurement_order_requester_name %>)</span>
-                <%= f.radio_button :requester_gid, main_alliance.to_global_id, checked: !current_user.role?('character.orders.editor') && !current_user.role?('corporation.orders.editor'), class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300' %>
+                <%= f.radio_button :requester_gid, main_alliance.to_global_id, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300' %>
               <% end %>
             </div>
           <% end %>
@@ -53,7 +53,7 @@
           <div class="flex items-center">
             <%= f.label :visibility, class: 'text-sm font-medium text-gray-700 flex flex-row-reverse items-center', value: :everyone do %>
               <span class="block ml-3">Everyone</span>
-              <%= f.radio_button :visibility, :everyone, checked: true, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300' %>
+              <%= f.radio_button :visibility, :everyone, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300' %>
             <% end %>
           </div>
 
@@ -93,14 +93,6 @@
         Items
       </h3>
     </div>
-    <div class="ml-4">
-      <button type="button"
-        class="inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        data-action="nested-form#add"
-      >
-        <%= heroicon 'plus-sm', variant: :outline, options: { class: 'h-5 w-5' } %>
-      </button>
-    </div>
   </header>
 
   <div class="mt-6 pb-4">
@@ -108,8 +100,25 @@
       <%= f.fields_for :items do |item_fields| %>
         <%= render 'item_form', f: item_fields %>
       <% end %>
-      <div data-nested-form-target="target"></div>
     </ul>
+    <div
+      class="flex-1 flex flex-col py-3"
+      data-controller="autocomplete" data-autocomplete-url-value="<%= autocomplete_market_types_path %>" data-autocomplete-min-length-value="3"
+    >
+      <div class="flex items-center justify-between space-x-3">
+        <div class="grow relative rounded-md shadow-sm">
+          <%= f.label :type_id, 'Item', class: 'sr-only' %>
+          <%= search_field_tag :type_id_autocomplete, '', placeholder: 'Search items by name', class: 'focus:ring-indigo-500 focus:border-indigo-500 block w-full pr-10 sm:text-xs border-gray-300 rounded-md', data: { autocomplete_target: 'input', order_target: 'itemSearch' } %>
+          <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+            <%= heroicon 'search', variant: :outline, options: { class: 'h-5 w-5 text-gray-400' } %>
+          </div>
+          <ul class="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-56 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm" tabindex="-1" role="listbox" aria-labelledby="listbox-label" aria-activedescendant="listbox-option-3"
+            data-autocomplete-target="results">
+          </ul>
+        </div>
+      </div>
+      <%= hidden_field_tag :type_id_autocomplete_value, '', data: { order_target: 'type' } %>
+    </div>
   </div>
 </section>
 
@@ -188,9 +197,4 @@
       </dl>
     </div>
   </div>
-  <template data-nested-form-target="template">
-    <%= f.fields_for :items, @order.items.build, child_index: 'NEW_RECORD' do |item_fields| %>
-      <%= render 'item_form', f: item_fields %>
-    <% end %>
-  </template>
 </section>

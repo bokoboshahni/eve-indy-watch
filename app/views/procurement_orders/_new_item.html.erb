@@ -1,0 +1,3 @@
+<%= fields_for "procurement_order[items_attributes][#{Time.zone.now.to_i}]", @item do |f| %>
+  <%= render 'item_form', f: f %>
+<% end %>

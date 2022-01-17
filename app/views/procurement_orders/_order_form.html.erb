@@ -1,4 +1,4 @@
-<%= form_with model: order, url: order.persisted? ? procurement_order_path(order) : procurement_orders_path, data: { turbo: false, controller: 'nested-form order', nested_form_wrapper_selector_value: '.nested-form-wrapper' } do |f| %>
+<%= form_with model: order, url: order.persisted? ? procurement_order_path(order) : procurement_orders_path, data: { turbo: false, controller: 'nested-form order', order_order_value: order.id } do |f| %>
   <div class="space-y-8 divide-y divide-gray">
     <div class="space-y-2 divide-y divide-gray">
       <%= render 'order_fields', f: f %>
