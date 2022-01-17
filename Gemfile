@@ -86,7 +86,7 @@ group :development do
   gem 'capistrano-bundler', '~> 2.0'
   gem 'capistrano-rails', '~> 1.6'
   gem 'capistrano-sidekiq', github: 'seuros/capistrano-sidekiq'
-  gem 'ed25519', '~> 1.2'
+  gem 'ed25519', '~> 1.3'
   gem 'rubocop', '~> 1.23'
   gem 'rubocop-performance', '~> 1.12'
   gem 'rubocop-rails', '~> 2.13'
