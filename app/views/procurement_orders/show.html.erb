@@ -1,6 +1,6 @@
 <% content_for :breadcrumbs do %>
   <%= render(BreadcrumbsComponent.new) do |c| %>
-    <%= c.item href: procurement_orders_path do %>Orders<% end %>
+    <%= c.item href: procurement_orders_path do %>Procurement Orders<% end %>
     <%= c.item href: procurement_order_path(@order) do %><%= @order.number %><% end %>
   <% end %>
 <% end %>
