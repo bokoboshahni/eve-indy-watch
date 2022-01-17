@@ -482,7 +482,7 @@ GEM
     unf_ext (0.0.8)
     unicode-display_width (2.1.0)
     unicode_utils (1.4.0)
-    view_component (2.47.0)
+    view_component (2.48.0)
       activesupport (>= 5.0.0, < 8.0)
       method_source (~> 1.0)
     web-console (4.2.0)
@@ -585,7 +585,7 @@ DEPENDENCIES
   tty-table (~> 0.12)
   turbo-rails (~> 1.0)
   typhoeus (~> 1.4)
-  view_component (~> 2.46)
+  view_component (~> 2.48)
   web-console (>= 4.1.0)
   webpacker (~> 5.4.0)
 

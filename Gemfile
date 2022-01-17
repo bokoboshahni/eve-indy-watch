@@ -69,7 +69,7 @@ gem 'tty-command', '~> 0.10'
 gem 'tty-table', '~> 0.12'
 gem 'turbo-rails', '~> 1.0'
 gem 'typhoeus', '~> 1.4'
-gem 'view_component', '~> 2.46'
+gem 'view_component', '~> 2.48'
 gem 'webpacker', '~> 5.4.0'
 
 group :development, :test do
