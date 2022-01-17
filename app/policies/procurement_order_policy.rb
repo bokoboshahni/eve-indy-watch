@@ -25,8 +25,20 @@ class ProcurementOrderPolicy < ApplicationPolicy
     index?
   end
 
-  def create?
+  def new?
     role?(/orders\.editor/)
+  end
+
+  def create?
+    return true if record.requester.blank?
+
+    return true if record.requester == user.character && role?('character.orders.editor')
+
+    return true if record.requester == user.corporation && role?('corporation.orders.editor')
+
+    return true if record.requester == user.alliance && role?('alliance.orders.editor')
+
+    false
   end
 
   def show? # rubocop:disable Metrics/AbcSize

@@ -184,8 +184,8 @@ class ProcurementOrder < ApplicationRecord
   private
 
   def ensure_requester_and_supplier_names
-    self.requester_name = requester.name
-    self.supplier_name = supplier&.name
+    self.requester_name = requester.name if requester.present?
+    self.supplier_name = supplier&.name if supplier.present?
   end
 
   def validate_updates_while_in_progress
