@@ -4,6 +4,7 @@ LABEL maintainer="shahni@bokobo.space"
 
 # Add basic packages
 RUN apk add --no-cache \
+      bash \
       build-base \
       curl-dev \
       postgresql-client \
