@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [2.8.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.7.0...v2.8.0) (2022-01-18)
+
+
+### Features
+
+* hide multiplier from supplier views ([#97](https://github.com/bokoboshahni/eve-indy-watch/issues/97)) ([353ee76](https://github.com/bokoboshahni/eve-indy-watch/commit/353ee7613b694e36338f77e959a1933b285d2053))
+
 # [2.7.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.6.1...v2.7.0) (2022-01-17)
 
 
