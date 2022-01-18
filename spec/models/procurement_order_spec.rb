@@ -26,6 +26,7 @@
 # **`supplier_type`**              | `string`           |
 # **`target_completion_at`**       | `datetime`         |
 # **`tracking_number`**            | `bigint`           |
+# **`unconfirmed_at`**             | `datetime`         |
 # **`visibility`**                 | `enum`             |
 # **`created_at`**                 | `datetime`         | `not null`
 # **`updated_at`**                 | `datetime`         | `not null`

@@ -97,6 +97,7 @@ CREATE TYPE public.procurement_order_status AS ENUM (
     'draft',
     'available',
     'in_progress',
+    'unconfirmed',
     'partially_delivered',
     'delivered'
 );
@@ -1424,7 +1425,8 @@ CREATE TABLE public.procurement_orders (
     updated_at timestamp(6) without time zone NOT NULL,
     tracking_number bigint,
     visibility public.procurement_order_visibility,
-    estimated_completion_at timestamp without time zone
+    estimated_completion_at timestamp without time zone,
+    unconfirmed_at timestamp without time zone
 );
 
 
@@ -3696,6 +3698,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220115163821'),
 ('20220116024530'),
 ('20220116032254'),
-('20220116033406');
+('20220116033406'),
+('20220118173454'),
+('20220118175551');
 
 

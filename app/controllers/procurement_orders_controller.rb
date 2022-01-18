@@ -14,7 +14,7 @@ class ProcurementOrdersController < ApplicationController
     @in_progress_orders = policy_scope(ProcurementOrder.kept.in_progress.where.not(supplier: current_user.character).where(delivered_at: nil))
     @unconfirmed_orders = policy_scope(ProcurementOrder.kept.unconfirmed.where.not(supplier: current_user.character))
     @delivered_orders = policy_scope(ProcurementOrder.kept.delivered)
-    @supplied_orders = policy_scope(current_user.character.supplied_procurement_orders.kept.in_progress.order(accepted_at: :desc))
+    @supplied_orders = policy_scope(current_user.character.supplied_procurement_orders.kept.in_progress_and_unconfirmed.order(accepted_at: :desc))
   end
 
   def history
@@ -53,12 +53,7 @@ class ProcurementOrdersController < ApplicationController
     @order = ProcurementOrder.new(create_params)
     authorize(@order)
 
-    if publishing?
-      @order.status = :available
-      @order.published_at = Time.zone.now
-    else
-      @order.status = :draft
-    end
+    @order.publish if publishing?
 
     if @order.save
       flash[:success] = "Procurement order ##{@order.number} #{publishing? ? 'published' : 'created'} successfully."
@@ -73,10 +68,7 @@ class ProcurementOrdersController < ApplicationController
   def show; end
 
   def update
-    if publishing?
-      @order.status = :available
-      @order.published_at = Time.zone.now
-    end
+    @order.publish if publishing?
 
     if @order.update(update_params)
       flash[:success] = "Procurement order ##{@order.number} #{publishing? ? 'published' : 'saved'} successfully."
@@ -101,7 +93,9 @@ class ProcurementOrdersController < ApplicationController
   end
 
   def accept
-    if @order.accept!(current_user.character)
+    @order.supplier = current_user.character
+
+    if @order.accept!
       flash[:success] = "Procurement order #{@order.number} accepted."
       redirect_to procurement_order_path(@order)
     else

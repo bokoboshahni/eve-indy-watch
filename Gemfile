@@ -7,10 +7,12 @@ ruby '3.0.3'
 
 gem 'dotenv-rails', '~> 2.7'
 
+gem 'aasm', '~> 5.2'
 gem 'active_median', '~> 0.3'
 gem 'activerecord-copy', '~> 1.1'
 gem 'activerecord-import', '~> 1.2'
 gem 'activerecord-nulldb-adapter', '~> 0.8'
+gem 'after_commit_everywhere', '~> 1.1'
 gem 'ahoy_matey', '~> 4.0'
 gem 'ancestry', '~> 4.1'
 gem 'awesome_print', '~> 1.9'
