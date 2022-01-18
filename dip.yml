@@ -1,0 +1,35 @@
+---
+version: '7.2'
+
+interaction:
+  shell:
+    description: Open a Bash shell in the application container
+    service: web
+    command: bash
+    compose:
+      run_options: [no-deps]
+
+  bundle:
+    description: Run bundler commands
+    service: web
+    command: bundle
+
+  rails:
+    description: Run rails commands
+    service: web
+    command: bin/rails
+
+  rspec:
+    description: Run rspec commands
+    service: web
+    command: bundle exec rspec
+
+  rubocop:
+    description: Run rubocop commands
+    service: web
+    command: bundle exec rubocop
+
+provision:
+  - dip compose down --volumes
+  - dip compose up -d postgres redis-cache redis-queue redis-sessions redis-data
+  - dip run shell -c ./bin/setup

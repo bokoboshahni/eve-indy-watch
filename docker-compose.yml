@@ -38,6 +38,9 @@ services:
     stdin_open: true
     tty: true
     build:
+      args:
+        UID: $UID
+        GID: $GID
       context: .
       dockerfile: Dockerfile.dev
     command: bundle exec puma -t 5:5 -p 3000 -e development -C config/puma.rb
@@ -72,12 +75,15 @@ services:
       - "3000:3000"
     tmpfs:
       - /tmp
-      - /app/tmp/pids
+    user: $UID:$GID
 
   worker:
     stdin_open: true
     tty: true
     build:
+      args:
+        UID: $UID
+        GID: $GID
       context: .
       dockerfile: Dockerfile.dev
     command: bundle exec sidekiq -c 25
@@ -98,9 +104,13 @@ services:
       - redis-data
       - redis-cache
     restart: always
+    user: $UID:$GID
 
   webpack:
     build:
+      args:
+        UID: $UID
+        GID: $GID
       context: .
       dockerfile: Dockerfile.dev
     command: bin/webpack-dev-server
@@ -124,6 +134,7 @@ services:
     restart: always
     ports:
       - "3035:3035"
+    user: $UID:$GID
 
 volumes:
   postgres:

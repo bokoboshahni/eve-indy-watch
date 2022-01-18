@@ -74,6 +74,7 @@ class Structure < ApplicationRecord
   has_one :region, through: :constellation
 
   delegate :name, to: :owner, prefix: true, allow_nil: true
+  delegate :name, to: :region, prefix: true
   delegate :name, to: :solar_system, prefix: true
   delegate :name, to: :type, prefix: true, allow_nil: true
 
