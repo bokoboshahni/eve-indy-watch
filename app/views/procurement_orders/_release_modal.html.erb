@@ -1,7 +1,12 @@
-<div class="grow" data-controller="modal" data-modal-allow-background-close="false">
-  <%= button_to release_procurement_order_path(order), class: 'w-full bg-red-600 border border-transparent rounded-md shadow-sm py-2 px-3 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-red-500', data: { action: 'click->modal#open' } do %>
-    Release Order
-  <% end %>
+<div class="<%= 'grow' unless table %>" data-controller="modal" data-modal-allow-background-close="false">
+  <%
+    button_class = table ?
+      'cursor-pointer inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500' :
+      'cursor-pointer w-full bg-red-600 border border-transparent rounded-md shadow-sm py-2 px-3 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-red-500'
+
+    button_text = table ? 'Release' : 'Release Order'
+  %>
+  <%= button_to button_text, release_procurement_order_path(order), class: button_class, data: { action: 'click->modal#open' } %>
 
   <div data-modal-target="container" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" class="hidden animated fadeIn fixed z-10 inset-0 overflow-y-auto" style="z-index: 9999;">
     <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
@@ -20,7 +25,7 @@
             </h3>
             <div class="mt-2">
               <p class="text-sm text-gray-500">
-                Are you sure you want to release this order? The order will be made available to other suppliers immediately. This action cannot be undone.
+                Are you sure you want to release this order from <span class="font-medium"><%= order.requester_name %></span> to <span class="font-medium"><%= order.location_name %></span>? The order will be made available to other suppliers immediately. This action cannot be undone.
               </p>
             </div>
           </div>

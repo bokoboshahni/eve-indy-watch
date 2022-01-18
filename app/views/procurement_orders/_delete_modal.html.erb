@@ -1,12 +1,17 @@
-<div class="grow" data-controller="modal" data-modal-allow-background-close="false">
+<div class="<%= 'grow' unless table %>" data-controller="modal" data-modal-allow-background-close="false">
   <%
     button_class = table ?
-      'cursor-pointer inline-flex items-center px-3 py-0.5 rounded-full bg-red-50 text-xs font-medium text-red-700 hover:bg-red-100' :
+      'cursor-pointer inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500' :
       'cursor-pointer w-full bg-red-600 border border-transparent rounded-md shadow-sm py-2 px-3 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-red-500'
-
-    button_text = table ? 'Delete' : 'Delete Order'
   %>
-  <%= button_to button_text, procurement_order_path(order), method: :delete, class: button_class, data: { action: 'click->modal#open' } %>
+
+  <% if table %>
+    <%= button_to redraft_procurement_order_path(order), class: button_class, data: { action: 'click->modal#open' } do %>
+      <%= heroicon 'trash', variant: :outline, options: { class: 'h-4 w-4' } %>
+    <% end %>
+  <% else %>
+    <%= button_to 'Delete order', procurement_order_path(order), method: :delete, class: button_class, data: { action: 'click->modal#open' } %>
+  <% end %>
 
   <div data-modal-target="container" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" class="hidden animated fadeIn fixed z-10 inset-0 overflow-y-auto" style="z-index: 9999;">
     <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
