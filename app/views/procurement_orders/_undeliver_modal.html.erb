@@ -1,7 +1,7 @@
-<div class="grow" data-controller="modal" data-modal-allow-background-close="false">
+<div class="<%= 'grow' unless table %>" data-controller="modal" data-modal-allow-background-close="false">
   <%
     button_class = table ?
-      'cursor-pointer inline-flex items-center px-3 py-0.5 rounded-full bg-red-50 text-xs font-medium text-red-700 hover:bg-red-100' :
+      'cursor-pointer inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500' :
       'cursor-pointer w-full bg-red-600 border border-transparent rounded-md shadow-sm py-2 px-3 text-sm font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-red-500'
 
     button_text = table ? 'Undeliver' : 'Undeliver Order'
@@ -25,14 +25,20 @@
             </h3>
             <div class="mt-2">
               <p class="text-sm text-gray-500">
-                Are you sure you want to undeliver this order? The order will no longer show as an unconfirmed delivery to the requester but it is your responsibility to delete any outstanding contracts in-game.
+                Are you sure you want to undeliver this order from <span class="font-medium"><%= order.requester_name %></span> to <span class="font-medium"><%= order.location_name %></span>?
+              </p>
+              <p class="mt-1 text-sm text-gray-500">
+                The order will no longer show as an unconfirmed delivery to the requester but it is your responsibility to delete any outstanding contracts in-game.
+              </p>
+              <p class="mt-1 text-sm text-gray-500 font-bold">
+                You are still responsible for supplying this order unless you release it as well.
               </p>
             </div>
           </div>
         </div>
         <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
           <%= button_to undeliver_procurement_order_path(order), class: 'w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm', data: { turbo_frame: '_top' } do %>
-            Undeliver order
+            Undeliver
           <% end %>
           <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm" data-action="click->modal#close">
             Nevermind

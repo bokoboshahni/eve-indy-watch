@@ -51,7 +51,7 @@
               <% tr.cell padding: 'px-4 py-3 whitespace-nowrap' do %>
                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= procurement_order_status_bg_color(order) %> <%= procurement_order_status_text_color(order) %>">
                   <% if order.delivered_unconfirmed? %>
-                    Unconfirmed delivery
+                    Waiting confirmation
                   <% else %>
                     <%= order.status.humanize %>
                   <% end %>
@@ -60,22 +60,26 @@
             <% end %>
             <% if actions %>
               <% tr.cell padding: 'px-4 py-3 text-right' do %>
-                <div class="flex space-x-1">
+                <div class="flex justify-end space-x-1">
                   <% if order.available? %>
-                    <% if policy(order).update? %>
-                      <%= render 'redraft_modal', order: order, table: true %>
-                    <% end %>
                     <% if policy(order).accept? && order.requester != current_user.character %>
                       <%= render 'accept_modal', order: order, table: true %>
+                    <% end %>
+                    <% if policy(order).update? %>
+                      <%= render 'redraft_modal', order: order, table: true %>
+                      <%= render 'cancel_modal', order: order, table: true %>
                     <% end %>
                   <% elsif order.in_progress? && current_user.character == order.supplier && order.delivered_at %>
                     <%= render 'undeliver_modal', order: order, table: true %>
                   <% elsif order.in_progress? && current_user.character == order.supplier && !order.delivered_at %>
                     <%= render 'deliver_modal', order: order, table: true %>
+                    <%= render 'release_modal', order: order, table: true %>
                   <% elsif order.in_progress? && policy(order).update? && order.delivered_at %>
                     <%= render 'receive_modal', order: order, table: true %>
                   <% elsif order.draft? %>
-                    <%= link_to 'Edit', procurement_order_path(order), class: 'cursor-pointer inline-flex items-center px-3 py-0.5 rounded-full bg-indigo-50 text-xs font-medium text-indigo-700 hover:bg-indigo-100' %>
+                    <%= link_to procurement_order_path(order), class: 'cursor-pointer inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500', data: { action: 'click->modal#open' } do %>
+                      <%= heroicon 'pencil', options: { class: 'h-4 w-4' } %>
+                    <% end %>
                     <%= render 'delete_modal', order: order, table: true %>
                   <% end %>
                 </div>

@@ -1,7 +1,7 @@
-<div class="grow" data-controller="modal" data-modal-allow-background-close="false">
+<div class="<%= 'grow' unless table %>" data-controller="modal" data-modal-allow-background-close="false">
   <%
     button_class = table ?
-      'cursor-pointer inline-flex items-center px-3 py-0.5 rounded-full bg-indigo-50 text-xs font-medium text-indigo-700 hover:bg-indigo-100' :
+      'cursor-pointer inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500' :
       'cursor-pointer w-full bg-indigo-600 border border-transparent rounded-md shadow-sm py-2 px-3 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500'
 
     button_text = table ? 'Accept' : 'Accept Order'
@@ -25,7 +25,7 @@
             </h3>
             <div class="mt-2">
               <p class="text-sm text-gray-500">
-                Are you sure you want to accept this order?
+                Are you sure you want to accept this order from <span class="font-medium"><%= order.requester_name %></span> to <span class="font-medium"><%= order.location_name %></span> for <span class="font-medium"><%= number_to_isk order.total %> ISK</span>?
               </p>
             </div>
           </div>
