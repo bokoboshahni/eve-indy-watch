@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+## [2.8.1](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.8.0...v2.8.1) (2022-01-18)
+
+
+### Bug Fixes
+
+* erb error ([#98](https://github.com/bokoboshahni/eve-indy-watch/issues/98)) ([11543c9](https://github.com/bokoboshahni/eve-indy-watch/commit/11543c98c8cab33219353e4d6cf98c9352c1441f))
+
 # [2.8.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.7.0...v2.8.0) (2022-01-18)
 
 
