@@ -2,6 +2,9 @@
 FROM ruby:3.0-alpine
 LABEL maintainer="shahni@bokobo.space"
 
+ARG UID
+ARG GID
+
 # Add basic packages
 RUN apk add --no-cache \
       bash \
@@ -16,7 +19,19 @@ RUN apk add --no-cache \
       tzdata \
       file
 
+RUN mkdir /app
 WORKDIR /app
 
 RUN gem update --system && \
-    gem install bundler -v 2.3.5
+    gem install bundler -v 2.3.5 && \
+    gem cleanup bundler
+
+RUN addgroup -g $GID -S app && \
+    adduser -u $UID -S app -G app
+
+RUN chown -R app:app /usr/local/bundle && \
+    mkdir -p /app/node_modules && \
+    mkdir -p /app/public/packs && \
+    mkdir -p /app/tmp/cache && \
+    chown -R app:app /app && \
+    chown -R app:app /tmp

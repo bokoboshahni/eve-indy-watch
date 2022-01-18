@@ -10,13 +10,15 @@ module SDE
       Dir["#{source_path}/**/solarsystem.staticdata"].each do |path|
         record(yaml(path), :solar_system_id, %w[name security], extra: { constellation_id: constellation_id(path) })
       end
+    end
 
-      records = SolarSystem.pluck(:id, :name).each_with_object([]) do |(locatable_id, name), a|
+    def after_import
+      locations = SolarSystem.pluck(:id, :name).each_with_object([]) do |(locatable_id, name), a|
         a << { locatable_id: locatable_id, locatable_type: 'SolarSystem', name: name }
       end
 
       Location.import!(
-        records,
+        locations,
         on_duplicate_key_update: {
           conflict_target: %i[locatable_id locatable_type],
           columns: :all

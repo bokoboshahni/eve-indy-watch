@@ -10,15 +10,14 @@ def system!(*args)
 end
 
 FileUtils.chdir APP_ROOT do
+  abort("\n== No .env file present. Copy .env.example to .env and configure before proceeding") unless File.file?('.env')
+
   puts '== Installing Ruby dependencies =='
-  system! 'docker-compose run --rm web bundle install'
+  system! 'bundle install'
 
   puts "\n== Installing Yarn dependencies =="
-  system! 'docker-compose run --rm web yarn install'
+  system! 'yarn install'
 
   puts "\n== Preparing database =="
-  system! 'docker-compose run --rm web bin/rails db:prepare sde:download sde:import'
-
-  puts "\n== Starting application server =="
-  system! 'docker-compose up -d'
+  system! 'bin/rails db:prepare sde:download sde:import'
 end

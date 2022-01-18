@@ -13,6 +13,7 @@ module SDE
     def call
       load_records
       import_records
+      after_import
     end
 
     protected
