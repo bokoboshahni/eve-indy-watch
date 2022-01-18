@@ -30,7 +30,7 @@ Sync the structure used for your alliance market:
 
 ```
 structure_id = <YOUR ALLIANCE MARKET STRUCTURE ID>
-structure = Structure::SyncFromESI.call(structure_id, authorization: auth)
+structure = Structure::SyncFromESI.call(structure_id, auth)
 ```
 
 Use your ESI authorization for the structure:
