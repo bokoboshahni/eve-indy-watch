@@ -53,6 +53,46 @@
         </div>
       </div>
       <% end %>
+      <% if @order.persisted? %>
+      <div class="col-span-2 mt-3 flex flex-col justify-between">
+        <dt class="font-medium text-gray-900">Market Value</dt>
+        <dd class="text-gray-600 text-xs">
+          <table class="mt-3 table-auto w-full divide-y divide-gray-300 border border-gray-300">
+            <thead>
+              <tr class="bg-gray-200">
+                <th class="p-1.5 w-2/8 text-left uppercase">Market</th>
+                <th class="p-1.5 w-3/8 text-left uppercase">Buy (% Markup)</th>
+                <th class="p-1.5 w-3/8 text-left uppercase">Sell (% Markup)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% total = order.total %>
+              <% [main_alliance.appraisal_market, main_alliance.main_market].each do |market| %>
+                <tr>
+                  <% buy = @order.valuation_buy(market) %>
+                  <% sell = @order.valuation_sell(market) %>
+                  <td class="p-1.5 font-medium text-gray-900"><%= market.name %></td>
+                  <td class="p-1.5 text-gray-900 <%= (buy < total ? 'bg-green-100' : 'bg-red-100') if buy.positive? %>">
+                    <% if buy.positive? %>
+                      <%= number_to_isk(buy) %>&nbsp;ISK (<%= number_to_percentage(@order.markup_percentage_buy(market), precision: 0) %>)
+                    <% else %>
+                      N/A
+                    <% end %>
+                  </td>
+                  <td class="p-1.5 text-gray-900 <%= (sell < total ? 'bg-green-100' : 'bg-red-100') if sell.positive? %>">
+                    <% if sell.positive? %>
+                      <%= number_to_isk(sell) %>&nbsp;ISK (<%= number_to_percentage(@order.markup_percentage_sell(market), precision: 0) %>)
+                    <% else %>
+                      N/A
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </dd>
+      </div>
+      <% end %>
     </dl>
 
     <dl class="mt-8 divide-y divide-gray-200 text-sm lg:mt-0 lg:col-span-5">

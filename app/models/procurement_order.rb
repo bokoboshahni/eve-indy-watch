@@ -151,6 +151,46 @@ class ProcurementOrder < ApplicationRecord
     items.map { |item| "#{item.name} x#{item.quantity_required}" }.join("\n")
   end
 
+  def compact_items
+    items.select(:type_id, :quantity_required).each_with_object({}) do |item, h|
+      type_id = item.type_id
+      if h.key?(type_id)
+        h[type_id] += item.quantity_required
+      else
+        h[type_id] = item.quantity_required
+      end
+    end
+  end
+
+  def valuation(market)
+    @valuation ||= {}
+    @valuation[market.id] ||= Appraisal.new(market: market).generate_items(compact_items)
+  end
+
+  def valuation_sell(market)
+    valuation(market)&.total_sell_price_min
+  end
+
+  def valuation_buy(market)
+    valuation(market)&.total_buy_price_max
+  end
+
+  def profit_buy(market)
+    total - valuation_buy(market).to_d
+  end
+
+  def profit_sell(market)
+    total - valuation_sell(market).to_d
+  end
+
+  def markup_percentage_sell(market)
+    (profit_sell(market) / valuation_sell(market).to_d) * 100
+  end
+
+  def markup_percentage_buy(market)
+    (profit_buy(market) / valuation_buy(market).to_d) * 100
+  end
+
   private
 
   def ensure_requester_and_supplier_names
