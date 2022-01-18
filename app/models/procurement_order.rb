@@ -147,6 +147,10 @@ class ProcurementOrder < ApplicationRecord
     items.joins(:type).pluck(:quantity_required, :'types.packaged_volume', :'types.volume').sum { |i| i[0] * (i[1] || i[2]) }
   end
 
+  def items_multibuy
+    items.map { |item| "#{item.name} x#{item.quantity_required}" }.join("\n")
+  end
+
   private
 
   def ensure_requester_and_supplier_names

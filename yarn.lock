@@ -7266,6 +7266,11 @@ stimulus-autocomplete@^3.0.0-rc.6:
   resolved "https://registry.yarnpkg.com/stimulus-autocomplete/-/stimulus-autocomplete-3.0.0-rc.6.tgz#f850137dd9942abef23a7194465a33ac5fafef50"
   integrity sha512-fdVYEfHIwqjxDHnQpJSlqPqA9G/Qz60HhxaXo3Ap3ExP6FR+w8fs10FdW4FrrBMc/+wSHRP1ZKrINCTBBgCMVQ==
 
+stimulus-clipboard@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/stimulus-clipboard/-/stimulus-clipboard-3.0.0.tgz#25bc319eeaa68de683edeeddc5bf58a578cb8142"
+  integrity sha512-OcRfJ8LoXj82Ve/5LKEBSxy8Y1YYmtp1qNRSb0nchk98rPtG8oPlxk8fgmFq/qDUPorM9YHQpc4QFN0ka68Ckg==
+
 stream-browserify@^2.0.1:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/stream-browserify/-/stream-browserify-2.0.2.tgz#87521d38a44aa7ee91ce1cd2a47df0cb49dd660b"

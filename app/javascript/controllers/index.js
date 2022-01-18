@@ -24,3 +24,6 @@ application.register('slideover', Slideover)
 
 import Autocomplete from 'stimulus-autocomplete'
 application.register('autocomplete', Autocomplete)
+
+import Clipboard from 'stimulus-clipboard'
+application.register('clipboard', Clipboard)
