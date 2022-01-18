@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [2.9.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.8.1...v2.9.0) (2022-01-18)
+
+
+### Features
+
+* orders dashboard enhancements ([#99](https://github.com/bokoboshahni/eve-indy-watch/issues/99)) ([858af7f](https://github.com/bokoboshahni/eve-indy-watch/commit/858af7fec4be9f97d7b85145c06fb9ecd92b7a16))
+
 ## [2.8.1](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.8.0...v2.8.1) (2022-01-18)
 
 
