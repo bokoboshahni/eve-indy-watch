@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [2.10.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.9.0...v2.10.0) (2022-01-18)
+
+
+### Features
+
+* update dev bootstrapping ([#103](https://github.com/bokoboshahni/eve-indy-watch/issues/103)) ([fba3c83](https://github.com/bokoboshahni/eve-indy-watch/commit/fba3c83ed3d9c6d67f9c34b5d184f1abc5153716))
+
 # [2.9.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.8.1...v2.9.0) (2022-01-18)
 
 
