@@ -73,6 +73,10 @@ class ProcurementOrderItem < ApplicationRecord
 
   before_validation :ensure_supplier_name
 
+  def price_with_multiplier
+    price * ((order.multiplier || 100.0) / 100.0)
+  end
+
   def supplier_gid
     supplier&.to_global_id
   end
@@ -86,7 +90,7 @@ class ProcurementOrderItem < ApplicationRecord
   end
 
   def subtotal_with_multiplier
-    subtotal * (multiplier / 100.0)
+    subtotal * ((order.multiplier || 100.0) / 100.0)
   end
 
   def total

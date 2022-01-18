@@ -147,7 +147,7 @@
             <div class="flex space-x-2 items-center justify-between block">
               <%= f.label :multiplier, 'Multiplier', class: 'sr-only' %>
               <div class="inline-block relative rounded-md shadow-sm">
-                <%= f.number_field :multiplier, value: 100.0, min: 0, step: 5.0, class: 'focus:ring-indigo-500 focus:border-indigo-500 block w-48 pr-12 sm:text-xs border-gray-300 rounded-md', data: { order_target: 'multiplier', action: 'input->order#calculateTotal' } %>
+                <%= f.number_field :multiplier, min: 0, step: 5.0, class: 'focus:ring-indigo-500 focus:border-indigo-500 block w-48 pr-12 sm:text-xs border-gray-300 rounded-md', data: { order_target: 'multiplier', action: 'input->order#calculateTotal' } %>
                 <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                   <span class="text-gray-500 sm:text-xs" id="multiplier-unit">
                     %

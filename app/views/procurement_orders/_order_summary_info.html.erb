@@ -56,18 +56,25 @@
     </dl>
 
     <dl class="mt-8 divide-y divide-gray-200 text-sm lg:mt-0 lg:col-span-5">
-      <div class="pb-2 flex items-center justify-between">
-        <dt class="text-gray-600">Subtotal</dt>
-        <dd class="font-medium text-gray-900"><%= number_to_isk(order.subtotal) %>&nbsp;ISK</dd>
-      </div>
-      <div class="py-2 flex items-center justify-between">
-        <dt class="text-gray-600">Multiplier</dt>
-        <dd class="font-medium text-gray-900"><%= number_with_precision(order.multiplier, precision: 2) %>%</dd>
-      </div>
-      <div class="py-2 flex items-center justify-between">
-        <dt class="text-gray-600">Subtotal with multiplier</dt>
-        <dd class="font-medium text-gray-900"><%= number_to_isk(@order.subtotal_with_multiplier) %>&nbsp;ISK</dd>
-      </div>
+      <% if policy(@order).update? %>
+        <div class="pb-2 flex items-center justify-between">
+          <dt class="text-gray-600">Subtotal</dt>
+          <dd class="font-medium text-gray-900"><%= number_to_isk(order.subtotal) %>&nbsp;ISK</dd>
+        </div>
+        <div class="py-2 flex items-center justify-between">
+          <dt class="text-gray-600">Multiplier</dt>
+          <dd class="font-medium text-gray-900"><%= number_to_percentage(order.multiplier, precision: 2) %></dd>
+        </div>
+        <div class="py-2 flex items-center justify-between">
+          <dt class="text-gray-600">Subtotal with multiplier</dt>
+          <dd class="font-medium text-gray-900"><%= number_to_isk(@order.subtotal_with_multiplier) %>&nbsp;ISK</dd>
+        </div>
+      <% else %>
+        <div class="pb-2 flex items-center justify-between">
+          <dt class="text-gray-600">Subtotal</dt>
+          <dd class="font-medium text-gray-900"><%= number_to_isk(order.subtotal_with_multiplier) %>&nbsp;ISK</dd>
+        </div>
+      <% end %>
       <% if @order.bonus.positive? %>
         <div class="py-2 flex items-center justify-between">
           <dt class="text-gray-600">Bonus</dt>
