@@ -1,5 +1,13 @@
 # EVE Indy Watch Changelog
 
+# [2.12.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.11.0...v2.12.0) (2022-01-18)
+
+
+### Features
+
+* add market value ([7f06cbe](https://github.com/bokoboshahni/eve-indy-watch/commit/7f06cbe72a4315fcbbc5d0c21b5461526d897f8c))
+* copy order items to multibuy ([7b0a4f9](https://github.com/bokoboshahni/eve-indy-watch/commit/7b0a4f911f6b6a2d35a7bac3bab3490da74f7bde))
+
 # [2.11.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.10.0...v2.11.0) (2022-01-18)
 
 
