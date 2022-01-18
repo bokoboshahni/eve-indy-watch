@@ -36,7 +36,7 @@
           <% if current_user.alliance.procurement_order_requester && current_user.role?('alliance.orders.editor') %>
             <div class="flex items-center">
               <%= f.label :requester_gid, class: 'text-sm font-medium text-gray-700 flex flex-row-reverse items-center', value: current_user.alliance.to_global_id do %>
-                <span class="block ml-3"><%= current_user.alliance..name %> (<%= current_user.alliance.procurement_order_requester_name %>)</span>
+                <span class="block ml-3"><%= current_user.alliance.name %> (<%= current_user.alliance.procurement_order_requester_name %>)</span>
                 <%= f.radio_button :requester_gid, current_user.alliance.to_global_id, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300' %>
               <% end %>
             </div>
