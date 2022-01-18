@@ -50,7 +50,7 @@
             <% if status %>
               <% tr.cell padding: 'px-4 py-3 whitespace-nowrap' do %>
                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium <%= procurement_order_status_bg_color(order) %> <%= procurement_order_status_text_color(order) %>">
-                  <% if order.delivered_unconfirmed? %>
+                  <% if order.unconfirmed? %>
                     Waiting confirmation
                   <% else %>
                     <%= order.status.humanize %>
@@ -69,12 +69,12 @@
                       <%= render 'redraft_modal', order: order, table: true %>
                       <%= render 'cancel_modal', order: order, table: true %>
                     <% end %>
-                  <% elsif order.in_progress? && current_user.character == order.supplier && order.delivered_at %>
+                  <% elsif order.unconfirmed? && current_user.character == order.supplier %>
                     <%= render 'undeliver_modal', order: order, table: true %>
-                  <% elsif order.in_progress? && current_user.character == order.supplier && !order.delivered_at %>
+                  <% elsif order.in_progress? && current_user.character == order.supplier %>
                     <%= render 'deliver_modal', order: order, table: true %>
                     <%= render 'release_modal', order: order, table: true %>
-                  <% elsif order.in_progress? && policy(order).update? && order.delivered_at %>
+                  <% elsif order.unconfirmed? && policy(order).update? %>
                     <%= render 'receive_modal', order: order, table: true %>
                   <% elsif order.draft? %>
                     <%= link_to procurement_order_path(order), class: 'cursor-pointer inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500', data: { action: 'click->modal#open' } do %>

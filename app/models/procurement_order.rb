@@ -26,6 +26,7 @@
 # **`supplier_type`**              | `string`           |
 # **`target_completion_at`**       | `datetime`         |
 # **`tracking_number`**            | `bigint`           |
+# **`unconfirmed_at`**             | `datetime`         |
 # **`visibility`**                 | `enum`             |
 # **`created_at`**                 | `datetime`         | `not null`
 # **`updated_at`**                 | `datetime`         | `not null`
@@ -49,8 +50,9 @@
 class ProcurementOrder < ApplicationRecord
   include Discard::Model
   include PgSearch::Model
+  include AASM
 
-  STATUSES = %i[draft available in_progress delivered].freeze
+  STATUSES = %i[draft available in_progress unconfirmed delivered].freeze
 
   VISIBILITIES = %i[everyone corporation alliance].freeze
 
@@ -79,56 +81,20 @@ class ProcurementOrder < ApplicationRecord
   has_many :items, class_name: 'ProcurementOrderItem', inverse_of: :order, foreign_key: :order_id, dependent: :destroy
   accepts_nested_attributes_for :items, allow_destroy: true, reject_if: ->(a) { a[:type_id].blank? || a[:quantity_required].blank? || a[:price].blank? }
 
-  scope :unconfirmed, -> { in_progress.where.not(delivered_at: nil) }
-
   validates :bonus, allow_blank: true, format: { with: /\A\d+(?:\.\d{0,2})?\z/ }, numericality: { greater_than_or_equal_to: 0 }
   validates :multiplier, presence: true, format: { with: /\A\d+(?:\.\d{0,2})?\z/ }, numericality: { greater_than: 0 }
   validates :status, presence: true, inclusion: { in: statuses.keys }
   validates :visibility, presence: true, inclusion: { in: visibilities.keys }
   validates_associated :items
 
-  # validate :validate_accept, on: :update
-  validate :validate_publish
-  # validate :validate_receive, on: :update
-  validate :validate_redraft, on: :update
-
-  validate :validate_updates_while_in_progress, on: :update
+  validates :items, presence: true, if: :needs_items?
+  validates :supplier, presence: true, if: :needs_supplier?
 
   delegate :name, to: :location, prefix: true
 
+  scope :in_progress_and_unconfirmed, -> { in_progress.or(unconfirmed) }
+
   before_validation :ensure_requester_and_supplier_names
-
-  def accept!(supplier, estimated_completion_at = nil)
-    tracking_number = Nanoid.generate(size: 15, alphabet: '1234567890').to_i
-
-    update(
-      supplier: supplier,
-      status: :in_progress,
-      accepted_at: Time.zone.now,
-      estimated_completion_at: estimated_completion_at,
-      tracking_number: tracking_number
-    )
-  end
-
-  def deliver!
-    update(delivered_at: Time.zone.now)
-  end
-
-  def undeliver!
-    update(delivered_at: nil)
-  end
-
-  def release!
-    update(supplier: nil, status: :available, accepted_at: nil)
-  end
-
-  def receive!
-    update(status: :delivered, delivered_at: Time.zone.now)
-  end
-
-  def redraft!
-    update(status: :draft, published_at: nil)
-  end
 
   def prefix
     case requester_type
@@ -181,10 +147,6 @@ class ProcurementOrder < ApplicationRecord
     items.joins(:type).pluck(:quantity_required, :'types.packaged_volume', :'types.volume').sum { |i| i[0] * (i[1] || i[2]) }
   end
 
-  def delivered_unconfirmed?
-    in_progress? && delivered_at
-  end
-
   private
 
   def ensure_requester_and_supplier_names
@@ -192,40 +154,77 @@ class ProcurementOrder < ApplicationRecord
     self.supplier_name = supplier&.name if supplier.present?
   end
 
-  def validate_updates_while_in_progress
-    return unless in_progress?
-
-    # Supplier cannot be changed once an order is in progress
-    errors.add(:base, "Procurement order #{number} has already been accepted.") if supplier_id_changed? && !supplier_id_was.nil?
+  def needs_items?
+    available? || in_progress? || unconfirmed? || delivered?
   end
 
-  # def validate_accept
-  #   return unless in_progress? && status_changed?
-  # end
-
-  # def validate_receive
-  #   return unless delivered? && status_was == :in_progress
-  # end
-
-  def validate_redraft
-    return unless draft? && status_changed?
-
-    return unless status_was == :available
-
-    self.status = :available
-    errors.add(:base, "Procurement order #{number} has a status of #{status_was.humanize.downcase} and cannot be edited.")
+  def needs_supplier?
+    in_progress? || unconfirmed? || delivered?
   end
 
-  # def validate_release
-  #   return unless available? && status_was == :in_progress
-  # end
+  aasm column: :status, enum: true do # rubocop:disable Metrics/BlockLength
+    state :draft, initial: true
+    state :available
+    state :in_progress
+    state :unconfirmed
+    state :delivered
 
-  def validate_publish
-    return unless available? && status_changed?
+    event :publish do
+      transitions from: :draft, to: :available
 
-    return unless items.empty?
+      before do
+        self.published_at = Time.zone.now
+      end
+    end
 
-    self.status = :draft
-    errors.add(:base, 'Cannot publish procurement order with no items.')
+    event :redraft do
+      transitions from: :available, to: :draft
+
+      before do
+        self.published_at = nil
+      end
+    end
+
+    event :accept do
+      transitions from: :available, to: :in_progress
+
+      before do
+        self.accepted_at = Time.zone.now
+        self.tracking_number = Nanoid.generate(size: 15, alphabet: '1234567890').to_i
+      end
+    end
+
+    event :release do
+      transitions from: :in_progress, to: :available
+
+      before do
+        self.accepted_at = nil
+        self.published_at = Time.zone.now
+      end
+    end
+
+    event :deliver do
+      transitions from: :in_progress, to: :unconfirmed
+
+      before do
+        self.unconfirmed_at = Time.zone.now
+      end
+    end
+
+    event :undeliver do
+      transitions from: :unconfirmed, to: :in_progress
+
+      before do
+        self.unconfirmed_at = nil
+      end
+    end
+
+    event :receive do
+      transitions from: :unconfirmed, to: :delivered
+
+      before do
+        self.delivered_at = Time.zone.now
+      end
+    end
   end
 end
