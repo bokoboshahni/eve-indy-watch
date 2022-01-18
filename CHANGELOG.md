@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [2.11.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.10.0...v2.11.0) (2022-01-18)
+
+
+### Features
+
+* state machine for procurement orders ([#104](https://github.com/bokoboshahni/eve-indy-watch/issues/104)) ([6140be6](https://github.com/bokoboshahni/eve-indy-watch/commit/6140be61a6e657bfc4cf806b391608fa07b6dfdd))
+
 # [2.10.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.9.0...v2.10.0) (2022-01-18)
 
 
