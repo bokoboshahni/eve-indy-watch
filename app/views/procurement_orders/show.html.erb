@@ -98,8 +98,20 @@
       <h1 class="text-lg font-extrabold tracking-tight text-gray-900 sm:text-lg block">Order <%= @order.number %></h1>
       <p class="text-xs text-gray-600 block">Updated <%= local_time @order.updated_at, class: 'font-medium text-gray-900', format: :long_date %></p>
     </div>
-    <div>
+    <div class="flex space-x-3 justify-end">
       <%= render('delete_modal', order: @order, table: false) if @order.draft? && @order.kept? && policy(@order).destroy? %>
+
+      <div data-controller="clipboard" data-clipboard-success-content="Copied!">
+        <%= text_area_tag :items_multibuy, @order.items_multibuy, data: { clipboard_target: 'source' }, class: 'absolute -top-[1000px] -left-[1000px]' %>
+
+        <button type="button"
+          class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+          data-action="clipboard#copy"
+          data-clipboard-target="button"
+        >
+          Copy EVE Multibuy
+        </button>
+      </div>
     </div>
   </div>
 
