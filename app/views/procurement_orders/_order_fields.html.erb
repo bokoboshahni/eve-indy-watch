@@ -76,10 +76,17 @@
       </fieldset>
     </div>
 
-    <div class="sm:col-span-6">
+    <div class="sm:col-span-3">
       <%= f.label :location_id, 'Location', class: 'block text-sm font-medium text-gray-700' %>
       <div class="mt-1">
         <%= f.collection_select :location_id, main_alliance.locations.order(:name), :id, :name, { selected: main_alliance.default_location.id }, { class: 'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md' } %>
+      </div>
+    </div>
+
+    <div class="sm:col-span-3">
+      <%= f.label :target_completion_at, 'Due date (optional)', class: 'block text-sm font-medium text-gray-700' %>
+      <div class="mt-1">
+        <%= f.date_field :target_completion_at, class: 'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md', min: Date.today %>
       </div>
     </div>
   </div>
