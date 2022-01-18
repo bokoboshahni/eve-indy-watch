@@ -94,6 +94,7 @@ class ProcurementOrdersController < ApplicationController
 
   def accept
     @order.supplier = current_user.character
+    @order.estimated_completion_at = params[:procurement_order][:estimated_completion_at]
 
     if @order.accept!
       flash[:success] = "Procurement order #{@order.number} accepted."
@@ -195,7 +196,7 @@ class ProcurementOrdersController < ApplicationController
   def create_params
     params.require(:procurement_order).permit(
       :appraisal_url,
-      :requester_gid, :deliver_by, :visibility,
+      :requester_gid, :target_completion_at, :visibility,
       :location_id, :notes, :bonus, :multiplier,
       items_attributes: %i[type_id quantity_required price]
     )
@@ -208,5 +209,9 @@ class ProcurementOrdersController < ApplicationController
       :location_id, :notes, :bonus, :multiplier,
       items_attributes: %i[type_id quantity_required price _destroy id]
     )
+  end
+
+  def accept_params
+    params.require(:procurement_order).permit(:estimated_completion_at)
   end
 end

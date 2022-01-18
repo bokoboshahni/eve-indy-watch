@@ -71,6 +71,51 @@
         with <span class="font-medium text-gray-900"><%= @order.tracking_number %></span> as the contract description.
       </p>
 
+      <% if @order.target_completion_at && @order.target_completion_at < Time.zone.now %>
+        <div class="mt-4 bg-red-50 border-l-4 border-red-400 p-4">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <%= heroicon 'clock', variant: :solid, options: { class: 'h-5 w-5 text-red-400' } %>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm text-red-700">
+                The due date for this order was <%= local_time @order.estimated_completion_at, format: :long_ordinal %>.
+                <span class="font-bold">Real life comes first!</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <% if @order.estimated_completion_at && @order.estimated_completion_at > Time.zone.now %>
+        <div class="mt-4 bg-orange-50 border-l-4 border-orange-400 p-4">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <%= heroicon 'clock', variant: :solid, options: { class: 'h-5 w-5 text-orange-400' } %>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm text-orange-700">
+                You have estimated that this order will be delivered by <%= local_time @order.estimated_completion_at, format: :long_ordinal %>. You have <%= distance_of_time_in_words_to_now(@order.estimated_completion_at) %> remaining before your estimated delivery time.
+              </p>
+            </div>
+          </div>
+        </div>
+      <% elsif @order.estimated_completion_at && @order.estimated_completion_at < Time.zone.now %>
+        <div class="mt-4 bg-red-50 border-l-4 border-red-400 p-4">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <%= heroicon 'clock', variant: :solid, options: { class: 'h-5 w-5 text-red-400' } %>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm text-red-700">
+                You estimated that this order would be delivered by <%= local_time @order.estimated_completion_at, format: :long_ordinal %>. You have exceeded your estimated delivery time by <%= distance_of_time_in_words_to_now(@order.estimated_completion_at) %>.
+                <span class="font-bold">Real life comes first!</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
       <div class="mt-12 flex max-w-md space-x-3">
         <%= render 'deliver_modal', order: @order, table: false %>
         <%= render 'release_modal', order: @order, table: false %>
@@ -90,6 +135,51 @@
     <div class="max-w-3xl">
       <p class="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl">It's on the way!</p>
       <p class="mt-2 text-base text-gray-500">Your order #<%= @order.number %> has been accepted by <span class="font-medium"><%= @order.supplier_name %></span> and will be with you soon.</p>
+
+      <% if @order.target_completion_at && @order.target_completion_at < Time.zone.now %>
+        <div class="mt-4 bg-red-50 border-l-4 border-red-400 p-4">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <%= heroicon 'clock', variant: :solid, options: { class: 'h-5 w-5 text-red-400' } %>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm text-red-700">
+                The due date for this order was <%= local_time @order.estimated_completion_at, format: :long_ordinal %>.
+                <span class="font-bold">Real life comes first!</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+      <% if @order.estimated_completion_at && @order.estimated_completion_at > Time.zone.now %>
+        <div class="mt-4 bg-orange-50 border-l-4 border-orange-400 p-4">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <%= heroicon 'clock', variant: :solid, options: { class: 'h-5 w-5 text-orange-400' } %>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm text-orange-700">
+                <%= @order.supplier_name %> estimated that this order will be delivered by <%= local_time @order.estimated_completion_at, format: :long_ordinal %>.
+              </p>
+            </div>
+          </div>
+        </div>
+      <% elsif @order.estimated_completion_at && @order.estimated_completion_at < Time.zone.now %>
+        <div class="mt-4 bg-red-50 border-l-4 border-red-400 p-4">
+          <div class="flex">
+            <div class="flex-shrink-0">
+              <%= heroicon 'clock', variant: :solid, options: { class: 'h-5 w-5 text-red-400' } %>
+            </div>
+            <div class="ml-3">
+              <p class="text-sm text-red-700">
+                <%= @order.supplier_name %> estimated that this order would be delivered by <%= local_time @order.estimated_completion_at, format: :long_ordinal %>.
+                <span class="font-bold">Real life comes first!</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      <% end %>
     </div>
   <% end %>
 

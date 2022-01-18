@@ -10,6 +10,8 @@
         <% t.header padding: 'px-4 py-3', width: 'w-36' do %>Total<% end %>
         <% if supplier %><% t.header padding: 'px-4 py-2', width: 'w-48' do %>Supplier<% end %><% end %>
         <% t.header padding: 'px-4 py-3', width: 'w-36' do %>Updated<% end %>
+        <% t.header padding: 'px-4 py-3', width: 'w-36' do %>Due<% end %>
+        <% t.header padding: 'px-4 py-3', width: 'w-36' do %>Estimated<% end %>
         <% if status %><% t.header padding: 'px-4 py-3', width: 'w-48' do %>Status<% end %><% end %>
         <% if actions %><% t.header padding: 'px-4 py-3 relative', width: 'w-24' do %><span class="sr-only">Actions</span><% end %><% end %>
 
@@ -46,6 +48,12 @@
             <% if supplier %><% tr.cell padding: 'px-4 py-2' do %><%= order.supplier_name %><% end %><% end %>
             <% tr.cell padding: 'px-4 py-3' do %>
               <%= local_time order.updated_at, format: :iso8601_date %>
+            <% end %>
+            <% tr.cell padding: 'px-4 py-3' do %>
+              <%= local_time order.target_completion_at, format: :iso8601_date if order.target_completion_at %>
+            <% end %>
+            <% tr.cell padding: 'px-4 py-3' do %>
+              <%= local_time order.estimated_completion_at, format: :iso8601_date if order.estimated_completion_at %>
             <% end %>
             <% if status %>
               <% tr.cell padding: 'px-4 py-3 whitespace-nowrap' do %>
