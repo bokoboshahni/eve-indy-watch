@@ -1,5 +1,17 @@
 # EVE Indy Watch Changelog
 
+# [2.13.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.12.0...v2.13.0) (2022-01-19)
+
+
+### Bug Fixes
+
+* modal pushes layout sideways ([2fde1b7](https://github.com/bokoboshahni/eve-indy-watch/commit/2fde1b7bc711e4391d92a729ea2c65e5bcfb35f5))
+
+
+### Features
+
+* estimated and target completion dates ([8698358](https://github.com/bokoboshahni/eve-indy-watch/commit/869835884055834bcccdf1315ecaefaca4a0cd41))
+
 # [2.12.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.11.0...v2.12.0) (2022-01-18)
 
 
