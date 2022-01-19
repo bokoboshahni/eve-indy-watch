@@ -2,7 +2,7 @@
 
 class Contract < ApplicationRecord
   class SyncItemsFromESIWorker < ApplicationWorker
-    sidekiq_options lock: :until_and_while_executing, on_conflict: :log
+    sidekiq_options lock: :until_executed, lock_ttl: 5.minutes
     sidekiq_throttle threshold: { limit: 20, period: 10.seconds }
 
     def perform(contract_id)

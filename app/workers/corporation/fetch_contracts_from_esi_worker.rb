@@ -2,7 +2,7 @@
 
 class Corporation < ApplicationRecord
   class FetchContractsFromESIWorker < ApplicationWorker
-    sidekiq_options lock: :until_executing, on_conflict: :log
+    sidekiq_options queue: :contracts, lock: :until_executed, lock_ttl: 5.minutes
 
     def perform(corporation_id)
       corporation = Corporation.find(corporation_id)

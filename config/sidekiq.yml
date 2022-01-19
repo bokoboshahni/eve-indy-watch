@@ -1,3 +1,7 @@
+:queues:
+  - markets
+  - contracts
+  - default
 :schedule:
   sync_all_contracts_from_esi:
     cron: '*/5 * * * *'

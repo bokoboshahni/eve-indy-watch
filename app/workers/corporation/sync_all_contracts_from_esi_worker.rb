@@ -2,7 +2,7 @@
 
 class Corporation < ApplicationRecord
   class SyncAllContractsFromESIWorker < ApplicationWorker
-    sidekiq_options lock: :until_and_while_executing, on_conflict: :log
+    sidekiq_options queue: :contracts, lock: :until_executed, lock_ttl: 5.minutes
 
     def perform
       Corporation.where(contract_sync_enabled: true).where('esi_contracts_expires_at <= ?', Time.zone.now)

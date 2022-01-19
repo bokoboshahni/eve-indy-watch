@@ -2,7 +2,7 @@
 
 class Market < ApplicationRecord
   class IngestAllWorker < ApplicationWorker
-    sidekiq_options retries: 3, lock: :until_executed
+    sidekiq_options queue: :markets, lock: :until_executed, locK_ttl: 5.minutes
 
     def perform
       args = Market.active.where.not(source_location_id: nil)

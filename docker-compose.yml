@@ -86,7 +86,65 @@ services:
         GID: $GID
       context: .
       dockerfile: Dockerfile.dev
-    command: bundle exec sidekiq -c 25
+    command: bundle exec sidekiq -c 25 -q default
+    env_file:
+      - .env
+    environment:
+      <<: *env
+    volumes:
+      - .:/app
+      - rails_cache:/app/tmp/cache
+      - bundle:/usr/local/bundle
+      - node_modules:/app/node_modules
+      - packs:/app/public/packs
+    depends_on:
+      - postgres
+      - redis-queue
+      - redis-sessions
+      - redis-data
+      - redis-cache
+    restart: always
+    user: $UID:$GID
+
+  worker-markets:
+    stdin_open: true
+    tty: true
+    build:
+      args:
+        UID: $UID
+        GID: $GID
+      context: .
+      dockerfile: Dockerfile.dev
+    command: bundle exec sidekiq -c 25 -q markets
+    env_file:
+      - .env
+    environment:
+      <<: *env
+    volumes:
+      - .:/app
+      - rails_cache:/app/tmp/cache
+      - bundle:/usr/local/bundle
+      - node_modules:/app/node_modules
+      - packs:/app/public/packs
+    depends_on:
+      - postgres
+      - redis-queue
+      - redis-sessions
+      - redis-data
+      - redis-cache
+    restart: always
+    user: $UID:$GID
+
+  worker-contracts:
+    stdin_open: true
+    tty: true
+    build:
+      args:
+        UID: $UID
+        GID: $GID
+      context: .
+      dockerfile: Dockerfile.dev
+    command: bundle exec sidekiq -c 5 -q contracts
     env_file:
       - .env
     environment:
