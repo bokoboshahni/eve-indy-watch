@@ -14,7 +14,7 @@
     <%= javascript_pack_tag 'application', nonce: true %>
   </head>
 
-  <body class="h-full">
+  <body class="h-full w-full">
     <% if logged_in? %>
       <div data-controller="toggle">
         <%= render 'application/mobile_nav' %>
