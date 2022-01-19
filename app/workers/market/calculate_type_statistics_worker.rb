@@ -2,6 +2,8 @@
 
 class Market < ApplicationRecord
   class CalculateTypeStatisticsWorker < ApplicationWorker
+    sidekiq_options queue: :markets
+
     def perform(market_id, type_ids, time, force = false) # rubocop:disable Style/OptionalBooleanParameter
       time = time.to_s.to_datetime
       type_ids.each do |type_id|

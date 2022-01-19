@@ -2,7 +2,7 @@
 
 class Contract < ApplicationRecord
   class SyncFromESIWorker < ApplicationWorker
-    sidekiq_options retry: 5, lock: :until_and_while_executing, on_conflict: :log
+    sidekiq_options queue: :contracts, lock: :until_executed, lock_ttl: 5.minutes
 
     def perform(corporation_id, json)
       corporation = Corporation.find(corporation_id)
