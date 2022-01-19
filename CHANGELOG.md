@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [2.14.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.13.0...v2.14.0) (2022-01-19)
+
+
+### Features
+
+* devcontainer configuration for vscode ([#111](https://github.com/bokoboshahni/eve-indy-watch/issues/111)) ([ac07d05](https://github.com/bokoboshahni/eve-indy-watch/commit/ac07d0562c5215b73af590084a18b57bab10ae46))
+
 # [2.13.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.12.0...v2.13.0) (2022-01-19)
 
 
