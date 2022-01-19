@@ -1,0 +1,75 @@
+version: '3'
+
+services:
+  workspace:
+    build:
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+      args:
+        # Update 'VARIANT' to pick a version of Ruby: 3, 3.0, 2, 2.7, 2.6
+        # Append -bullseye or -buster to pin to an OS version.
+        # Use -bullseye variants on local arm64/Apple Silicon.
+        VARIANT: "3"
+        NODE_VERSION: "lts/*"
+
+    volumes:
+      - ..:/workspace:cached
+
+    # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
+
+    # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
+    network_mode: service:postgres
+
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/eve_indy_watch
+      QUEUE_REDIS_URL: redis://redis-queue:6379/0
+      SESSIONS_REDIS_URL: redis://redis-sessions:6379/0
+      CACHE_REDIS_URL: redis://redis-cache:6379/0
+      ORDERS_READER_REDIS_URL: redis://redis-data:6379/1
+      ORDERS_WRITER_REDIS_URL: redis://redis-data:6379/1
+      MARKETS_READER_REDIS_URL: redis://redis-data:6379/2
+      MARKETS_WRITER_REDIS_URL: redis://redis-data:6379/2
+      LOCATIONS_READER_REDIS_URL: redis://redis-data:6379/3
+      LOCATIONS_WRITER_REDIS_URL: redis://redis-data:6379/3
+
+  postgres:
+    image: postgres:14
+    restart: unless-stopped
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: postgres
+  redis-queue:
+    image: redis:6
+    restart: unless-stopped
+    volumes:
+      - redis-queue:/data
+    command: redis-server --save 60 1 --loglevel warning
+  redis-sessions:
+    image: redis:6
+    restart: unless-stopped
+    volumes:
+      - redis-sessions:/data
+    command: redis-server --save 60 1 --loglevel warning
+  redis-data:
+    image: redis:6
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+    command: redis-server --save 60 1 --loglevel warning --maxmemory 4gb --maxmemory-policy volatile-ttl
+  redis-cache:
+    image: redis:6
+    restart: unless-stopped
+    volumes:
+      - redis-cache:/data
+    command: redis-server --maxmemory 1gb --maxmemory-policy allkeys-lru
+
+volumes:
+  postgres-data:
+  redis-queue:
+  redis-sessions:
+  redis-data:
+  redis-cache:
