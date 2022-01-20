@@ -13,6 +13,18 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   mount Sidekiq::Web => '/admin/sidekiq', constraints: AdminConstraint.new
   mount PgHero::Engine => '/admin/pghero', constraints: AdminConstraint.new
 
+  use_doorkeeper do
+    controllers authorizations: 'oauth_authorizations'
+
+    skip_controllers :applications, :authorized_applications
+  end
+
+  namespace :api do
+    get 'user' => 'me#show'
+
+    root to: 'root#index'
+  end
+
   namespace :admin do
     resources :alliances, only: %i[index show edit update]
     resources :corporations, only: %i[index show edit update]
@@ -75,6 +87,7 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
 
   resource :settings, only: %i[show update destroy] do
     resources :esi_authorizations, path: 'authorizations', only: %i[create index destroy]
+    resources :personal_access_tokens, path: 'tokens', only: %i[index new create show destroy]
   end
 
   root to: 'home#index'

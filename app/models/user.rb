@@ -56,6 +56,12 @@ class User < ApplicationRecord
 
   has_many :supplied_procurement_orders, class_name: 'ProcurementOrder', as: :supplier
   has_many :esi_authorizations, inverse_of: :user, dependent: :destroy
+  has_many :oauth_access_grants, inverse_of: :resource_owner, foreign_key: :resource_owner_id, dependent: :destroy
+  has_many :oauth_access_tokens, inverse_of: :resource_owner, foreign_key: :resource_owner_id, dependent: :destroy
+  has_many :oauth_applications, inverse_of: :resource_owner, foreign_key: :resource_owner, dependent: :destroy
+  has_many :oauth_authorized_applications, class_name: 'OauthApplication', through: :oauth_access_tokens, source: :application
+  has_many :personal_access_token_applications, -> { where(personal: true) }, class_name: 'OauthApplication', as: :owner # rubocop:disable Rails/InverseOf
+  has_many :personal_access_tokens, -> { joins(:application).where('oauth_applications.personal': true) }, class_name: 'OauthAccessToken', foreign_key: :resource_owner_id # rubocop:disable Rails/InverseOf
   has_many :report_runs, inverse_of: :user
 
   delegate :id, :name, to: :alliance, prefix: true, allow_nil: true

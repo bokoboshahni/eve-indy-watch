@@ -3,8 +3,6 @@
 class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
-  connects_to database: { reading: :primary, writing: :primary }
-
   def log_name
     return "#{name} (#{id})" if respond_to?(:name)
 
