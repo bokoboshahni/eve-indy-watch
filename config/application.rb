@@ -65,5 +65,6 @@ module EVEIndyWatch
     config.x.app.order_snapshot_expiry = ENV.fetch('ORDER_SNAPSHOT_EXPIRY', 10).to_i
     config.x.app.market_snapshot_expiry = ENV.fetch('MARKET_SNAPSHOT_EXPIRY', 10).to_i
     config.x.app.fitting_stock_level_expiry = ENV.fetch('FITTING_SNAPSHOT_EXPIRY', 60).to_i
+    config.x.app.default_roles = ENV.fetch('DEFAULT_ROLES', '').strip.split(',')
   end
 end
