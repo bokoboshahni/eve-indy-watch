@@ -71,6 +71,11 @@ class User < ApplicationRecord
   def role?(*names)
     return true if admin?
 
+    return true if names.any? do |name|
+      default_roles = app_config.default_roles
+      name.is_a?(Regexp) ? default_roles.grep(name).any? : default_roles.include?(name)
+    end
+
     names.any? do |name|
       name.is_a?(Regexp) ? roles.grep(name).any? : roles.include?(name)
     end
