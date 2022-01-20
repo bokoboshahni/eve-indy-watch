@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [2.15.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.14.0...v2.15.0) (2022-01-20)
+
+
+### Features
+
+* default roles configuration ([#115](https://github.com/bokoboshahni/eve-indy-watch/issues/115)) ([cf63e56](https://github.com/bokoboshahni/eve-indy-watch/commit/cf63e5655e80db0a45b226de3c5d8f4c85a16bac))
+
 # [2.14.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.13.0...v2.14.0) (2022-01-19)
 
 
