@@ -148,6 +148,10 @@ class Market < ApplicationRecord
     markets_reader.get("#{latest_snapshot_key}.type_count").to_i
   end
 
+  def latest_type_ids
+    Array(markets_reader.smembers("#{latest_snapshot_key}.type_ids")).map(&:to_i).sort
+  end
+
   def update_ingestion_info!
     markets_writer.set("markets.#{id}.kind", kind)
     markets_writer.set("markets.#{id}.name", name)

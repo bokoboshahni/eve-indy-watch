@@ -1,0 +1,1 @@
+json.partial! 'market', market: @market

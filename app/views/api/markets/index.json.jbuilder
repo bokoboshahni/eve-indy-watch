@@ -1,0 +1,1 @@
+json.array! @markets, partial: 'market', as: :market

@@ -43,6 +43,15 @@
                       <p class="text-gray-500">Read the current user's account information.</p>
                     </div>
                   </div>
+                  <div class="relative flex items-start">
+                    <div class="flex items-center h-5">
+                      <%= f.check_box :scopes, { multiple: true, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded' }, 'markets.read' %>
+                    </div>
+                    <div class="ml-3 text-sm">
+                      <%= f.label :scopes, 'markets.read', class: 'font-medium text-gray-700', value: 'markets.read' %>
+                      <p class="text-gray-500">Read market information.</p>
+                    </div>
+                  </div>
                 </div>
               </fieldset>
             </div>

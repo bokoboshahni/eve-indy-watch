@@ -5,6 +5,8 @@ info:
 servers:
   - url: http://localhost:3000/api
 tags:
+  - name: markets
+    description: Endpoints to manage and view markets.
   - name: meta
     description: Endpoints that give information about the API.
   - name: users
@@ -34,6 +36,302 @@ paths:
           "$ref": "#/components/responses/unauthenticated"
       security:
         - OAuth2: []
+  /markets:
+    get:
+      operationId: markets/list
+      summary: List markets
+      tags:
+        - markets
+      parameters: []
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/market"
+        '304':
+          "$ref": "#/components/responses/not_modified"
+        '401':
+          "$ref": "#/components/responses/unauthenticated"
+      security:
+        - OAuth2: ["markets.read"]
+  "/markets/{market_id}":
+    get:
+      operationId: markets/get
+      summary: Get market
+      tags:
+        - markets
+      parameters:
+        - "$ref": "#/components/parameters/market-id"
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/market"
+        '304':
+          "$ref": "#/components/responses/not_modified"
+        '401':
+          "$ref": "#/components/responses/unauthenticated"
+      security:
+        - OAuth2: ["markets.read"]
+  "/markets/{market_id}/types":
+    get:
+      operationId: markets/list-types
+      summary: List market types
+      description: List types with buy and/or sell orders in a market
+      tags:
+        - markets
+      parameters:
+        - "$ref": "#/components/parameters/market-id"
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                properties:
+                  market_id:
+                    type: integer
+                    example: 1
+                  time:
+                    type: string
+                    example: "2022-01-21T20:48:49.000Z"
+                  type_ids:
+                    type: array
+                    items:
+                      type: integer
+                    example: [34]
+        '304':
+          "$ref": "#/components/responses/not_modified"
+        '401':
+          "$ref": "#/components/responses/unauthenticated"
+      security:
+        - OAuth2: ["markets.read"]
+  "/markets/{market_id}/types/{type_id}":
+    get:
+      operationId: markets/get-types
+      summary: Get market types
+      description: Get the latest statistics for a type in a market
+      tags:
+        - markets
+      parameters:
+        - "$ref": "#/components/parameters/market-id"
+        - "$ref": "#/components/parameters/type-id"
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                properties:
+                  buy:
+                    type: object
+                    properties:
+                      five_pct_order_count:
+                        type: integer
+                        example: 1
+                      five_pct_price_avg:
+                        type: number
+                        example: 3.2
+                      five_pct_price_max:
+                        type: number
+                        example: 3.2
+                      five_pct_price_med:
+                        type: number
+                        example: 3.2
+                      five_pct_price_min:
+                        type: number
+                        example: 3.2
+                      five_pct_price_sum:
+                        type: number
+                        example: 3.2
+                      order_count:
+                        type: integer
+                        example: 24
+                      outlier_count:
+                        type: integer
+                        example: 3
+                      outlier_threshold:
+                        type: number
+                        example: 0.47
+                      price_avg:
+                        type: number
+                        example: 3.67
+                      price_max:
+                        type: number
+                        example: 4.66
+                      price_med:
+                        type: number
+                        example: 4.13
+                      price_min:
+                        type: integer
+                        example: 1
+                      price_sum:
+                        type: number
+                        example: 88.14
+                      trade_count:
+                        type: integer
+                        example: 1
+                      volume_avg:
+                        example: 126429012.58
+                      volume_max:
+                        type: integer
+                        example: 990044148
+                      volume_med:
+                        type: integer
+                        example: 13046154
+                      volume_min:
+                        type: integer
+                        example: 1000
+                      volume_sum:
+                        type: integer
+                        example: 3034296302
+                      volume_traded_avg:
+                        type: number
+                        example: 1008294
+                      volume_traded_max:
+                        type: integer
+                        example: 1008294
+                      volume_traded_med:
+                        type: integer
+                        example: 1008294
+                      volume_traded_min:
+                        type: integer
+                        example: 1008294
+                      volume_traded_sum:
+                        type: integer
+                        example: 1008294
+                  buy_price:
+                    type: number
+                    example: 4.66
+                  buy_sell_spread:
+                    type: number
+                    example: 0.13
+                  depth:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        price:
+                          type: number
+                        buy:
+                          type: integer
+                        sell:
+                          type: integer
+                  flow:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        price:
+                          type: number
+                        buy:
+                          type: integer
+                        sell:
+                          type: integer
+                  market_id:
+                    type: integer
+                    example: 1
+                  sell:
+                    type: object
+                    properties:
+                      five_pct_order_count:
+                        type: integer
+                        example: 1
+                      five_pct_price_avg:
+                        type: number
+                        example: 5
+                      five_pct_price_max:
+                        type: number
+                        example: 5
+                      five_pct_price_med:
+                        type: number
+                        example: 5
+                      five_pct_price_min:
+                        type: number
+                        example: 5
+                      five_pct_price_sum:
+                        type: number
+                        example: 5
+                      order_count:
+                        type: integer
+                        example: 106
+                      outlier_count:
+                        type: integer
+                        example: 4
+                      outlier_threshold:
+                        type: number
+                        example: 47.9
+                      price_avg:
+                        type: number
+                        example: 5.5
+                      price_max:
+                        type: number
+                        example: 15
+                      price_med:
+                        type: number
+                        example: 5
+                      price_min:
+                        type: integer
+                        example: 4.79
+                      price_sum:
+                        type: number
+                        example: 583.52
+                      trade_count:
+                        type: integer
+                        example: 1
+                      volume_avg:
+                        example: 66691854.06
+                      volume_max:
+                        type: integer
+                        example: 997645449
+                      volume_med:
+                        type: integer
+                        example: 7036009
+                      volume_min:
+                        type: integer
+                        example: 1
+                      volume_sum:
+                        type: integer
+                        example: 7069336530
+                      volume_traded_avg:
+                        type: number
+                        example: 1361621
+                      volume_traded_max:
+                        type: integer
+                        example: 1361621
+                      volume_traded_med:
+                        type: integer
+                        example: 1361621
+                      volume_traded_min:
+                        type: integer
+                        example: 1361621
+                      volume_traded_sum:
+                        type: integer
+                        example: 1361621
+                  sell_price:
+                    type: number
+                    example: 4.79
+                  split_price:
+                    type: number
+                    example: 4.73
+                  time:
+                    type: string
+                    example: "2022-01-21T20:48:49.000Z"
+                  type_id:
+                    type: integer
+                    example: 34
+        '304':
+          "$ref": "#/components/responses/not_modified"
+        '401':
+          "$ref": "#/components/responses/unauthenticated"
+      security:
+        - OAuth2: ["markets.read"]
   /user:
     get:
       operationId: users/get-authenticated
@@ -65,6 +363,19 @@ components:
         application/json:
           schema:
             "$ref": "#/components/schemas/basic-error"
+  parameters:
+    market-id:
+      name: market_id
+      in: path
+      required: true
+      schema:
+        type: integer
+    type-id:
+      name: type_id
+      in: path
+      required: true
+      schema:
+        type: integer
   schemas:
     alliance:
       title: Alliance
@@ -268,6 +579,39 @@ components:
         - ticker
         - updated_at
         - url
+    market:
+      title: Market
+      description: Market
+      type: object
+      properties:
+        active:
+          type: boolean
+          example: true
+        created_at:
+          type: string
+          example: "2022-01-19T17:31:08.379Z"
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Jita
+        source_location_id:
+          type: integer
+          example: 10000002
+        type_history_region_id:
+          type: integer
+          example: 10000002
+        updated_at:
+          type: string
+          example: "2022-01-19T17:31:08.379Z"
+      required:
+        - active
+        - created_at
+        - id
+        - source_location_id
+        - type_history_region_id
+        - updated_at
   securitySchemes:
     OAuth2:
       type: oauth2

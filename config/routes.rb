@@ -20,6 +20,11 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   end
 
   namespace :api do
+    resources :markets, only: %i[index show] do
+      resources :market_locations, path: 'locations', as: :locations, only: %i[index show]
+      resources :market_types, path: 'types', as: :types, only: %i[index show]
+    end
+
     get 'user' => 'me#show'
 
     root to: 'root#index'
