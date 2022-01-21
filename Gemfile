@@ -53,6 +53,7 @@ gem 'prometheus_exporter', '~> 1.0', require: false
 gem 'pry-rails', '~> 0.3'
 gem 'puma', '~> 5.0'
 gem 'pundit', '~> 2.1'
+gem 'rack-attack', '~> 6.5'
 gem 'rack-mini-profiler', '~> 2.0'
 gem 'rails', '~> 6.1.4', '>= 6.1.4.1'
 gem 'rails_semantic_logger', '~> 4.9'

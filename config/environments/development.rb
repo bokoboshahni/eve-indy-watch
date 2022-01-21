@@ -63,3 +63,5 @@ Rails.application.configure do
   config.web_console.whiny_requests = false
   config.web_console.whitelisted_ips = ENV.fetch('WEB_CONSOLE_WHITELISTED_IPS', '172.16.0.0/12')
 end
+
+Rack::Attack.enabled = Rails.root.join('tmp/rate-limiting-dev.txt').exist?
