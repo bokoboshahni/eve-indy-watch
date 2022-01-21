@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [2.16.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.15.0...v2.16.0) (2022-01-21)
+
+
+### Features
+
+* bootstrap api ([#101](https://github.com/bokoboshahni/eve-indy-watch/issues/101)) ([a6fba95](https://github.com/bokoboshahni/eve-indy-watch/commit/a6fba95128ea07297df2c5596c59c12f3a01f14c))
+
 # [2.15.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.14.0...v2.15.0) (2022-01-20)
 
 
