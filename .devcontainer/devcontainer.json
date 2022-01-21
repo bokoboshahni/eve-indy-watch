@@ -59,7 +59,8 @@
 		"craigmaslowski.erb",
 		"bradlc.vscode-tailwindcss",
 		"vincaslt.highlight-matching-tag",
-		"vsls-contrib.codetour"
+		"vsls-contrib.codetour",
+		"42crunch.vscode-openapi"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.

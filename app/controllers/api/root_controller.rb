@@ -6,6 +6,7 @@ module API
 
     def index
       render json: {
+        authenticated_user_url: api_user_url
       }.to_json
     end
   end

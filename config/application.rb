@@ -37,6 +37,11 @@ module EVEIndyWatch
 
     config.load_defaults 6.1
 
+    if ENV['URL_HOST'].present?
+      config.default_url_options = { host: ENV.fetch('URL_HOST'), protocol: 'https' }
+      config.action_controller.default_url_options = { host: ENV.fetch('URL_HOST'), protocol: 'https' }
+    end
+
     config.active_job.queue_adapter = :sidekiq
 
     config.active_record.schema_format = :sql

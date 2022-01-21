@@ -1,0 +1,280 @@
+openapi: '3.0.2'
+info:
+  title: EVE Indy Watch API
+  version: '1.0'
+servers:
+  - url: http://localhost:3000/api
+tags:
+  - name: meta
+    description: Endpoints that give information about the API.
+  - name: users
+    description: Endpoints to manage users and also the current user.
+paths:
+  /:
+    get:
+      operationId: meta/root
+      summary: API Root
+      description: Get Hypermedia links to resources accessible in EVE Indy Watch's REST API
+      tags:
+        - meta
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  authenticated_user_url:
+                    type: string
+                    format: uri-template
+                required:
+                  - authenticated_user_url
+        '401':
+          "$ref": "#/components/responses/unauthenticated"
+      security:
+        - OAuth2: []
+  /user:
+    get:
+      operationId: users/get-authenticated
+      summary: Get the authenticated user
+      tags:
+        - users
+      parameters: []
+      responses:
+        '200':
+          description: Response
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - "$ref": "#/components/schemas/authenticated-user"
+        '304':
+          "$ref": "#/components/responses/not_modified"
+        '401':
+          "$ref": "#/components/responses/unauthenticated"
+      security:
+        - OAuth2: ["account.read"]
+components:
+  responses:
+    not_modified:
+      description: Not Modified
+    unauthenticated:
+      description: Unauthenticated
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/basic-error"
+  schemas:
+    alliance:
+      title: Alliance
+      description: Alliance
+      type: object
+      properties:
+        created_at:
+          type: string
+          example: "2022-01-19T21:38:07.457Z"
+        esi_expires_at:
+          type: string
+          example: "2022-01-21T14:55:37.000Z"
+        esi_last_modified_at:
+          type: string
+          example: "2022-01-21T13:55:37.000Z"
+        icon_url_64:
+          type: string
+          example: "https://images.evetech.net/Alliance/99010079_64.png"
+        icon_url_128:
+          type: string
+          example: "https://images.evetech.net/Alliance/99010079_128.png"
+        id:
+          type: integer
+          example: 99010079
+        name:
+          type: string
+          example: "Brave United"
+        ticker:
+          type: string
+          example: "BRUVE"
+        updated_at:
+          type: string
+          example: "2022-01-21T14:48:09.148Z"
+      required:
+        - created_at
+        - esi_expires_at
+        - esi_last_modified_at
+        - icon_url_64
+        - icon_url_128
+        - id
+        - name
+        - ticker
+        - updated_at
+    authenticated-user:
+      title: Authenticated User
+      description: Authenticated User
+      type: object
+      properties:
+        admin:
+          type: boolean
+        character:
+          "$ref": "#/components/schemas/character"
+        character_id:
+          type: integer
+          example: 2113024536
+        created_at:
+          type: string
+          example: "2022-01-19T21:38:08.143Z"
+        id:
+          type: integer
+          example: 1
+        roles:
+          type: array
+          items:
+            type: string
+        updated_at:
+          type: string
+          example: "2022-01-19T21:38:08.143Z"
+      required:
+        - admin
+        - character
+        - created_at
+        - id
+        - roles
+        - updated_at
+    basic-error:
+      title: Basic Error
+      description: Basic Error
+      type: object
+      properties:
+        message:
+          type: string
+        documentation_url:
+          type: string
+        url:
+          type: string
+        status:
+          type: string
+    character:
+      title: Character
+      description: Character
+      type: object
+      properties:
+        alliance:
+          "$ref": "#/components/schemas/alliance"
+        alliance_id:
+          type: integer
+          example: 99010079
+        corporation:
+          "$ref": "#/components/schemas/corporation"
+        corporation_id:
+          type: integer
+          example: 98613799
+        created_at:
+          type: string
+          example: "2022-01-19T21:38:08.143Z"
+        esi_expires_at:
+          type: string
+          example: "2022-01-20T20:39:20.000Z"
+        esi_last_modified_at:
+          type: string
+          example: "2022-01-19T20:39:20.000Z"
+        id:
+          type: integer
+          example: 2113024536
+        name:
+          type: string
+          example: "Bokobo Shahni"
+        portrait_url_64:
+          type: string
+          example: "https://images.evetech.net/characters/2113024536/portrait?tenant=tranquility&size=64"
+        portrait_url_128:
+          type: string
+          example: "https://images.evetech.net/characters/2113024536/portrait?tenant=tranquility&size=128"
+        portrait_url_256:
+          type: string
+          example: "https://images.evetech.net/characters/2113024536/portrait?tenant=tranquility&size=256"
+        portrait_url_512:
+          type: string
+          example: "https://images.evetech.net/characters/2113024536/portrait?tenant=tranquility&size=512"
+        updated_at:
+          type: string
+          example: "2022-01-19T21:38:08.143Z"
+      required:
+        - corporation
+        - corporation_id
+        - created_at
+        - esi_expires_at
+        - esi_last_modified_at
+        - id
+        - name
+        - portrait_url_64
+        - portrait_url_128
+        - portrait_url_256
+        - portrait_url_512
+        - updated_at
+    corporation:
+      title: Corporation
+      description: Corporation
+      type: object
+      properties:
+        alliance_id:
+          type: integer
+          example: 99010079
+        created_at:
+          type: string
+          example: "2022-01-19T21:38:08.107Z"
+        esi_expires_at:
+          type: string
+          example: "2022-01-19T22:14:04.000Z"
+        esi_last_modified_at:
+          type: string
+          example: "2022-01-19T21:14:04.000Z"
+        icon_url_64:
+          type: string
+          example: "https://images.evetech.net/corporations/98613799/logo?tenant=tranquility&size=64"
+        icon_url_128:
+          type: string
+          example: "https://images.evetech.net/corporations/98613799/logo?tenant=tranquility&size=128"
+        icon_url_256:
+          type: string
+          example: "https://images.evetech.net/corporations/98613799/logo?tenant=tranquility&size=256"
+        id:
+          type: integer
+          example: 98613799
+        name:
+          type: string
+          example: "Brave Empire"
+        npc:
+          type: boolean
+          example: false
+        ticker:
+          type: string
+          example: "I-EVE"
+        updated_at:
+          type: string
+          example: "2022-01-19T21:38:08.107Z"
+        url:
+          type: string
+          example: "https://wiki.bravecollective.com/public/corps/brave-empire/start"
+      required:
+        - created_at
+        - esi_expires_at
+        - esi_last_modified_at
+        - icon_url_64
+        - icon_url_128
+        - icon_url_256
+        - id
+        - name
+        - npc
+        - ticker
+        - updated_at
+        - url
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: http://localhost:3000/oauth/authorize
+          tokenUrl: http://localhost:3000/oauth/token
+          scopes:
+            account.read: Grants read access to the authenticated user's account
+            account.write: Grants write access to the authenticated user's account
