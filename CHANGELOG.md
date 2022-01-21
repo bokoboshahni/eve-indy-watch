@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [2.18.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.17.0...v2.18.0) (2022-01-21)
+
+
+### Features
+
+* request rate limiting by ip ([#122](https://github.com/bokoboshahni/eve-indy-watch/issues/122)) ([aadb743](https://github.com/bokoboshahni/eve-indy-watch/commit/aadb74308824da7e2b2a26a2cd81ae258dc2c5cd))
+
 # [2.17.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.16.0...v2.17.0) (2022-01-21)
 
 
