@@ -271,7 +271,7 @@ class Market < ApplicationRecord
         end
       end
 
-      debug("Calculated market statistics for #{log_name} at #{log_time}", metric: METRIC_NAME, duration: duration * 1000.0)
+      # debug("Calculated market statistics for #{log_name} at #{log_time}", metric: METRIC_NAME, duration: duration * 1000.0)
     end
 
     private
