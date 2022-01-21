@@ -417,7 +417,7 @@ GEM
     semantic_logger (4.9.0)
       concurrent-ruby (~> 1.0)
     semantic_range (3.0.0)
-    sidekiq (6.3.1)
+    sidekiq (6.4.0)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
       redis (>= 4.2.0)
@@ -579,7 +579,7 @@ DEPENDENCIES
   ruby-limiter (~> 2.2)
   scenic (~> 1.5)
   semantic_logger
-  sidekiq (~> 6.3)
+  sidekiq (~> 6.4)
   sidekiq-batch (~> 0.1)
   sidekiq-scheduler (~> 3.1)
   sidekiq-throttled (~> 0.13)
