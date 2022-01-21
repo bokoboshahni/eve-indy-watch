@@ -4,3 +4,4 @@ worker-markets: bundle exec sidekiq -c ${SIDEKIQ_CONCURRENCY_MARKETS:-25} -q mar
 worker-contracts: bundle exec sidekiq -c ${SIDEKIQ_CONCURRENCY_CONTRACTS:-5} -q contracts
 webpack: bin/webpack-dev-server
 prometheus: bundle exec prometheus_exporter
+redoc: yarn exec redoc-cli serve api/openapi.yml --watch --ssr
