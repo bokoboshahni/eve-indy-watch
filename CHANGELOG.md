@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+## [2.18.1](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.18.0...v2.18.1) (2022-01-22)
+
+
+### Bug Fixes
+
+* bump nanoid from 3.1.30 to 3.2.0 ([#125](https://github.com/bokoboshahni/eve-indy-watch/issues/125)) ([5d7632a](https://github.com/bokoboshahni/eve-indy-watch/commit/5d7632a9bf9c31d22c57b30652b930035dc6c83a))
+
 # [2.18.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.17.0...v2.18.0) (2022-01-21)
 
 
