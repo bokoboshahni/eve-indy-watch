@@ -25,8 +25,18 @@
             </h3>
             <div class="mt-2">
               <p class="text-sm text-gray-500">
-                Are you sure you want to update this order as delivered? Delivering the order will notify <span class="font-medium"><%= order.requester_name %></span> that the contract for the order has been issued.
+                Are you sure you want to update this order as delivered? Delivering the order will notify
+                <% if order.requester.respond_to?(:procurement_order_requester) && order.requester.procurement_order_requester.present? %>
+                <span class="font-medium"><%= order.requester.procurement_order_requester.name %></span> on behalf of
+                <% end %>
+                <span class="font-medium"><%= order.requester_name %></span>
+                that the contract for the order has been issued.
               </p>
+              <% if order.requester.respond_to?(:procurement_order_requester) && order.requester.procurement_order_requester.present? %>
+              <p class="mt-1 text-sm text-gray-500 font-bold">
+                Make sure that your contract has been sent to <%= order.requester.procurement_order_requester.name %> and not <%= order.requester_name %>.
+              </p>
+              <% end %>
               <p class="mt-1 text-sm text-gray-500">
                 The requester will still need to confirm delivery of the order once the contract has been accepted.
               </p>

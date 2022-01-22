@@ -47,6 +47,7 @@ class Character < ApplicationRecord
 
   has_many :accepted_contracts, class_name: 'Contract', as: :acceptor, dependent: :restrict_with_exception
   has_many :alliances_as_procurement_order_requester, as: :procurement_order_requester
+  has_many :corporations_as_procurement_order_requester, as: :procurement_order_requester
   has_many :assigned_contracts, class_name: 'Contract', as: :assignee, dependent: :restrict_with_exception
   has_many :requested_procurement_orders, class_name: 'ProcurementOrder', as: :requester
   has_many :esi_authorizations, inverse_of: :character, dependent: :destroy

@@ -6,25 +6,27 @@
 #
 # ### Columns
 #
-# Name                                  | Type               | Attributes
-# ------------------------------------- | ------------------ | ---------------------------
-# **`id`**                              | `bigint`           | `not null, primary key`
-# **`contract_sync_enabled`**           | `boolean`          |
-# **`esi_contracts_expires_at`**        | `datetime`         |
-# **`esi_contracts_last_modified_at`**  | `datetime`         |
-# **`esi_expires_at`**                  | `datetime`         |
-# **`esi_last_modified_at`**            | `datetime`         |
-# **`icon_url_128`**                    | `text`             |
-# **`icon_url_256`**                    | `text`             |
-# **`icon_url_64`**                     | `text`             |
-# **`name`**                            | `text`             | `not null`
-# **`npc`**                             | `boolean`          |
-# **`ticker`**                          | `text`             | `not null`
-# **`url`**                             | `text`             |
-# **`created_at`**                      | `datetime`         | `not null`
-# **`updated_at`**                      | `datetime`         | `not null`
-# **`alliance_id`**                     | `bigint`           |
-# **`esi_authorization_id`**            | `integer`          |
+# Name                                    | Type               | Attributes
+# --------------------------------------- | ------------------ | ---------------------------
+# **`id`**                                | `bigint`           | `not null, primary key`
+# **`contract_sync_enabled`**             | `boolean`          |
+# **`esi_contracts_expires_at`**          | `datetime`         |
+# **`esi_contracts_last_modified_at`**    | `datetime`         |
+# **`esi_expires_at`**                    | `datetime`         |
+# **`esi_last_modified_at`**              | `datetime`         |
+# **`icon_url_128`**                      | `text`             |
+# **`icon_url_256`**                      | `text`             |
+# **`icon_url_64`**                       | `text`             |
+# **`name`**                              | `text`             | `not null`
+# **`npc`**                               | `boolean`          |
+# **`procurement_order_requester_type`**  | `string`           |
+# **`ticker`**                            | `text`             | `not null`
+# **`url`**                               | `text`             |
+# **`created_at`**                        | `datetime`         | `not null`
+# **`updated_at`**                        | `datetime`         | `not null`
+# **`alliance_id`**                       | `bigint`           |
+# **`esi_authorization_id`**              | `integer`          |
+# **`procurement_order_requester_id`**    | `bigint`           |
 #
 # ### Indexes
 #
@@ -32,6 +34,9 @@
 #     * **`alliance_id`**
 # * `index_corporations_on_esi_authorization_id`:
 #     * **`esi_authorization_id`**
+# * `index_corporations_on_procurement_order_requester`:
+#     * **`procurement_order_requester_type`**
+#     * **`procurement_order_requester_id`**
 #
 # ### Foreign Keys
 #
@@ -55,12 +60,14 @@ class Corporation < ApplicationRecord
 
   belongs_to :alliance, inverse_of: :corporations, optional: true
   belongs_to :esi_authorization, inverse_of: :corporation, optional: true
+  belongs_to :procurement_order_requester, polymorphic: true, optional: true
 
   has_one :api_alliance, class_name: 'Alliance', inverse_of: :api_corporation,
                          foreign_key: :api_corporation_id
 
   has_many :accepted_contracts, class_name: 'Contract', as: :acceptor, dependent: :restrict_with_exception
   has_many :alliances_as_procurement_order_requester, as: :procurement_order_requester
+  has_many :corporations_as_procurement_order_requester, as: :procurement_order_requester
   has_many :requested_procurement_orders, class_name: 'ProcurementOrder', as: :requester
   has_many :characters, inverse_of: :corporation, dependent: :restrict_with_exception
   has_many :contract_events, inverse_of: :corporation, dependent: :restrict_with_exception
@@ -78,6 +85,7 @@ class Corporation < ApplicationRecord
   scope :player, -> { where(npc: nil) }
 
   delegate :name, to: :alliance, prefix: true, allow_nil: true
+  delegate :name, to: :procurement_order_requester, prefix: true, allow_nil: true
 
   def available_esi_authorizations
     ESIAuthorization.includes(:character).joins(:character).where('characters.corporation_id': id).order('characters.name')

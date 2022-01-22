@@ -186,7 +186,12 @@
   <div class="mt-8 px-4 space-y-2 sm:px-0 sm:flex sm:items-center sm:justify-between sm:space-y-0">
     <div>
       <h1 class="text-lg font-extrabold tracking-tight text-gray-900 sm:text-lg block">Order <%= @order.number %></h1>
-      <p class="text-xs text-gray-600 block">Updated <%= local_time @order.updated_at, class: 'font-medium text-gray-900', format: :long_date %></p>
+      <p class="text-xs text-gray-600 block">
+        Updated <%= local_time @order.updated_at, class: 'font-medium text-gray-900', format: :long_date %>
+        <% if policy(@order).update? %>
+        by <%= @order.updated_by_name %>
+        <% end %>
+      </p>
     </div>
     <div class="flex space-x-3 justify-end">
       <%= render('delete_modal', order: @order, table: false) if @order.draft? && @order.kept? && policy(@order).destroy? %>
