@@ -191,6 +191,14 @@ class ProcurementOrder < ApplicationRecord
     (profit_buy(market) / valuation_buy(market).to_d) * 100
   end
 
+  def updated_by
+    User.find_by(id: versions.last.whodunnit.to_i)
+  end
+
+  def updated_by_name
+    updated_by.present? ? updated_by.name : 'Unknown User'
+  end
+
   private
 
   def ensure_requester_and_supplier_names

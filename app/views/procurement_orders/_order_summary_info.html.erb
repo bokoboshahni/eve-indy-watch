@@ -4,55 +4,45 @@
       <div>
         <dt class="font-medium text-gray-900">Contract to</dt>
         <div class="mt-3">
-          <dd class="-ml-2 -mt-4 flex flex-wrap items-center">
-            <div class="ml-2 mt-4 flex-shrink-0">
-              <% if order.requester.is_a?(Character) %>
-                <%= render(CharacterPortraitComponent.new(character: order.requester, classes: 'h-8 w-auto rounded-md')) %>
-              <% elsif order.requester.is_a?(Corporation) %>
-                <%= render(CorporationIconComponent.new(corporation: order.requester, classes: 'h-8 w-auto rounded-md')) %>
-              <% elsif order.requester.is_a?(Alliance) %>
-                <%= render(AllianceIconComponent.new(alliance: order.requester, classes: 'h-8 w-auto rounded-md')) %>
+          <dd>
+            <p class="text-gray-900">
+              <% if order.requester.respond_to?(:procurement_order_requester) && order.requester.procurement_order_requester.present? %>
+                <%= order.requester.procurement_order_requester_name %> (on behalf of <%= order.requester_name %>)
+              <% else %>
+                <%= order.requester_name %>
               <% end %>
-              <p class="sr-only"><%= order.requester.name %></p>
-            </div>
-            <div class="ml-4 mt-4">
-              <p class="text-gray-900">
-                <% if order.requester.is_a?(Alliance) %>
-                  <%= order.requester.procurement_order_requester_name %> (on behalf of <%= order.requester_name %>)
-                <% else %>
-                  <%= order.requester_name %>
-                <% end %>
-              </p>
-            </div>
+            </p>
           </dd>
         </div>
       </div>
       <div>
         <dt class="font-medium text-gray-900">Delivery location</dt>
         <div class="mt-3">
-          <dd class="-ml-2 -mt-4 flex flex-wrap items-center">
-            <div class="ml-2 mt-4 flex-shrink-0">
-              <%= render(CorporationIconComponent.new(corporation: order.location.locatable.owner, classes: 'h-8 w-auto rounded-md')) %>
-              <p class="sr-only"><%= order.location_name %></p>
-            </div>
-            <div class="ml-4 mt-4">
-              <p class="text-gray-900">
-                <%= order.location_name %>
-              </p>
-            </div>
+          <dd>
+            <p class="text-gray-900">
+              <%= order.location_name %>
+            </p>
           </dd>
         </div>
       </div>
-      <% if order.target_completion_at %>
-        <div class="col-span-2">
-          <dt class="font-medium text-gray-900">Due date</dt>
-          <div class="mt-3">
-            <p class="text-gray-900 text-xs prose whitespace-normal overflow-y-auto max-h-24">
-              <%= local_time(order.target_completion_at.to_date, format: :long_date) %>
+      <div>
+        <dt class="font-medium text-gray-900">Visibility</dt>
+        <div class="mt-3">
+          <dd>
+            <p class="text-gray-900">
+              <%= order.visibility.humanize %>
             </p>
-          </div>
+          </dd>
         </div>
-      <% end %>
+      </div>
+      <div>
+        <dt class="font-medium text-gray-900">Due date</dt>
+        <div class="mt-3">
+          <p class="text-gray-900 text-sm prose whitespace-normal overflow-y-auto max-h-24">
+            <%= order.target_completion_at.present? ? local_time(order.target_completion_at.to_date, format: :long_date) : 'N/A' %>
+          </p>
+        </div>
+      </div>
       <% if order.notes.present? %>
         <div class="col-span-2">
           <dt class="font-medium text-gray-900">Order notes</dt>

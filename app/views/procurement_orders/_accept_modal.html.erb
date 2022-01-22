@@ -26,11 +26,21 @@
               </h3>
               <div class="mt-2 space-y-2">
                 <p class="text-sm text-gray-500">
-                  Are you sure you want to accept this order from <span class="font-medium"><%= order.requester_name %></span> to <span class="font-medium"><%= order.location_name %></span> for <span class="font-medium"><%= number_to_isk order.total %> ISK</span>?
+                  Are you sure you want to accept this order from
+                  <% if order.requester.respond_to?(:procurement_order_requester) && order.requester.procurement_order_requester.present? %>
+                  <span class="font-medium"><%= order.requester.procurement_order_requester.name %></span> on behalf of
+                  <% end %>
+                  <span class="font-medium"><%= order.requester_name %></span> to
+                  <span class="font-medium"><%= order.location_name %></span> for <span class="font-medium"><%= number_to_isk order.total %> ISK</span>?
                 </p>
                 <% if order.target_completion_at %>
                 <p class="text-sm text-gray-500 font-medium">
                   This order is due by <span class="font-bold text-gray-900"><%= local_time order.target_completion_at, format: :long_date %></span>.
+                </p>
+                <% end %>
+                <% if order.requester.respond_to?(:procurement_order_requester) && order.requester.procurement_order_requester.present? %>
+                <p class="mt-1 text-sm text-gray-500 font-bold">
+                  Make sure that your contract is sent to <%= order.requester.procurement_order_requester.name %> and not <%= order.requester_name %>.
                 </p>
                 <% end %>
               </div>

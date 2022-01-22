@@ -27,7 +27,12 @@
           <% if current_user.role?('corporation.orders.editor') %>
             <div class="flex items-center">
               <%= f.label :requester_gid, class: 'text-sm font-medium text-gray-700 flex flex-row-reverse items-center', value: current_user.corporation.to_global_id do %>
-                <span class="block ml-3"><%= current_user.corporation_name %></span>
+                <span class="block ml-3">
+                <%= current_user.corporation_name %>
+                <% if current_user.corporation.procurement_order_requester.present? %>
+                  (<%= current_user.corporation.procurement_order_requester_name %>)
+                <% end %>
+                </span>
                 <%= f.radio_button :requester_gid, current_user.corporation.to_global_id, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300' %>
               <% end %>
             </div>

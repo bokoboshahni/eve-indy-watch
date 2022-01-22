@@ -715,7 +715,9 @@ CREATE TABLE public.corporations (
     esi_contracts_expires_at timestamp without time zone,
     esi_contracts_last_modified_at timestamp without time zone,
     contract_sync_enabled boolean,
-    npc boolean
+    npc boolean,
+    procurement_order_requester_type character varying,
+    procurement_order_requester_id bigint
 );
 
 
@@ -2813,6 +2815,13 @@ CREATE INDEX index_corporations_on_esi_authorization_id ON public.corporations U
 
 
 --
+-- Name: index_corporations_on_procurement_order_requester; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_corporations_on_procurement_order_requester ON public.corporations USING btree (procurement_order_requester_type, procurement_order_requester_id);
+
+
+--
 -- Name: index_esi_authorizations_on_character_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3953,6 +3962,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220116033406'),
 ('20220118173454'),
 ('20220118175551'),
-('20220120163710');
+('20220120163710'),
+('20220122162604');
 
 

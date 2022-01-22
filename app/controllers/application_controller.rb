@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   include Pundit
 
   before_action :check_rack_mini_profiler
+  before_action :set_paper_trail_whodunnit
 
   rescue_from Pundit::NotAuthorizedError, with: :not_authorized
 
@@ -103,5 +104,9 @@ class ApplicationController < ActionController::Base
   helper_method :app_version_url
   def app_version_url
     "https://github.com/bokoboshahni/eve-indy-watch/releases/tag/v#{app_version}"
+  end
+
+  def user_for_paper_trail
+    logged_in? ? current_user.id : 'Anonymous'
   end
 end
