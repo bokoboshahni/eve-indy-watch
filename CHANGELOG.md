@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [2.19.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.18.1...v2.19.0) (2022-01-22)
+
+
+### Features
+
+* corporation procurement order assignee ([#127](https://github.com/bokoboshahni/eve-indy-watch/issues/127)) ([77a3fe5](https://github.com/bokoboshahni/eve-indy-watch/commit/77a3fe521683e51f34d5862670cac7d9f5c56acd))
+
 ## [2.18.1](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.18.0...v2.18.1) (2022-01-22)
 
 
