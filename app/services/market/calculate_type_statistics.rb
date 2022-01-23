@@ -11,7 +11,7 @@ class Market < ApplicationRecord
       @force = force
     end
 
-    def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
+    def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
       return if markets_writer.exists("#{type_key}.stats").to_i == 1 && !force
 
       duration = Benchmark.realtime do # rubocop:disable Metrics/BlockLength
@@ -136,13 +136,13 @@ class Market < ApplicationRecord
             five_pct_price_max: five_pct_prices.max,
             five_pct_price_med: five_pct_prices.median,
             five_pct_price_min: five_pct_prices.min,
-            five_pct_price_sum: five_pct_prices.sum,
+            five_pct_price_sum: five_pct_orders.sum { |o| o['p'] * o['v'] },
             five_pct_order_count: five_pct_orders.count,
             price_avg: trimmed_prices.mean.round(2),
             price_max: trimmed_prices.max,
             price_med: trimmed_prices.median,
             price_min: trimmed_prices.min,
-            price_sum: trimmed_prices.sum,
+            price_sum: trimmed_orders.sum { |o| o['p'] * o['v'] },
             outlier_count: outliers,
             outlier_threshold: threshold.round(2),
             order_count: trimmed_orders.count,
@@ -162,7 +162,7 @@ class Market < ApplicationRecord
         end
 
         if dom[:buy] && dom[:sell]
-          dom[:buy_sell_spread] = dom[:sell][:price_min] - dom[:buy][:price_max]
+          dom[:buy_sell_spread] = (dom[:sell][:price_min] - dom[:buy][:price_max]).round(2)
           dom[:mid_price] = ([dom[:sell][:price_min], dom[:buy][:price_max]].sum / 2.0).round(2)
         end
 
