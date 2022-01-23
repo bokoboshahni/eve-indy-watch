@@ -46,6 +46,7 @@ class Market < ApplicationRecord
       end
 
       batch = Sidekiq::Batch.new
+      batch.callback_queue = :markets
       batch.description = "market#calculate_type_statistics(#{market_id}, #{time_key})"
       batch.on(:success, Market::CalculateTypeStatisticsCallback, market_id: market_id, time: time_key)
       batch.jobs { Market::CalculateTypeStatisticsWorker.perform_bulk(args) }

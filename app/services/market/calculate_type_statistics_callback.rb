@@ -15,6 +15,8 @@ class Market < ApplicationRecord
 
       markets_writer.expireat("markets.#{market_id}.#{time}.type_ids",
                               (1.day.from_now.beginning_of_day + 12.hours).to_i)
+
+      Market::ArchiveTypeStatistics.call(market_id, time.to_datetime)
     end
   end
 end

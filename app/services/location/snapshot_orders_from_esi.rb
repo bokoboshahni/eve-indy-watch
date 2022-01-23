@@ -171,7 +171,7 @@ class Location < ApplicationRecord
           "Wrote #{unique_orders.count} order(s) to #{orders_file} for #{log_name} at #{log_time}",
           metric: "#{METRIC_NAME}/write_file"
         ) do
-          File.write(orders_file, Oj.dump(unique_orders))
+          File.write(orders_file, Oj.dump(unique_orders.map!(&:deep_stringify_keys!)))
         end
 
         orders_file_bz2 = "#{orders_file}.bz2"
