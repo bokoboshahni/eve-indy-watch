@@ -98,6 +98,8 @@ Rails.application.configure do
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
 end
 
+Rails.application.routes.default_url_options = { host: ENV.fetch('URL_HOST'), protocol: 'https' } if ENV['URL_HOST'].present?
+
 Rack::Attack.enabled = true
 
 Rack::MiniProfiler.config.authorization_mode = :allow_authorized

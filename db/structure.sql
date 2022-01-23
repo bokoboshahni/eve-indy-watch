@@ -1289,6 +1289,75 @@ ALTER SEQUENCE public.markets_id_seq OWNED BY public.markets.id;
 
 
 --
+-- Name: notification_subscriptions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.notification_subscriptions (
+    id bigint NOT NULL,
+    subscriber_type character varying NOT NULL,
+    subscriber_id bigint NOT NULL,
+    slack_webhook_id bigint,
+    notification_type text NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: notification_subscriptions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.notification_subscriptions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: notification_subscriptions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.notification_subscriptions_id_seq OWNED BY public.notification_subscriptions.id;
+
+
+--
+-- Name: notifications; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.notifications (
+    id bigint NOT NULL,
+    recipient_type character varying NOT NULL,
+    recipient_id bigint NOT NULL,
+    type text NOT NULL,
+    params jsonb,
+    read_at timestamp without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: notifications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.notifications_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: notifications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.notifications_id_seq OWNED BY public.notifications.id;
+
+
+--
 -- Name: oauth_access_grants; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1694,6 +1763,42 @@ CREATE TABLE public.schema_migrations (
 
 
 --
+-- Name: slack_webhooks; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.slack_webhooks (
+    id bigint NOT NULL,
+    owner_type character varying,
+    owner_id bigint,
+    channel text NOT NULL,
+    icon_emoji text,
+    name text NOT NULL,
+    url_ciphertext text NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: slack_webhooks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.slack_webhooks_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: slack_webhooks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.slack_webhooks_id_seq OWNED BY public.slack_webhooks.id;
+
+
+--
 -- Name: solar_systems; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2080,6 +2185,20 @@ ALTER TABLE ONLY public.markets ALTER COLUMN id SET DEFAULT nextval('public.mark
 
 
 --
+-- Name: notification_subscriptions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notification_subscriptions ALTER COLUMN id SET DEFAULT nextval('public.notification_subscriptions_id_seq'::regclass);
+
+
+--
+-- Name: notifications id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notifications ALTER COLUMN id SET DEFAULT nextval('public.notifications_id_seq'::regclass);
+
+
+--
 -- Name: oauth_access_grants id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2147,6 +2266,13 @@ ALTER TABLE ONLY public.report_runs ALTER COLUMN id SET DEFAULT nextval('public.
 --
 
 ALTER TABLE ONLY public.rollups ALTER COLUMN id SET DEFAULT nextval('public.rollups_id_seq'::regclass);
+
+
+--
+-- Name: slack_webhooks id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.slack_webhooks ALTER COLUMN id SET DEFAULT nextval('public.slack_webhooks_id_seq'::regclass);
 
 
 --
@@ -2392,6 +2518,22 @@ ALTER TABLE ONLY public.markets
 
 
 --
+-- Name: notification_subscriptions notification_subscriptions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notification_subscriptions
+    ADD CONSTRAINT notification_subscriptions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: notifications notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT notifications_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: oauth_access_grants oauth_access_grants_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2477,6 +2619,14 @@ ALTER TABLE ONLY public.rollups
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: slack_webhooks slack_webhooks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.slack_webhooks
+    ADD CONSTRAINT slack_webhooks_pkey PRIMARY KEY (id);
 
 
 --
@@ -3088,6 +3238,34 @@ CREATE INDEX index_markets_on_type_history_region_id ON public.markets USING btr
 
 
 --
+-- Name: index_notification_subscriptions_on_slack_webhook_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_notification_subscriptions_on_slack_webhook_id ON public.notification_subscriptions USING btree (slack_webhook_id);
+
+
+--
+-- Name: index_notification_subscriptions_on_subscriber; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_notification_subscriptions_on_subscriber ON public.notification_subscriptions USING btree (subscriber_type, subscriber_id);
+
+
+--
+-- Name: index_notifications_on_read_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_notifications_on_read_at ON public.notifications USING btree (read_at);
+
+
+--
+-- Name: index_notifications_on_recipient; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_notifications_on_recipient ON public.notifications USING btree (recipient_type, recipient_id);
+
+
+--
 -- Name: index_oauth_access_grants_on_application_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3211,6 +3389,13 @@ CREATE INDEX index_regions_on_esi_authorization_id ON public.regions USING btree
 --
 
 CREATE INDEX index_report_runs_on_user_id ON public.report_runs USING btree (user_id);
+
+
+--
+-- Name: index_slack_webhooks_on_owner; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_slack_webhooks_on_owner ON public.slack_webhooks USING btree (owner_type, owner_id);
 
 
 --
@@ -3361,6 +3546,13 @@ CREATE UNIQUE INDEX index_unique_market_price_snapshots ON public.market_price_s
 
 
 --
+-- Name: index_unique_notification_subscriptions; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_unique_notification_subscriptions ON public.notification_subscriptions USING btree (subscriber_id, subscriber_type, notification_type);
+
+
+--
 -- Name: index_unique_oauth_access_grant_tokens; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3403,6 +3595,13 @@ CREATE UNIQUE INDEX index_unique_rollups ON public.rollups USING btree (name, "i
 
 
 --
+-- Name: index_unique_slack_webhooks_by_owner; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_unique_slack_webhooks_by_owner ON public.slack_webhooks USING btree (owner_id, owner_type, name);
+
+
+--
 -- Name: index_unique_visit_tokens; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3429,6 +3628,14 @@ CREATE INDEX index_versions_on_item ON public.versions USING btree (item_type, i
 
 ALTER TABLE ONLY public.corporations
     ADD CONSTRAINT fk_rails_0551373140 FOREIGN KEY (alliance_id) REFERENCES public.alliances(id);
+
+
+--
+-- Name: notification_subscriptions fk_rails_0d53600537; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notification_subscriptions
+    ADD CONSTRAINT fk_rails_0d53600537 FOREIGN KEY (slack_webhook_id) REFERENCES public.slack_webhooks(id);
 
 
 --
@@ -3963,6 +4170,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220118173454'),
 ('20220118175551'),
 ('20220120163710'),
-('20220122162604');
+('20220122162604'),
+('20220122182249'),
+('20220122184934');
 
 
