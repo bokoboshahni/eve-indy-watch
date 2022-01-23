@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [2.20.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.19.0...v2.20.0) (2022-01-23)
+
+
+### Features
+
+* archive type stats to history bucket ([#129](https://github.com/bokoboshahni/eve-indy-watch/issues/129)) ([3141547](https://github.com/bokoboshahni/eve-indy-watch/commit/314154714b825528a9fc1c8e6be474a9daf36ee7))
+
 # [2.19.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.18.1...v2.19.0) (2022-01-22)
 
 
