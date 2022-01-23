@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [2.21.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.20.0...v2.21.0) (2022-01-23)
+
+
+### Features
+
+* procurement order slack notifications ([#128](https://github.com/bokoboshahni/eve-indy-watch/issues/128)) ([0ebd20a](https://github.com/bokoboshahni/eve-indy-watch/commit/0ebd20a4c991f61bf17bbfe8492af0e8c73e98c3))
+
 # [2.20.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.19.0...v2.20.0) (2022-01-23)
 
 
