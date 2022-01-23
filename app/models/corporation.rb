@@ -77,6 +77,9 @@ class Corporation < ApplicationRecord
   has_many :killmail_attackers, inverse_of: :corporation, dependent: :restrict_with_exception
   has_many :killmails, through: :killmail_attackers
   has_many :lossmails, class_name: 'Killmail', inverse_of: :corporation, dependent: :restrict_with_exception
+  has_many :notifications, as: :recipient
+  has_many :notification_subscriptions, as: :subscriber
+  has_many :slack_webhooks, as: :owner
   has_many :stations, inverse_of: :owner, dependent: :restrict_with_exception
   has_many :structures, inverse_of: :owner, foreign_key: :owner_id, dependent: :restrict_with_exception
   has_many :supplied_procurement_orders, class_name: 'ProcurementOrder', as: :supplier

@@ -56,6 +56,9 @@ class Character < ApplicationRecord
   has_many :killmail_attackers, inverse_of: :character, dependent: :restrict_with_exception
   has_many :killmails, through: :killmail_attackers
   has_many :lossmails, class_name: 'Killmail', inverse_of: :character, dependent: :restrict_with_exception
+  has_many :notifications, as: :recipient
+  has_many :notification_subscriptions, as: :subscriber
+  has_many :slack_webhooks, as: :owner
   has_many :supplied_procurement_orders, class_name: 'ProcurementOrder', as: :supplier
   has_many :supplied_procurement_order_items, class_name: 'ProcurementOrderItem', as: :supplier
 

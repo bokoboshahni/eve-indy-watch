@@ -227,6 +227,11 @@ class ProcurementOrder < ApplicationRecord
       before do
         self.published_at = Time.zone.now
       end
+
+      after do
+        subscription = requester.notification_subscriptions.find_by(notification_type: 'ProcurementOrder::OrderPublishedNotification')
+        subscription.notification_class.with(order: self, subscription: subscription).deliver_later(requester) if subscription
+      end
     end
 
     event :redraft do
@@ -244,6 +249,11 @@ class ProcurementOrder < ApplicationRecord
         self.accepted_at = Time.zone.now
         self.tracking_number = Nanoid.generate(size: 15, alphabet: '1234567890').to_i
       end
+
+      after do
+        subscription = requester.notification_subscriptions.find_by(notification_type: 'ProcurementOrder::OrderAcceptedNotification')
+        subscription.notification_class.with(order: self, subscription: subscription).deliver_later(requester) if subscription
+      end
     end
 
     event :release do
@@ -260,6 +270,11 @@ class ProcurementOrder < ApplicationRecord
 
       before do
         self.unconfirmed_at = Time.zone.now
+      end
+
+      after do
+        subscription = requester.notification_subscriptions.find_by(notification_type: 'ProcurementOrder::OrderDeliveredNotification')
+        subscription.notification_class.with(order: self, subscription: subscription).deliver_later(requester) if subscription
       end
     end
 
