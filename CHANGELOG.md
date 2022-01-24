@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+## [2.21.1](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.21.0...v2.21.1) (2022-01-24)
+
+
+### Bug Fixes
+
+* add unconfirmed orders to policy ([#133](https://github.com/bokoboshahni/eve-indy-watch/issues/133)) ([d1af4f8](https://github.com/bokoboshahni/eve-indy-watch/commit/d1af4f8473e05c097ecfce295843cb41d569d39b))
+
 # [2.21.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.20.0...v2.21.0) (2022-01-23)
 
 
