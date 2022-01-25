@@ -946,7 +946,9 @@ CREATE TABLE public.groups (
     name text NOT NULL,
     published boolean NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    esi_last_modified_at timestamp without time zone,
+    esi_expires_at timestamp without time zone
 );
 
 
@@ -2103,7 +2105,9 @@ CREATE TABLE public.types (
     volume numeric,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    max_production_limit integer
+    max_production_limit integer,
+    esi_last_modified_at timestamp without time zone,
+    esi_expires_at timestamp without time zone
 );
 
 
@@ -3920,30 +3924,6 @@ ALTER TABLE ONLY public.killmails
 
 
 --
--- Name: killmail_items fk_rails_4726c84c13; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.killmail_items
-    ADD CONSTRAINT fk_rails_4726c84c13 FOREIGN KEY (type_id) REFERENCES public.types(id);
-
-
---
--- Name: killmails fk_rails_473a7434be; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.killmails
-    ADD CONSTRAINT fk_rails_473a7434be FOREIGN KEY (ship_type_id) REFERENCES public.types(id);
-
-
---
--- Name: killmail_attackers fk_rails_5387666c4c; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.killmail_attackers
-    ADD CONSTRAINT fk_rails_5387666c4c FOREIGN KEY (weapon_type_id) REFERENCES public.types(id);
-
-
---
 -- Name: stations fk_rails_579e8e9070; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4208,14 +4188,6 @@ ALTER TABLE ONLY public.esi_authorizations
 
 
 --
--- Name: killmail_attackers fk_rails_dcd40cdd2d; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.killmail_attackers
-    ADD CONSTRAINT fk_rails_dcd40cdd2d FOREIGN KEY (ship_type_id) REFERENCES public.types(id);
-
-
---
 -- Name: contract_items fk_rails_dfd3a85c11; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4367,6 +4339,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220122182249'),
 ('20220122184934'),
 ('20220123210135'),
-('20220125211045');
+('20220125211045'),
+('20220125212154'),
+('20220125213027'),
+('20220125222823');
 
 

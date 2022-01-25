@@ -56,6 +56,9 @@ class Killmail < ApplicationRecord
       character_ids.add(killmail['character_id']) if killmail['character_id']
 
       attackers.each do |a|
+        Type::SyncFromESI.call(a['ship_type_id'], ignore_not_found: true) unless Type.exists?(a['ship_type_id'])
+        Type::SyncFromESI.call(a['weapon_type_id'], ignore_not_found: true) unless Type.exists?(a['weapon_type_id'])
+
         alliance_ids.add(a['alliance_id']) if a['alliance_id']
         corporation_ids.add(a['corporation_id']) if a['corporation_id']
         character_ids.add(a['character_id']) if a['character_id']
@@ -64,10 +67,16 @@ class Killmail < ApplicationRecord
       Alliance.transaction { alliance_ids.each { |i| Alliance::SyncFromESI.call(i) } }
       Corporation.transaction { corporation_ids.each { |i| Corporation::SyncFromESI.call(i) } }
       Character.transaction { character_ids.each { |i| Character::SyncFromESI.call(i) } }
-      Killmail.transaction do
+      Killmail.transaction do # rubocop:disable Metrics/BlockLength
+        ship_type_id = killmail['ship_type_id']
+        Type::SyncFromESI.call(ship_type_id, ignore_not_found: true) unless Type.exists?(ship_type_id)
+
         record = Killmail.create!(killmail)
 
         Array(victim['items']).each do |item_data|
+          type_id = item_data['item_type_id']
+          Type::SyncFromESI.call(type_id, ignore_not_found: true) unless Type.exists?(type_id)
+
           item = record.items.create!(
             flag_id: item_data['flag'],
             quantity_destroyed: item_data['quantity_destroyed'],
@@ -77,6 +86,9 @@ class Killmail < ApplicationRecord
           )
 
           Array(item['items']).each do |item_data|
+            type_id = item_data['item_type_id']
+            Type::SyncFromESI.call(type_id, ignore_not_found: true) unless Type.exists?(type_id)
+
             record.items.create!(
               flag_id: item_data['flag'],
               quantity_destroyed: item_data['quantity_destroyed'],

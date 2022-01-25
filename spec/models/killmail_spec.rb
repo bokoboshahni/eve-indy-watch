@@ -48,8 +48,6 @@
 # ### Foreign Keys
 #
 # * `fk_rails_...`:
-#     * **`ship_type_id => types.id`**
-# * `fk_rails_...`:
 #     * **`solar_system_id => solar_systems.id`**
 #
 require 'rails_helper'

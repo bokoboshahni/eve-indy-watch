@@ -39,10 +39,6 @@
 #
 # * `fk_rails_...`:
 #     * **`killmail_id => killmails.id`**
-# * `fk_rails_...`:
-#     * **`ship_type_id => types.id`**
-# * `fk_rails_...`:
-#     * **`weapon_type_id => types.id`**
 #
 require 'rails_helper'
 
