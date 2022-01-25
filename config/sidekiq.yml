@@ -2,6 +2,7 @@
   - markets
   - contracts
   - default
+  - archive
 :schedule:
   sync_all_contracts_from_esi:
     cron: '*/5 * * * *'
