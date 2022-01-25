@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [2.22.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.21.1...v2.22.0) (2022-01-25)
+
+
+### Features
+
+* archive markets asynchronously ([#136](https://github.com/bokoboshahni/eve-indy-watch/issues/136)) ([2c6f454](https://github.com/bokoboshahni/eve-indy-watch/commit/2c6f45436193537c3034a5b652e2b30c06e35a63))
+
 ## [2.21.1](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.21.0...v2.21.1) (2022-01-24)
 
 
