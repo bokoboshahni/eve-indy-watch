@@ -12,9 +12,10 @@ class Killmail < ApplicationRecord
       killmail_hash = zkb_data['zkb']['hash']
       killmail_id = zkb_data['killmail_id']
 
-      if Killmail.exists?(killmail_id)
+      killmail_record = Killmail.find_by(id: killmail_id)
+      if killmail_record
         debug("Killmail #{killmail_id} already exists")
-        return
+        return killmail_record
       end
 
       esi_data = esi.get_killmail(killmail_hash: killmail_hash, killmail_id: killmail_id)
