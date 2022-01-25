@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [2.23.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.22.0...v2.23.0) (2022-01-25)
+
+
+### Features
+
+* flag to enable/disable market archiving ([#138](https://github.com/bokoboshahni/eve-indy-watch/issues/138)) ([9505d2c](https://github.com/bokoboshahni/eve-indy-watch/commit/9505d2c315c1e421024164d4cdf7adf501a2b5de))
+
 # [2.22.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.21.1...v2.22.0) (2022-01-25)
 
 
