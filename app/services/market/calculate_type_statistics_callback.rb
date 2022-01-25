@@ -6,6 +6,7 @@ class Market < ApplicationRecord
 
     def on_success(_status, params)
       market_id = params['market_id']
+      market = Market.find(market_id)
       time = params['time']
 
       markets_writer.zadd("markets.#{market_id}.snapshots", time.to_i, "markets.#{market_id}.#{time}")
@@ -16,7 +17,7 @@ class Market < ApplicationRecord
       markets_writer.expireat("markets.#{market_id}.#{time}.type_ids",
                               (1.day.from_now.beginning_of_day + 12.hours).to_i)
 
-      Market::ArchiveTypeStatisticsWorker.perform_async(market_id, time)
+      Market::ArchiveTypeStatisticsWorker.perform_async(market_id, time) unless market.archiving_enabled?
     end
   end
 end
