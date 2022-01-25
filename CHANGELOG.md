@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+## [2.23.1](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.23.0...v2.23.1) (2022-01-25)
+
+
+### Bug Fixes
+
+* fallback to esi for killmail types ([#139](https://github.com/bokoboshahni/eve-indy-watch/issues/139)) ([6e7ef4b](https://github.com/bokoboshahni/eve-indy-watch/commit/6e7ef4b301b0a66fd75e347cc04c247190e893e0))
+
 # [2.23.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.22.0...v2.23.0) (2022-01-25)
 
 
