@@ -33,8 +33,6 @@
 #
 # * `fk_rails_...`:
 #     * **`killmail_id => killmails.id`**
-# * `fk_rails_...`:
-#     * **`type_id => types.id`**
 #
 class KillmailItem < ApplicationRecord
   FITTING_FLAG_NAMES = %w[

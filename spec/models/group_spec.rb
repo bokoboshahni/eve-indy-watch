@@ -6,14 +6,16 @@
 #
 # ### Columns
 #
-# Name               | Type               | Attributes
-# ------------------ | ------------------ | ---------------------------
-# **`id`**           | `bigint`           | `not null, primary key`
-# **`name`**         | `text`             | `not null`
-# **`published`**    | `boolean`          | `not null`
-# **`created_at`**   | `datetime`         | `not null`
-# **`updated_at`**   | `datetime`         | `not null`
-# **`category_id`**  | `bigint`           | `not null`
+# Name                        | Type               | Attributes
+# --------------------------- | ------------------ | ---------------------------
+# **`id`**                    | `bigint`           | `not null, primary key`
+# **`esi_expires_at`**        | `datetime`         |
+# **`esi_last_modified_at`**  | `datetime`         |
+# **`name`**                  | `text`             | `not null`
+# **`published`**             | `boolean`          | `not null`
+# **`created_at`**            | `datetime`         | `not null`
+# **`updated_at`**            | `datetime`         | `not null`
+# **`category_id`**           | `bigint`           | `not null`
 #
 # ### Indexes
 #

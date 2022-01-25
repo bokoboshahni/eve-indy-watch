@@ -10,6 +10,8 @@
 # --------------------------- | ------------------ | ---------------------------
 # **`id`**                    | `bigint`           | `not null, primary key`
 # **`description`**           | `text`             |
+# **`esi_expires_at`**        | `datetime`         |
+# **`esi_last_modified_at`**  | `datetime`         |
 # **`max_production_limit`**  | `integer`          |
 # **`name`**                  | `text`             | `not null`
 # **`packaged_volume`**       | `decimal(, )`      |
