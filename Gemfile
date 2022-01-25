@@ -97,7 +97,7 @@ group :development do
   gem 'rubocop', '~> 1.25'
   gem 'rubocop-performance', '~> 1.13'
   gem 'rubocop-rails', '~> 2.13'
-  gem 'rubocop-rspec', '~> 2.6'
+  gem 'rubocop-rspec', '~> 2.8'
   gem 'web-console', '>= 4.1.0'
 end
 
