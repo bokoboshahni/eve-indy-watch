@@ -78,6 +78,34 @@ CREATE TYPE public.fitting_stock_level_interval AS ENUM (
 
 
 --
+-- Name: market_type_history_interday_interval; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.market_type_history_interday_interval AS ENUM (
+    '1d',
+    '3d',
+    '1w',
+    '2w',
+    '1m',
+    '3m',
+    '6m',
+    '1y'
+);
+
+
+--
+-- Name: market_type_history_intraday_interval; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.market_type_history_intraday_interval AS ENUM (
+    '15m',
+    '30m',
+    '1h',
+    '6h'
+);
+
+
+--
 -- Name: procurement_order_item_status; Type: TYPE; Schema: public; Owner: -
 --
 
@@ -1248,6 +1276,156 @@ ALTER SEQUENCE public.market_price_snapshots_id_seq OWNED BY public.market_price
 
 
 --
+-- Name: market_type_interday_histories; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.market_type_interday_histories (
+    market_id bigint NOT NULL,
+    type_id bigint NOT NULL,
+    date date NOT NULL,
+    "interval" public.market_type_history_interday_interval NOT NULL,
+    buy_five_pct_price_avg numeric,
+    buy_five_pct_price_max numeric,
+    buy_five_pct_price_med numeric,
+    buy_five_pct_price_min numeric,
+    buy_five_pct_price_sum numeric,
+    buy_five_pct_order_count integer,
+    buy_five_pct_volume bigint,
+    buy_price_avg numeric,
+    buy_price_close numeric,
+    buy_price_last numeric,
+    buy_price_max numeric,
+    buy_price_med numeric,
+    buy_price_min numeric,
+    buy_price_open numeric,
+    buy_price_sum numeric,
+    buy_outlier_count integer,
+    buy_outlier_threshold numeric,
+    buy_order_count integer,
+    buy_trade_count integer,
+    buy_volume_avg numeric,
+    buy_volume_max bigint,
+    buy_volume_med bigint,
+    buy_volume_min bigint,
+    buy_volume_sum bigint,
+    buy_volume_traded_avg numeric,
+    buy_volume_traded_max bigint,
+    buy_volume_traded_med bigint,
+    buy_volume_traded_min bigint,
+    buy_volume_traded_sum bigint,
+    sell_five_pct_price_avg numeric,
+    sell_five_pct_price_max numeric,
+    sell_five_pct_price_med numeric,
+    sell_five_pct_price_min numeric,
+    sell_five_pct_price_sum numeric,
+    sell_five_pct_order_count integer,
+    sell_five_pct_volume bigint,
+    sell_price_avg numeric,
+    sell_price_close numeric,
+    sell_price_last numeric,
+    sell_price_max numeric,
+    sell_price_med numeric,
+    sell_price_min numeric,
+    sell_price_open numeric,
+    sell_price_sum numeric,
+    sell_outlier_count integer,
+    sell_outlier_threshold numeric,
+    sell_order_count integer,
+    sell_trade_count integer,
+    sell_volume_avg numeric,
+    sell_volume_max bigint,
+    sell_volume_med bigint,
+    sell_volume_min bigint,
+    sell_volume_sum bigint,
+    sell_volume_traded_avg numeric,
+    sell_volume_traded_max bigint,
+    sell_volume_traded_med bigint,
+    sell_volume_traded_min bigint,
+    sell_volume_traded_sum bigint,
+    buy_sell_spread numeric,
+    mid_price numeric,
+    depth jsonb,
+    flow jsonb,
+    periods integer[]
+);
+
+
+--
+-- Name: market_type_intraday_histories; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.market_type_intraday_histories (
+    market_id bigint NOT NULL,
+    type_id bigint NOT NULL,
+    "time" timestamp without time zone NOT NULL,
+    "interval" public.market_type_history_intraday_interval NOT NULL,
+    buy_five_pct_price_avg numeric,
+    buy_five_pct_price_max numeric,
+    buy_five_pct_price_med numeric,
+    buy_five_pct_price_min numeric,
+    buy_five_pct_price_sum numeric,
+    buy_five_pct_order_count integer,
+    buy_five_pct_volume bigint,
+    buy_price_avg numeric,
+    buy_price_close numeric,
+    buy_price_last numeric,
+    buy_price_max numeric,
+    buy_price_med numeric,
+    buy_price_min numeric,
+    buy_price_open numeric,
+    buy_price_sum numeric,
+    buy_outlier_count integer,
+    buy_outlier_threshold numeric,
+    buy_order_count integer,
+    buy_trade_count integer,
+    buy_volume_avg numeric,
+    buy_volume_max bigint,
+    buy_volume_med bigint,
+    buy_volume_min bigint,
+    buy_volume_sum bigint,
+    buy_volume_traded_avg numeric,
+    buy_volume_traded_max bigint,
+    buy_volume_traded_med bigint,
+    buy_volume_traded_min bigint,
+    buy_volume_traded_sum bigint,
+    sell_five_pct_price_avg numeric,
+    sell_five_pct_price_max numeric,
+    sell_five_pct_price_med numeric,
+    sell_five_pct_price_min numeric,
+    sell_five_pct_price_sum numeric,
+    sell_five_pct_order_count integer,
+    sell_five_pct_volume bigint,
+    sell_price_avg numeric,
+    sell_price_close numeric,
+    sell_price_last numeric,
+    sell_price_max numeric,
+    sell_price_med numeric,
+    sell_price_min numeric,
+    sell_price_open numeric,
+    sell_price_sum numeric,
+    sell_outlier_count integer,
+    sell_outlier_threshold numeric,
+    sell_order_count integer,
+    sell_trade_count integer,
+    sell_volume_avg numeric,
+    sell_volume_max bigint,
+    sell_volume_med bigint,
+    sell_volume_min bigint,
+    sell_volume_sum bigint,
+    sell_volume_traded_avg numeric,
+    sell_volume_traded_max bigint,
+    sell_volume_traded_med bigint,
+    sell_volume_traded_min bigint,
+    sell_volume_traded_sum bigint,
+    buy_sell_spread numeric,
+    mid_price numeric,
+    depth jsonb,
+    flow jsonb,
+    periods integer[]
+);
+
+
+--
 -- Name: markets; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1265,7 +1443,8 @@ CREATE TABLE public.markets (
     type_history_region_id bigint,
     private boolean,
     source_location_id bigint,
-    active boolean
+    active boolean,
+    archiving_enabled boolean
 );
 
 
@@ -3546,6 +3725,20 @@ CREATE UNIQUE INDEX index_unique_market_price_snapshots ON public.market_price_s
 
 
 --
+-- Name: index_unique_market_type_interday_histories; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_unique_market_type_interday_histories ON public.market_type_interday_histories USING btree (market_id, type_id, date, "interval");
+
+
+--
+-- Name: index_unique_market_type_intraday_histories; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_unique_market_type_intraday_histories ON public.market_type_intraday_histories USING btree (market_id, type_id, "time", "interval");
+
+
+--
 -- Name: index_unique_notification_subscriptions; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4172,6 +4365,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220120163710'),
 ('20220122162604'),
 ('20220122182249'),
-('20220122184934');
+('20220122184934'),
+('20220123210135'),
+('20220125211045');
 
 

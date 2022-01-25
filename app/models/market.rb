@@ -10,6 +10,7 @@
 # ----------------------------- | ------------------ | ---------------------------
 # **`id`**                      | `bigint`           | `not null, primary key`
 # **`active`**                  | `boolean`          |
+# **`archiving_enabled`**       | `boolean`          |
 # **`name`**                    | `text`             | `not null`
 # **`orders_updated_at`**       | `datetime`         |
 # **`owner_type`**              | `string`           |
