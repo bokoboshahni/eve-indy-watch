@@ -1,0 +1,249 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://esi.evetech.net/latest/corporations/98169165/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Typhoeus - https://github.com/typhoeus/typhoeus
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Date:
+      - Thu, 27 Jan 2022 20:23:41 GMT
+      Content-Type:
+      - application/json; charset=UTF-8
+      Content-Length:
+      - '1891'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Content-Type,Authorization,If-None-Match,X-User-Agent
+      Access-Control-Allow-Methods:
+      - GET,HEAD,OPTIONS
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Expose-Headers:
+      - Content-Type,Warning,ETag,X-Pages,X-ESI-Error-Limit-Remain,X-ESI-Error-Limit-Reset
+      Access-Control-Max-Age:
+      - '600'
+      Allow:
+      - GET,HEAD,OPTIONS
+      Cache-Control:
+      - public
+      Etag:
+      - '"d434f9b8537a8d146d975d152a4a832c49192d6d551d4a8337a57ca7"'
+      Expires:
+      - Thu, 27 Jan 2022 21:19:14 GMT
+      Last-Modified:
+      - Thu, 27 Jan 2022 20:19:14 GMT
+      Strict-Transport-Security:
+      - max-age=31536000
+      Vary:
+      - Accept-Encoding
+      X-Esi-Error-Limit-Remain:
+      - '100'
+      X-Esi-Error-Limit-Reset:
+      - '19'
+      X-Esi-Request-Id:
+      - 2401fe33-ee1b-47c0-ba50-0670c4136a1d
+    body:
+      encoding: ASCII-8BIT
+      string: '{"alliance_id":99003214,"ceo_id":92888420,"creator_id":92838890,"date_founded":"2013-01-30T23:39:04Z","description":"<font
+        size=\"13\" color=\"#ff999999\"><\/font><font size=\"12\" color=\"#bfffffff\">Audaces
+        Fortuna Juvat<br><br>Join us and play EVE like it was meant to be played.<br><br>CEO:  <\/font><font
+        size=\"12\" color=\"#ffd98d00\"><a href=\"showinfo:1375\/\/92888420\">Cagali
+        Cagali<\/a><\/font><font size=\"12\" color=\"#bfffffff\"> <br>Directors:  <\/font><font
+        size=\"12\" color=\"#ffd98d00\"><a href=\"showinfo:1375\/\/1065781147\">Jinx
+        De''Caire<\/a><\/font><font size=\"12\" color=\"#bfffffff\"> <br><\/font><font
+        size=\"12\" color=\"#ffd98d00\"><a href=\"showinfo:1375\/\/95609481\">          Gepa
+        Bow<\/a><\/font><font size=\"12\" color=\"#bfffffff\"> <br><\/font><font size=\"12\"
+        color=\"#ffd98d00\"><a href=\"showinfo:1377\/\/2112588805\">          Paul
+        Hipster Malcolmson<\/a><\/font><font size=\"12\" color=\"#bfffffff\"> <br><\/font><font
+        size=\"12\" color=\"#ffd98d00\"><a href=\"showinfo:1373\/\/1379484417\">          Naverin<\/a><\/font><font
+        size=\"12\" color=\"#bfffffff\"> <br><br>To initiate diplomatic contact, please
+        join our<\/font><font size=\"12\" color=\"#ffffa600\"> <\/font><font size=\"12\"
+        color=\"#bfffffff\">chat channel: <\/font><font size=\"12\" color=\"#ff6868e1\"><a
+        href=\"joinChannel:player_cef20b30588011ecac0d9abe94f5aa9b\">Diplo Brave<\/a><\/font><font
+        size=\"12\" color=\"#bfffffff\"> <br><br>For general questions and enrollment,
+        please join the <\/font><font size=\"12\" color=\"#ff6868e1\"><a href=\"joinChannel:-38677649\/\/None\/\/None\">Brave
+        Newbies<\/a><\/font><font size=\"12\" color=\"#bfffffff\"> chat channel.<\/font>","home_station_id":60002326,"member_count":5758,"name":"Brave
+        Newbies Inc.","shares":10000000,"tax_rate":0.10000000149011612,"ticker":"SB00N","url":"https:\/\/wiki.bravecollective.com\/","war_eligible":true}'
+  recorded_at: Thu, 27 Jan 2022 20:23:27 GMT
+- request:
+    method: get
+    uri: https://esi.evetech.net/latest/alliances/99003214/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Typhoeus - https://github.com/typhoeus/typhoeus
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Date:
+      - Thu, 27 Jan 2022 20:23:41 GMT
+      Content-Type:
+      - application/json; charset=UTF-8
+      Content-Length:
+      - '173'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Content-Type,Authorization,If-None-Match,X-User-Agent
+      Access-Control-Allow-Methods:
+      - GET,HEAD,OPTIONS
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Expose-Headers:
+      - Content-Type,Warning,ETag,X-Pages,X-ESI-Error-Limit-Remain,X-ESI-Error-Limit-Reset
+      Access-Control-Max-Age:
+      - '600'
+      Allow:
+      - GET,HEAD,OPTIONS
+      Cache-Control:
+      - public
+      Etag:
+      - '"20586886495c1f21c4522323fc69ab262101e36c35b92bdb8164763c"'
+      Expires:
+      - Thu, 27 Jan 2022 21:19:17 GMT
+      Last-Modified:
+      - Thu, 27 Jan 2022 20:19:17 GMT
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Esi-Error-Limit-Remain:
+      - '100'
+      X-Esi-Error-Limit-Reset:
+      - '19'
+      X-Esi-Request-Id:
+      - fc5ab3b0-e215-407f-80a1-828e162946a9
+    body:
+      encoding: ASCII-8BIT
+      string: '{"creator_corporation_id":98199293,"creator_id":91432281,"date_founded":"2013-05-06T22:20:14Z","executor_corporation_id":98199293,"name":"Brave
+        Collective","ticker":"BRAVE"}'
+  recorded_at: Thu, 27 Jan 2022 20:23:28 GMT
+- request:
+    method: get
+    uri: https://esi.evetech.net/latest/alliances/99003214/icons/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Typhoeus - https://github.com/typhoeus/typhoeus
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Date:
+      - Thu, 27 Jan 2022 20:23:41 GMT
+      Content-Type:
+      - application/json; charset=UTF-8
+      Content-Length:
+      - '140'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Content-Type,Authorization,If-None-Match,X-User-Agent
+      Access-Control-Allow-Methods:
+      - GET,HEAD,OPTIONS
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Expose-Headers:
+      - Content-Type,Warning,ETag,X-Pages,X-ESI-Error-Limit-Remain,X-ESI-Error-Limit-Reset
+      Access-Control-Max-Age:
+      - '600'
+      Allow:
+      - GET,HEAD,OPTIONS
+      Cache-Control:
+      - public
+      Etag:
+      - W/"fbbd2b00d2485b4f48f754f65058b1dce6c55a5f9dd315d8bb9fbda4"
+      Expires:
+      - Fri, 28 Jan 2022 11:05:00 GMT
+      Last-Modified:
+      - Thu, 27 Jan 2022 11:12:26 GMT
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Esi-Error-Limit-Remain:
+      - '100'
+      X-Esi-Error-Limit-Reset:
+      - '19'
+      X-Esi-Request-Id:
+      - 901aa33f-ea1c-40fd-bba8-c7706bbabc6b
+    body:
+      encoding: ASCII-8BIT
+      string: '{"px128x128":"https:\/\/images.evetech.net\/Alliance\/99003214_128.png","px64x64":"https:\/\/images.evetech.net\/Alliance\/99003214_64.png"}'
+  recorded_at: Thu, 27 Jan 2022 20:23:28 GMT
+- request:
+    method: get
+    uri: https://esi.evetech.net/latest/corporations/98169165/icons/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Typhoeus - https://github.com/typhoeus/typhoeus
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Date:
+      - Thu, 27 Jan 2022 20:23:42 GMT
+      Content-Type:
+      - application/json; charset=UTF-8
+      Content-Length:
+      - '301'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Content-Type,Authorization,If-None-Match,X-User-Agent
+      Access-Control-Allow-Methods:
+      - GET,HEAD,OPTIONS
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Expose-Headers:
+      - Content-Type,Warning,ETag,X-Pages,X-ESI-Error-Limit-Remain,X-ESI-Error-Limit-Reset
+      Access-Control-Max-Age:
+      - '600'
+      Allow:
+      - GET,HEAD,OPTIONS
+      Cache-Control:
+      - public
+      Etag:
+      - '"5841a20c9036c8443a8314c818b240e343af68fb85194a968734f1e0"'
+      Expires:
+      - Thu, 27 Jan 2022 21:20:29 GMT
+      Last-Modified:
+      - Thu, 27 Jan 2022 20:20:29 GMT
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Esi-Error-Limit-Remain:
+      - '100'
+      X-Esi-Error-Limit-Reset:
+      - '18'
+      X-Esi-Request-Id:
+      - 6e169e69-6b9c-419f-9661-f4df65a6e50e
+    body:
+      encoding: ASCII-8BIT
+      string: '{"px128x128":"https:\/\/images.evetech.net\/corporations\/98169165\/logo?tenant=tranquility&size=128","px256x256":"https:\/\/images.evetech.net\/corporations\/98169165\/logo?tenant=tranquility&size=256","px64x64":"https:\/\/images.evetech.net\/corporations\/98169165\/logo?tenant=tranquility&size=64"}'
+  recorded_at: Thu, 27 Jan 2022 20:23:28 GMT
+recorded_with: VCR 6.0.0

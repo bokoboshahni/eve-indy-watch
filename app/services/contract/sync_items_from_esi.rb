@@ -52,33 +52,31 @@ class Contract < ApplicationRecord
         return
       end
 
-      esi_retriable do
-        authorization = corporation.esi_authorization
+      authorization = corporation.esi_authorization
 
-        raise Error, "Unable to find authorization for contract #{contract_id}" unless authorization
+      raise Error, "Unable to find authorization for contract #{contract_id}" unless authorization
 
-        esi_authorize!(authorization)
-        auth = { Authorization: "Bearer #{authorization.access_token}" }
-        resp = esi.get_corporation_contract_items_raw(corporation_id: corporation_id, contract_id: contract_id, headers: auth)
+      esi_authorize!(authorization)
+      auth = { Authorization: "Bearer #{authorization.access_token}" }
+      resp = esi.get_corporation_contract_items_raw(corporation_id: corporation_id, contract_id: contract_id, headers: auth)
 
-        expires = resp.headers['expires']
-        last_modified = resp.headers['last-modified']
-        data = resp.json
+      expires = resp.headers['expires']
+      last_modified = resp.headers['last-modified']
+      data = Oj.load(resp.body)
 
-        items = data.map do |item|
-          item[:id] = item.delete('record_id')
-          item.merge(contract_id: contract_id)
-        end
-
-        contract.transaction do
-          ContractItem.import!(items, track_validation_failures: true,
-                                      on_duplicate_key_update: { conflict_target: %i[id], columns: :all })
-          contract.update!(esi_items_expires_at: expires, esi_items_last_modified_at: last_modified,
-                           esi_items_exception: nil)
-        end
-
-        debug("Synced #{items.count} items for contract #{contract_id} from ESI")
+      items = data.map do |item|
+        item[:id] = item.delete('record_id')
+        item.merge(contract_id: contract_id)
       end
+
+      contract.transaction do
+        ContractItem.import!(items, track_validation_failures: true,
+                                    on_duplicate_key_update: { conflict_target: %i[id], columns: :all })
+        contract.update!(esi_items_expires_at: expires, esi_items_last_modified_at: last_modified,
+                         esi_items_exception: nil)
+      end
+
+      debug("Synced #{items.count} items for contract #{contract_id} from ESI")
     rescue ESI::Errors::NotFoundError, ESI::Errors::ForbiddenError => e
       contract.update!(esi_items_exception: e.as_json)
       error "Unable to fetch items for contract #{contract_id}, see #esi_items_exception on contract for details: #{e.message}"

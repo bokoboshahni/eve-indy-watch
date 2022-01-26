@@ -1,0 +1,179 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://esi.evetech.net/latest/universe/stations/60003760/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Typhoeus - https://github.com/typhoeus/typhoeus
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Date:
+      - Wed, 26 Jan 2022 20:10:34 GMT
+      Content-Type:
+      - application/json; charset=UTF-8
+      Content-Length:
+      - '572'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Content-Type,Authorization,If-None-Match,X-User-Agent
+      Access-Control-Allow-Methods:
+      - GET,HEAD,OPTIONS
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Expose-Headers:
+      - Content-Type,Warning,ETag,X-Pages,X-ESI-Error-Limit-Remain,X-ESI-Error-Limit-Reset
+      Access-Control-Max-Age:
+      - '600'
+      Allow:
+      - GET,HEAD,OPTIONS
+      Cache-Control:
+      - public
+      Etag:
+      - W/"0353cf219257193fac80f4a2c1ee41e3215ddc9a3c55a35297e91103"
+      Expires:
+      - Thu, 27 Jan 2022 11:05:00 GMT
+      Last-Modified:
+      - Tue, 25 Jan 2022 11:04:22 GMT
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Esi-Error-Limit-Remain:
+      - '91'
+      X-Esi-Error-Limit-Reset:
+      - '26'
+      X-Esi-Request-Id:
+      - 1acc4c46-9b27-435e-bc99-537ee10d1b64
+    body:
+      encoding: ASCII-8BIT
+      string: '{"max_dockable_ship_volume":50000000.0,"name":"Jita IV - Moon 4 - Caldari
+        Navy Assembly Plant","office_rental_cost":1511702908.0,"owner":1000035,"position":{"x":-107303362560.0,"y":-18744975360.0,"z":436489052160.0},"race_id":1,"reprocessing_efficiency":0.5,"reprocessing_stations_take":0.05,"services":["bounty-missions","courier-missions","reprocessing-plant","market","repair-facilities","factory","fitting","news","insurance","docking","office-rental","loyalty-point-store","navy-offices","security-offices"],"station_id":60003760,"system_id":30000142,"type_id":52678}'
+  recorded_at: Wed, 26 Jan 2022 20:10:22 GMT
+- request:
+    method: get
+    uri: https://esi.evetech.net/latest/corporations/1000035/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Typhoeus - https://github.com/typhoeus/typhoeus
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Date:
+      - Wed, 26 Jan 2022 20:10:35 GMT
+      Content-Type:
+      - application/json; charset=UTF-8
+      Content-Length:
+      - '651'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Content-Type,Authorization,If-None-Match,X-User-Agent
+      Access-Control-Allow-Methods:
+      - GET,HEAD,OPTIONS
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Expose-Headers:
+      - Content-Type,Warning,ETag,X-Pages,X-ESI-Error-Limit-Remain,X-ESI-Error-Limit-Reset
+      Access-Control-Max-Age:
+      - '600'
+      Allow:
+      - GET,HEAD,OPTIONS
+      Cache-Control:
+      - public
+      Etag:
+      - '"d42ccce6de8debcae7b65a1154ce3e8c2565f9449abec5f3a387ddc2"'
+      Expires:
+      - Wed, 26 Jan 2022 21:00:41 GMT
+      Last-Modified:
+      - Wed, 26 Jan 2022 20:00:41 GMT
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Esi-Error-Limit-Remain:
+      - '91'
+      X-Esi-Error-Limit-Reset:
+      - '25'
+      X-Esi-Request-Id:
+      - ae79f577-a849-4981-973d-2e5be21f3651
+    body:
+      encoding: ASCII-8BIT
+      string: '{"ceo_id":3004069,"creator_id":1,"description":"The Caldari Navy is
+        smaller in personnel and total ships than both the Federation Navy and the
+        Imperial Navy, yet they have more battleships than any other fleet and the
+        average age of the Caldari ships is considerably less. This is because the
+        Caldari are constantly replacing their oldest ships with newer ones, with
+        better hi-tech equipment. The strategic doctrine of the Caldari Navy is simple:
+        to be able to defeat any other navy in the world. Most experts believe it
+        is.","home_station_id":60003754,"member_count":159,"name":"Caldari Navy","shares":100000000,"tax_rate":0.0,"ticker":"CN","url":""}'
+  recorded_at: Wed, 26 Jan 2022 20:10:22 GMT
+- request:
+    method: get
+    uri: https://esi.evetech.net/latest/corporations/1000035/icons/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Typhoeus - https://github.com/typhoeus/typhoeus
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Date:
+      - Wed, 26 Jan 2022 20:10:35 GMT
+      Content-Type:
+      - application/json; charset=UTF-8
+      Content-Length:
+      - '298'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Content-Type,Authorization,If-None-Match,X-User-Agent
+      Access-Control-Allow-Methods:
+      - GET,HEAD,OPTIONS
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Expose-Headers:
+      - Content-Type,Warning,ETag,X-Pages,X-ESI-Error-Limit-Remain,X-ESI-Error-Limit-Reset
+      Access-Control-Max-Age:
+      - '600'
+      Allow:
+      - GET,HEAD,OPTIONS
+      Cache-Control:
+      - public
+      Etag:
+      - '"b24698ae59beee213404b5d1fe83331d1ee3360dac15660246d2e0a2"'
+      Expires:
+      - Wed, 26 Jan 2022 21:10:34 GMT
+      Last-Modified:
+      - Wed, 26 Jan 2022 20:10:34 GMT
+      Strict-Transport-Security:
+      - max-age=31536000
+      X-Esi-Error-Limit-Remain:
+      - '91'
+      X-Esi-Error-Limit-Reset:
+      - '25'
+      X-Esi-Request-Id:
+      - 93e50191-c380-4a3c-aa51-869c8f4d4ef8
+    body:
+      encoding: ASCII-8BIT
+      string: '{"px128x128":"https:\/\/images.evetech.net\/corporations\/1000035\/logo?tenant=tranquility&size=128","px256x256":"https:\/\/images.evetech.net\/corporations\/1000035\/logo?tenant=tranquility&size=256","px64x64":"https:\/\/images.evetech.net\/corporations\/1000035\/logo?tenant=tranquility&size=64"}'
+  recorded_at: Wed, 26 Jan 2022 20:10:22 GMT
+recorded_with: VCR 6.0.0

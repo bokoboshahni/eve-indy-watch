@@ -2,10 +2,6 @@
 
 class Type < ApplicationRecord
   class SyncFromESI < ApplicationService
-    include ESIHelpers
-
-    class Error < RuntimeError; end
-
     def initialize(type_id, ignore_not_found: false)
       super
 
@@ -47,7 +43,7 @@ class Type < ApplicationRecord
       resp = esi.get_universe_type_raw(type_id: type_id)
       expires = DateTime.parse(resp.headers['expires'])
       last_modified = DateTime.parse(resp.headers['last-modified'])
-      data = resp.json
+      data = Oj.load(resp.body)
 
       {
         esi_expires_at: expires,

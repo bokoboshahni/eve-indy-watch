@@ -24,7 +24,7 @@ gem 'discard', '~> 1.2'
 gem 'doorkeeper', '~> 5.5'
 gem 'down', '~> 5.2'
 gem 'enumerable-statistics', '~> 2.0'
-gem 'esi-sdk', '~> 2.1'
+gem 'esi-sdk', '~> 3.0'
 gem 'flamegraph', '~> 0.9'
 gem 'gelf', '~> 3.1', require: false
 gem 'groupdate', '~> 6.0'
@@ -32,6 +32,7 @@ gem 'heroicon', '~> 0.4'
 gem 'hiredis', '~> 0.6'
 gem 'hotwire-rails', '~> 0.1'
 gem 'http', '~> 5.0'
+gem 'httpx', '~> 0.18'
 gem 'jbuilder', '~> 2.7'
 gem 'kredis', '~> 1.0'
 gem 'listen', '~> 3.7'
@@ -82,6 +83,7 @@ gem 'webpacker', '~> 5.4.0'
 group :development, :test do
   gem 'brakeman', '~> 5.2'
   gem 'byebug', '~> 11.1'
+  gem 'factory_bot_rails', '~> 6.2'
   gem 'rspec-rails', '~> 5.1'
 end
 
@@ -104,4 +106,6 @@ end
 group :test do
   gem 'simplecov', require: false
   gem 'simplecov_json_formatter', require: false
+  gem 'vcr', require: false
+  gem 'webmock', require: false
 end

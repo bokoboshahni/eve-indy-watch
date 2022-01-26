@@ -46,6 +46,7 @@ class Station < ApplicationRecord
   belongs_to :type, inverse_of: :stations
 
   has_one :constellation, through: :solar_system
+  has_one :location, as: :locatable
   has_one :region, through: :constellation
 
   has_many :procurement_orders, as: :location

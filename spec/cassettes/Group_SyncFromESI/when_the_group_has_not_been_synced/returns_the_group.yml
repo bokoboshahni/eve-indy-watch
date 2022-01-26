@@ -1,0 +1,63 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://esi.evetech.net/latest/universe/groups/4165/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Typhoeus - https://github.com/typhoeus/typhoeus
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Date:
+      - Wed, 26 Jan 2022 19:49:28 GMT
+      Content-Type:
+      - application/json; charset=UTF-8
+      Content-Length:
+      - '179'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Content-Type,Authorization,If-None-Match,X-User-Agent
+      Access-Control-Allow-Methods:
+      - GET,HEAD,OPTIONS
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Expose-Headers:
+      - Content-Type,Warning,ETag,X-Pages,X-ESI-Error-Limit-Remain,X-ESI-Error-Limit-Reset
+      Access-Control-Max-Age:
+      - '600'
+      Allow:
+      - GET,HEAD,OPTIONS
+      Cache-Control:
+      - public
+      Content-Language:
+      - en
+      Etag:
+      - W/"0353cf219257193fac80f4a2c1ee41e3215ddc9a3c55a35297e91103"
+      Expires:
+      - Thu, 27 Jan 2022 11:05:00 GMT
+      Last-Modified:
+      - Tue, 25 Jan 2022 11:04:22 GMT
+      Strict-Transport-Security:
+      - max-age=31536000
+      Vary:
+      - Accept-Language
+      X-Esi-Error-Limit-Remain:
+      - '100'
+      X-Esi-Error-Limit-Reset:
+      - '32'
+      X-Esi-Request-Id:
+      - e933c4ce-c093-468e-af0b-7a3ea4845b1a
+    body:
+      encoding: ASCII-8BIT
+      string: '{"category_id":17,"group_id":4165,"name":"Peculiar Materials","published":true,"types":[62031,62032,62033,62034,62035,62036,62037,62038,62039,62040,62041,62042,62043,62044,62045]}'
+  recorded_at: Wed, 26 Jan 2022 19:49:15 GMT
+recorded_with: VCR 6.0.0

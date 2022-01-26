@@ -5,4 +5,5 @@ worker-contracts: bundle exec sidekiq -c ${SIDEKIQ_CONCURRENCY_CONTRACTS:-5} -q 
 worker-archive: bundle exec sidekiq -c ${SIDEKIQ_CONCURRENCY_ARCHIVE:-2} -q archive
 webpack: bin/webpack-dev-server
 prometheus: bundle exec prometheus_exporter
+redis: redis-server
 redoc: yarn exec redoc-cli serve api/openapi.yml --watch --ssr

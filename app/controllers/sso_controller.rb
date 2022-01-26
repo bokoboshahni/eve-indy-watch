@@ -38,7 +38,7 @@ class SSOController < ApplicationController
     flash[:success] = "Welcome back, #{user.name}"
     redirect_to(session[:redirect_to] || dashboard_path)
     session[:redirect_to] = nil
-  rescue Character::SyncFromESI::Error => e
+  rescue ESI::Errors::ClientError => e
     Rails.logger.error e
     flash[:error] = 'Failed to sync character.'
   rescue User::AuthenticateFromSSO::Error => e

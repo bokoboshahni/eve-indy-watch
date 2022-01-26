@@ -11,4 +11,4 @@ staging: &staging
   timeout: 1
 
 test:
-  <<: *development
+  url: <%= ENV.fetch('LOCATIONS_WRITER_REDIS_URL', "redis://127.0.0.1:6379/9") %>
