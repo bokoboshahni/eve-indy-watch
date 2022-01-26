@@ -245,7 +245,7 @@ GEM
       ffi-compiler (~> 1.0)
       rake (~> 13.0)
     local_time (2.1.0)
-    lockbox (0.6.6)
+    lockbox (0.6.8)
     loofah (2.13.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
