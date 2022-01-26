@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+## [2.23.3](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.23.2...v2.23.3) (2022-01-26)
+
+
+### Bug Fixes
+
+* archiving enablement conditional ([#141](https://github.com/bokoboshahni/eve-indy-watch/issues/141)) ([7f48909](https://github.com/bokoboshahni/eve-indy-watch/commit/7f48909fcfd1f3d6b115642b2b79b36965d68052))
+
 ## [2.23.2](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.23.1...v2.23.2) (2022-01-26)
 
 
