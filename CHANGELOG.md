@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+## [2.23.2](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.23.1...v2.23.2) (2022-01-26)
+
+
+### Bug Fixes
+
+* return existing killmail ([#140](https://github.com/bokoboshahni/eve-indy-watch/issues/140)) ([f15143a](https://github.com/bokoboshahni/eve-indy-watch/commit/f15143a85e435722183a9bda8269aa9faa321149))
+
 ## [2.23.1](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.23.0...v2.23.1) (2022-01-25)
 
 
