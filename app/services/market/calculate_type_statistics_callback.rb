@@ -17,7 +17,7 @@ class Market < ApplicationRecord
       markets_writer.expireat("markets.#{market_id}.#{time}.type_ids",
                               (1.day.from_now.beginning_of_day + 12.hours).to_i)
 
-      Market::ArchiveTypeStatisticsWorker.perform_async(market_id, time) unless market.archiving_enabled?
+      Market::ArchiveTypeStatisticsWorker.perform_async(market_id, time) if market.archiving_enabled?
     end
   end
 end
