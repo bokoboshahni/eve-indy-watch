@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+## [2.23.4](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.23.3...v2.23.4) (2022-01-26)
+
+
+### Bug Fixes
+
+* use contracts queue ([#142](https://github.com/bokoboshahni/eve-indy-watch/issues/142)) ([2657a39](https://github.com/bokoboshahni/eve-indy-watch/commit/2657a39a68ab20cc7c5b59d84276bcff79ec5d19))
+
 ## [2.23.3](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.23.2...v2.23.3) (2022-01-26)
 
 
