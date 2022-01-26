@@ -9,7 +9,7 @@ class Market < ApplicationRecord
       @time = time
     end
 
-    def call # rubocop:disable MMetrics/AbcSize, Metrics/MethodLength
+    def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       return unless history_uploads_enabled?
 
       type_stats_keys = markets_reader.scan_each(match: "#{market_key}.*.stats").to_a
