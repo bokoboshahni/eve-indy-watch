@@ -1,0 +1,71 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://esi.evetech.net/latest/universe/types/62032/
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      User-Agent:
+      - Typhoeus - https://github.com/typhoeus/typhoeus
+      Expect:
+      - ''
+  response:
+    status:
+      code: 200
+      message: ''
+    headers:
+      Date:
+      - Thu, 27 Jan 2022 20:23:36 GMT
+      Content-Type:
+      - application/json; charset=UTF-8
+      Content-Length:
+      - '779'
+      Access-Control-Allow-Credentials:
+      - 'true'
+      Access-Control-Allow-Headers:
+      - Content-Type,Authorization,If-None-Match,X-User-Agent
+      Access-Control-Allow-Methods:
+      - GET,HEAD,OPTIONS
+      Access-Control-Allow-Origin:
+      - "*"
+      Access-Control-Expose-Headers:
+      - Content-Type,Warning,ETag,X-Pages,X-ESI-Error-Limit-Remain,X-ESI-Error-Limit-Reset
+      Access-Control-Max-Age:
+      - '600'
+      Allow:
+      - GET,HEAD,OPTIONS
+      Cache-Control:
+      - public
+      Content-Language:
+      - en
+      Etag:
+      - W/"fbbd2b00d2485b4f48f754f65058b1dce6c55a5f9dd315d8bb9fbda4"
+      Expires:
+      - Fri, 28 Jan 2022 11:05:00 GMT
+      Last-Modified:
+      - Thu, 27 Jan 2022 11:12:26 GMT
+      Strict-Transport-Security:
+      - max-age=31536000
+      Vary:
+      - Accept-Language
+      X-Esi-Error-Limit-Remain:
+      - '100'
+      X-Esi-Error-Limit-Reset:
+      - '24'
+      X-Esi-Request-Id:
+      - ef35d750-dce6-4957-aa27-d487b3e2d70b
+    body:
+      encoding: ASCII-8BIT
+      string: '{"capacity":0.0,"description":"This device is clearly a practical application
+        of the so-called \"time crystal\" type of matter where particles are arranged
+        in a special class of quantum system with periodic structure across both space
+        and time.\r\n\r\nThe special properties of time crystals are useful for constructing
+        devices that can accurately fix space and time co-ordinates while resisting
+        entropy and temporal distortions caused by local spacetime deformation. This
+        time crystal oscillator appears to be a component used to assure synchronization
+        of spatiotemporal data.","group_id":4165,"icon_id":2234,"market_group_id":2013,"mass":1.0,"name":"Time
+        Crystal Oscillator","packaged_volume":0.005,"portion_size":1,"published":true,"radius":1.0,"type_id":62032,"volume":0.005}'
+  recorded_at: Thu, 27 Jan 2022 20:23:23 GMT
+recorded_with: VCR 6.0.0

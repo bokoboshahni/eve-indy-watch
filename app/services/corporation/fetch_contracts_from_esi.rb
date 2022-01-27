@@ -20,7 +20,7 @@ class Corporation < ApplicationRecord
       first_resp = resps.first
       expires = DateTime.parse(first_resp.headers['expires'])
       last_modified = DateTime.parse(first_resp.headers['last-modified'])
-      data = resps.map(&:json).reduce([], :concat)
+      data = resps.map { |r| Oj.load(r.body) }.reduce([], :concat)
 
       debug("Fetched #{data.count} contract(s) for #{corporation.log_name}")
 

@@ -2,10 +2,6 @@
 
 class Structure < ApplicationRecord
   class SyncFromESI < ApplicationService
-    include ESIHelpers
-
-    class Error < RuntimeError; end
-
     def initialize(structure_id, authorization)
       super
 
@@ -44,9 +40,6 @@ class Structure < ApplicationRecord
 
       debug("Synced structure #{structure_id} from ESI")
       struct
-    rescue ESI::Errors::ClientError => e
-      msg = "Unable to sync structure #{structure_id} from ESI: #{e.message}"
-      raise Error, msg, cause: e
     end
 
     private
@@ -54,26 +47,24 @@ class Structure < ApplicationRecord
     attr_reader :authorization, :structure_id
 
     def structure_attrs_from_esi # rubocop:disable Metrics/MethodLength
-      esi_retriable do
-        esi_authorize!(authorization)
-        auth = { Authorization: "Bearer #{authorization.access_token}" }
-        resp = esi.get_universe_structure_raw(structure_id: structure_id, headers: auth)
-        expires = DateTime.parse(resp.headers['expires'])
-        last_modified = DateTime.parse(resp.headers['last-modified'])
-        data = resp.json
+      esi_authorize!(authorization)
+      auth = { Authorization: "Bearer #{authorization.access_token}" }
+      resp = esi.get_universe_structure_raw(structure_id: structure_id, headers: auth)
+      expires = DateTime.parse(resp.headers['expires'])
+      last_modified = DateTime.parse(resp.headers['last-modified'])
+      data = Oj.load(resp.body)
 
-        Corporation::SyncFromESI.call(data['owner_id'])
+      Corporation::SyncFromESI.call(data['owner_id'])
 
-        {
-          esi_expires_at: expires,
-          esi_last_modified_at: last_modified,
-          id: structure_id,
-          owner_id: data['owner_id'],
-          name: data['name'],
-          solar_system_id: data['solar_system_id'],
-          type_id: data['type_id']
-        }
-      end
+      {
+        esi_expires_at: expires,
+        esi_last_modified_at: last_modified,
+        id: structure_id,
+        owner_id: data['owner_id'],
+        name: data['name'],
+        solar_system_id: data['solar_system_id'],
+        type_id: data['type_id']
+      }
     rescue ESI::Errors::ForbiddenError, ESI::Errors::UnauthorizedError
       logger.error("Authorization for character #{authorization.character_id} is not allowed to read structure #{structure_id}")
 

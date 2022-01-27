@@ -2,10 +2,6 @@
 
 class Station < ApplicationRecord
   class SyncFromESI < ApplicationService
-    include ESIHelpers
-
-    class Error < RuntimeError; end
-
     def initialize(station_id)
       super
 
@@ -30,7 +26,7 @@ class Station < ApplicationRecord
                                struct.esi_last_modified_at.to_s(:number))
         end
 
-        return struct
+        return station
       end
 
       station_attrs = station_attrs_from_esi
@@ -44,9 +40,6 @@ class Station < ApplicationRecord
 
       debug("Synced station #{station_id} from ESI")
       station
-    rescue ESI::Errors::ClientError => e
-      msg = "Unable to sync station #{station_id} from ESI: #{e.message}"
-      raise Error, msg, cause: e
     end
 
     private
@@ -57,7 +50,7 @@ class Station < ApplicationRecord
       resp = esi.get_universe_station_raw(station_id: station_id)
       expires = DateTime.parse(resp.headers['expires'])
       last_modified = DateTime.parse(resp.headers['last-modified'])
-      data = resp.json
+      data = Oj.load(resp.body)
 
       Corporation::SyncFromESI.call(data['owner'])
 

@@ -9,6 +9,15 @@ require 'rspec/rails'
 
 require 'pundit/rspec'
 
+require 'webmock/rspec'
+require 'vcr'
+
+VCR.configure do |config|
+  config.cassette_library_dir = Rails.root.join('spec/cassettes')
+  config.hook_into :webmock
+  config.configure_rspec_metadata!
+end
+
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
 
 begin
@@ -24,4 +33,11 @@ RSpec.configure do |config|
 
   config.filter_rails_from_backtrace!
   config.infer_spec_type_from_file_location!
+
+  config.before do
+    Kredis.redis(config: :shared).flushall
+    Kredis.redis(config: :markets_writer).flushall
+    Kredis.redis(config: :locations_writer).flushall
+    Kredis.redis(config: :orders_writer).flushall
+  end
 end

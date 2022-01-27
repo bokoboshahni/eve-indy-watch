@@ -2,10 +2,6 @@
 
 class Group < ApplicationRecord
   class SyncFromESI < ApplicationService
-    include ESIHelpers
-
-    class Error < RuntimeError; end
-
     def initialize(group_id, ignore_not_found: false)
       super
 
@@ -26,14 +22,6 @@ class Group < ApplicationRecord
 
       debug("Synced group #{group_id} from ESI")
       group
-    rescue ESI::Errors::ClientError => e
-      if e.message.include?('Not found') && ignore_not_found
-        error("Group #{group_id} not found on ESI")
-        return
-      end
-
-      msg = "Unable to sync group #{group_id} from ESI: #{e.message}"
-      raise Error, msg, cause: e
     end
 
     private
@@ -44,7 +32,7 @@ class Group < ApplicationRecord
       resp = esi.get_universe_group_raw(group_id: group_id)
       expires = DateTime.parse(resp.headers['expires'])
       last_modified = DateTime.parse(resp.headers['last-modified'])
-      data = resp.json
+      data = Oj.load(resp.body)
 
       {
         esi_expires_at: expires,

@@ -1,0 +1,10 @@
+#!/bin/bash -e
+
+APP_ROOT=$(dirname $(dirname $(readlink -fm $0)))
+
+pushd $APP_ROOT > /dev/null
+export LOCKBOX_MASTER_KEY=$(bin/rails lockbox_key)
+export SECRET_KEY_BASE=$(bin/rails secret)
+bin/rails db:setup
+bundle exec rake spec
+popd

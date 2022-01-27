@@ -12,12 +12,12 @@ def esi_config
 end
 
 def esi_client
-  @esi_client ||= ESI::Client.new(user_agent: app_config.user_agent)
+  @esi_client ||= ESI::Client.new(user_agent: app_config.user_agent, retries: 3)
 end
 
 def esi_authorize!(authorization)
   authorization.refresh_token!
-  { Authorization: "Bearer #{authorization.access_token}" }
+  esi_client.authorize(authorization.access_token)
 end
 
 def markets_reader

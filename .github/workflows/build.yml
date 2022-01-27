@@ -107,6 +107,7 @@ jobs:
           --health-retries 5
       redis:
         image: redis
+        ports: ["6379:6379"]
         options: >-
           --health-cmd "redis-cli ping"
           --health-interval 10s
@@ -155,29 +156,32 @@ jobs:
           yarn install --pure-lockfile
 
       - name: Run tests
+        uses: paambaati/codeclimate-action@v3.0.0
         env:
+          ADMIN_CHARACTER_IDS: 2119309952
+          ALLOWED_ALLIANCE_IDS: 99010079,99003214
+          CACHE_REDIS_URL: redis://localhost:6379/6
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+          DATA_REDIS_URL: redis://localhost:6379/1
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/eve_indy_watch
+          ESI_CLIENT_ID: 'dummy'
+          ESI_CLIENT_SECRET: 'dummy'
+          ESI_REDIRECT_URI: http://localhost:3000/auth/eve/callback
+          LOCATIONS_READER_REDIS_URL: redis://localhost:6379/4
+          LOCATIONS_WRITER_REDIS_URL: redis://localhost:6379/4
+          MAIN_ALLIANCE_ID: 99003214
+          MARKETS_READER_REDIS_URL: redis://localhost:6379/2
+          MARKETS_WRITER_REDIS_URL: redis://localhost:6379/2
+          ORDERS_READER_REDIS_URL: redis://localhost:6379/3
+          ORDERS_WRITER_REDIS_URL: redis://localhost:6379/3
+          QUEUE_REDIS_URL: redis://localhost:6379/5
+          RAILS_ASSET_HOST: ''
           RAILS_ENV: test
-        run: |
-          export SITE_NAME="EVE Indy Watch"
-          export ADMIN_CHARACTER_IDS=2119309952
-          export ALLOWED_ALLIANCE_IDS=99010079,99003214
-          export ESI_CLIENT_ID='dummy'
-          export ESI_CLIENT_SECRET='dummy'
-          export ESI_REDIRECT_URI=http://localhost:3000/auth/eve/callback
-          export LOCKBOX_MASTER_KEY=$(bin/rails lockbox_key)
-          export REDIS_URL=redis://redis:6379/0
-          export MAIN_ALLIANCE_ID=99003214
-          export MARKETS_READER_REDIS_URL=redis://redis:6379/1
-          export MARKETS_WRITER_REDIS_URL=redis://redis:6379/1
-          export ORDERS_READER_REDIS_URL=redis://redis:6379/2
-          export ORDERS_WRITER_REDIS_URL=redis://redis:6379/2
-          export LOCATIONS_READER_REDIS_URL=redis://redis:6379/3
-          export LOCATIONS_WRITER_REDIS_URL=redis://redis:6379/3
-          export SECRET_KEY_BASE=$(bin/rails secret)
-          export RAILS_ASSET_HOST=''
-          export DATABASE_URL=postgres://postgres:postgres@localhost:5432/eve_indy_watch
-          bin/rails db:setup
-          bundle exec rspec
+          SESSIONS_REDIS_URL: redis://localhost:6379/7
+          SITE_NAME: "EVE Indy Watch"
+          USER_AGENT: "EVE Indy Watch Tests/1.0; (+https://github.com/bokoboshahni/eve-indy-watch)"
+        with:
+          coverageCommand: bin/ci-test
 
   build-and-push-image:
     name: Build and Push Image
