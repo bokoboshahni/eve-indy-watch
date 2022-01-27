@@ -82,7 +82,7 @@ gem 'webpacker', '~> 5.4.0'
 group :development, :test do
   gem 'brakeman', '~> 5.2'
   gem 'byebug', '~> 11.1'
-  gem 'rspec-rails', '~> 5.0'
+  gem 'rspec-rails', '~> 5.1'
 end
 
 group :development do
