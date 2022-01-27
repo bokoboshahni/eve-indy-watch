@@ -24,7 +24,7 @@ gem 'discard', '~> 1.2'
 gem 'doorkeeper', '~> 5.5'
 gem 'down', '~> 5.2'
 gem 'enumerable-statistics', '~> 2.0'
-gem 'esi-sdk', '~> 2.1'
+gem 'esi-sdk', '~> 3.0'
 gem 'flamegraph', '~> 0.9'
 gem 'gelf', '~> 3.1', require: false
 gem 'groupdate', '~> 6.0'
