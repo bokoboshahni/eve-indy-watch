@@ -419,7 +419,7 @@ GEM
     ruby-limiter (2.2.2)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
-    rufus-scheduler (3.8.0)
+    rufus-scheduler (3.8.1)
       fugit (~> 1.1, >= 1.1.6)
     safely_block (0.3.0)
       errbase (>= 0.1.1)
@@ -435,7 +435,7 @@ GEM
       redis (>= 4.2.0)
     sidekiq-batch (0.1.6)
       sidekiq (>= 3)
-    sidekiq-scheduler (3.1.0)
+    sidekiq-scheduler (3.1.1)
       e2mmap
       redis (>= 3, < 5)
       rufus-scheduler (~> 3.2)
