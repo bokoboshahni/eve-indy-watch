@@ -13,6 +13,8 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
   mount Sidekiq::Web => '/admin/sidekiq', constraints: AdminConstraint.new
   mount PgHero::Engine => '/admin/pghero', constraints: AdminConstraint.new
 
+  resource :test_login, only: %i[create destroy] if Rails.env.test?
+
   use_doorkeeper do
     controllers authorizations: 'oauth_authorizations'
 

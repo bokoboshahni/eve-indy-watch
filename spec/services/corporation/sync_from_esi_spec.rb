@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Corporation::SyncFromESI, type: :service, vcr: true do
+RSpec.describe Corporation::SyncFromESI, type: :service, vcr: { allow_playback_repeats: true } do
   subject(:sync_from_esi) { described_class }
 
   let(:corporation_id) { 98_169_165 } # Brave Newbies Inc.
