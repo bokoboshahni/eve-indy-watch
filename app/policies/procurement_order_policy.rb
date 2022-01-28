@@ -2,17 +2,85 @@
 
 class ProcurementOrderPolicy < ApplicationPolicy
   class Scope < Scope
-    def resolve # rubocop:disable Metrics/AbcSize
+    def resolve
       return scope if user.admin?
 
-      new_scope = scope.where(requester_id: user.character_id)
-      new_scope = new_scope.or(scope.where(supplier_id: user.character_id))
-      new_scope = new_scope.or(scope.where(supplier_id: user.character_id, status: %i[in_progress delivered]))
-      new_scope = new_scope.or(scope.where(requester_id: user.corporation_id, status: %i[in_progress unconfirmed delivered draft])) if role?('corporation.orders.editor')
-      new_scope = new_scope.or(scope.where(requester_id: user.alliance_id, status: %i[in_progress unconfirmed delivered draft])) if role?('alliance.orders.editor')
-      new_scope = new_scope.or(scope.available.where.not(status: :draft).where(requester_id: user.corporation_id, visibility: :corporation))
-      new_scope = new_scope.or(scope.available.where.not(status: :draft).where(requester_id: user.alliance_id, visibility: :alliance))
-      new_scope.or(scope.available.where.not(status: :draft).where("visibility = 'everyone' OR visibility IS NULL"))
+      apply(join_requester_characters)
+      apply(supplied_orders)
+      apply(editable_user_orders)
+      apply(editable_corporation_orders)
+      apply(editable_alliance_orders)
+      apply(alliance_requested_orders_with_alliance_visibility)
+      apply(corporation_requested_orders_with_corporation_visibility)
+      apply(user_requested_orders_with_alliance_visibility)
+      apply(user_requested_orders_with_corporation_visibility)
+      apply(other_available_orders)
+    end
+
+    private
+
+    attr_reader :new_scope
+
+    def apply(additional_scope)
+      @new_scope = additional_scope || @new_scope
+    end
+
+    def join_requester_characters
+      scope.joins('LEFT OUTER JOIN characters rc ON rc.id = requester_id')
+    end
+
+    def supplied_orders
+      new_scope.where(supplier_id: user.character_id)
+    end
+
+    def editable_user_orders
+      new_scope.or(scope.where(requester_id: user.character_id))
+    end
+
+    def editable_corporation_orders
+      return unless role?('corporation.orders.editor')
+
+      new_scope.or(scope.where(requester_id: user.corporation_id))
+    end
+
+    def editable_alliance_orders
+      return unless role?('alliance.orders.editor')
+
+      new_scope.or(scope.where(requester_id: user.alliance_id))
+    end
+
+    def alliance_requested_orders_with_alliance_visibility
+      new_scope.or(scope.available.where(requester_id: user.alliance_id, visibility: :alliance))
+    end
+
+    def corporation_requested_orders_with_corporation_visibility
+      new_scope.or(scope.available.where(requester_id: user.corporation_id, visibility: :corporation))
+    end
+
+    def user_requested_orders_with_corporation_visibility
+      new_scope.or(
+        scope.available
+          .where(
+            requester_type: 'Character',
+            'rc.corporation_id' => user.corporation_id,
+            visibility: :corporation
+          )
+      )
+    end
+
+    def user_requested_orders_with_alliance_visibility
+      new_scope.or(
+        scope.available
+          .where(
+            requester_type: 'Character',
+            'rc.alliance_id' => user.alliance_id,
+            visibility: :alliance
+          )
+      )
+    end
+
+    def other_available_orders
+      new_scope.or(scope.available.where("visibility = 'everyone' OR visibility IS NULL"))
     end
   end
 

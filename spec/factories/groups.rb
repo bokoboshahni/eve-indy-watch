@@ -2,5 +2,10 @@
 
 FactoryBot.define do
   factory :group do
+    association :category
+
+    id { Faker::Number.within(range: 0..1_000_000) }
+    name { Faker::Food.dish }
+    published { true }
   end
 end
