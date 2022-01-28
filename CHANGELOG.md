@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+## [2.24.1](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.24.0...v2.24.1) (2022-01-28)
+
+
+### Bug Fixes
+
+* visibility for user-requested orders ([#158](https://github.com/bokoboshahni/eve-indy-watch/issues/158)) ([2db2297](https://github.com/bokoboshahni/eve-indy-watch/commit/2db2297f741f9ebeb9994c524d52f10ee7748451))
+
 # [2.24.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.23.5...v2.24.0) (2022-01-28)
 
 
