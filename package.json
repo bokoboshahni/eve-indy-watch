@@ -35,5 +35,5 @@
     "webpack-dev-server": "^3.11.3"
   },
   "private": true,
-  "version": "2.23.5"
+  "version": "2.24.0"
 }

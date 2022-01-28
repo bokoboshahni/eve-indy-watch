@@ -1,5 +1,17 @@
 # EVE Indy Watch Changelog
 
+# [2.24.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.23.5...v2.24.0) (2022-01-28)
+
+
+### Bug Fixes
+
+* don't rely on env for esi redirect uri ([#153](https://github.com/bokoboshahni/eve-indy-watch/issues/153)) ([c5c917e](https://github.com/bokoboshahni/eve-indy-watch/commit/c5c917e354f53f8735ebe0b37a92993215dd77a5)), closes [#148](https://github.com/bokoboshahni/eve-indy-watch/issues/148)
+
+
+### Features
+
+* upgrade to esi-sdk v3 ([#146](https://github.com/bokoboshahni/eve-indy-watch/issues/146)) ([6439181](https://github.com/bokoboshahni/eve-indy-watch/commit/6439181b3d9fa766d6ff72ef9653be040412c93b))
+
 ## [2.23.5](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.23.4...v2.23.5) (2022-01-26)
 
 ## [2.23.4](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.23.3...v2.23.4) (2022-01-26)
