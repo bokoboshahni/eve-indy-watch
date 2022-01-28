@@ -301,7 +301,7 @@ GEM
     omniauth-rails_csrf_protection (1.0.0)
       actionpack (>= 4.2)
       omniauth (~> 2.0)
-    pagy (5.9.1)
+    pagy (5.9.2)
       activesupport
     paper_trail (12.2.0)
       activerecord (>= 5.2)
@@ -538,7 +538,7 @@ GEM
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    zeitwerk (2.5.3)
+    zeitwerk (2.5.4)
 
 PLATFORMS
   x86_64-linux
