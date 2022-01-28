@@ -7,7 +7,7 @@
 
 <%= render PageHeadingComponent.new(title: 'Markets') do |c| %>
   <%= c.action do %>
-    <%= render(DataTableSorterComponent.new(name: :markets, filter: @filter)) %>
+    <%= render(DataTableSorterComponent.new(name: :markets, filter: @filter, session: session)) %>
   <% end %>
   <% c.action do %>
     <%= render(ActionButtonComponent.new(href: new_admin_market_path, margin: 'ml-2').with_content('New market')) %>

@@ -17,9 +17,9 @@
             <% if matches.count > 0 %>
               <% cf = matches.first %>
               <% fitting = cf.fitting %>
-              <% color = cf.similarity == 1.0 ? 'text-green-500' : 'text-red-500' %>
-              <% icon = cf.similarity == 1.0 ? 'check-circle' : 'exclamation' %>
-              <% style = cf.similarity == 1.0 ? 'font-medium' : 'italic' %>
+              <% color = cf.similarity == 1.0.to_d ? 'text-green-500' : 'text-red-500' %>
+              <% icon = cf.similarity == 1.0.to_d ? 'check-circle' : 'exclamation' %>
+              <% style = cf.similarity == 1.0.to_d ? 'font-medium' : 'italic' %>
 
               <% if cf.similarity == 1.0 %>
                 <%= link_to contract_path(contract, fitting_id: fitting.id), class: "mt-2 flex items-center #{style} #{color} hover:#{color}", data: { turbo_frame: '_top' } do %>
@@ -42,16 +42,8 @@
           <% end %>
           <% tr.cell padding: 'px-4 py-1' do %><%= contract.end_location&.name %><% end %>
           <% tr.cell padding: 'px-4 py-1' do %>
-            <%
-              markup_pct = contract.markup_sell_pct(main_alliance.appraisal_market)
-              color =
-                if markup_pct < 0
-                  'green-500'
-                elsif markup_pct >= 30 && markup_pct < 100
-                  'red-500'
-                end
-            %>
-            <span class="text-<%= color %>">
+            <% markup_pct = contract.markup_sell_pct(main_alliance.appraisal_market) %>
+            <span class="<%= contract_markup_pct_color(markup_pct) %>">
               <%= number_to_isk contract.price %>
               <% unless markup_pct.infinite? || markup_pct.nan? %>(<%= '+' if markup_pct.positive? %><%= number_to_percentage markup_pct, precision: 0 %>)<% end %>
             </span>

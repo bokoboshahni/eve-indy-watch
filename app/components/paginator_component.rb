@@ -8,4 +8,8 @@ class PaginatorComponent < ApplicationComponent
   def initialize(pagy:)
     @pagy = pagy
   end
+
+  def link
+    pagy_link_proc(pagy)
+  end
 end

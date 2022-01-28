@@ -7,6 +7,9 @@ require File.expand_path('../config/environment', __dir__)
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'rspec/rails'
 
+require 'view_component/test_helpers'
+require 'capybara/rspec'
+
 require 'pundit/rspec'
 
 require 'webmock/rspec'
@@ -29,6 +32,9 @@ end
 
 RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
+
+  config.include ViewComponent::TestHelpers, type: :component
+  config.include Capybara::RSpecMatchers, type: :component
 
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.use_transactional_fixtures = true

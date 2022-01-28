@@ -62,6 +62,8 @@ Rails.application.configure do
 
   config.web_console.whiny_requests = false
   config.web_console.whitelisted_ips = ENV.fetch('WEB_CONSOLE_WHITELISTED_IPS', '172.16.0.0/12')
+
+  config.view_component_storybook.stories_path = Rails.root.join('spec/stories')
 end
 
 Rails.application.routes.default_url_options = { host: 'localhost:3000' }

@@ -71,6 +71,11 @@ class ApplicationController < ActionController::Base
     Rails.application.config.x.app
   end
 
+  helper_method :site_name
+  def site_name
+    app_config.site_name
+  end
+
   helper_method :current_alliance
   def current_alliance
     current_user.alliance

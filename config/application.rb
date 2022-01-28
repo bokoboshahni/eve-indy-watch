@@ -16,6 +16,8 @@ require 'action_view/railtie'
 # require "action_cable/engine"
 # require "sprockets/railtie"
 # require "rails/test_unit/railtie"
+# require 'view_component/engine'
+# require 'view_component/storybook/engine'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -41,6 +43,8 @@ module EVEIndyWatch
       config.default_url_options = { host: ENV.fetch('URL_HOST'), protocol: 'https' }
       config.action_controller.default_url_options = { host: ENV.fetch('URL_HOST'), protocol: 'https' }
     end
+
+    config.action_controller.asset_host = ENV.fetch('RAILS_ASSET_HOST') if ENV['RAILS_ASSET_HOST']
 
     config.active_job.queue_adapter = :sidekiq
 

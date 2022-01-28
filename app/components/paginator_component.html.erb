@@ -1,4 +1,3 @@
-<% link = pagy_link_proc(pagy) %>
 <div class="flex items-center justify-between">
   <div class="flex-1 flex justify-between sm:hidden">
     <% if pagy.prev %>
@@ -31,7 +30,7 @@
 
         <% pagy.series.each do |item| %>
           <% if item.is_a?(Integer) %>
-            <%=raw link.call(item, item, 'class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 hidden md:inline-flex relative items-center px-2 py-1 border text-xs font-medium" data-turbo-action="advance"') %>
+            <%= link.call(item, item, 'class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 hidden md:inline-flex relative items-center px-2 py-1 border text-xs font-medium" data-turbo-action="advance"') %>
           <% elsif item.is_a?(String) %>
             <a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-2 py-1 border text-xs font-medium" data-turbo-action="advance">
               <%= item %>

@@ -7,7 +7,7 @@
 
 <%= render PageHeadingComponent.new(title: 'Regions') do |c| %>
   <%= c.action do %>
-    <%= render(DataTableSorterComponent.new(name: :regions, filter: @filter)) %>
+    <%= render(DataTableSorterComponent.new(name: :regions, filter: @filter, session: session)) %>
   <% end %>
 <% end %>
 

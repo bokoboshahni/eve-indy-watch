@@ -7,7 +7,7 @@
 
 <%= render PageHeadingComponent.new(title: 'Alliances') do |c| %>
   <%= c.action do %>
-    <%= render(DataTableSorterComponent.new(name: :alliances, filter: @filter)) %>
+    <%= render(DataTableSorterComponent.new(name: :alliances, filter: @filter, session: session)) %>
   <% end %>
 <% end %>
 

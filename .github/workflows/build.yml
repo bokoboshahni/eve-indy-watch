@@ -57,7 +57,8 @@ jobs:
 
       - name: Run linters
         run: |
-          bundle exec rubocop -P
+          bin/rubocop -P
+          bin/erblint --lint-all
           yarn stylelint app/javascript/**/*.scss
           yarn eslint app/javascript
           yarn prettier --check app/javascript/**/*.{scss,js}

@@ -49,7 +49,7 @@
                     <%= order.items.first.name %>
                   <% elsif order.items.count >= 1 %>
                     <%= render HovercardComponent.new(url: list_items_card_procurement_order_path(order), class_name: 'inline-block') do %>
-                      <%= link_to procurement_order_path(order), class: "font-medium", data: { turbo_frame: '_top' } do %>
+                      <%= link_to procurement_order_path(order), class: 'font-medium', data: { turbo_frame: '_top' } do %>
                         (<%= pluralize(order.items.count, 'item') %>)
                       <% end %>
                     <% end %>
@@ -60,7 +60,7 @@
                     <%= order.items.first.quantity_required %>
                   <% elsif order.items.count >= 1 %>
                     <%= render HovercardComponent.new(url: list_items_card_procurement_order_path(order), class_name: 'inline-block') do %>
-                      <%= link_to procurement_order_path(order), class: "font-medium", data: { turbo_frame: '_top' } do %>
+                      <%= link_to procurement_order_path(order), class: 'font-medium', data: { turbo_frame: '_top' } do %>
                         (<%= pluralize(order.items.count, 'item') %>)
                       <% end %>
                     <% end %>

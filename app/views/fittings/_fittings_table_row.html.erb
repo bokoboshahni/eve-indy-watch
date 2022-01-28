@@ -33,7 +33,7 @@
         <%= stock.contract_quality ? number_to_percentage(stock.contract_quality, precision: 0) : 'N/A' %>
       <% end %>
       <% tr.cell padding: 'px-4 py-1' do %>
-        <%= number_to_isk stock.contract_price_avg ? stock.contract_price_avg : 'N/A' %>
+        <%= number_to_isk stock.contract_price_avg || 'N/A' %>
       <% end %>
       <% tr.cell padding: 'px-4 py-1' do %>
         <% if fitting.main_market %>

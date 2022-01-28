@@ -91,7 +91,7 @@
     <div class="sm:col-span-3">
       <%= f.label :target_completion_at, 'Due date (optional)', class: 'block text-sm font-medium text-gray-700' %>
       <div class="mt-1">
-        <%= f.date_field :target_completion_at, class: 'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md', min: Date.today %>
+        <%= f.date_field :target_completion_at, class: 'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md', min: Time.zone.today %>
       </div>
     </div>
   </div>
@@ -115,8 +115,7 @@
     </ul>
     <div
       class="flex-1 flex flex-col py-3"
-      data-controller="autocomplete" data-autocomplete-url-value="<%= autocomplete_market_types_path %>" data-autocomplete-min-length-value="3"
-    >
+      data-controller="autocomplete" data-autocomplete-url-value="<%= autocomplete_market_types_path %>" data-autocomplete-min-length-value="3">
       <div class="flex items-center justify-between space-x-3">
         <div class="grow relative rounded-md shadow-sm">
           <%= f.label :type_id, 'Item', class: 'sr-only' %>

@@ -47,3 +47,5 @@ tmp/sde
 tmp/sde.zip
 
 coverage/
+
+**/*.stories.json
