@@ -53,7 +53,6 @@ module EVEIndyWatch
     config.x.esi.client_id = ENV['ESI_CLIENT_ID']
     config.x.esi.client_secret = ENV['ESI_CLIENT_SECRET']
     config.x.esi.oauth_url = ENV.fetch('ESI_OAUTH_URL', DEFAULT_ESI_OAUTH_URL)
-    config.x.esi.redirect_uri = ENV['ESI_REDIRECT_URI']
     config.x.esi.scopes = DEFAULT_ESI_SCOPES
     config.x.esi.user_agent = ENV.fetch('ESI_USER_AGENT', DEFAULT_ESI_USER_AGENT)
 

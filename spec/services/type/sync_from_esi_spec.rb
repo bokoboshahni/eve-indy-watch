@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Type::SyncFromESI, type: :service, vcr: true do
+RSpec.describe Type::SyncFromESI, type: :service, vcr: { allow_playback_repeats: true } do
   subject(:sync_from_esi) { described_class }
 
   before do

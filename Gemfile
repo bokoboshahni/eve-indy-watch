@@ -20,6 +20,7 @@ gem 'aws-sdk-s3', '~> 1.111'
 gem 'bcrypt', '~> 3.1'
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'composite_primary_keys', '~> 13.0'
+gem 'device_detector', '1.0.5'
 gem 'discard', '~> 1.2'
 gem 'doorkeeper', '~> 5.5'
 gem 'down', '~> 5.2'
@@ -33,6 +34,7 @@ gem 'hiredis', '~> 0.6'
 gem 'hotwire-rails', '~> 0.1'
 gem 'http', '~> 5.0'
 gem 'httpx', '~> 0.18'
+gem 'i18n', '~> 1.9.1'
 gem 'jbuilder', '~> 2.7'
 gem 'kredis', '~> 1.0'
 gem 'listen', '~> 3.7'
@@ -84,6 +86,7 @@ group :development, :test do
   gem 'brakeman', '~> 5.2'
   gem 'byebug', '~> 11.1'
   gem 'factory_bot_rails', '~> 6.2'
+  gem 'faker', '~> 2.19'
   gem 'rspec-rails', '~> 5.1'
 end
 
