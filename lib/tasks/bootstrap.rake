@@ -5,7 +5,7 @@ namespace :bootstrap do
     config = Rails.application.config.x.app
 
     admin_user = Character.find(config.admin_character_ids.first).user
-    abort('No admin user found. Log in to http://localhost:3000 with a user specified in ADMIN_USER_IDS') unless admin_user
+    abort('No admin user found. Log in to http://localhost:3000 with a user specified in ADMIN_CHARACTER_IDS') unless admin_user
 
     admin_auth = admin_user.esi_authorizations.first
 

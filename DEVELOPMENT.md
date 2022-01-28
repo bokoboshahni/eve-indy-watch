@@ -16,7 +16,7 @@ Ensure all variables in `.env.example` have valid values (see comments in `.env.
 
 ### Setting up the market
 
-Log into the application at http://localhost:3000 with the user specified in the `ADMIN_USER_IDS` setting in order to sync the admin user and main alliance (assuming the admin user is in the same alliance specified by the `MAIN_ALLIANCE_ID` setting).
+Log into the application at http://localhost:3000 with the user specified in the `ADMIN_CHARACTER_IDS` setting in order to sync the admin user and main alliance (assuming the admin user is in the same alliance specified by the `MAIN_ALLIANCE_ID` setting).
 
 After you've logged in, navigate to the [ESI authorization settings](http://localhost:3000/settings/authorizations) page and create an ESI authorization for your user.
 
