@@ -112,6 +112,7 @@ end
 
 group :test do
   gem 'capybara', require: false
+  gem 'rails-controller-testing'
   gem 'simplecov', require: false
   gem 'simplecov_json_formatter', require: false
   gem 'vcr', require: false
