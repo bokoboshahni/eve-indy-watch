@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
+  include BetterHtml::Helpers
   include Pagy::Frontend
 
   def sidebar_item_text_class(item_name)
@@ -10,8 +11,6 @@ module ApplicationHelper
   def sidebar_item_icon_class(item_name)
     controller_name == item_name ? 'text-gray-300' : 'text-gray-400 group-hover:text-gray-300'
   end
-
-  delegate :site_name, to: :app_config
 
   def number_to_isk(value)
     number_with_precision value, precision: 2, delimiter: ',', strip_insignificant_zeros: true

@@ -18,6 +18,7 @@ gem 'ancestry', '~> 4.1'
 gem 'awesome_print', '~> 1.9'
 gem 'aws-sdk-s3', '~> 1.111'
 gem 'bcrypt', '~> 3.1'
+gem 'better_html', '~> 1.0'
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'composite_primary_keys', '~> 13.0'
 gem 'device_detector', '1.0.5'
@@ -58,6 +59,7 @@ gem 'pry-rails', '~> 0.3'
 gem 'puma', '~> 5.6'
 gem 'pundit', '~> 2.1'
 gem 'rack-attack', '~> 6.5'
+gem 'rack-cors', '~> 1.1'
 gem 'rack-mini-profiler', '~> 2.0'
 gem 'rails', '~> 6.1.4', '>= 6.1.4.1'
 gem 'rails_semantic_logger', '~> 4.9'
@@ -99,14 +101,17 @@ group :development do
   gem 'capistrano-rails', '~> 1.6'
   gem 'capistrano-sidekiq', github: 'seuros/capistrano-sidekiq'
   gem 'ed25519', '~> 1.3'
+  gem 'erb_lint', '~> 0.1'
   gem 'rubocop', '~> 1.25'
   gem 'rubocop-performance', '~> 1.13'
   gem 'rubocop-rails', '~> 2.13'
   gem 'rubocop-rspec', '~> 2.8'
+  gem 'view_component_storybook', '~> 0.10', require: 'view_component/storybook/engine'
   gem 'web-console', '>= 4.1.0'
 end
 
 group :test do
+  gem 'capybara', require: false
   gem 'simplecov', require: false
   gem 'simplecov_json_formatter', require: false
   gem 'vcr', require: false

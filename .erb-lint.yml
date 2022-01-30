@@ -1,0 +1,41 @@
+---
+EnableDefaultLinters: true
+
+include:
+  - 'app/components/**/*.html.erb'
+  - 'app/views/**/*.html.erb'
+
+exclude:
+  - 'node_modules/**/*'
+  - 'vendor/**/*'
+
+linters:
+  ErbSafety:
+    enabled: true
+    better_html_config: .better-html.yml
+  Rubocop:
+    enabled: true
+    rubocop_config:
+      require:
+        - rubocop-rails
+      Layout/InitialIndentation:
+        Enabled: false
+      Layout/LineLength:
+        Enabled: false
+      Layout/TrailingEmptyLines:
+        Enabled: false
+      Layout/TrailingWhitespace:
+        Enabled: false
+      Layout/LeadingEmptyLines:
+        Enabled: false
+      Naming/FileName:
+        Enabled: false
+      Style/FrozenStringLiteralComment:
+        Enabled: false
+      Lint/EmptyBlock:
+        Enabled: false
+      Lint/UselessAssignment:
+        Exclude:
+          - "app/views/**/*"
+      Rails/OutputSafety:
+        Enabled: false

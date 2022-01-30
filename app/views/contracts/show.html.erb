@@ -32,9 +32,9 @@
               <ul class="list-none mt-1">
                 <% @contract.contract_fittings.each do |cf| %>
                   <% fitting = cf.fitting %>
-                  <% color = cf.similarity == 1.0 ? 'green' : 'red' %>
-                  <% icon = cf.similarity == 1.0 ? 'check-circle' : 'exclamation' %>
-                  <% style = cf.similarity == 1.0 ? 'font-medium' : 'italic' %>
+                  <% color = cf.similarity == 1.0.to_d ? 'green' : 'red' %>
+                  <% icon = cf.similarity == 1.0.to_d ? 'check-circle' : 'exclamation' %>
+                  <% style = cf.similarity == 1.0.to_d ? 'font-medium' : 'italic' %>
                   <li>
                     <%= link_to contract_path(@contract, fitting_id: fitting.id), class: "mt-2 flex items-center #{style} text-#{color}-500 hover:text-#{color}-500" do %>
                       <%= heroicon icon, variant: :outline, options: { class: "flex-shrink-0 mr-1.5 h-5 w-5 text-#{color}-500 hover:text-#{color}-500" } %>
@@ -92,17 +92,9 @@
             Markup
           </dt>
           <dd class="mt-1 text-sm text-gray-900">
-            <%
-              markup_pct = @contract.markup_sell_pct(current_alliance.appraisal_market)
-              color =
-                if markup_pct < 0
-                  'green-500'
-                elsif markup_pct >= 50 && markup_pct < 100
-                  'red-500'
-                end
-            %>
+            <% markup_pct = @contract.markup_sell_pct(current_alliance.appraisal_market) %>
             <% unless markup_pct.infinite? || markup_pct.nan? %>
-              <span class="text-<%= color %>">
+              <span class="<%= contract_markup_pct_color(markup_pct) %>">
                 <%= '+' if markup_pct.positive? %><%= number_to_percentage markup_pct, precision: 0 %>
               </span>
             <% else %>

@@ -11,7 +11,7 @@ class Region < ApplicationRecord
 
     def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       unless region.type_history_expired?(type)
-        debug("Type histories have already been imported for #{type.log_name} in #{region.log_name} on #{Date.today}")
+        debug("Type histories have already been imported for #{type.log_name} in #{region.log_name} on #{Time.zone.today}")
         return
       end
 

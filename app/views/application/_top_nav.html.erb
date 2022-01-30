@@ -1,5 +1,5 @@
 <div class="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white shadow">
-  <button type="button" class="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden" data-action='click->toggle#toggle touch->toggle#toggle'>
+  <button type="button" class="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden" data-action="click->toggle#toggle touch->toggle#toggle">
     <span class="sr-only">Open sidebar</span>
     <!-- Heroicon name: outline/menu-alt-2 -->
     <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -51,7 +51,7 @@
         <div class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1" data-dropdown-target="menu">
           <%= link_to 'Settings', settings_path, class: 'block px-4 py-2 text-sm text-gray-700', role: 'menuitem', tabindex: '-1' %>
 
-          <%= link_to 'Log out', log_out_path, class: "block px-4 py-2 text-sm text-gray-700", 'data-turbo-method': :post %>
+          <%= link_to 'Log out', log_out_path, class: 'block px-4 py-2 text-sm text-gray-700', 'data-turbo-method': :post %>
         </div>
       </div>
     </div>

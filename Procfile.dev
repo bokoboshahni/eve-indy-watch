@@ -7,3 +7,4 @@ webpack: bin/webpack-dev-server
 prometheus: bundle exec prometheus_exporter
 redis: redis-server
 redoc: yarn exec redoc-cli serve api/openapi.yml --watch --ssr
+storybook: yarn run storybook

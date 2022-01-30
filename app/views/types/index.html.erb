@@ -6,7 +6,7 @@
 
 <%= render PageHeadingComponent.new(title: 'Types') do |c| %>
   <%= c.action do %>
-    <%= render(DataTableSorterComponent.new(name: :types, filter: @filter)) %>
+    <%= render(DataTableSorterComponent.new(name: :types, filter: @filter, session: session)) %>
   <% end %>
 <% end %>
 

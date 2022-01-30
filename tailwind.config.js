@@ -8,6 +8,7 @@ module.exports = {
     './app/views/**/*.html.erb',
     './app/helpers/**/*.rb',
     './app/javascript/**/*.js',
+    './spec/stories/**/*.rb'
   ],
   darkMode: 'media',
   theme: {

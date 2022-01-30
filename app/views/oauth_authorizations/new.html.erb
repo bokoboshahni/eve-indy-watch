@@ -4,7 +4,7 @@
 
 <main role="main">
   <p class="h4">
-    <%= raw t('.prompt', client_name: content_tag(:strong, class: 'text-info') { @pre_auth.client.name }) %>
+    <%= t('.prompt', client_name: @pre_auth.client.name) %>
   </p>
 
   <% if @pre_auth.scopes.count > 0 %>
@@ -13,7 +13,7 @@
 
       <ul class="text-info">
         <% @pre_auth.scopes.each do |scope| %>
-          <li><%= t scope, scope: [:doorkeeper, :scopes] %></li>
+          <li><%= t scope, scope: %i[doorkeeper scopes] %></li>
         <% end %>
       </ul>
     </div>
@@ -29,7 +29,7 @@
       <%= hidden_field_tag :scope, @pre_auth.scope %>
       <%= hidden_field_tag :code_challenge, @pre_auth.code_challenge %>
       <%= hidden_field_tag :code_challenge_method, @pre_auth.code_challenge_method %>
-      <%= submit_tag t('doorkeeper.authorizations.buttons.authorize'), class: "btn btn-success btn-lg btn-block" %>
+      <%= submit_tag t('doorkeeper.authorizations.buttons.authorize'), class: 'btn btn-success btn-lg btn-block' %>
     <% end %>
     <%= form_tag oauth_authorization_path, method: :delete do %>
       <%= hidden_field_tag :client_id, @pre_auth.client.uid %>
@@ -40,7 +40,7 @@
       <%= hidden_field_tag :scope, @pre_auth.scope %>
       <%= hidden_field_tag :code_challenge, @pre_auth.code_challenge %>
       <%= hidden_field_tag :code_challenge_method, @pre_auth.code_challenge_method %>
-      <%= submit_tag t('doorkeeper.authorizations.buttons.deny'), class: "btn btn-danger btn-lg btn-block" %>
+      <%= submit_tag t('doorkeeper.authorizations.buttons.deny'), class: 'btn btn-danger btn-lg btn-block' %>
     <% end %>
   </div>
 </main>

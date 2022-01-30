@@ -34,7 +34,7 @@
 
         <% pagy.series.each do |item| %>
           <% if item.is_a?(Integer) %>
-            <%=raw link.call(item, item, 'class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 hidden md:inline-flex relative items-center px-4 py-2 border text-sm font-medium"') %>
+            <%= link.call(item, item, 'class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 hidden md:inline-flex relative items-center px-4 py-2 border text-sm font-medium"') %>
           <% elsif item.is_a?(String) %>
             <a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
               <%= item %>
