@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+## [2.24.3](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.24.2...v2.24.3) (2022-01-30)
+
+
+### Bug Fixes
+
+* use rails helpers for pagination links ([#160](https://github.com/bokoboshahni/eve-indy-watch/issues/160)) ([0746ee3](https://github.com/bokoboshahni/eve-indy-watch/commit/0746ee3cdb5bf6cf3728a4af1a4ce9d4bc32a3e3))
+
 ## [2.24.2](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.24.1...v2.24.2) (2022-01-30)
 
 ## [2.24.1](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.24.0...v2.24.1) (2022-01-28)
