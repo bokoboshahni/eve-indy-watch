@@ -144,7 +144,7 @@
             </div>
             <div class="ml-3">
               <p class="text-sm text-red-700">
-                The due date for this order was <%= local_time @order.estimated_completion_at, format: :long_ordinal %>.
+                The due date for this order was <%= local_time @order.target_completion_at, format: :long_ordinal %>.
                 <span class="font-bold">Real life comes first!</span>
               </p>
             </div>
