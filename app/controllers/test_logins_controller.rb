@@ -1,8 +1,12 @@
 # frozen_string_literal: true
 
 class TestLoginsController < ApplicationController
+  def show; end
+
   def create
-    session[:current_user_id] = params[:user_id]
+    user = User.find(params[:user_id])
+
+    session[:current_user_id] = user.id
     redirect_to(root_path)
   end
 

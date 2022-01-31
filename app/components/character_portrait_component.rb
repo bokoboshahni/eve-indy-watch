@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class CharacterPortraitComponent < ApplicationComponent
+  DEFAULT_PORTRAIT_PATH = 'character-default.png'
+
   attr_reader :character, :classes
 
   def initialize(character:, classes: nil)
@@ -9,12 +11,8 @@ class CharacterPortraitComponent < ApplicationComponent
   end
 
   def call
-    image_tag icon_url, class: classes
-  end
+    return image_pack_tag(DEFAULT_PORTRAIT_PATH, class: classes) unless character.portrait_url_256
 
-  def icon_url
-    return character.portrait_url_256 if character.portrait_url_256
-
-    asset_pack_path('media/images/character-default.png')
+    image_tag character.portrait_url_256, class: classes
   end
 end

@@ -16,6 +16,7 @@ require 'webmock/rspec'
 require 'vcr'
 
 VCR.configure do |config|
+  config.ignore_hosts '127.0.0.1', 'localhost', 'chromedriver.storage.googleapis.com'
   config.cassette_library_dir = Rails.root.join('spec/cassettes')
   config.hook_into :webmock
   config.configure_rspec_metadata!
@@ -36,7 +37,9 @@ RSpec.configure do |config|
   config.include ViewComponent::TestHelpers, type: :component
   config.include Capybara::RSpecMatchers, type: :component
 
-  config.include SSOHelpers, type: :request
+  config.include RequestHelpers, type: :request
+
+  config.include SystemHelpers, type: :system
 
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.use_transactional_fixtures = true
