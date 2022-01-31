@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+## [2.24.5](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.24.4...v2.24.5) (2022-01-31)
+
+
+### Bug Fixes
+
+* target completion due date supplier alert ([#162](https://github.com/bokoboshahni/eve-indy-watch/issues/162)) ([0c3a4da](https://github.com/bokoboshahni/eve-indy-watch/commit/0c3a4da30b30c355845aa4fd14ebf90488b81ee3))
+
 ## [2.24.4](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.24.3...v2.24.4) (2022-01-31)
 
 
