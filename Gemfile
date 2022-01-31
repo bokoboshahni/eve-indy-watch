@@ -58,7 +58,7 @@ gem 'prometheus_exporter', '~> 1.0', require: false
 gem 'pry-rails', '~> 0.3'
 gem 'puma', '~> 5.6'
 gem 'pundit', '~> 2.1'
-gem 'rack-attack', '~> 6.5'
+gem 'rack-attack', '~> 6.6'
 gem 'rack-cors', '~> 1.1'
 gem 'rack-mini-profiler', '~> 2.0'
 gem 'rails', '~> 6.1.4', '>= 6.1.4.1'
