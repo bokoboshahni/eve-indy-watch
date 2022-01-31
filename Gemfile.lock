@@ -328,7 +328,7 @@ GEM
     omniauth-rails_csrf_protection (1.0.0)
       actionpack (>= 4.2)
       omniauth (~> 2.0)
-    pagy (5.9.2)
+    pagy (5.9.3)
       activesupport
     paper_trail (12.2.0)
       activerecord (>= 5.2)
