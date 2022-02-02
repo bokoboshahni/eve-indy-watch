@@ -99,6 +99,7 @@ group :development do
   gem 'capistrano3-puma', '~> 5.2'
   gem 'capistrano-bundler', '~> 2.0'
   gem 'capistrano-rails', '~> 1.6'
+  gem 'capistrano-rails-console', '~> 2.3'
   gem 'capistrano-sidekiq', github: 'seuros/capistrano-sidekiq'
   gem 'ed25519', '~> 1.3'
   gem 'erb_lint', '~> 0.1'
