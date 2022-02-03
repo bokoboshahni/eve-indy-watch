@@ -37,7 +37,7 @@ module EVEIndyWatch
 
     DEFAULT_SITE_NAME = 'EVE Indy Watch'
 
-    config.load_defaults 6.1
+    config.load_defaults 7.0
 
     if ENV['URL_HOST'].present?
       config.default_url_options = { host: ENV.fetch('URL_HOST'), protocol: 'https' }

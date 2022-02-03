@@ -19,11 +19,11 @@ class Structure < ApplicationRecord
 
         if locations_reader.exists(expires_key).zero?
           locations_writer.set(expires_key,
-                               struct.esi_expires_at.to_s(:number))
+                               struct.esi_expires_at.to_formatted_s(:number))
         end
         if locations_reader.exists(last_modified_key).zero?
           locations_writer.set(last_modified_key,
-                               struct.esi_last_modified_at.to_s(:number))
+                               struct.esi_last_modified_at.to_formatted_s(:number))
         end
 
         return struct
@@ -35,8 +35,8 @@ class Structure < ApplicationRecord
       location = Location.find_by(locatable_id: struct.id)
       location ? location.update!(name: struct.name) : Location.create!(locatable: struct, name: struct.name)
 
-      locations_writer.set(expires_key, struct.esi_expires_at.to_s(:number))
-      locations_writer.set(last_modified_key, struct.esi_last_modified_at.to_s(:number))
+      locations_writer.set(expires_key, struct.esi_expires_at.to_formatted_s(:number))
+      locations_writer.set(last_modified_key, struct.esi_last_modified_at.to_formatted_s(:number))
 
       debug("Synced structure #{structure_id} from ESI")
       struct

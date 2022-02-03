@@ -12,7 +12,7 @@ class ESIAuthorizationsController < ApplicationController
 
   def create
     state = session['omniauth.state'] = SecureRandom.hex
-    redirect_to oauth.auth_code.authorize_url(redirect_uri: auth_eve_callback_url, scope: scopes.join(' '), state: state)
+    redirect_to oauth.auth_code.authorize_url(redirect_uri: auth_eve_callback_url, scope: scopes.join(' '), state: state), allow_other_host: true
   end
 
   def destroy

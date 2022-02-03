@@ -118,7 +118,7 @@ class Market < ApplicationRecord
   end
 
   def latest_snapshot_key
-    "markets.#{id}.#{latest_snapshot_time.to_s(:number)}"
+    "markets.#{id}.#{latest_snapshot_time.to_formatted_s(:number)}"
   end
 
   def latest_snapshot_type_ids
@@ -128,7 +128,7 @@ class Market < ApplicationRecord
   def snapshot_keys
     return [] unless markets_reader.exists("markets.#{id}.snapshots") == 1
 
-    markets_reader.zrangebyscore("markets.#{id}.snapshots", 0, latest_snapshot_time.to_s(:number).to_i,
+    markets_reader.zrangebyscore("markets.#{id}.snapshots", 0, latest_snapshot_time.to_formatted_s(:number).to_i,
                                  with_scores: true)
                   .to_h.invert.transform_keys(&:to_i)
   end

@@ -25,7 +25,7 @@ class Appraisal < ApplicationRecord
     def stats # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       @stats ||=
         begin
-          market_key = "markets.#{market_id}.#{time.to_s(:number)}"
+          market_key = "markets.#{market_id}.#{time.to_formatted_s(:number)}"
           type_ids = items.keys
           type_keys =  type_ids.map { |t| "#{market_key}.types.#{t}.stats" }
           market_stats = markets_reader.mapped_mget(*type_keys)

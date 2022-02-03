@@ -64,7 +64,7 @@ class Location < ApplicationRecord
         @etag = headers['etag']
         @page_count = headers['X-Pages'].to_i
         @orders_dir = Rails.root.join("tmp/orders/#{location_id}")
-        @orders_key = "orders.#{location_id}.#{time.to_s(:number)}"
+        @orders_key = "orders.#{location_id}.#{time.to_formatted_s(:number)}"
       end
     end
 
@@ -157,8 +157,8 @@ class Location < ApplicationRecord
               orders_writer.zadd("orders.#{location_id}.snapshots", time_key, orders_key)
             end
 
-            orders_writer.set("orders.#{location_id}.esi_last_modified", time.to_s(:number))
-            orders_writer.set("orders.#{location_id}.esi_expires", expires.to_s(:number))
+            orders_writer.set("orders.#{location_id}.esi_last_modified", time.to_formatted_s(:number))
+            orders_writer.set("orders.#{location_id}.esi_expires", expires.to_formatted_s(:number))
           end
         else
           debug("No orders for #{log_name} at #{log_time}")
@@ -166,7 +166,7 @@ class Location < ApplicationRecord
 
         next unless history_uploads_enabled?
 
-        orders_file = "#{orders_dir}/#{time.to_s(:number)}.json"
+        orders_file = "#{orders_dir}/#{time.to_formatted_s(:number)}.json"
         measure_debug(
           "Wrote #{unique_orders.count} order(s) to #{orders_file} for #{log_name} at #{log_time}",
           metric: "#{METRIC_NAME}/write_file"
@@ -227,7 +227,7 @@ class Location < ApplicationRecord
     end
 
     def time_key
-      time.to_s(:number)
+      time.to_formatted_s(:number)
     end
   end
 end

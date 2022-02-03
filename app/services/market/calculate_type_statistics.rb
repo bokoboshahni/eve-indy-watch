@@ -216,7 +216,7 @@ class Market < ApplicationRecord
           expiry = app_config.market_snapshot_expiry.minutes.from_now.to_i
 
           stats = {
-            time: time.to_s(:number),
+            time: time.to_formatted_s(:number),
             type_id: type_id.to_i,
             depth: dom[:depth],
             flow: order_flow[:levels]
@@ -322,7 +322,7 @@ class Market < ApplicationRecord
     end
 
     def time_key
-      time.to_s(:number)
+      time.to_formatted_s(:number)
     end
 
     def latest_key

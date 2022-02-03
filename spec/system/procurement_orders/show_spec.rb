@@ -10,7 +10,7 @@ RSpec.describe 'Procurement order details', type: :system do
     main_market = alliance.create_main_market(name: Faker::Finance.stock_market)
     appraisal_market = alliance.create_appraisal_market(name: Faker::Finance.stock_market)
 
-    market_time = Faker::Time.between(from: 5.minutes.ago, to: Time.zone.now).to_s(:number)
+    market_time = Faker::Time.between(from: 5.minutes.ago, to: Time.zone.now).to_formatted_s(:number)
 
     type = order.items.first.type
     type_stats = {

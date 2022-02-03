@@ -11,7 +11,7 @@ class Location < ApplicationRecord
 
     def call
       now = Time.zone.now.to_i
-      location_ids_key = "orders.#{source_location_id}.#{time.to_s(:number)}.location_ids"
+      location_ids_key = "orders.#{source_location_id}.#{time.to_formatted_s(:number)}.location_ids"
       location_ids = orders_reader.smembers(location_ids_key).reject do |id|
         locations_reader.get("locations.#{id}.esi_expires").to_i > now.to_i
       end

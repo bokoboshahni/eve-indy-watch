@@ -125,7 +125,7 @@ class Type < ApplicationRecord
 
     return {} unless time
 
-    key = "markets.#{market.id}.#{time.to_datetime.to_s(:number)}.types.#{id}.stats"
+    key = "markets.#{market.id}.#{time.to_datetime.to_formatted_s(:number)}.types.#{id}.stats"
     json = markets_reader.get(key)
     json.present? ? Oj.load(json).merge(market_id: market.id) : {}
   end

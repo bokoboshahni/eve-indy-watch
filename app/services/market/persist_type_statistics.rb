@@ -63,7 +63,7 @@ class Market < ApplicationRecord
     end
 
     def time_key
-      time.to_s(:number)
+      time.to_formatted_s(:number)
     end
   end
 end
