@@ -124,7 +124,7 @@ GEM
       parser (>= 2.4)
       smart_properties
     bindex (0.8.1)
-    bootsnap (1.10.2)
+    bootsnap (1.10.3)
       msgpack (~> 1.2)
     brakeman (5.2.1)
     brpoplpush-redis_script (0.1.2)
