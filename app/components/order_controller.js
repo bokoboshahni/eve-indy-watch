@@ -41,7 +41,7 @@ export default class extends Controller {
     return url.toString()
   }
 
-  calculateTotal(_event) {
+  calculateTotal() {
     const subtotal = this.itemSubtotalTargets.map(t => Number(t.value)).reduce((s, a) => s + a, 0)
     this.subtotalTarget.innerHTML = (Math.round((subtotal + Number.EPSILON) * 100) / 100).toLocaleString()
 

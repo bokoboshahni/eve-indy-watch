@@ -44,7 +44,7 @@ module EVEIndyWatch
       config.action_controller.default_url_options = { host: ENV.fetch('URL_HOST'), protocol: 'https' }
     end
 
-    config.action_controller.asset_host = ENV.fetch('RAILS_ASSET_HOST') if ENV['RAILS_ASSET_HOST']
+    config.action_controller.asset_host = ENV.fetch('RAILS_ASSET_HOST', 'localhost:3000')
 
     config.active_job.queue_adapter = :sidekiq
 
