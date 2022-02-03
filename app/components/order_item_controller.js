@@ -1,4 +1,4 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
   static targets = ['subtotal', 'price', 'quantity', 'subtotalField', 'destroy']
@@ -22,7 +22,12 @@ export default class extends Controller {
   }
 
   calculateTotal() {
-    const subtotal = (Math.round(((Number(this.quantityTarget.value) * Number(this.priceTarget.value)) + Number.EPSILON) * 100) / 100)
+    const subtotal =
+      Math.round(
+        (Number(this.quantityTarget.value) * Number(this.priceTarget.value) +
+          Number.EPSILON) *
+          100
+      ) / 100
     this.subtotalTarget.innerHTML = subtotal.toLocaleString()
     this.subtotalFieldTarget.value = subtotal
     this.subtotalFieldTarget.dispatchEvent(new Event('change'))

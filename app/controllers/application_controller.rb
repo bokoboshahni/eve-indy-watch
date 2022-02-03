@@ -26,6 +26,10 @@ class ApplicationController < ActionController::Base
     redirect_to dashboard_path unless current_user.admin?
   end
 
+  def authorize_beta_tester!
+    redirect_to dashboard_path unless current_user.beta_tester?
+  end
+
   helper_method :current_user
   def current_user
     @current_user ||= User.includes(:alliance).find(session[:current_user_id]) if session[:current_user_id].present?

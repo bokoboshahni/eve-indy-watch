@@ -35,6 +35,13 @@ module.exports = function(api) {
           exclude: ['transform-typeof-symbol']
         }
       ],
+      [
+        '@babel/preset-react',
+        {
+          development: !isProductionEnv,
+          useBuiltins: true
+        }
+      ]
     ].filter(Boolean),
     plugins: [
       'babel-plugin-macros',
@@ -77,6 +84,12 @@ module.exports = function(api) {
         '@babel/plugin-transform-regenerator',
         {
           async: false
+        }
+      ],
+      process.env.WEBPACK_SERVE && 'react-refresh/babel',
+      isProductionEnv && ['babel-plugin-transform-react-remove-prop-types',
+        {
+          removeImport: true
         }
       ]
     ].filter(Boolean)

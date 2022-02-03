@@ -13,7 +13,7 @@ vendor/bundle
 /db/*.sqlite3-*
 
 # Ignore Redis dump files.
-dump.rdb
+*.rdb
 
 # Ignore all logfiles and tempfiles.
 /log/*

@@ -92,5 +92,8 @@ Rails.application.routes.draw do # rubocop:disable Metrics/BlockLength
     resources :personal_access_tokens, path: 'tokens', only: %i[index new create show destroy]
   end
 
+  get 'beta', to: 'dashboards#beta'
+  get 'beta/*path', to: 'dashboards#beta'
+
   root to: 'home#index'
 end

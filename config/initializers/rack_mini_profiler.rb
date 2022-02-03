@@ -2,4 +2,4 @@
 
 Rack::MiniProfiler.config.storage = Rack::MiniProfiler::MemoryStore
 
-Rack::MiniProfiler.config.skip_paths << %r{rails/storybook}
+Rack::MiniProfiler.config.skip_paths << /beta/

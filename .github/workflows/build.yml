@@ -61,7 +61,7 @@ jobs:
           bin/erblint --lint-all
           yarn stylelint app/javascript/**/*.css
           yarn eslint app/{components,javascript}
-          yarn prettier --check app/javascript/**/*.{css,js}
+          yarn prettier --check app/components app/javascript client stories
 
   security:
     name: Security
