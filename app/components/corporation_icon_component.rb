@@ -15,6 +15,6 @@ class CorporationIconComponent < ApplicationComponent
   def icon_url
     return corporation.icon_url_256 if corporation.icon_url_256
 
-    asset_pack_path('media/images/corporation-default.png')
+    asset_pack_path('static/corporation-default.png')
   end
 end

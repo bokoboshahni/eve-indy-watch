@@ -16,6 +16,9 @@ FileUtils.chdir APP_ROOT do
   system! "gem install bundler --conservative"
   system("bundle check") || system!("bundle install")
 
+  # Install JavaScript dependencies
+  system! "bin/yarn"
+
   puts "\n== Installing Yarn dependencies =="
   system! 'yarn install'
 

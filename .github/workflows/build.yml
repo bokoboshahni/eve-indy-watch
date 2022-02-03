@@ -59,9 +59,9 @@ jobs:
         run: |
           bin/rubocop -P
           bin/erblint --lint-all
-          yarn stylelint app/javascript/**/*.scss
-          yarn eslint app/javascript
-          yarn prettier --check app/javascript/**/*.{scss,js}
+          yarn stylelint app/javascript/**/*.css
+          yarn eslint app/{components,javascript}
+          yarn prettier --check app/javascript/**/*.{css,js}
 
   security:
     name: Security

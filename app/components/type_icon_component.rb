@@ -13,9 +13,9 @@ class TypeIconComponent < ApplicationComponent
   end
 
   def icon_url
-    return asset_pack_path('media/images/blueprint.png') if type.blueprint?
+    return asset_pack_path('static/blueprint.png') if type.blueprint?
 
-    return asset_pack_path('media/images/empire-crate.png') if type.skin?
+    return asset_pack_path('static/empire-crate.png') if type.skin?
 
     type.icon_url
   end

@@ -21,7 +21,7 @@ export default class extends Controller {
     }
   }
 
-  calculateTotal(_event) {
+  calculateTotal() {
     const subtotal = (Math.round(((Number(this.quantityTarget.value) * Number(this.priceTarget.value)) + Number.EPSILON) * 100) / 100)
     this.subtotalTarget.innerHTML = subtotal.toLocaleString()
     this.subtotalFieldTarget.value = subtotal

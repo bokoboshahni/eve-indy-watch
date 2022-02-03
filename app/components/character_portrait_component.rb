@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class CharacterPortraitComponent < ApplicationComponent
-  DEFAULT_PORTRAIT_PATH = 'character-default.png'
+  DEFAULT_PORTRAIT_PATH = 'static/character-default.png'
 
   attr_reader :character, :classes
 
