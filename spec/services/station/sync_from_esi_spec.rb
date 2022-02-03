@@ -34,12 +34,12 @@ RSpec.describe Station::SyncFromESI, type: :service, vcr: { allow_playback_repea
 
     it "caches the station's expiry" do
       sync_from_esi.call(station_id)
-      expect(locations_reader.get("locations.#{station_id}.esi_expires")).to eq(station.esi_expires_at.to_s(:number))
+      expect(locations_reader.get("locations.#{station_id}.esi_expires")).to eq(station.esi_expires_at.to_formatted_s(:number))
     end
 
     it "caches the station's last modified time" do
       sync_from_esi.call(station_id)
-      expect(locations_reader.get("locations.#{station_id}.esi_last_modified")).to eq(station.esi_last_modified_at.to_s(:number))
+      expect(locations_reader.get("locations.#{station_id}.esi_last_modified")).to eq(station.esi_last_modified_at.to_formatted_s(:number))
     end
   end
 

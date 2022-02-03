@@ -69,7 +69,7 @@ class Fitting < ApplicationRecord
     def market_stock_level # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       result = {}
 
-      market_key = "markets.#{market_id}.#{market_time.to_s(:number)}"
+      market_key = "markets.#{market_id}.#{market_time.to_formatted_s(:number)}"
       type_ids = compact_items.keys
       type_keys =  type_ids.map { |t| "#{market_key}.types.#{t}.stats" }
       market_stats = markets_reader.mapped_mget(*type_keys)

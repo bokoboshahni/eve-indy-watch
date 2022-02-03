@@ -20,7 +20,7 @@ gem 'aws-sdk-s3', '~> 1.111'
 gem 'bcrypt', '~> 3.1'
 gem 'better_html', '~> 1.0'
 gem 'bootsnap', '>= 1.4.4', require: false
-gem 'composite_primary_keys', '~> 13.0'
+gem 'composite_primary_keys', '~> 14.0'
 gem 'device_detector', '1.0.5'
 gem 'discard', '~> 1.2'
 gem 'doorkeeper', '~> 5.5'
@@ -61,7 +61,7 @@ gem 'pundit', '~> 2.1'
 gem 'rack-attack', '~> 6.6'
 gem 'rack-cors', '~> 1.1'
 gem 'rack-mini-profiler', '~> 2.0'
-gem 'rails', '~> 6.1.4', '>= 6.1.4.1'
+gem 'rails', '~> 7.0.1'
 gem 'rails_semantic_logger', '~> 4.9'
 gem 'repost', '~> 0.3'
 gem 'retriable', '~> 3.1'
@@ -93,7 +93,7 @@ group :development, :test do
 end
 
 group :development do
-  gem 'annotate', '~> 3.1'
+  gem 'annotate', github: 'dabit/annotate_models', branch: 'rails-7'
   gem 'bcrypt_pbkdf', '~> 1.1'
   gem 'capistrano', '~> 3.16'
   gem 'capistrano3-puma', '~> 5.2'

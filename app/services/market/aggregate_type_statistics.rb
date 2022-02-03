@@ -47,11 +47,11 @@ class Market < ApplicationRecord
     end
 
     def start_time_key
-      start_time.to_s(:number)
+      start_time.to_formatted_s(:number)
     end
 
     def end_time_key
-      end_time.to_s(:number)
+      end_time.to_formatted_s(:number)
     end
   end
 end

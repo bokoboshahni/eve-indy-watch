@@ -17,7 +17,7 @@ class Market < ApplicationRecord
         a.push(*markets_reader.mget(*keys).map! { |j| Oj.load(j).deep_stringify_keys! })
       end
 
-      types_file = "#{market_dir}/#{time.to_s(:number)}.json"
+      types_file = "#{market_dir}/#{time.to_formatted_s(:number)}.json"
       measure_debug(
         "Wrote #{type_stats.count} type(s) to #{types_file} for #{log_name} at #{log_time}",
         metric: "#{METRIC_NAME}/write_file"
@@ -60,7 +60,7 @@ class Market < ApplicationRecord
     end
 
     def time_key
-      time.to_s(:number)
+      time.to_formatted_s(:number)
     end
 
     def log_name

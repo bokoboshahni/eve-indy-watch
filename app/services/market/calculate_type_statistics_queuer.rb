@@ -13,7 +13,7 @@ class Market < ApplicationRecord
     def call # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
       market.update_ingestion_info!
 
-      time_key = time.to_s(:number)
+      time_key = time.to_formatted_s(:number)
       existing_snapshot = market.snapshot_keys[time_key.to_i]
       if existing_snapshot && !force
         debug("Market statistics have already been generated for #{log_name} at #{time.to_s(:db)}")
