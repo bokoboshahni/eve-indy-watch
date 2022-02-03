@@ -1,5 +1,7 @@
 # EVE Indy Watch Changelog
 
+## [2.24.6](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.24.5...v2.24.6) (2022-02-03)
+
 ## [2.24.5](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.24.4...v2.24.5) (2022-01-31)
 
 
