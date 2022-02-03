@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [2.25.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.24.6...v2.25.0) (2022-02-03)
+
+
+### Features
+
+* upgrade to rails 7 ([#174](https://github.com/bokoboshahni/eve-indy-watch/issues/174)) ([23bf0b8](https://github.com/bokoboshahni/eve-indy-watch/commit/23bf0b8c648fbdc713d5dd610d68b4094d11fdf9))
+
 ## [2.24.6](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.24.5...v2.24.6) (2022-02-03)
 
 ## [2.24.5](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.24.4...v2.24.5) (2022-01-31)
