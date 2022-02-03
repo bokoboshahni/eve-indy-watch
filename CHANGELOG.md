@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [2.26.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.25.0...v2.26.0) (2022-02-03)
+
+
+### Features
+
+* switch to shakapacker ([#175](https://github.com/bokoboshahni/eve-indy-watch/issues/175)) ([ce3c253](https://github.com/bokoboshahni/eve-indy-watch/commit/ce3c25341a8cd49b04ac1004bb6258fa7e668400))
+
 # [2.25.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.24.6...v2.25.0) (2022-02-03)
 
 
