@@ -6,8 +6,6 @@ RUN gem update --system && \
     gem install bundler -v 2.3.5 && \
     gem cleanup bundler
 
-RUN gem install webdrivers
-
 # Default value to allow debug server to serve content over GitHub Codespace's port forwarding service
 # The value is a comma-separated list of allowed domains
 ENV RAILS_DEVELOPMENT_HOSTS=".githubpreview.dev"
@@ -34,7 +32,12 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | d
     && apt-get update \
     && apt-get install -y gh
 
-RUN gem install foreman solargraph
+RUN curl -fsSL https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /usr/share/keyrings/google.gpg \
+    && echo "deb [signed-by=/usr/share/keyrings/google.gpg] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
+    && apt-get update \
+    && apt-get install -y google-chrome-stable
+
+RUN gem install foreman solargraph webdrivers
 
 ARG USERNAME=vscode
 

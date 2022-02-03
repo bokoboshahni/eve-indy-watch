@@ -6,5 +6,5 @@ pushd $APP_ROOT > /dev/null
 export LOCKBOX_MASTER_KEY=$(bin/rails lockbox_key)
 export SECRET_KEY_BASE=$(bin/rails secret)
 bin/rails db:setup
-bundle exec rspec spec/{components,controllers,filters,fixtures,helpers,jobs,models,notifications,policies,reports,services,views,workers}
+bundle exec rspec spec/system
 popd

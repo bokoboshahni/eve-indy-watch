@@ -5,6 +5,7 @@ FactoryBot.define do
     association :location, factory: :station_location
     association :requester, factory: :character
 
+    bonus { 0.0 }
     multiplier { 100.0 }
     status { :draft }
     visibility { :everyone }

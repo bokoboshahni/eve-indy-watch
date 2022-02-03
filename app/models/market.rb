@@ -53,8 +53,8 @@ class Market < ApplicationRecord
   belongs_to :source_location, class_name: 'Location', inverse_of: :markets, optional: true
   belongs_to :type_history_region, class_name: 'Region', inverse_of: :markets_for_type_history, optional: true
 
-  has_many :alliances_as_appraisal_market, class_name: 'Alliance', inverse_of: :appraisal_market
-  has_many :alliances_as_main_market, class_name: 'Alliance', inverse_of: :main_market
+  has_many :alliances_as_appraisal_market, class_name: 'Alliance', inverse_of: :appraisal_market, foreign_key: :appraisal_market_id
+  has_many :alliances_as_main_market, class_name: 'Alliance', inverse_of: :main_market, foreign_key: :main_market_id
   has_many :appraisals, inverse_of: :market, dependent: :destroy
   has_many :fitting_markets, inverse_of: :market
   has_many :fitting_stock_levels, inverse_of: :market
