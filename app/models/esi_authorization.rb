@@ -41,7 +41,7 @@ class ESIAuthorization < ApplicationRecord
 
   has_one :corporation, inverse_of: :esi_authorization, dependent: :restrict_with_exception
 
-  encrypts :access_token, :refresh_token
+  lockbox_encrypts :access_token, :refresh_token
 
   delegate :name, to: :character
 
