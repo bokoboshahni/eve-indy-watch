@@ -445,7 +445,7 @@ GEM
     rb-fsevent (0.11.0)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    redis (4.5.1)
+    redis (4.6.0)
     redis-prescription (1.0.0)
     regexp_parser (2.2.0)
     repost (0.3.8)
@@ -533,7 +533,7 @@ GEM
       concurrent-ruby
       redis-prescription
       sidekiq
-    sidekiq-unique-jobs (7.1.12)
+    sidekiq-unique-jobs (7.1.13)
       brpoplpush-redis_script (> 0.1.1, <= 2.0.0)
       concurrent-ruby (~> 1.0, >= 1.0.5)
       sidekiq (>= 5.0, < 8.0)
