@@ -29,7 +29,7 @@
 #     * **`name`**
 #
 class SlackWebhook < ApplicationRecord
-  encrypts :url
+  lockbox_encrypts :url
 
   belongs_to :owner, polymorphic: true
 
