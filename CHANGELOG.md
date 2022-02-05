@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+## [2.26.2](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.26.1...v2.26.2) (2022-02-05)
+
+
+### Bug Fixes
+
+* path to login button image ([56533c4](https://github.com/bokoboshahni/eve-indy-watch/commit/56533c4a34f25ae8556379354c196b63f35e4ac5))
+
 ## [2.26.1](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.26.0...v2.26.1) (2022-02-05)
 
 
