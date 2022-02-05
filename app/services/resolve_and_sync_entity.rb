@@ -11,7 +11,7 @@ class ResolveAndSyncEntity < ApplicationService
     case id
     when 0
       nil
-    when 90_000_000..97_999_999
+    when 90_000_000..97_999_999, 2_100_000_000..2_147_483_647
       Character::SyncFromESI.call(id)
     when 1_000_000..2_000_000, 98_000_000..98_999_999
       Corporation::SyncFromESI.call(id)
