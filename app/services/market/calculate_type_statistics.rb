@@ -212,7 +212,7 @@ class Market < ApplicationRecord
         order_flow[:buy]&.delete(:levels)
         order_flow[:sell]&.delete(:levels)
 
-        markets_writer.pipelined do # rubocop:disable Metrics/BlockLength
+        markets_writer.pipelined do |pipeline| # rubocop:disable Metrics/BlockLength
           expiry = app_config.market_snapshot_expiry.minutes.from_now.to_i
 
           stats = {
@@ -226,48 +226,48 @@ class Market < ApplicationRecord
           stats[:sell] = dom.fetch(:sell, {}).merge(order_flow.fetch(:sell, {}))
 
           if dom[:buy]
-            markets_writer.set("#{type_key}.buy_price", dom[:buy][:price_max])
-            markets_writer.expireat("#{type_key}.buy_price", expiry)
+            pipeline.set("#{type_key}.buy_price", dom[:buy][:price_max])
+            pipeline.expireat("#{type_key}.buy_price", expiry)
 
-            markets_writer.set("#{type_key}.buy_count", dom[:buy][:order_count])
-            markets_writer.expireat("#{type_key}.buy_count", expiry)
+            pipeline.set("#{type_key}.buy_count", dom[:buy][:order_count])
+            pipeline.expireat("#{type_key}.buy_count", expiry)
 
-            markets_writer.set("#{type_key}.buy_volume", dom[:buy][:volume_sum])
-            markets_writer.expireat("#{type_key}.buy_volume", expiry)
+            pipeline.set("#{type_key}.buy_volume", dom[:buy][:volume_sum])
+            pipeline.expireat("#{type_key}.buy_volume", expiry)
           end
 
           if dom[:sell]
-            markets_writer.set("#{type_key}.sell_price", dom[:sell][:price_min])
-            markets_writer.expireat("#{type_key}.sell_price", expiry)
+            pipeline.set("#{type_key}.sell_price", dom[:sell][:price_min])
+            pipeline.expireat("#{type_key}.sell_price", expiry)
 
-            markets_writer.set("#{type_key}.sell_count", dom[:sell][:order_count])
-            markets_writer.expireat("#{type_key}.sell_count", expiry)
+            pipeline.set("#{type_key}.sell_count", dom[:sell][:order_count])
+            pipeline.expireat("#{type_key}.sell_count", expiry)
 
-            markets_writer.set("#{type_key}.sell_volume", dom[:sell][:volume_sum])
-            markets_writer.expireat("#{type_key}.sell_volume", expiry)
+            pipeline.set("#{type_key}.sell_volume", dom[:sell][:volume_sum])
+            pipeline.expireat("#{type_key}.sell_volume", expiry)
           end
 
           if dom[:buy] && dom[:sell]
             stats[:buy_sell_spread] = dom[:buy_sell_spread]
-            markets_writer.set("#{type_key}.buy_sell_spread", dom[:buy_sell_spread])
-            markets_writer.expireat("#{type_key}.buy_sell_spread", expiry)
+            pipeline.set("#{type_key}.buy_sell_spread", dom[:buy_sell_spread])
+            pipeline.expireat("#{type_key}.buy_sell_spread", expiry)
 
             stats[:mid_price] = dom[:mid_price]
-            markets_writer.set("#{type_key}.mid_price", dom[:mid_price])
-            markets_writer.expireat("#{type_key}.mid_price", expiry)
+            pipeline.set("#{type_key}.mid_price", dom[:mid_price])
+            pipeline.expireat("#{type_key}.mid_price", expiry)
           end
 
-          markets_writer.set("#{type_key}.stats", Oj.dump(stats))
-          markets_writer.expireat("#{type_key}.stats", expiry)
+          pipeline.set("#{type_key}.stats", Oj.dump(stats))
+          pipeline.expireat("#{type_key}.stats", expiry)
 
-          markets_writer.sadd("markets.#{market_id}.#{time_key}.type_ids", type_id)
-          markets_writer.expireat("markets.#{market_id}.#{time_key}.type_ids", expiry)
+          pipeline.sadd("markets.#{market_id}.#{time_key}.type_ids", type_id)
+          pipeline.expireat("markets.#{market_id}.#{time_key}.type_ids", expiry)
 
-          markets_writer.incr("markets.#{market_id}.#{time_key}.type_count")
-          markets_writer.expireat("markets.#{market_id}.#{time_key}.type_count", expiry)
+          pipeline.incr("markets.#{market_id}.#{time_key}.type_count")
+          pipeline.expireat("markets.#{market_id}.#{time_key}.type_count", expiry)
 
-          markets_writer.incrby("markets.#{market_id}.#{time_key}.order_count", current_orders.count)
-          markets_writer.expireat("markets.#{market_id}.#{time_key}.order_count", expiry)
+          pipeline.incrby("markets.#{market_id}.#{time_key}.order_count", current_orders.count)
+          pipeline.expireat("markets.#{market_id}.#{time_key}.order_count", expiry)
         end
       end
 
