@@ -1,5 +1,13 @@
 # EVE Indy Watch Changelog
 
+## [2.26.1](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.26.0...v2.26.1) (2022-02-05)
+
+
+### Bug Fixes
+
+* resolve additional character ids ([e4f3b5d](https://github.com/bokoboshahni/eve-indy-watch/commit/e4f3b5df0546a2f3ee570a23ef1d088c591a8474))
+* use lockbox_encrypts instead of encrypts ([16ea55e](https://github.com/bokoboshahni/eve-indy-watch/commit/16ea55ea95feb5ee81f89fa0adcf77789c6ccaeb))
+
 # [2.26.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.25.0...v2.26.0) (2022-02-03)
 
 
