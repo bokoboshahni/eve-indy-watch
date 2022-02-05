@@ -121,40 +121,40 @@ class Location < ApplicationRecord
             "Wrote #{unique_orders.count} order(s) to Redis for #{log_name} at #{log_time}",
             metric: "#{METRIC_NAME}/write_redis"
           ) do
-            orders_writer.pipelined do
+            orders_writer.pipelined do |pipeline|
               order_set_count = unique_orders.group_by { |o| o['l'] }.each_with_object(0) do |(location_id, orders), c|
-                orders_writer.sadd("#{orders_key}.location_ids", location_id)
+                pipeline.sadd("#{orders_key}.location_ids", location_id)
 
                 orders.group_by { |o| o['t'] }.each do |(type_id, orders)|
-                  orders_writer.sadd("#{orders_key}.type_ids", type_id)
+                  pipeline.sadd("#{orders_key}.type_ids", type_id)
 
                   index_key = "#{'%019d' % location_id}:#{'%019d' % type_id}"
 
                   order_set_key = "#{orders_key}.orders.#{location_id}.#{type_id}"
 
-                  orders_writer.set(order_set_key, Oj.dump(orders))
-                  orders_writer.expireat(order_set_key, expiry)
+                  pipeline.set(order_set_key, Oj.dump(orders))
+                  pipeline.expireat(order_set_key, expiry)
 
-                  orders_writer.sadd("#{orders_key}.order_ids", orders.map { |o| o['o'] })
-                  orders_writer.zadd("#{orders_key}.order_set_keys_by_type", type_id, order_set_key)
+                  pipeline.sadd("#{orders_key}.order_ids", orders.map { |o| o['o'] })
+                  pipeline.zadd("#{orders_key}.order_set_keys_by_type", type_id, order_set_key)
 
-                  orders_writer.sadd("#{orders_key}.type_ids_by_location.#{location_id}", type_id)
+                  pipeline.sadd("#{orders_key}.type_ids_by_location.#{location_id}", type_id)
 
                   c += 1
                 end
 
-                orders_writer.expireat("#{orders_key}.type_ids_by_location.#{location_id}", expiry)
+                pipeline.expireat("#{orders_key}.type_ids_by_location.#{location_id}", expiry)
               end
 
-              orders_writer.expireat("#{orders_key}.location_ids", expiry)
-              orders_writer.expireat("#{orders_key}.order_ids", expiry)
-              orders_writer.expireat("#{orders_key}.order_set_keys_by_type", expiry)
-              orders_writer.expireat("#{orders_key}.type_ids", expiry)
+              pipeline.expireat("#{orders_key}.location_ids", expiry)
+              pipeline.expireat("#{orders_key}.order_ids", expiry)
+              pipeline.expireat("#{orders_key}.order_set_keys_by_type", expiry)
+              pipeline.expireat("#{orders_key}.type_ids", expiry)
 
-              orders_writer.set("#{orders_key}.order_set_count", order_set_count)
-              orders_writer.expireat("#{orders_key}.order_set_count", expiry)
+              pipeline.set("#{orders_key}.order_set_count", order_set_count)
+              pipeline.expireat("#{orders_key}.order_set_count", expiry)
 
-              orders_writer.zadd("orders.#{location_id}.snapshots", time_key, orders_key)
+              pipeline.zadd("orders.#{location_id}.snapshots", time_key, orders_key)
             end
 
             orders_writer.set("orders.#{location_id}.esi_last_modified", time.to_formatted_s(:number))
