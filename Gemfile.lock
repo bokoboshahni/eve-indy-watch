@@ -511,7 +511,7 @@ GEM
     semantic_logger (4.10.0)
       concurrent-ruby (~> 1.0)
     semantic_range (3.0.0)
-    shakapacker (6.0.2)
+    shakapacker (6.1.1)
       activesupport (>= 5.2)
       rack-proxy (>= 0.6.1)
       railties (>= 5.2)
@@ -706,7 +706,7 @@ DEPENDENCIES
   scenic (~> 1.5)
   selenium-webdriver
   semantic_logger
-  shakapacker (~> 6.0)
+  shakapacker (~> 6.1)
   sidekiq (~> 6.4)
   sidekiq-batch (~> 0.1)
   sidekiq-scheduler (~> 3.1)
