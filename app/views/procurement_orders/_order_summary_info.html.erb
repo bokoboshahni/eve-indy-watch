@@ -115,7 +115,7 @@
           <dd class="font-medium text-gray-900"><%= number_to_isk(order.subtotal_with_multiplier) %>&nbsp;ISK</dd>
         </div>
       <% end %>
-      <% if @order.bonus.positive? %>
+      <% if @order.bonus.to_d.positive? %>
         <div class="py-2 flex items-center justify-between">
           <dt class="text-gray-600">Bonus</dt>
           <dd class="font-medium text-gray-900"><%= number_to_isk(@order.bonus) %>&nbsp;ISK</dd>
