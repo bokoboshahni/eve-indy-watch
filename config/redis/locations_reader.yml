@@ -11,4 +11,4 @@ staging: &staging
   timeout: 1
 
 test:
-  url: <%= ENV.fetch('LOCATIONS_READER_REDIS_URL', "redis://127.0.0.1:6379/9") %>
+  url: <%= ENV.fetch('TEST_LOCATIONS_READER_REDIS_URL', "redis://127.0.0.1:6379/9") %>
