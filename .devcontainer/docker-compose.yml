@@ -9,11 +9,17 @@ services:
         # Update 'VARIANT' to pick a version of Ruby: 3, 3.0, 2, 2.7, 2.6
         # Append -bullseye or -buster to pin to an OS version.
         # Use -bullseye variants on local arm64/Apple Silicon.
-        VARIANT: "3"
+        VARIANT: "3.0"
         NODE_VERSION: "lts/*"
 
     volumes:
       - ..:/workspace:cached
+      - eve-indy-watch-commandhistory:/commandhistory
+      - eve-indy-watch-dotfiles:/dotfiles
+      - eve-indy-watch-gnupg:/home/vscode/.gnupg
+      - eve-indy-watch-ssh:/home/vscode/.ssh
+      - eve-indy-watch-aws:/home/vscode/.aws
+      - eve-indy-watch-nvim:/home/vscode/.config/nvim
 
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
@@ -26,18 +32,31 @@ services:
       QUEUE_REDIS_URL: redis://redis-queue:6379/0
       SESSIONS_REDIS_URL: redis://redis-sessions:6379/0
       CACHE_REDIS_URL: redis://redis-cache:6379/0
+
+      DATA_REDIS_URL: redis://redis-data:6379/0
+
       ORDERS_READER_REDIS_URL: redis://redis-data:6379/1
       ORDERS_WRITER_REDIS_URL: redis://redis-data:6379/1
+
       MARKETS_READER_REDIS_URL: redis://redis-data:6379/2
       MARKETS_WRITER_REDIS_URL: redis://redis-data:6379/2
+
       LOCATIONS_READER_REDIS_URL: redis://redis-data:6379/3
       LOCATIONS_WRITER_REDIS_URL: redis://redis-data:6379/3
+
+      TEST_DATA_REDIS_URL: redis://redis-test:6379/0
+      TEST_ORDERS_READER_REDIS_URL: redis://redis-test:6379/1
+      TEST_ORDERS_WRITER_REDIS_URL: redis://redis-test:6379/1
+      TEST_MARKETS_READER_REDIS_URL: redis://redis-test:6379/2
+      TEST_MARKETS_WRITER_REDIS_URL: redis://redis-test:6379/2
+      TEST_LOCATIONS_READER_REDIS_URL: redis://redis-test:6379/3
+      TEST_LOCATIONS_WRITER_REDIS_URL: redis://redis-test:6379/3
 
   postgres:
     image: postgres:14
     restart: unless-stopped
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - eve-indy-watch-postgres-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: postgres
       POSTGRES_DB: postgres
@@ -46,30 +65,43 @@ services:
     image: redis:6
     restart: unless-stopped
     volumes:
-      - redis-queue:/data
+      - eve-indy-watch-redis-queue:/data
     command: redis-server --save 60 1 --loglevel warning
   redis-sessions:
     image: redis:6
     restart: unless-stopped
     volumes:
-      - redis-sessions:/data
+      - eve-indy-watch-redis-sessions:/data
     command: redis-server --save 60 1 --loglevel warning
   redis-data:
     image: redis:6
     restart: unless-stopped
     volumes:
-      - redis-data:/data
+      - eve-indy-watch-redis-data:/data
     command: redis-server --save 60 1 --loglevel warning --maxmemory 4gb --maxmemory-policy volatile-ttl
   redis-cache:
     image: redis:6
     restart: unless-stopped
     volumes:
-      - redis-cache:/data
+      - eve-indy-watch-redis-cache:/data
     command: redis-server --maxmemory 1gb --maxmemory-policy allkeys-lru
+  redis-test:
+    image: redis:6
+    restart: unless-stopped
+    volumes:
+      - eve-indy-watch-redis-test:/data
+    command: redis-server --save 60 1 --loglevel warning --maxmemory 4gb --maxmemory-policy volatile-ttl
 
 volumes:
-  postgres-data:
-  redis-queue:
-  redis-sessions:
-  redis-data:
-  redis-cache:
+  eve-indy-watch-commandhistory:
+  eve-indy-watch-dotfiles:
+  eve-indy-watch-gnupg:
+  eve-indy-watch-ssh:
+  eve-indy-watch-aws:
+  eve-indy-watch-nvim:
+  eve-indy-watch-postgres-data:
+  eve-indy-watch-redis-queue:
+  eve-indy-watch-redis-sessions:
+  eve-indy-watch-redis-data:
+  eve-indy-watch-redis-cache:
+  eve-indy-watch-redis-test:

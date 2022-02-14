@@ -3,6 +3,8 @@
 Pry.config.prompt = Pry::Prompt[:rails]
 Pry.config.pager = false
 
+Pry.config.history_file = '/commandhistory/.irb_history' if File.exist?('/commandhistory/.irb_history')
+
 def app_config
   @app_config ||= Rails.application.config.x.app
 end

@@ -1,21 +1,19 @@
-# [Choice] Ruby version (use -bullseye variants on local arm64/Apple Silicon): 3, 3.0, 2, 2.7, 2.6, 3-bullseye, 3.0-bullseye, 2-bullseye, 2.7-bullseye, 2.6-bullseye, 3-buster, 3.0-buster, 2-buster, 2.7-buster, 2.6-buster
 ARG VARIANT=3
 FROM mcr.microsoft.com/vscode/devcontainers/ruby:0-${VARIANT}
+
+ARG USERNAME=vscode
 
 RUN gem update --system && \
     gem install bundler -v 2.3.5 && \
     gem cleanup bundler
 
-# Default value to allow debug server to serve content over GitHub Codespace's port forwarding service
-# The value is a comma-separated list of allowed domains
 ENV RAILS_DEVELOPMENT_HOSTS=".githubpreview.dev"
 
-# [Choice] Node.js version: lts/*, 16, 14, 12, 10
 ARG NODE_VERSION="lts/*"
 RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && nvm install ${NODE_VERSION} 2>&1"
 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get -y install --no-install-recommends libcurl4-openssl-dev
+    && apt-get -y install --no-install-recommends libcurl4-openssl-dev neovim python3-pip tmux
 
 RUN curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor -o /usr/share/keyrings/pgdg-keyring.gpg \
     && echo "deb [signed-by=/usr/share/keyrings/pgdg-keyring.gpg] http://apt.postgresql.org/pub/repos/apt bullseye-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
@@ -37,15 +35,66 @@ RUN curl -fsSL https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor
     && apt-get update \
     && apt-get install -y google-chrome-stable
 
-RUN gem install foreman solargraph webdrivers
+RUN /bin/bash -c 'set -ex && \
+    ARCH=`uname -m` && \
+    if [ "$ARCH" == "x86_64" ]; then \
+      curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"; \
+    elif [ "$ARCH" == "aarch64" ]; then \
+      curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "awscliv2.zip"; \
+    fi' \
+    && unzip awscliv2.zip \
+    && ./aws/install \
+    && rm -rf ./aws \
+    && mkdir /home/$USERNAME/.aws \
+    && chmod -R 0700 /home/$USERNAME/.aws \
+    && chown -R $USERNAME /home/$USERNAME/.aws
 
-ARG USERNAME=vscode
+RUN gem install foreman solargraph
 
-RUN SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.bash_history" \
+RUN BASH_SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.bash_history" \
+    && ZSH_SNIPPET="export HISTFILE=/commandhistory/.zsh_history" \
     && mkdir /commandhistory \
     && touch /commandhistory/.bash_history \
+    && touch /commandhistory/.zsh_history \
+    && touch /commandhistory/.irb_history \
     && chown -R $USERNAME /commandhistory \
-    && echo $SNIPPET >> "/home/$USERNAME/.bashrc"
+    && echo $BASH_SNIPPET >> "/home/$USERNAME/.bashrc" \
+    && echo $ZSH_SNIPPET >> "/home/$USERNAME/.zshrc" \
 
-# [Optional] Uncomment this line to install global node packages.
-# RUN su vscode -c "source /usr/local/share/nvm/nvm.sh && npm install -g <your-package-here>" 2>&1
+RUN GPG_AGENT_SNIPPET='export GPG_AGENT_INFO=/home/$USERNAME/.gnupg/S.gpg-agent:0:1' GPG_TTY_SNIPPET='export GPG_TTY=$(tty)' \
+    && mkdir /home/$USERNAME/.gnupg \
+    && chmod -R 0700 /home/$USERNAME/.gnupg \
+    && chown -R $USERNAME /home/$USERNAME/.gnupg \
+    && echo $GPG_AGENT_SNIPPET >> "/home/$USERNAME/.bashrc" \
+    && echo $GPG_TTY_SNIPPET >> "/home/$USERNAME/.bashrc" \
+    && echo $GPG_AGENT_SNIPPET >> "/home/$USERNAME/.zshrc" \
+    && echo $GPG_TTY_SNIPPET >> "/home/$USERNAME/.zshrc"
+
+RUN SNIPPET='eval $(ssh-agent)' \
+    && mkdir /home/$USERNAME/.ssh \
+    && chmod -R 0700 /home/$USERNAME/.ssh \
+    && chown -R $USERNAME /home/$USERNAME/.ssh \
+    && echo $SNIPPET >> "/home/$USERNAME/.bashrc" \
+    && echo $SNIPPET >> "/home/$USERNAME/.zshrc"
+
+RUN BASH_SNIPPET='[[ $(ls -A /dotfiles/bashrc.d) ]] && for f in /dotfiles/bashrc.d/*.bash; do source $f; done' \
+    && ZSH_SNIPPET='[[ $(ls -A /dotfiles/zshrc.d) ]] && for f in /dotfiles/zshrc.d/*.zsh; do source $f; done' \
+    && GITCONFIG="[include]\n  path = /dotfiles/gitconfig" \
+    && TMUXCONF="source /dotfiles/tmux.conf" \
+    && mkdir /dotfiles \
+    && mkdir /dotfiles/bashrc.d \
+    && mkdir /dotfiles/zshrc.d \
+    && touch /dotfiles/gitconfig \
+    && touch /dotfiles/tmux.conf \
+    && chown -R $USERNAME /dotfiles \
+    && echo $BASH_SNIPPET >> "/home/$USERNAME/.bashrc" \
+    && echo $ZSH_SNIPPET >> "/home/$USERNAME/.zshrc" \
+    && echo $GITCONFIG >> "/home/$USERNAME/.gitconfig" \
+    && echo $TMUXCONF >> "/home/$USERNAME/.tmux.conf" \
+
+RUN SNIPPET='export EDITOR=nvim' \
+    && mkdir -p /home/$USERNAME/.config/nvim \
+    && touch /home/$USERNAME/.config/nvim/init.vim \
+    && chown -R $USERNAME /home/$USERNAME/.config \
+    && echo $SNIPPET >> "/home/$USERNAME/.bashrc" \
+    && echo $SNIPPET >> "/home/$USERNAME/.zshrc"

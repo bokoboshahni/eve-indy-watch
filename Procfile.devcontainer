@@ -1,0 +1,6 @@
+web: bundle exec puma -t 5:5 -p ${PORT:-3000} -e ${RACK_ENV:-development} -C config/puma.rb
+worker: bundle exec sidekiq -c ${SIDEKIQ_CONCURRENCY:-25} -q default
+worker-markets: bundle exec sidekiq -c ${SIDEKIQ_CONCURRENCY_MARKETS:-25} -q markets
+worker-contracts: bundle exec sidekiq -c ${SIDEKIQ_CONCURRENCY_CONTRACTS:-5} -q contracts
+worker-archive: bundle exec sidekiq -c ${SIDEKIQ_CONCURRENCY_ARCHIVE:-2} -q archive
+webpack: bin/webpacker-dev-server
