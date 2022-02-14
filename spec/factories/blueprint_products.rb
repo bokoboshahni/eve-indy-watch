@@ -1,5 +1,31 @@
 # frozen_string_literal: true
 
+# ## Schema Information
+#
+# Table name: `blueprint_products`
+#
+# ### Columns
+#
+# Name                     | Type               | Attributes
+# ------------------------ | ------------------ | ---------------------------
+# **`activity`**           | `enum`             | `not null, primary key`
+# **`quantity`**           | `integer`          | `not null`
+# **`created_at`**         | `datetime`         | `not null`
+# **`updated_at`**         | `datetime`         | `not null`
+# **`blueprint_type_id`**  | `bigint`           | `not null, primary key`
+# **`product_type_id`**    | `bigint`           | `not null, primary key`
+#
+# ### Indexes
+#
+# * `index_blueprint_products_on_blueprint_type_id`:
+#     * **`blueprint_type_id`**
+# * `index_blueprint_products_on_product_type_id`:
+#     * **`product_type_id`**
+# * `index_unique_blueprint_products` (_unique_):
+#     * **`blueprint_type_id`**
+#     * **`product_type_id`**
+#     * **`activity`**
+#
 FactoryBot.define do
   factory :blueprint_product do
   end
