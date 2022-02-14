@@ -591,7 +591,7 @@ GEM
     unicode-display_width (2.1.0)
     unicode_utils (1.4.0)
     vcr (6.0.0)
-    view_component (2.48.0)
+    view_component (2.49.0)
       activesupport (>= 5.0.0, < 8.0)
       method_source (~> 1.0)
     view_component_storybook (0.10.1)
@@ -722,7 +722,7 @@ DEPENDENCIES
   turbo-rails (~> 1.0)
   typhoeus (~> 1.4)
   vcr
-  view_component (~> 2.48)
+  view_component (~> 2.49)
   view_component_storybook (~> 0.10)
   web-console (>= 4.1.0)
   webdrivers
