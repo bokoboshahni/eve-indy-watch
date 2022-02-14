@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+## [2.26.3](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.26.2...v2.26.3) (2022-02-14)
+
+
+### Bug Fixes
+
+* handle nil bonus on order summary ([#189](https://github.com/bokoboshahni/eve-indy-watch/issues/189)) ([acaa467](https://github.com/bokoboshahni/eve-indy-watch/commit/acaa4679d6f651f866903b300557cdd877067088))
+
 ## [2.26.2](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.26.1...v2.26.2) (2022-02-05)
 
 
