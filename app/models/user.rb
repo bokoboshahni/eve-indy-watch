@@ -10,6 +10,7 @@
 # --------------------------------- | ------------------ | ---------------------------
 # **`id`**                          | `bigint`           | `not null, primary key`
 # **`admin`**                       | `boolean`          | `default(FALSE), not null`
+# **`dark_mode_enabled`**           | `boolean`          |
 # **`esi_authorizations_enabled`**  | `boolean`          |
 # **`roles`**                       | `text`             | `default([]), is an Array`
 # **`created_at`**                  | `datetime`         | `not null`

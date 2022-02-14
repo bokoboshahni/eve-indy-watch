@@ -1,5 +1,5 @@
-<div class="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white shadow">
-  <button type="button" class="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden" data-action="click->toggle#toggle touch->toggle#toggle">
+<div class="sticky top-0 z-10 flex-shrink-0 flex h-16 bg-white dark:bg-zinc-900 shadow">
+  <button type="button" class="px-4 border-r border-gray-200 dark:border-zinc-800 text-gray-500 dark:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 dark:focus:ring-sky-500 md:hidden" data-action="click->toggle#toggle touch->toggle#toggle">
     <span class="sr-only">Open sidebar</span>
     <%= heroicon 'menu-alt-2', variant: :outline, options: { class: 'h-6 w-6' } %>
   </button>
@@ -7,17 +7,17 @@
     <div class="flex-1 flex">
       <%= form_with url: search_path, html: { method: :get, class: 'w-full flex md:ml-0' } do |f| %>
         <%= f.label :query, class: 'sr-only' do %>Search<% end %>
-        <div class="relative w-full text-gray-400 focus-within:text-gray-600">
+        <div class="relative w-full text-gray-400 dark:text-zinc-400 focus-within:text-gray-600 dark:focus-within:text-zinc-400">
           <div class="absolute inset-y-0 left-0 flex items-center pointer-events-none">
             <%= heroicon 'search', variant: :solid, options: { class: 'h-5 w-5' } %>
           </div>
-          <%= f.search_field :query, class: 'block w-full h-full pl-8 pr-3 py-2 border-transparent text-gray-900 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-0 focus:border-transparent sm:text-sm', placeholder: 'Search contracts and fittings' %>
+          <%= f.search_field :query, class: 'bg-white dark:bg-zinc-900 block w-full h-full pl-8 pr-3 py-2 border-transparent text-gray-900 dark:text-zinc-100 placeholder-gray-500 dark:placeholder-zinc-500 focus:outline-none focus:placeholder-gray-400 dark:focus:placeholder-zinc-400 focus:ring-0 focus:border-transparent sm:text-sm', placeholder: 'Search contracts and fittings' %>
         </div>
       <% end %>
     </div>
     <div class="ml-4 flex items-center md:ml-6">
       <%#
-      <button type="button" class="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+      <button type="button" class="bg-white p-1 rounded-full text-gray-400 dark:text-zinc-400 hover:text-gray-500 dark:hover:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-sky-500">
         <span class="sr-only">View notifications</span>
         <!-- Heroicon name: outline/bell -->
         <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -28,16 +28,16 @@
 
       <div class="ml-3 relative" data-controller="dropdown">
         <div>
-          <button type="button" class="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" id="user-menu-button" aria-expanded="false" aria-haspopup="true" data-action="click->dropdown#toggle click@window->dropdown#hide" data-dropdown-target="button">
+          <button type="button" class="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-sky-500" id="user-menu-button" aria-expanded="false" aria-haspopup="true" data-action="click->dropdown#toggle click@window->dropdown#hide" data-dropdown-target="button">
             <span class="sr-only">Open user menu</span>
             <%= render(CharacterPortraitComponent.new(character: current_user.character, classes: 'h-8 w-8 rounded-full')) %>
           </button>
         </div>
 
-        <div class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1" data-dropdown-target="menu">
-          <%= link_to 'Settings', settings_path, class: 'block px-4 py-2 text-sm text-gray-700', role: 'menuitem', tabindex: '-1' %>
+        <div class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white dark:bg-zinc-900 ring-1 ring-black dark:ring-zinc-300 ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1" data-dropdown-target="menu">
+          <%= link_to 'Settings', settings_path, class: 'block px-4 py-2 text-sm text-gray-700 dark:text-zinc-300', role: 'menuitem', tabindex: '-1' %>
 
-          <%= link_to 'Log out', log_out_path, class: 'block px-4 py-2 text-sm text-gray-700', 'data-turbo-method': :post %>
+          <%= link_to 'Log out', log_out_path, class: 'block px-4 py-2 text-sm text-gray-700 dark:text-zinc-300', 'data-turbo-method': :post %>
         </div>
       </div>
     </div>

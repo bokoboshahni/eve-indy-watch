@@ -1,38 +1,25 @@
 <% content_for :breadcrumbs do %>
-<li class="flex">
-  <div class="flex items-center">
-    <svg class="flex-shrink-0 w-6 h-full text-gray-200" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
-    </svg>
-    <%= link_to 'Settings', settings_path, class: 'ml-4 text-sm font-medium text-gray-500 hover:text-gray-700' %>
-  </div>
-</li>
-
-<li class="flex">
-  <div class="flex items-center">
-    <svg class="flex-shrink-0 w-6 h-full text-gray-200" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
-    </svg>
-    <%= link_to 'Authorizations', settings_esi_authorizations_path, class: 'ml-4 text-sm font-medium text-gray-500 hover:text-gray-700', 'aria-current': :page %>
-  </div>
-</li>
+  <%= render(BreadcrumbsComponent.new) do |c| %>
+    <%= c.item href: settings_path do %>Settings<% end %>
+    <%= c.item href: settings_esi_authorizations_path do %>Authorizations<% end %>
+  <% end %>
 <% end %>
 
-<div class="bg-white overflow-hidden shadow border-b border-gray-200 sm:rounded-lg divide-y divide-gray-200">
+<div class="bg-white dark:bg-zinc-800 overflow-hidden shadow border-b border-gray-200 dark:border-zinc-800 sm:rounded-lg divide-y divide-gray-200 dark:divide-zinc-800">
   <div class="px-4 py-5 sm:px-6">
     <div class="-ml-4 -mt-4 flex justify-between items-center flex-wrap sm:flex-nowrap">
       <div class="ml-4 mt-4">
-        <h3 class="text-lg leading-6 font-medium text-gray-900">
+        <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-zinc-100">
           Authorizations
         </h3>
-        <p class="mt-1 text-sm text-gray-500">
+        <p class="mt-1 text-sm text-gray-500 dark:text-zinc-500">
           Characters that you have granted <%= site_name %> access to.
         </p>
       </div>
       <div class="ml-4 mt-4 flex-shrink-0">
         <% unless current_user.esi_authorizations.empty? %>
           <%= form_with url: settings_esi_authorizations_path, data: { turbo: false } do |f| %>
-            <%= f.submit 'Authorize character', class: 'cursor-pointer relative inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500', 'data-turbo': false %>
+            <%= f.submit 'Authorize character', class: 'cursor-pointer relative inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 dark:bg-sky-600 hover:bg-indigo-700 dark:hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-sky-500', 'data-turbo': false %>
           <% end %>
         <% end %>
       </div>
@@ -42,22 +29,22 @@
     <% if current_user.esi_authorizations.empty? %>
       <div class="px-4 py-5 sm:p-6">
         <%= form_with url: settings_esi_authorizations_path, data: { turbo: false } do |f| %>
-          <%= f.button class: 'relative block w-full border-2 border-gray-300 border-dashed rounded-lg p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' do %>
-            <%= heroicon 'plus', variant: :outline, options: { class: 'mx-auto h-12 w-12 text-gray-400' } %>
-            <span class="mt-2 block text-sm font-medium text-gray-900">
+          <%= f.button class: 'relative block w-full border-2 border-gray-300 dark:border-zinc-700 border-dashed rounded-lg p-12 text-center hover:border-gray-400 dark:hover:border-zinc-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-sky-500' do %>
+            <%= heroicon 'plus', variant: :outline, options: { class: 'mx-auto h-12 w-12 text-gray-400 dark:text-zinc-400' } %>
+            <span class="mt-2 block text-sm font-medium text-gray-900 dark:text-zinc-100">
               Authorize character
             </span>
           <% end %>
         <% end %>
       </div>
     <% else %>
-      <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
+      <table class="min-w-full divide-y divide-gray-200 dark:divide-zinc-800">
+        <thead class="bg-gray-50 dark:bg-zinc-800">
           <tr>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-zinc-500 uppercase tracking-wider">
               Character
             </th>
-            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-zinc-500 uppercase tracking-wider">
               Scopes
             </th>
             <th scope="col" class="relative px-6 py-3">
@@ -65,7 +52,7 @@
             </th>
           </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
+        <tbody class="bg-white dark:bg-zinc-800 divide-y divide-gray-200 dark:divide-zinc-800">
           <% @esi_authorizations.each do |esi_authorization| %>
             <tr>
               <td class="px-6 py-4 whitespace-nowrap">
@@ -74,7 +61,7 @@
                     <%= image_tag esi_authorization.character.portrait_url_256, class: 'h-10 w-10 rounded-full', alt: '' %>
                   </div>
                   <div class="ml-4">
-                    <div class="text-sm font-medium text-gray-900">
+                    <div class="text-sm font-medium text-gray-900 dark:text-zinc-400">
                       <%= esi_authorization.character.name %>
                     </div>
                   </div>
@@ -82,14 +69,14 @@
               </td>
               <td class="px-6 py-4">
                 <% esi_authorization.scopes.each do |scope| %>
-                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 dark:bg-zinc-500 text-gray-800 dark:text-zinc-800">
                     <%= scope %>
                   </span>
                 <% end %>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 <%= form_with url: settings_esi_authorization_path(esi_authorization), method: :delete do |f| %>
-                  <%= f.button class: 'inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-red' do %>
+                  <%= f.button class: 'inline-flex items-center p-1 border border-transparent rounded-full shadow-sm text-white bg-red-600 hover:bg-red-700 dark:saturate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-red' do %>
                     <%= heroicon 'trash', variant: :solid, options: { class: 'h-5 w-5' } %>
                   <% end %>
                 <% end %>

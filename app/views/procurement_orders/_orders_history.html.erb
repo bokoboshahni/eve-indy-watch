@@ -1,12 +1,12 @@
 <%= turbo_frame_tag 'orders' do %>
   <div class="block">
-    <div class="border-b border-gray-200">
+    <div class="border-b border-gray-200 dark:border-zinc-800">
       <nav class="-mb-px flex space-x-8" aria-label="Tabs">
         <% current_tab = params[:tab] || 'delivered' %>
-        <% default_link_class = 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-200' %>
-        <% current_link_class = 'border-indigo-500 text-indigo-600' %>
-        <% current_counter_class = 'bg-indigo-100 text-indigo-600' %>
-        <% default_counter_class = 'bg-gray-100 text-gray-900' %>
+        <% default_link_class = 'border-transparent text-gray-500 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-zinc-300 hover:border-gray-200 dark:hover:border-zinc-800' %>
+        <% current_link_class = 'border-indigo-500 dark:border-sky-500 text-indigo-600 dark:text-sky-600' %>
+        <% current_counter_class = 'bg-indigo-100 dark:bg-sky-100 text-indigo-600 dark:text-sky-600' %>
+        <% default_counter_class = 'bg-gray-100 dark:bg-zinc-100 text-gray-900 dark:text-zinc-100' %>
 
         <% delivered_count = policy_scope(ProcurementOrder.kept.delivered).count %>
         <%= link_to history_procurement_orders_path(tab: 'delivered'), class: "#{current_tab == 'delivered' ? current_link_class : default_link_class} whitespace-nowrap flex py-4 px-1 border-b-2 font-medium text-sm", data: { turbo_frame: 'orders' } do %>
@@ -86,10 +86,10 @@
       <% end %>
     <% else %>
       <div class="text-center p-4">
-        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+        <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
           <path vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
         </svg>
-        <h3 class="mt-2 text-sm font-medium text-gray-900">No orders</h3>
+        <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-zinc-100">No orders</h3>
       </div>
     <% end %>
   </div>

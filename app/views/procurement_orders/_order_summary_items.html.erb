@@ -1,53 +1,34 @@
 <%= render(TableComponent.new(layout: 'auto')) do |t| %>
-  <% t.header padding: 'px-4 py-2' do %>Item<% end %>
-  <% if policy(order).update? %>
-    <% t.header padding: 'px-4 py-4', width: 'w-24' do %>Quantity<% end %>
-    <% t.header padding: 'px-4 py-4', width: 'w-36' do %>Unit Price<% end %>
-    <% t.header padding: 'px-4 py-4', width: 'w-36' do %>Total<% end %>
-    <% t.header padding: 'px-4 py-4', width: 'w-1' do %><span class="sr-only">Actions</span><% end %>
-  <% else %>
-    <% t.header padding: 'px-4 py-4', width: 'w-24' do %>Quantity<% end %>
-    <% t.header padding: 'px-4 py-4', width: 'w-36' do %>Unit Price<% end %>
-    <% t.header padding: 'px-4 py-4', width: 'w-36' do %>Total<% end %>
-  <% end %>
+  <% t.header padding: 'px-4 py-2', rounding: 'rounding-tl-lg' do %>Item<% end %>
+  <% t.header padding: 'px-4 py-4', width: 'w-24' do %>Quantity<% end %>
+  <% t.header padding: 'px-4 py-4', width: 'w-36' do %>Unit Price<% end %>
+  <% t.header padding: 'px-4 py-4', width: 'w-36', rounding: 'rounding-tr-lg' do %>Total<% end %>
 
   <% order.items.each do |item| %>
-    <% t.row classes: 'divide-x divide-x-gray-200' do |tr| %>
+    <% t.row classes: 'divide-x divide-x-gray-200 dark:divide-x-zinc-800' do |tr| %>
       <% tr.cell padding: 'px-4 py-2' do %>
         <div class="flex items-center">
           <div class="flex-shrink-0 h-8 w-8">
             <%= render(TypeIconComponent.new(type: item.type, classes: 'h-8 w-8 rounded-md')) %>
           </div>
           <div class="ml-4">
-            <div class="text-xs font-medium text-gray-900">
+            <div class="text-xs font-medium text-gray-900 dark:text-zinc-100">
               <%= item.name %>
             </div>
-            <div class="text-xs text-gray-500">
+            <div class="text-xs text-gray-500 dark:text-zinc-500">
               <%= item.category_name %> / <%= item.group_name %>
             </div>
           </div>
         </div>
       <% end %>
-      <% if policy(order).update? %>
-        <% tr.cell padding: 'px-4 py-4' do %>
-          <%= number_to_m3 item.quantity_required %>
-        <% end %>
-        <% tr.cell padding: 'px-4 py-4' do %>
-          <%= number_to_isk item.price %>
-        <% end %>
-        <% tr.cell padding: 'px-4 py-4' do %>
-          <%= number_to_isk item.total %>
-        <% end %>
-      <% else %>
-        <% tr.cell padding: 'px-4 py-4' do %>
-          <%= number_to_m3 item.quantity_required %>
-        <% end %>
-        <% tr.cell padding: 'px-4 py-4' do %>
-          <%= number_to_isk item.price_with_multiplier %>
-        <% end %>
-        <% tr.cell padding: 'px-4 py-4' do %>
-          <%= number_to_isk item.total %>
-        <% end %>
+      <% tr.cell padding: 'px-4 py-4' do %>
+        <%= number_to_m3 item.quantity_required %>
+      <% end %>
+      <% tr.cell padding: 'px-4 py-4' do %>
+        <%= number_to_isk item.price_with_multiplier %>
+      <% end %>
+      <% tr.cell padding: 'px-4 py-4' do %>
+        <%= number_to_isk item.total %>
       <% end %>
     <% end %>
   <% end %>

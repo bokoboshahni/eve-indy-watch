@@ -27,7 +27,7 @@ class CardComponentStories < ApplicationStories
   end
 
   story :footer do
-    footer_bg = select(%w[bg-white bg-gray-50], 'bg-gray-50')
+    footer_bg = select(%w[bg-white bg-gray-50 dark:bg-zinc-50 dark:bg-zinc-800], 'bg-gray-50 dark:bg-zinc-50 dark:bg-zinc-800')
     constructor(title: text(Faker::Lorem.sentence.titleize).name('Title'), footer_bg: footer_bg)
 
     body do

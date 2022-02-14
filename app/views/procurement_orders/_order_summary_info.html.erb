@@ -1,11 +1,11 @@
 <div class="py-5 px-4">
-  <div class="bg-gray-100 py-6 px-4 sm:px-6 sm:rounded-lg lg:px-8 lg:py-8 lg:grid lg:grid-cols-12 lg:gap-x-8">
+  <div class="bg-gray-100 dark:bg-zinc-700 py-6 px-4 sm:px-6 sm:rounded-lg lg:px-8 lg:py-8 lg:grid lg:grid-cols-12 lg:gap-x-8">
     <dl class="grid grid-cols-2 gap-4 text-sm sm:grid-cols-2 md:gap-x-4 lg:col-span-7">
       <div>
-        <dt class="font-medium text-gray-900">Contract to</dt>
+        <dt class="font-medium text-gray-900 dark:text-zinc-100">Contract to</dt>
         <div class="mt-3">
           <dd>
-            <p class="text-gray-900">
+            <p class="text-gray-900 dark:text-zinc-100">
               <% if order.requester.respond_to?(:procurement_order_requester) && order.requester.procurement_order_requester.present? %>
                 <%= order.requester.procurement_order_requester_name %> (on behalf of <%= order.requester_name %>)
               <% else %>
@@ -16,38 +16,38 @@
         </div>
       </div>
       <div>
-        <dt class="font-medium text-gray-900">Delivery location</dt>
+        <dt class="font-medium text-gray-900 dark:text-zinc-100">Delivery location</dt>
         <div class="mt-3">
           <dd>
-            <p class="text-gray-900">
+            <p class="text-gray-900 dark:text-zinc-100">
               <%= order.location_name %>
             </p>
           </dd>
         </div>
       </div>
       <div>
-        <dt class="font-medium text-gray-900">Visibility</dt>
+        <dt class="font-medium text-gray-900 dark:text-zinc-100">Visibility</dt>
         <div class="mt-3">
           <dd>
-            <p class="text-gray-900">
+            <p class="text-gray-900 dark:text-zinc-100">
               <%= order.visibility.humanize %>
             </p>
           </dd>
         </div>
       </div>
       <div>
-        <dt class="font-medium text-gray-900">Due date</dt>
+        <dt class="font-medium text-gray-900 dark:text-zinc-100">Due date</dt>
         <div class="mt-3">
-          <p class="text-gray-900 text-sm prose whitespace-normal overflow-y-auto max-h-24">
+          <p class="text-gray-900 dark:text-zinc-100 text-sm prose whitespace-normal overflow-y-auto max-h-24">
             <%= order.target_completion_at.present? ? local_time(order.target_completion_at.to_date, format: :long_date) : 'N/A' %>
           </p>
         </div>
       </div>
       <% if order.notes.present? %>
         <div class="col-span-2">
-          <dt class="font-medium text-gray-900">Order notes</dt>
+          <dt class="font-medium text-gray-900 dark:text-zinc-100">Order notes</dt>
           <div class="mt-3">
-            <p class="text-gray-900 text-xs prose whitespace-normal overflow-y-scroll max-h-24">
+            <p class="text-gray-900 dark:text-zinc-100 text-xs prose whitespace-normal overflow-y-scroll max-h-24">
               <%= simple_format(order.notes) %>
             </p>
           </div>
@@ -55,11 +55,11 @@
       <% end %>
       <% if @order.persisted? %>
       <div class="col-span-2 mt-3 flex flex-col justify-between">
-        <dt class="font-medium text-gray-900">Market Value</dt>
-        <dd class="text-gray-600 text-xs">
-          <table class="mt-3 table-auto w-full divide-y divide-gray-300 border border-gray-300">
+        <dt class="font-medium text-gray-900 dark:text-zinc-100">Market Value</dt>
+        <dd class="text-gray-600 dark:text-zinc-400 text-xs">
+          <table class="mt-3 table-auto w-full divide-y divide-gray-300 dark:divide-zinc-700 border border-gray-300 dark:border-zinc-700">
             <thead>
-              <tr class="bg-gray-200">
+              <tr class="bg-gray-200 dark:bg-zinc-600">
                 <th class="p-1.5 w-2/8 text-left uppercase">Market</th>
                 <th class="p-1.5 w-3/8 text-left uppercase">Buy (% Markup)</th>
                 <th class="p-1.5 w-3/8 text-left uppercase">Sell (% Markup)</th>
@@ -71,15 +71,15 @@
                 <tr>
                   <% buy = @order.valuation_buy(market) %>
                   <% sell = @order.valuation_sell(market) %>
-                  <td class="p-1.5 font-medium text-gray-900"><%= market.name %></td>
-                  <td class="p-1.5 text-gray-900 <%= (buy < total ? 'bg-green-100' : 'bg-red-100') if buy.positive? %>">
+                  <td class="p-1.5 font-medium text-gray-900 dark:text-zinc-100"><%= market.name %></td>
+                  <td class="p-1.5 text-gray-900 dark:text-zinc-100 <%= (buy < total ? 'bg-green-100 dark:bg-green-700 dark:saturate-50' : 'bg-red-100 dark:bg-red-700 dark:saturate-50') if buy.positive? %>">
                     <% if buy.positive? %>
                       <%= number_to_isk(buy) %>&nbsp;ISK (<%= number_to_percentage(@order.markup_percentage_buy(market), precision: 0) %>)
                     <% else %>
                       N/A
                     <% end %>
                   </td>
-                  <td class="p-1.5 text-gray-900 <%= (sell < total ? 'bg-green-100' : 'bg-red-100') if sell.positive? %>">
+                  <td class="p-1.5 text-gray-900 dark:text-zinc-100 <%= (sell < total ? 'bg-green-100 dark:bg-green-700 dark:saturate-50' : 'bg-red-100 dark:bg-red-700 dark:saturate-50') if sell.positive? %>">
                     <% if sell.positive? %>
                       <%= number_to_isk(sell) %>&nbsp;ISK (<%= number_to_percentage(@order.markup_percentage_sell(market), precision: 0) %>)
                     <% else %>
@@ -95,35 +95,35 @@
       <% end %>
     </dl>
 
-    <dl class="mt-8 divide-y divide-gray-200 text-sm lg:mt-0 lg:col-span-5">
+    <dl class="mt-8 divide-y divide-gray-200 dark:divide-zinc-800 text-sm lg:mt-0 lg:col-span-5">
       <% if policy(@order).update? %>
         <div class="pb-2 flex items-center justify-between">
-          <dt class="text-gray-600">Subtotal</dt>
-          <dd class="font-medium text-gray-900"><%= number_to_isk(order.subtotal) %>&nbsp;ISK</dd>
+          <dt class="text-gray-600 dark:text-zinc-400">Subtotal</dt>
+          <dd class="font-medium text-gray-900 dark:text-zinc-100"><%= number_to_isk(order.subtotal) %>&nbsp;ISK</dd>
         </div>
         <div class="py-2 flex items-center justify-between">
-          <dt class="text-gray-600">Multiplier</dt>
-          <dd class="font-medium text-gray-900"><%= number_to_percentage(order.multiplier, precision: 2) %></dd>
+          <dt class="text-gray-600 dark:text-zinc-400">Multiplier</dt>
+          <dd class="font-medium text-gray-900 dark:text-zinc-100"><%= number_to_percentage(order.multiplier, precision: 2) %></dd>
         </div>
         <div class="py-2 flex items-center justify-between">
-          <dt class="text-gray-600">Subtotal with multiplier</dt>
-          <dd class="font-medium text-gray-900"><%= number_to_isk(@order.subtotal_with_multiplier) %>&nbsp;ISK</dd>
+          <dt class="text-gray-600 dark:text-zinc-400">Subtotal with multiplier</dt>
+          <dd class="font-medium text-gray-900 dark:text-zinc-100"><%= number_to_isk(@order.subtotal_with_multiplier) %>&nbsp;ISK</dd>
         </div>
       <% else %>
         <div class="pb-2 flex items-center justify-between">
-          <dt class="text-gray-600">Subtotal</dt>
-          <dd class="font-medium text-gray-900"><%= number_to_isk(order.subtotal_with_multiplier) %>&nbsp;ISK</dd>
+          <dt class="text-gray-600 dark:text-zinc-400">Subtotal</dt>
+          <dd class="font-medium text-gray-900 dark:text-zinc-100"><%= number_to_isk(order.subtotal_with_multiplier) %>&nbsp;ISK</dd>
         </div>
       <% end %>
       <% if @order.bonus.to_d.positive? %>
         <div class="py-2 flex items-center justify-between">
-          <dt class="text-gray-600">Bonus</dt>
-          <dd class="font-medium text-gray-900"><%= number_to_isk(@order.bonus) %>&nbsp;ISK</dd>
+          <dt class="text-gray-600 dark:text-zinc-400">Bonus</dt>
+          <dd class="font-medium text-gray-900 dark:text-zinc-100"><%= number_to_isk(@order.bonus) %>&nbsp;ISK</dd>
         </div>
       <% end %>
       <div class="pt-2 flex items-center justify-between">
-        <dt class="font-medium text-gray-900">Order total</dt>
-        <dd class="font-medium text-indigo-600"><%= number_to_isk(@order.total) if @order.persisted? %>&nbsp;ISK</dd>
+        <dt class="font-medium text-gray-900 dark:text-zinc-100">Order total</dt>
+        <dd class="font-medium text-indigo-600 dark:text-sky-600"><%= number_to_isk(@order.total) if @order.persisted? %>&nbsp;ISK</dd>
       </div>
     </dl>
   </div>

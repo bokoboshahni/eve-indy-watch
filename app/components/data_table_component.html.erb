@@ -1,8 +1,8 @@
 <% turbo_frame_tag name do %>
 <div class="grid grid-cols-1 lg:grid-cols-4 gap-x-4 gap-y-10">
   <div class="overflow-y-hidden">
-    <div class="bg-white overflow-visible shadow rounded-md">
-      <div class="px-4 py-2 bg-gray-50">
+    <div class="bg-white dark:bg-zinc-800 overflow-visible shadow rounded-md">
+      <div class="px-4 py-2 bg-gray-50 dark:bg-zinc-700">
         <div class="-ml-4 -mt-2 flex items-center justify-between flex-wrap sm:flex-nowrap">
           <div class="ml-4 mt-2">
             <h3 class="text-xs uppercase font-medium text-gray-500">
@@ -31,8 +31,8 @@
           <% filter.facets.each do |(name, facet)| %>
             <div class="py-3" data-controller="toggle">
               <h3 class="-my-3 flow-root" data-action="click->toggle#toggle touch->toggle#toggle">
-                <button type="button" class="py-2 bg-white w-full flex items-center justify-between text-xs text-gray-400 hover:text-gray-500" aria-controls="filter-section-0" aria-expanded="false">
-                  <span class="font-medium text-gray-900">
+                <button type="button" class="py-2 bg-white dark:bg-zinc-800 w-full flex items-center justify-between text-xs text-gray-400 dark:text-zinc-300 hover:text-gray-500 dark:hover:text-zinc-200" aria-controls="filter-section-0" aria-expanded="false">
+                  <span class="font-medium text-gray-900 dark:text-zinc-100">
                     <%= facet[:label] %>
                   </span>
                   <span class="ml-6 flex items-center">
@@ -43,11 +43,11 @@
               </h3>
               <div class="mt-4 <%= 'hidden' unless filter.facet_active?(name) %> max-h-48 overflow-y-auto" data-toggle-target="toggleable" data-controller="data-table-facet-filter">
                 <div class="space-y-2 pl-1 pb-1">
-                  <div class="bg-white sticky top-0 pt-1">
+                  <div class="bg-white dark:bg-zinc-800 sticky top-0 pt-1">
                     <div class="pr-2 relative rounded-md shadow-sm">
                       <%=
                         search_field_tag "#{name.to_s.camelize(:lower)}Filter", nil,
-                                         class: 'focus:ring-indigo-500 focus:border-indigo-500 block w-full pr-10 sm:text-xs border-gray-300 rounded-md',
+                                         class: 'focus:ring-indigo-500 focus:border-indigo-500 focus:ring-sky-500 focus:border-sky-500 block w-full pr-10 sm:text-xs border-gray-300 dark:border-zinc-700 dark:bg-zinc-800 rounded-md',
                                          placeholder: "Filter #{facet[:label]}",
                                          autocomplete: 'off',
                                          data: { action: 'input->data-table-facet-filter#filter', data_table_facet_filter_target: 'query' }
@@ -65,13 +65,13 @@
                               {
                                 multiple: true,
                                 checked: filter.facet_item_selected?(name, item.last.to_s),
-                                class: 'h-4 w-4 border-gray-300 rounded text-indigo-600 focus:ring-indigo-500',
+                                class: 'h-4 w-4 border-gray-300 dark:border-zinc-700 rounded text-indigo-600 dark:text-sky-400 focus:ring-indigo-500 dark:focus:ring-sky-500',
                                 data: { action: 'input->data-table-filters#submit' }
                               },
                               item.last,
                               nil
                             ) %>
-                        <%= f.label name, item.first, class: 'ml-3 text-xs text-gray-600' %>
+                        <%= f.label name, item.first, class: 'ml-3 text-xs text-gray-600 dark:text-zinc-400' %>
                       </div>
                     <% end %>
                   <% end %>
@@ -82,12 +82,12 @@
 
           <% if filter.attribute_names.include?('query') %>
             <div class="py-3">
-              <h3 class="font-medium text-gray-900 text-xs">
+              <h3 class="font-medium text-gray-900 dark:text-zinc-100 text-xs">
                 Search within results
               </h3>
               <div class="pt-1">
                 <div class="mt-1 relative rounded-md shadow-sm">
-                  <%= f.search_field :query, value: filter.query, class: 'focus:ring-indigo-500 focus:border-indigo-500 block w-full pr-10 sm:text-xs border-gray-300 rounded-md', placeholder: 'Type keywords', data: { action: 'input->data-table-filters#submit' } %>
+                  <%= f.search_field :query, value: filter.query, class: 'focus:ring-indigo-500 dark:focus:ring-sky-500 focus:border-indigo-500 dark:focus:border-sky-500 block w-full pr-10 sm:text-xs dark:bg-zinc-800 border-gray-300 dark:border-zinc-700 rounded-md', placeholder: 'Type keywords', data: { action: 'input->data-table-filters#submit' } %>
                   <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
                     <%= heroicon 'search', variant: :outline, options: { class: 'h-5 w-5 text-gray-400' } %>
                   </div>

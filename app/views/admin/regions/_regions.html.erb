@@ -2,7 +2,7 @@
   <% c.body do %>
     <%= render(TableComponent.new(layout: 'auto')) do |t| %>
       <% t.head do %>
-        <%= render(TableRowComponent.new(classes: 'divide-x divide-gray-300 border-b border-gray-300 ')) do |tr| %>
+        <%= render(TableRowComponent.new(classes: 'divide-x divide-gray-300 dark:divide-zinc-700 border-b border-gray-300 dark:border-zinc-700 ')) do |tr| %>
           <% tr.header padding: 'px-4 py-1', colspan: 1 do %><% end %>
           <% tr.header padding: 'px-4 py-1', colspan: 2, align: 'text-center' do %>Market Orders<% end %>
         <% end %>
@@ -20,12 +20,12 @@
             <%= link_to region.name, admin_region_path(region), class: 'font-medium', data: { turbo_frame: '_top' } %>
           <% end %>
           <% tr.cell padding: 'px-4 py-1' do %>
-            <div class="text-xs font-medium text-gray-900">
+            <div class="text-xs font-medium text-gray-900 dark:text-zinc-100">
               <%= local_time(region.orders_last_modified, format: :db) if region.orders_last_modified %>
             </div>
           <% end %>
           <% tr.cell padding: 'px-4 py-1' do %>
-            <div class="text-xs font-medium text-gray-900">
+            <div class="text-xs font-medium text-gray-900 dark:text-zinc-100">
               <%= local_time(region.orders_expires, format: :db) if region.orders_expires %>
             </div>
           <% end %>

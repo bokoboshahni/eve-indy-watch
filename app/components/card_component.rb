@@ -15,7 +15,7 @@ class CardComponent < ApplicationComponent
     header_class_names: 'px-4 py-5 sm:px-6',
     body_class_names: 'px-4 py-5 sm:px-6',
     footer_padding: 'px-4 py-5 sm:px-6',
-    footer_bg: 'bg-white',
+    footer_bg: 'bg-white dark:bg-zinc-800',
     ball: false,
     ball_color: nil
   )

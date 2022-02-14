@@ -7,7 +7,7 @@
 <% end %>
 
 <div class="max-w-3xl mx-auto px-4 sm:px-6 md:px-8">
-  <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+  <div class="bg-white dark:bg-zinc-800 shadow overflow-hidden sm:rounded-lg">
     <div class="px-4 py-5 sm:px-6">
       <div class="-ml-4 -mt-4 flex justify-between items-center flex-wrap sm:flex-nowrap">
         <div class="ml-4 mt-4">
@@ -16,7 +16,7 @@
               <%= image_tag @structure.owner.icon_url_128, class: 'h-12 w-12', alt: '' %>
             </div>
             <div class="ml-4">
-              <h3 class="text-lg leading-6 font-medium text-gray-900">
+              <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-zinc-100">
                 <%= @structure.name %>
               </h3>
             </div>
@@ -26,24 +26,24 @@
         </div>
       </div>
     </div>
-    <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+    <div class="border-t border-gray-200 dark:border-zinc-800 px-4 py-5 sm:px-6">
       <%= form_with model: @structure, url: admin_structure_path do |f| %>
         <div class="space-y-8 divide-y divide-gray">
           <div class="space-y-8 divide-y divide-gray">
             <div>
               <div>
-                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-zinc-100">
                   API Access
                 </h3>
-                <p class="mt-1 text-sm text-gray-500">
+                <p class="mt-1 text-sm text-gray-500 dark:text-zinc-500">
                   Settings used to make API requests to the EVE API on behalf of the structure.
                 </p>
               </div>
               <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                 <div class="sm:col-span-3">
-                  <%= f.label :esi_authorization_id, 'API character', class: 'block text-sm font-medium text-gray-700' %>
+                  <%= f.label :esi_authorization_id, 'API character', class: 'block text-sm font-medium text-gray-700 dark:text-zinc-300' %>
                   <div class="mt-1">
-                    <%= f.collection_select :esi_authorization_id, @structure.available_esi_authorizations, :id, :name, { prompt: true }, { class: 'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md' } %>
+                    <%= f.collection_select :esi_authorization_id, @structure.available_esi_authorizations, :id, :name, { prompt: true }, { class: 'shadow-sm focus:ring-indigo-500 dark:focus:ring-sky-500 focus:border-indigo-500 dark:focus:border-sky-500 block w-full sm:text-sm border-gray-300 dark:border-zinc-700 rounded-md' } %>
                   </div>
                 </div>
               </div>
@@ -51,10 +51,10 @@
 
             <div class="pt-8">
               <div>
-                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-zinc-100">
                   Synchronization
                 </h3>
-                <p class="mt-1 text-sm text-gray-500">
+                <p class="mt-1 text-sm text-gray-500 dark:text-zinc-500">
                   What to synchronize for the structure.
                 </p>
               </div>
@@ -63,11 +63,11 @@
                   <div class="mt-4 space-y-4">
                     <div class="relative flex items-start">
                       <div class="flex items-center h-5">
-                        <%= f.check_box :market_order_sync_enabled, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded' %>
+                        <%= f.check_box :market_order_sync_enabled, class: 'focus:ring-indigo-500 dark:focus:ring-sky-500 h-4 w-4 text-indigo-600 dark:text-sky-600 border-gray-300 dark:border-zinc-700 rounded' %>
                       </div>
                       <div class="ml-3 text-sm">
-                        <%= f.label :market_order_sync_enabled, 'Market', class: 'font-medium text-gray-700' %>
-                        <p class="text-gray-500">The structure's market order book. Synchronized every 15 minutes.</p>
+                        <%= f.label :market_order_sync_enabled, 'Market', class: 'font-medium text-gray-700 dark:text-zinc-300' %>
+                        <p class="text-gray-500 dark:text-zinc-500">The structure's market order book. Synchronized every 15 minutes.</p>
                       </div>
                     </div>
                   </div>
@@ -78,8 +78,8 @@
 
           <div class="pt-5">
             <div class="flex justify-end">
-              <%= link_to 'Cancel', admin_structure_path(@structure), class: 'bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
-              <%= f.submit 'Save', class: 'ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
+              <%= link_to 'Cancel', admin_structure_path(@structure), class: 'bg-white py-2 px-4 border border-gray-300 dark:border-zinc-700 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-sky-500' %>
+              <%= f.submit 'Save', class: 'ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 dark:bg-sky-600 hover:bg-indigo-700 dark:hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-sky-500' %>
             </div>
           </div>
         </div>

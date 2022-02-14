@@ -6,27 +6,27 @@
 <% end %>
 
 <div class="max-w-3xl mx-auto px-4 sm:px-6 md:px-8">
-  <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+  <div class="bg-white dark:bg-zinc-800 shadow overflow-hidden sm:rounded-lg">
     <div class="px-4 py-5 sm:px-6">
-      <h3 class="text-lg leading-6 font-medium text-gray-900">
+      <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-zinc-100">
         Contract Information
       </h3>
     </div>
-    <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+    <div class="border-t border-gray-200 dark:border-zinc-800 px-4 py-5 sm:px-6">
       <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
         <div class="sm:col-span-1">
-          <dt class="text-sm font-medium text-gray-500">
+          <dt class="text-sm font-medium text-gray-500 dark:text-zinc-500">
             Description
           </dt>
-          <dd class="mt-1 text-sm text-gray-900">
+          <dd class="mt-1 text-sm text-gray-900 dark:text-zinc-100">
             <%= @contract.description %>
           </dd>
         </div>
         <div class="sm:col-span-1">
-          <dt class="text-sm font-medium text-gray-500">
+          <dt class="text-sm font-medium text-gray-500 dark:text-zinc-500">
             Fittings
           </dt>
-          <dd class="mt-1 text-sm text-gray-900">
+          <dd class="mt-1 text-sm text-gray-900 dark:text-zinc-100">
             <% if @contract.contract_fittings.any? %>
               <p class="text-xs">Click a fitting to compare below.</p>
               <ul class="list-none mt-1">
@@ -48,50 +48,50 @@
           </dd>
         </div>
         <div class="sm:col-span-1">
-          <dt class="text-sm font-medium text-gray-500">
+          <dt class="text-sm font-medium text-gray-500 dark:text-zinc-500">
             Issuer
           </dt>
-          <dd class="mt-1 text-sm text-gray-900">
+          <dd class="mt-1 text-sm text-gray-900 dark:text-zinc-100">
             <%= @contract.issuer.name %>
           </dd>
         </div>
         <div class="sm:col-span-1">
-          <dt class="text-sm font-medium text-gray-500">
+          <dt class="text-sm font-medium text-gray-500 dark:text-zinc-500">
             Issued
           </dt>
-          <dd class="mt-1 text-sm text-gray-900">
+          <dd class="mt-1 text-sm text-gray-900 dark:text-zinc-100">
             <%= local_time @contract.issued_at, format: :db %>
           </dd>
         </div>
         <div class="sm:col-span-1">
-          <dt class="text-sm font-medium text-gray-500">
+          <dt class="text-sm font-medium text-gray-500 dark:text-zinc-500">
             Price
           </dt>
-          <dd class="mt-1 text-sm text-gray-900">
+          <dd class="mt-1 text-sm text-gray-900 dark:text-zinc-100">
             <%= number_to_isk @contract.price %>
           </dd>
         </div>
         <div class="sm:col-span-1">
-          <dt class="text-sm font-medium text-gray-500">
+          <dt class="text-sm font-medium text-gray-500 dark:text-zinc-500">
             Expires
           </dt>
-          <dd class="mt-1 text-sm text-gray-900">
+          <dd class="mt-1 text-sm text-gray-900 dark:text-zinc-100">
             <%= local_time @contract.expired_at, format: :db %>
           </dd>
         </div>
         <div class="sm:col-span-1">
-          <dt class="text-sm font-medium text-gray-500">
+          <dt class="text-sm font-medium text-gray-500 dark:text-zinc-500">
             Valuation (<%= current_alliance.appraisal_market.name %> Sell)
           </dt>
-          <dd class="mt-1 text-sm text-gray-900">
+          <dd class="mt-1 text-sm text-gray-900 dark:text-zinc-100">
             <%= number_to_isk @contract.valuation_sell(current_alliance.appraisal_market) %>
           </dd>
         </div>
         <div class="sm:col-span-1">
-          <dt class="text-sm font-medium text-gray-500">
+          <dt class="text-sm font-medium text-gray-500 dark:text-zinc-500">
             Markup
           </dt>
-          <dd class="mt-1 text-sm text-gray-900">
+          <dd class="mt-1 text-sm text-gray-900 dark:text-zinc-100">
             <% markup_pct = @contract.markup_sell_pct(current_alliance.appraisal_market) %>
             <% unless markup_pct.infinite? || markup_pct.nan? %>
               <span class="<%= contract_markup_pct_color(markup_pct) %>">
@@ -103,26 +103,26 @@
           </dd>
         </div>
         <div class="sm:col-span-1">
-          <dt class="text-sm font-medium text-gray-500">
+          <dt class="text-sm font-medium text-gray-500 dark:text-zinc-500">
             Volume
           </dt>
-          <dd class="mt-1 text-sm text-gray-900">
+          <dd class="mt-1 text-sm text-gray-900 dark:text-zinc-100">
             <%= number_to_m3 @contract.volume %>
           </dd>
         </div>
         <div class="sm:col-span-1">
-          <dt class="text-sm font-medium text-gray-500">
+          <dt class="text-sm font-medium text-gray-500 dark:text-zinc-500">
             Location
           </dt>
-          <dd class="mt-1 text-sm text-gray-900">
+          <dd class="mt-1 text-sm text-gray-900 dark:text-zinc-100">
             <%= @contract.end_location.name %>
           </dd>
         </div>
         <div class="sm:col-span-2">
-          <dt class="text-sm font-medium text-gray-500 sr-only">
+          <dt class="text-sm font-medium text-gray-500 dark:text-zinc-500 sr-only">
             Items
           </dt>
-          <dd class="mt-1 text-sm text-gray-900">
+          <dd class="mt-1 text-sm text-gray-900 dark:text-zinc-100">
             <% if @contract_fitting %>
               <%= render 'contract_fitting' %>
             <% else %>

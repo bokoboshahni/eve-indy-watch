@@ -45,7 +45,7 @@ class ProcurementOrdersController < ApplicationController
   end
 
   def new
-    @order = ProcurementOrder.new
+    @order = ProcurementOrder.new(visibility: :everyone, requester: current_user.character)
     authorize(@order)
   end
 

@@ -10,7 +10,7 @@
         From: "opacity-100"
         To: "opacity-0"
     -->
-    <div class="fixed inset-0 bg-gray-600 bg-opacity-75" aria-hidden="true"></div>
+    <div class="fixed inset-0 bg-gray-600 dark:bg-zinc-600 bg-opacity-75" aria-hidden="true"></div>
 
     <!--
       Off-canvas menu, show/hide based on off-canvas menu state.
@@ -22,7 +22,7 @@
         From: "translate-x-0"
         To: "-translate-x-full"
     -->
-    <div class="relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-gray-800">
+    <div class="relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-gray-800 dark:bg-zinc-800">
       <!--
         Close button, show/hide based on off-canvas menu state.
 
@@ -81,7 +81,7 @@
 
           <div class="pt-4">
             <% if current_user.admin? %>
-              <p class="px-3 pb-4 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+              <p class="px-3 pb-4 text-xs font-semibold text-gray-400 dark:text-zinc-400 uppercase tracking-wider">
                 Administration
               </p>
 

@@ -1,42 +1,35 @@
 <% content_for :breadcrumbs do %>
-<li class="flex">
-  <div class="flex items-center">
-    <svg class="flex-shrink-0 w-6 h-full text-gray-200" viewBox="0 0 24 44" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
-    </svg>
-    <%= link_to 'Settings', settings_path, class: 'ml-4 text-sm font-medium text-gray-500 hover:text-gray-700', 'aria-current': :page %>
-  </div>
-</li>
+  <%= render(BreadcrumbsComponent.new) do |c| %>
+    <%= c.item href: settings_path do %>Settings<% end %>
+  <% end %>
 <% end %>
 
-<div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-  <div class="px-4 sm:p-6 bg-white">
-    <div class="">
-
-      <!-- Description list with inline editing -->
-      <div class="divide-y divide-gray-200">
+<div class="shadow overflow-hidden border-b border-gray-200 dark:border-zinc-800 sm:rounded-lg">
+  <div class="px-4 sm:p-6 bg-white dark:bg-zinc-800">
+    <div>
+      <div class="divide-y divide-gray-200 dark:divide-zinc-800">
         <div class="space-y-1">
-          <h3 class="text-lg leading-6 font-medium text-gray-900">
+          <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-zinc-100">
             Profile
           </h3>
-          <p class="max-w-2xl text-sm text-gray-500">
+          <p class="max-w-2xl text-sm text-gray-500 dark:text-zinc-500">
             This information is obtained automatically from the EVE API and updated on login.
           </p>
         </div>
         <div class="mt-6">
-          <dl class="divide-y divide-gray-200">
+          <dl class="divide-y divide-gray-200 dark:divide-zinc-800">
             <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4">
-              <dt class="text-sm font-medium text-gray-500">
+              <dt class="text-sm font-medium text-gray-500 dark:text-zinc-500">
                 Character
               </dt>
-              <dd class="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              <dd class="mt-1 flex text-sm text-gray-900 dark:text-zinc-100 sm:mt-0 sm:col-span-2">
                 <span class="flex-grow">
                   <div class="flex items-center">
                     <div class="flex-shrink-0 h-8 w-8">
                       <%= image_tag current_user.portrait_url_256, class: 'h-8 w-8 rounded-full', alt: '' %>
                     </div>
                     <div class="ml-4">
-                      <div class="text-sm font-medium text-gray-900">
+                      <div class="text-sm font-medium text-gray-900 dark:text-zinc-100">
                         <%= current_user.name %>
                       </div>
                     </div>
@@ -45,17 +38,17 @@
               </dd>
             </div>
             <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:pt-5">
-              <dt class="text-sm font-medium text-gray-500">
+              <dt class="text-sm font-medium text-gray-500 dark:text-zinc-500">
                 Corporation
               </dt>
-              <dd class="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              <dd class="mt-1 flex text-sm text-gray-900 dark:text-zinc-100 sm:mt-0 sm:col-span-2">
                 <span class="flex-grow">
                   <div class="flex items-center">
                     <div class="flex-shrink-0 h-8 w-8">
                       <%= image_tag current_user.corporation_icon_url_256, class: 'h-8 w-8 rounded-full', alt: '' %>
                     </div>
                     <div class="ml-4">
-                      <div class="text-sm font-medium text-gray-900">
+                      <div class="text-sm font-medium text-gray-900 dark:text-zinc-100">
                         <%= current_user.corporation_name %>
                       </div>
                     </div>
@@ -63,11 +56,11 @@
                 </span>
               </dd>
             </div>
-            <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-b sm:border-gray-200">
-              <dt class="text-sm font-medium text-gray-500">
+            <div class="py-4 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-b sm:border-gray-200 dark:sm:border-zinc-800">
+              <dt class="text-sm font-medium text-gray-500 dark:text-zinc-500">
                 Alliance
               </dt>
-              <dd class="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              <dd class="mt-1 flex text-sm text-gray-900 dark:text-zinc-100 sm:mt-0 sm:col-span-2">
                 <% if current_user.alliance %>
                   <span class="flex-grow">
                     <div class="flex items-center">
@@ -75,7 +68,7 @@
                         <%= image_tag current_user.alliance_icon_url_128, class: 'h-8 w-8 rounded-full', alt: '' %>
                       </div>
                       <div class="ml-4">
-                        <div class="text-sm font-medium text-gray-900">
+                        <div class="text-sm font-medium text-gray-900 dark:text-zinc-100">
                           <%= current_user.alliance_name %>
                         </div>
                       </div>
@@ -88,5 +81,47 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<div class="bg-white dark:bg-zinc-800 shadow overflow-hidden sm:rounded-lg mt-10">
+  <div class="border-t border-gray-200 dark:border-zinc-800 px-4 py-5 sm:px-6">
+    <%= form_with model: current_user, url: settings_path, html: { data: { turbo: false } } do |f| %>
+      <div class="space-y-8 divide-y divide-gray">
+        <div class="space-y-8 divide-y divide-gray">
+          <div>
+            <div>
+              <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-zinc-100">
+                Preferences
+              </h3>
+            </div>
+            <div class="mt-1">
+              <fieldset>
+                <div class="mt-4 space-y-4">
+                  <div class="relative flex items-start">
+                    <div class="flex items-center h-5">
+                      <%= f.check_box :dark_mode_enabled, class: 'focus:ring-indigo-500 dark:focus:ring-sky-500 h-4 w-4 text-indigo-600 dark:text-sky-600 border-gray-300 dark:border-zinc-700 rounded' %>
+                    </div>
+                    <div class="ml-3 text-sm">
+                      <%= f.label :dark_mode_enabled, 'Dark mode', class: 'font-medium text-gray-700 dark:text-zinc-300' %>
+                      <p class="text-gray-500 dark:text-zinc-500">
+                        Enable dark mode
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs uppercase font-medium bg-yellow-100 text-yellow-800 dark:saturate-50">Beta</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </fieldset>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-5">
+          <div class="flex justify-end">
+            <%= f.submit 'Save', class: 'ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 dark:bg-sky-600 hover:bg-indigo-700 dark:hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-sky-500' %>
+          </div>
+        </div>
+      </div>
+    <% end %>
   </div>
 </div>

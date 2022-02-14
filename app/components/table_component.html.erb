@@ -1,5 +1,5 @@
-<table class="<%= layout %> w-full divide-y divide-gray-200">
-  <thead class="bg-gray-50">
+<table class="<%= layout %> w-full divide-y divide-gray-200 dark:divide-zinc-800">
+  <thead class="bg-gray-300 dark:bg-zinc-700 text-gray-700 dark:text-zinc-200">
     <% if head %>
       <%= head %>
     <% else %>
@@ -10,7 +10,7 @@
       </tr>
     <% end %>
   </thead>
-  <tbody class="bg-white divide-y divide-gray-200">
+  <tbody class="bg-gray-100 dark:bg-zinc-700 divide-y divide-gray-200 dark:divide-zinc-800 text-gray-900 dark:text-zinc-100">
     <%= body %>
     <% rows.each do |row| %>
       <%= row %>

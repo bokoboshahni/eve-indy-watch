@@ -4,8 +4,8 @@
       <% t.head do %>
         <%= render(TableRowComponent.new) do |tr| %>
           <% tr.header padding: 'px-4 py-2' do %>Name<% end %>
-          <% tr.header padding: 'px-4 py-2', width: 'w-48' do %>Type<% end %>
-          <% tr.header padding: 'px-4 py-2', width: 'w-24' do %>Owner<% end %>
+          <% tr.header padding: 'px-4 py-2', width: 'w-24' do %>Type<% end %>
+          <% tr.header padding: 'px-4 py-2', width: 'w-48' do %>Owner<% end %>
           <% tr.header padding: 'px-4 py-2', width: 'w-24' do %>Locations<% end %>
           <% tr.header padding: 'px-4 py-2', width: 'w-36' do %>Orders Updated<% end %>
           <% tr.header padding: 'px-4 py-2', width: 'w-36' do %>Statistics Updated<% end %>
@@ -15,51 +15,38 @@
       <% markets.each do |market| %>
         <% t.row do |tr| %>
           <% tr.cell padding: 'px-4 py-1' do %>
-            <div class="text-xs font-medium text-gray-900">
+            <div class="text-xs font-medium text-gray-900 dark:text-zinc-100">
               <%= link_to market.name, admin_market_path(market), class: 'font-medium', data: { turbo_frame: '_top' } %>
             </div>
           <% end %>
           <% tr.cell padding: 'px-4 py-1' do %>
-            <div class="text-xs font-medium text-gray-900">
+            <div class="text-xs font-medium text-gray-900 dark:text-zinc-100">
               <%= market.kind.titleize %>
             </div>
           <% end %>
           <% tr.cell padding: 'px-4 py-1' do %>
             <% if market.owner %>
-              <div class="flex items-center">
-                <div class="flex-shrink-0 h-10 w-10">
-                  <% if market.owner.is_a?(Alliance) %>
-                    <%= render(AllianceIconComponent.new(alliance: market.owner, classes: 'h-10 w-10 rounded-sm')) %>
-                  <% elsif market.owner.is_a?(Corporation) %>
-                    <%= render(CorporationIconComponent.new(corporation: market.owner, classes: 'h-10 w-10 rounded-sm')) %>
-                  <% end %>
-                </div>
-                <div class="ml-4">
-                  <div class="text-xs font-medium text-gray-900">
-                    <%= market.owner.name %>
-                  </div>
-                </div>
-              </div>
+                <%= market.owner.name %>
             <% end %>
           <% end %>
           <% tr.cell padding: 'px-4 py-1' do %>
-            <div class="text-xs font-medium text-gray-900">
+            <div class="text-xs font-medium text-gray-900 dark:text-zinc-100">
               <%= market.regional? ? '1' : market.market_locations.count %>
             </div>
           <% end %>
           <%
-            orders_classes = market.orders_last_modified.to_i >= 10.minutes.ago.to_i ? 'bg-green-300' : 'bg-red-300'
+            orders_classes = market.orders_last_modified.to_i >= 10.minutes.ago.to_i ? 'bg-green-300 dark:bg-green-700 dark:saturate-50' : 'bg-red-300 dark:bg-red-700 dark:saturate-50'
             tr.cell padding: 'px-4 py-1', classes: orders_classes do
           %>
-            <div class="text-xs font-medium text-gray-900">
+            <div class="text-xs font-medium text-gray-900 dark:text-zinc-100">
               <%= local_time market.orders_last_modified, format: :db if market.orders_last_modified %>
             </div>
           <% end %>
           <%
-            snapshot_classes = market.latest_snapshot_time.to_i >= 10.minutes.ago.to_i ? 'bg-green-300' : 'bg-red-300'
+            snapshot_classes = market.latest_snapshot_time.to_i >= 10.minutes.ago.to_i ? 'bg-green-300 dark:bg-green-700 dark:saturate-50' : 'bg-red-300 dark:bg-red-700 dark:saturate-50'
             tr.cell padding: 'px-4 py-1', classes: snapshot_classes do
           %>
-            <div class="text-xs font-medium text-gray-900">
+            <div class="text-xs font-medium text-gray-900 dark:text-zinc-100">
               <%= local_time market.latest_snapshot_time, format: :db if market.latest_snapshot_time %>
             </div>
           <% end %>

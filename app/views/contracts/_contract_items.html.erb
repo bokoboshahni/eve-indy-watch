@@ -13,22 +13,22 @@
     </span>
   </div>
 <% elsif @contract.esi_items_last_modified_at && @contract.items.any? %>
-  <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-    <table class="min-w-full divide-y divide-gray-200">
-      <thead class="bg-gray-50">
+  <div class="shadow overflow-hidden border-b border-gray-200 dark:border-zinc-800 sm:rounded-lg">
+    <table class="min-w-full divide-y divide-gray-200 dark:divide-zinc-800">
+      <thead class="bg-gray-50 dark:bg-zinc-800">
         <tr>
-          <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-zinc-500 uppercase tracking-wider">
             Item
           </th>
-          <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+          <th scope="col" class="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-zinc-500 uppercase tracking-wider">
             Quantity
           </th>
         </tr>
       </thead>
-      <tbody class="bg-white divide-y divide-gray-200">
+      <tbody class="bg-white dark:bg-zinc-800 divide-y divide-gray-200 dark:divide-zinc-800">
         <% @contract.compact_items_with_types.each do |item| %>
           <tr>
-            <td class="px-4 py-2 whitespace-nowrap text-xs font-medium text-gray-900">
+            <td class="px-4 py-2 whitespace-nowrap text-xs font-medium text-gray-900 dark:text-zinc-100">
               <%= item[:type].name %>
             </td>
             <td class="px-4 py-2 whitespace-nowrap text-right text-xs font-medium">
@@ -40,20 +40,20 @@
     </table>
   </div>
 <% elsif @contract.esi_items_last_modified_at %>
-  <div class="relative block w-full border-2 border-gray-300 border-dashed rounded-lg p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-    <svg class="mx-auto h-12 w-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+  <div class="relative block w-full border-2 border-gray-300 dark:border-zinc-700 border-dashed rounded-lg p-12 text-center hover:border-gray-400 dark:hover:border-zinc-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-sky-500">
+    <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-zinc-400" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v20c0 4.418 7.163 8 16 8 1.381 0 2.721-.087 4-.252M8 14c0 4.418 7.163 8 16 8s16-3.582 16-8M8 14c0-4.418 7.163-8 16-8s16 3.582 16 8m0 0v14m0-4c0 4.418-7.163 8-16 8S8 28.418 8 24m32 10v6m0 0v6m0-6h6m-6 0h-6" />
     </svg>
-    <span class="mt-2 block text-sm font-medium text-gray-900">
+    <span class="mt-2 block text-sm font-medium text-gray-900 dark:text-zinc-100">
       Contract has no items.
     </span>
   </div>
 <% else %>
-  <div class="relative block w-full border-2 border-gray-300 border-dashed rounded-lg p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-    <svg class="mx-auto h-12 w-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+  <div class="relative block w-full border-2 border-gray-300 dark:border-zinc-700 border-dashed rounded-lg p-12 text-center hover:border-gray-400 dark:hover:border-zinc-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-sky-500">
+    <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-zinc-400" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v20c0 4.418 7.163 8 16 8 1.381 0 2.721-.087 4-.252M8 14c0 4.418 7.163 8 16 8s16-3.582 16-8M8 14c0-4.418 7.163-8 16-8s16 3.582 16 8m0 0v14m0-4c0 4.418-7.163 8-16 8S8 28.418 8 24m32 10v6m0 0v6m0-6h6m-6 0h-6" />
     </svg>
-    <span class="mt-2 block text-sm font-medium text-gray-900">
+    <span class="mt-2 block text-sm font-medium text-gray-900 dark:text-zinc-100">
       Contract items have not been fetched.
     </span>
   </div>

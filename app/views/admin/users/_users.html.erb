@@ -14,15 +14,15 @@
                 <%= image_tag user.character.portrait_url_256, class: 'h-10 w-10 rounded-full', alt: '' %>
               </div>
               <div class="ml-4">
-                <div class="text-xs font-medium text-gray-900">
+                <div class="text-xs font-medium text-gray-900 dark:text-zinc-100">
                   <%= link_to user.name, admin_user_path(user), class: 'font-medium', data: { turbo_frame: '_top' } %>
                 </div>
               </div>
             </div>
           <% end %>
           <% tr.cell padding: 'px-4 py-1' do %>
-            <div class="text-xs text-gray-900"><%= user.corporation.name %></div>
-            <% if user.alliance %><div class="text-xs text-gray-500"><%= user.alliance.name %></div><% end %>
+            <div class="text-xs text-gray-900 dark:text-zinc-100"><%= user.corporation.name %></div>
+            <% if user.alliance %><div class="text-xs text-gray-500 dark:text-zinc-500"><%= user.alliance.name %></div><% end %>
           <% end %>
           <% tr.cell padding: 'px-4 py-1' do %>
             <%= local_time user.character.esi_last_modified_at, format: :db if user.character.esi_last_modified_at %>

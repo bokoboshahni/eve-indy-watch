@@ -2,21 +2,21 @@
   <div class="relative max-w-4xl mx-auto md:px-8 xl:px-0">
     <div class="pt-6">
       <div class="px-4 sm:px-6 md:px-0">
-        <h1 class="text-3xl font-extrabold text-gray-900">Settings</h1>
+        <h1 class="text-3xl font-extrabold text-gray-900 dark:text-zinc-100">Settings</h1>
       </div>
     </div>
     <div class="py-6">
       <!-- Tabs -->
       <div class="lg:hidden">
         <label for="selected-tab" class="sr-only">Select a tab</label>
-        <select id="selected-tab" name="selected-tab" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm rounded-md">
+        <select id="selected-tab" name="selected-tab" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 dark:border-zinc-300 focus:outline-none focus:ring-purple-500 focus:border-purple-500 sm:text-sm rounded-md">
           <option selected>General</option>
 
           <% if current_user.admin? || current_user.esi_authorizations_enabled? %><option>Authorizations</option><% end %>
         </select>
       </div>
       <div class="hidden lg:block">
-        <div class="border-b border-gray-200">
+        <div class="border-b border-gray-200 dark:border-zinc-200">
           <nav class="-mb-px flex space-x-8">
             <%= link_to 'General', settings_path, class: "#{settings_tab_text_class('settings')} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm" %>
 
