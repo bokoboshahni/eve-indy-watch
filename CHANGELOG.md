@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [2.27.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.26.3...v2.27.0) (2022-02-14)
+
+
+### Features
+
+* devcontainer enhancements ([#190](https://github.com/bokoboshahni/eve-indy-watch/issues/190)) ([034350a](https://github.com/bokoboshahni/eve-indy-watch/commit/034350a471c30c8992fb725207b0771ea2210619))
+
 ## [2.26.3](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.26.2...v2.26.3) (2022-02-14)
 
 

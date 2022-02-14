@@ -63,5 +63,5 @@
     "storybook": "start-storybook"
   },
   "private": true,
-  "version": "2.26.3"
+  "version": "2.27.0"
 }
