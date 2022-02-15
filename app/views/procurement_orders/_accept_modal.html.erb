@@ -1,9 +1,9 @@
 <div class="<%= 'grow' unless table %>" data-controller="modal" data-modal-allow-background-close="false">
   <%
     button_class = if table
-                     'cursor-pointer inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
+                     'cursor-pointer inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-green-600 dark:saturate-50 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500'
                    else
-                     'cursor-pointer w-full bg-indigo-600 border border-transparent rounded-md shadow-sm py-2 px-3 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500'
+                     'cursor-pointer w-full bg-indigo-600 dark:saturate-50 dark:bg-sky-600 border border-transparent rounded-md shadow-sm py-2 px-3 text-sm font-medium text-white hover:bg-indigo-700 dark:hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 dark:focus:ring-offset-zinc-50 focus:ring-indigo-500 dark:focus:ring-sky-500'
                    end
 
     button_text = table ? 'Accept' : 'Accept Order'
@@ -12,22 +12,22 @@
 
   <div data-modal-target="container" data-action="click->modal#closeBackground keyup@window->modal#closeWithKeyboard" class="hidden animated fadeIn fixed z-10 inset-0 overflow-y-auto" style="z-index: 9999;">
     <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-      <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+      <div class="fixed inset-0 bg-gray-500 dark:bg-zinc-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
 
       <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 
-      <div class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+      <div class="inline-block align-bottom bg-white dark:bg-zinc-800 rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
         <%= form_with model: order, url: accept_procurement_order_path(order), method: :post, data: { turbo: false } do |f| %>
           <div class="sm:flex sm:items-start">
             <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
               <%= heroicon 'check', variant: :outline, options: { class: 'h-6 w-6 text-green-600' } %>
             </div>
             <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-              <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">
+              <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-zinc-100" id="modal-title">
                 Accept Order
               </h3>
               <div class="mt-2 space-y-2">
-                <p class="text-sm text-gray-500">
+                <p class="text-sm text-gray-500 dark:text-zinc-500">
                   Are you sure you want to accept this order from
                   <% if order.requester.respond_to?(:procurement_order_requester) && order.requester.procurement_order_requester.present? %>
                   <span class="font-medium"><%= order.requester.procurement_order_requester.name %></span> on behalf of
@@ -36,29 +36,29 @@
                   <span class="font-medium"><%= order.location_name %></span> for <span class="font-medium"><%= number_to_isk order.total %> ISK</span>?
                 </p>
                 <% if order.target_completion_at %>
-                <p class="text-sm text-gray-500 font-medium">
-                  This order is due by <span class="font-bold text-gray-900"><%= local_time order.target_completion_at, format: :long_date %></span>.
+                <p class="text-sm text-gray-500 dark:text-zinc-500 font-medium">
+                  This order is due by <span class="font-bold text-gray-900 dark:text-zinc-100"><%= local_time order.target_completion_at, format: :long_date %></span>.
                 </p>
                 <% end %>
                 <% if order.requester.respond_to?(:procurement_order_requester) && order.requester.procurement_order_requester.present? %>
-                <p class="mt-1 text-sm text-gray-500 font-bold">
+                <p class="mt-1 text-sm text-gray-500 dark:text-zinc-500 font-bold">
                   Make sure that your contract is sent to <%= order.requester.procurement_order_requester.name %> and not <%= order.requester_name %>.
                 </p>
                 <% end %>
               </div>
               <div class="mt-4 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6 pb-6">
                 <div class="sm:col-span-4">
-                  <%= f.label :estimated_completion_at, 'Estimated delivery date (optional)', class: 'block text-sm font-medium text-gray-700' %>
+                  <%= f.label :estimated_completion_at, 'Estimated delivery date (optional)', class: 'block text-sm font-medium text-gray-700 dark:text-zinc-300' %>
                   <div class="mt-1">
-                    <%= f.date_field :estimated_completion_at, class: 'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md', min: Time.zone.today, max: order.target_completion_at %>
+                    <%= f.date_field :estimated_completion_at, class: 'dark:bg-zinc-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-sky-500 focus:border-indigo-500 dark:focus:border-sky-500 block w-full sm:text-sm border-gray-300 dark:border-zinc-700 rounded-md', min: Time.zone.today, max: order.target_completion_at %>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-            <%= f.submit 'Accept', class: 'cursor-pointer w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:ml-3 sm:w-auto sm:text-sm', data: { turbo_frame: '_top' } %>
-            <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:w-auto sm:text-sm" data-action="click->modal#close">
+            <%= f.submit 'Accept', class: 'cursor-pointer w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-indigo-600 dark:bg-sky-600 text-base font-medium text-white hover:bg-indigo-700 dark:hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-sky-500 sm:ml-3 sm:w-auto sm:text-sm dark:saturate-50', data: { turbo_frame: '_top' } %>
+            <button type="button" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 dark:border-zinc-700 shadow-sm px-4 py-2 bg-white dark:bg-zinc-800 text-base font-medium text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-sky-500 sm:mt-0 sm:w-auto sm:text-sm" data-action="click->modal#close">
               Cancel
             </button>
           </div>

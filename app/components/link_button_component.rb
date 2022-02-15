@@ -20,8 +20,8 @@ class LinkButtonComponent < ViewComponent::Base
 
   def base_class_names
     'inline-flex items-center border border-transparent font-medium rounded shadow-sm text-white ' \
-      "bg-#{@color}-600 hover:bg-#{@color}-700 " \
-      "focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-#{@color}-500"
+      'bg-indigo-600 dark:bg-sky-600 hover:bg-indigo-700 dark:hover:bg-sky-600 ' \
+      'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:ring-sky-500'
   end
 
   def size_class_names

@@ -1,15 +1,15 @@
 <div class="flex items-center justify-between">
   <div class="flex-1 flex justify-between sm:hidden">
     <% if pagy.prev %>
-      <%= link_to pagy_url_for(pagy, pagy.prev), classs: 'relative inline-flex items-center px-4 py-2 border border-gray-300 text-s font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50', data: { turbo_action: 'advance' } %>
+      <%= link_to pagy_url_for(pagy, pagy.prev), classs: 'relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-zinc-700 text-s font-medium rounded-md text-gray-700 dark:text-zinc-300 bg-white hover:bg-gray-50 dark:hover:bg-zinc-50', data: { turbo_action: 'advance' } %>
     <% end %>
     <% if pagy.next %>
-      <%= link_to pagy_url_for(pagy, pagy.next), class: 'ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-s font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50', data: { turbo_action: 'advanced' } %>
+      <%= link_to pagy_url_for(pagy, pagy.next), class: 'ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-zinc-700 text-s font-medium rounded-md text-gray-700 dark:text-zinc-300 bg-white hover:bg-gray-50 dark:hover:bg-zinc-50', data: { turbo_action: 'advanced' } %>
     <% end %>
   </div>
   <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
     <div>
-      <p class="text-xs text-gray-700">
+      <p class="text-xs text-gray-700 dark:text-zinc-300">
         Showing
         <span class="font-medium"><%= pagy.from %></span>
         to
@@ -22,7 +22,7 @@
     <div>
       <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
         <% if pagy.prev %>
-          <%= link_to pagy_url_for(pagy, pagy.prev), class: 'relative inline-flex items-center px-1 py-1 rounded-l-md border border-gray-300 bg-white text-xs font-medium text-gray-500 hover:bg-gray-50', data: { turbo_action: 'advance' } do %>
+          <%= link_to pagy_url_for(pagy, pagy.prev), class: 'relative inline-flex items-center px-1 py-1 rounded-l-md border border-gray-300 dark:border-zinc-700 bg-white dark-bg-zinc-800 text-xs font-medium text-gray-500 dark:text-zinc-500 hover:bg-gray-50 dark:hover:bg-zinc-50', data: { turbo_action: 'advance' } do %>
             <span class="sr-only">Previous</span>
             <%= heroicon 'chevron-left', variant: :solid, options: { class: 'h-3 h-3' } %>
           <% end %>
@@ -30,20 +30,20 @@
 
         <% pagy.series.each do |item| %>
           <% if item.is_a?(Integer) %>
-            <%= link_to(item, pagy_url_for(pagy, item), class: 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50 hidden md:inline-flex relative items-center px-2 py-1 border text-xs font-medium', data: { turbo_action: 'advance' }) %>
+            <%= link_to(item, pagy_url_for(pagy, item), class: 'bg-white dark:bg-zinc-800 border-gray-300 dark:border-zinc-700 text-gray-500 dark:text-zinc-500 hover:bg-gray-50 dark:hover:bg-zinc-50 hidden md:inline-flex relative items-center px-2 py-1 border text-xs font-medium', data: { turbo_action: 'advance' }) %>
           <% elsif item.is_a?(String) %>
-            <a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-2 py-1 border text-xs font-medium" data-turbo-action="advance">
+            <a href="#" aria-current="page" class="z-10 bg-indigo-50 dark:bg-sky-400 dark:saturate-50 border-indigo-500 dark:border-sky-500 text-indigo-600 dark:text-sky-900 relative inline-flex items-center px-2 py-1 border text-xs font-medium" data-turbo-action="advance">
               <%= item %>
             </a>
           <% elsif item == :gap %>
-            <span class="relative inline-flex items-center px-2 py-1 border border-gray-300 bg-white text-xs font-medium text-gray-700">
+            <span class="relative inline-flex items-center px-2 py-1 border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-xs font-medium text-gray-500 dark:text-zinc-500">
               &hellip;
             </span>
           <% end %>
         <% end %>
 
         <% if pagy.next %>
-          <%= link_to pagy_url_for(pagy, pagy.next), class: 'relative inline-flex items-center px-1 py-1 rounded-r-md border border-gray-300 bg-white text-xs font-medium text-gray-500 hover:bg-gray-50', data: { turbo_action: 'advance' } do %>
+          <%= link_to pagy_url_for(pagy, pagy.next), class: 'relative inline-flex items-center px-1 py-1 rounded-r-md border border-gray-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-xs font-medium text-gray-500 dark:text-zinc-500 hover:bg-gray-50 dark:hover:bg-zinc-50', data: { turbo_action: 'advance' } do %>
             <span class="sr-only">Next</span>
             <%= heroicon 'chevron-right', variant: :solid, options: { class: 'h-3 h-3' } %>
           <% end %>

@@ -1,89 +1,89 @@
-<div class="pb-5 border-b border-gray-200">
-  <h3 class="text-lg leading-6 font-medium text-gray-900">
+<div class="pb-5 border-b border-gray-200 dark:border-zinc-800">
+  <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-zinc-100">
     Key Performance Indicators
   </h3>
 </div>
 
 <dl class="grid grid-cols-1 gap-5 sm:grid-cols-3">
-  <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-    <dt class="text-sm font-medium text-gray-500 truncate">
+  <div class="px-4 py-5 bg-white dark:bg-zinc-800 shadow rounded-lg overflow-hidden sm:p-6">
+    <dt class="text-sm font-medium text-gray-500 dark:text-zinc-500 truncate">
       Contracts on Hand
     </dt>
-    <dd class="mt-1 text-3xl font-semibold text-gray-900">
+    <dd class="mt-1 text-3xl font-semibold text-gray-900 dark:text-zinc-100">
       <%= stock.contract_match_quantity || 'N/A' %>
     </dd>
   </div>
 
-  <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-    <dt class="text-sm font-medium text-gray-500 truncate">
+  <div class="px-4 py-5 bg-white dark:bg-zinc-800 shadow rounded-lg overflow-hidden sm:p-6">
+    <dt class="text-sm font-medium text-gray-500 dark:text-zinc-500 truncate">
       Contracts Received (7 days)
     </dt>
-    <dd class="mt-1 text-3xl font-semibold text-gray-900">
+    <dd class="mt-1 text-3xl font-semibold text-gray-900 dark:text-zinc-100">
       <%= fitting.contracts_received.count %>
     </dd>
   </div>
 
-  <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-    <dt class="text-sm font-medium text-gray-500 truncate">
+  <div class="px-4 py-5 bg-white dark:bg-zinc-800 shadow rounded-lg overflow-hidden sm:p-6">
+    <dt class="text-sm font-medium text-gray-500 dark:text-zinc-500 truncate">
       Contracts Sold (7 days)
     </dt>
-    <dd class="mt-1 text-3xl font-semibold text-gray-900">
+    <dd class="mt-1 text-3xl font-semibold text-gray-900 dark:text-zinc-100">
       <%= fitting.contracts_sold.count %>
     </dd>
   </div>
 
   <% if fitting.owner.main_market %>
-    <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-      <dt class="text-sm font-medium text-gray-500 truncate">
+    <div class="px-4 py-5 bg-white dark:bg-zinc-800 shadow rounded-lg overflow-hidden sm:p-6">
+      <dt class="text-sm font-medium text-gray-500 dark:text-zinc-500 truncate">
         <%= fitting.owner.main_market.name %> Market
       </dt>
-      <dd class="mt-1 text-3xl font-semibold text-gray-900">
+      <dd class="mt-1 text-3xl font-semibold text-gray-900 dark:text-zinc-100">
         <%= stock.market_quantity || 'N/A' %>
       </dd>
     </div>
   <% end %>
 
-  <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-    <dt class="text-sm font-medium text-gray-500 truncate">
+  <div class="px-4 py-5 bg-white dark:bg-zinc-800 shadow rounded-lg overflow-hidden sm:p-6">
+    <dt class="text-sm font-medium text-gray-500 dark:text-zinc-500 truncate">
       Quality Contracts
     </dt>
-    <dd class="mt-1 text-3xl font-semibold text-gray-900">
+    <dd class="mt-1 text-3xl font-semibold text-gray-900 dark:text-zinc-100">
       <%= stock.contract_quality ? number_to_percentage(stock.contract_quality, precision: 2) : 'N/A' %>
     </dd>
   </div>
 
-  <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-    <dt class="text-sm font-medium text-gray-500 truncate">
+  <div class="px-4 py-5 bg-white dark:bg-zinc-800 shadow rounded-lg overflow-hidden sm:p-6">
+    <dt class="text-sm font-medium text-gray-500 dark:text-zinc-500 truncate">
       Lost (7 days)
     </dt>
-    <dd class="mt-1 text-3xl font-semibold text-gray-900">
+    <dd class="mt-1 text-3xl font-semibold text-gray-900 dark:text-zinc-100">
       <%= fitting.killmail_fittings.matching.joins(:killmail).where('killmails.time >= ?', 7.days.ago.beginning_of_day).count %>
     </dd>
   </div>
 
-  <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-    <dt class="text-sm font-medium text-gray-500 truncate">
+  <div class="px-4 py-5 bg-white dark:bg-zinc-800 shadow rounded-lg overflow-hidden sm:p-6">
+    <dt class="text-sm font-medium text-gray-500 dark:text-zinc-500 truncate">
       Daily Contract Sales (7 days)
     </dt>
-    <dd class="mt-1 text-3xl font-semibold text-gray-900">
+    <dd class="mt-1 text-3xl font-semibold text-gray-900 dark:text-zinc-100">
       <%= number_with_precision fitting.contracts_sold_daily_avg(:week), precision: 2 %>
     </dd>
   </div>
 
-  <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-    <dt class="text-sm font-medium text-gray-500 truncate">
+  <div class="px-4 py-5 bg-white dark:bg-zinc-800 shadow rounded-lg overflow-hidden sm:p-6">
+    <dt class="text-sm font-medium text-gray-500 dark:text-zinc-500 truncate">
       Daily Losses (7 days)
     </dt>
-    <dd class="mt-1 text-3xl font-semibold text-gray-900">
+    <dd class="mt-1 text-3xl font-semibold text-gray-900 dark:text-zinc-100">
       <%= number_with_precision fitting.killmail_losses_daily_avg(:week), precision: 2 %>
     </dd>
   </div>
 
-  <div class="px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-    <dt class="text-sm font-medium text-gray-500 truncate">
+  <div class="px-4 py-5 bg-white dark:bg-zinc-800 shadow rounded-lg overflow-hidden sm:p-6">
+    <dt class="text-sm font-medium text-gray-500 dark:text-zinc-500 truncate">
       Regional Hull Sales (7 days)
     </dt>
-    <dd class="mt-1 text-3xl font-semibold text-gray-900">
+    <dd class="mt-1 text-3xl font-semibold text-gray-900 dark:text-zinc-100">
       <%= number_with_precision fitting.regional_sales_daily_avg(:week), precision: 2 %>
     </dd>
   </div>

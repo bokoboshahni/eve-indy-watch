@@ -85,7 +85,7 @@
                   <% elsif order.unconfirmed? && policy(order).update? %>
                     <%= render 'receive_modal', order: order, table: true %>
                   <% elsif order.draft? %>
-                    <%= link_to procurement_order_path(order), class: 'cursor-pointer inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-gray-600 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500', data: { action: 'click->modal#open' } do %>
+                    <%= link_to procurement_order_path(order), class: 'cursor-pointer inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs font-medium rounded shadow-sm text-white bg-gray-600 dark:bg-zinc-600 hover:bg-gray-700 dark:hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 dark:focus:ring-zinc-500', data: { action: 'click->modal#open' } do %>
                       <%= heroicon 'pencil', options: { class: 'h-4 w-4' } %>
                     <% end %>
                     <%= render 'delete_modal', order: order, table: true %>
@@ -100,7 +100,7 @@
   <% end %>
 <% else %>
   <div class="text-center p-4">
-    <%= heroicon 'cube-transparent', variant: :outline, options: { class: 'mx-auto h-12 w-12 text-gray-400' } %>
-    <h3 class="mt-2 text-sm font-medium text-gray-900">No orders</h3>
+    <%= heroicon 'cube-transparent', variant: :outline, options: { class: 'mx-auto h-12 w-12 text-gray-400 dark:text-zinc-400' } %>
+    <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-zinc-100">No orders</h3>
   </div>
 <% end %>

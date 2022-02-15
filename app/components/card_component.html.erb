@@ -1,4 +1,4 @@
-<div class="bg-white overflow-visible shadow rounded-lg divide-y divide-gray-200">
+<div class="bg-white dark:bg-zinc-800 overflow-visible shadow rounded-lg divide-y divide-gray-200 dark:divide-zinc-700">
   <% if header %>
     <%= content_tag :div, header, class: header_class_names %>
   <% elsif title %>
@@ -8,10 +8,10 @@
       <% end %>
       <div class="-ml-4 -mt-4 flex justify-between items-center flex-wrap sm:flex-nowrap">
         <div class="ml-4 mt-4">
-          <h3 class="text-lg leading-6 font-medium text-gray-900">
+          <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-zinc-100">
             <%= title %>
           </h3>
-          <% if description %><p class="mt-1 text-sm text-gray-500"><%= description %></p><% end %>
+          <% if description %><p class="mt-1 text-sm text-gray-500 dark:text-zinc-500"><%= description %></p><% end %>
         </div>
         <div class="ml-4 mt-4 flex-shrink-0">
           <% actions.each do |action| %><%= action %><% end %>

@@ -2,7 +2,7 @@
   <% c.body do %>
     <%= render(TableComponent.new(layout: 'auto')) do |t| %>
       <% t.head do %>
-        <%= render(TableRowComponent.new(classes: 'divide-x divide-gray-300 border-b border-gray-300 ')) do |tr| %>
+        <%= render(TableRowComponent.new(classes: 'divide-x divide-gray-300 dark:divide-zinc-700 border-b border-gray-300 dark:border-zinc-700 ')) do |tr| %>
           <% tr.header padding: 'px-4 py-1', colspan: 4 do %><% end %>
           <% tr.header padding: 'px-4 py-1', colspan: 2, align: 'text-center' do %>Market Orders<% end %>
         <% end %>
@@ -25,33 +25,33 @@
                 <%= render(TypeIconComponent.new(type: structure.type, classes: 'h-8 w-8 rounded-md')) %>
               </div>
               <div class="ml-4">
-                <div class="text-xs font-medium text-gray-900">
+                <div class="text-xs font-medium text-gray-900 dark:text-zinc-100">
                   <%= link_to structure.name, admin_structure_path(structure), class: 'font-medium', data: { turbo_frame: '_top' } %>
                 </div>
               </div>
             </div>
           <% end %>
           <% tr.cell padding: 'px-4 py-1' do %>
-            <div class="text-xs text-gray-900"><%= structure.owner.name %></div>
-            <% if structure.owner.alliance %><div class="text-xs text-gray-500"><%= structure.owner.alliance.name %></div><% end %>
+            <div class="text-xs text-gray-900 dark:text-zinc-100"><%= structure.owner.name %></div>
+            <% if structure.owner.alliance %><div class="text-xs text-gray-500 dark:text-zinc-500"><%= structure.owner.alliance.name %></div><% end %>
           <% end %>
           <% tr.cell padding: 'px-4 py-1' do %>
-            <div class="text-xs font-medium text-gray-900">
+            <div class="text-xs font-medium text-gray-900 dark:text-zinc-100">
               <%= structure.solar_system&.name %>
             </div>
           <% end %>
           <% tr.cell padding: 'px-4 py-1' do %>
-            <div class="text-xs font-medium text-gray-900">
+            <div class="text-xs font-medium text-gray-900 dark:text-zinc-100">
               <%= local_time structure.esi_last_modified_at, format: :db if structure.esi_last_modified_at %>
             </div>
           <% end %>
           <% tr.cell padding: 'px-4 py-1' do %>
-            <div class="text-xs font-medium text-gray-900">
+            <div class="text-xs font-medium text-gray-900 dark:text-zinc-100">
               <%= local_time(structure.esi_market_orders_last_modified_at, format: :db) if structure.esi_market_orders_last_modified_at %>
             </div>
           <% end %>
           <% tr.cell padding: 'px-4 py-1' do %>
-            <div class="text-xs font-medium text-gray-900">
+            <div class="text-xs font-medium text-gray-900 dark:text-zinc-100">
               <%= local_time(structure.esi_market_orders_expires_at, format: :db) if structure.esi_market_orders_expires_at %>
             </div>
           <% end %>

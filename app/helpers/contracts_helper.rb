@@ -6,6 +6,6 @@ module ContractsHelper
 
     return 'text-red-500' if pct >= 50 && pct < 100
 
-    'text-gray-500'
+    'text-gray-500 dark:text-zinc-500 dark:text-zinc-200'
   end
 end

@@ -5,11 +5,21 @@ module ApplicationHelper
   include Pagy::Frontend
 
   def sidebar_item_text_class(item_name)
-    controller_name == item_name ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+    if controller_name == item_name
+      'bg-gray-900 dark:bg-zinc-900 dark:bg-zinc-900 text-white'
+    else
+      'text-gray-300 dark:text-zinc-300 dark:text-zinc-300 hover:bg-gray-700 ' \
+        'dark:hover:bg-zinc-700 hover:text-white'
+    end
   end
 
   def sidebar_item_icon_class(item_name)
-    controller_name == item_name ? 'text-gray-300' : 'text-gray-400 group-hover:text-gray-300'
+    if controller_name == item_name
+      'text-gray-300 dark:text-zinc-300 dark:text-zinc-300'
+    else
+      'text-gray-400 dark:text-zinc-400 dark:text-zinc-400 ' \
+        'group-hover:text-gray-300 dark:group-hover:text-zinc-300 dark:hover:text-zinc-300'
+    end
   end
 
   def number_to_isk(value)

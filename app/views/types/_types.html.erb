@@ -14,10 +14,10 @@
                   <%= render(TypeIconComponent.new(type: type, classes: 'h-8 w-8 rounded-md')) %>
                 </div>
                 <div class="ml-4">
-                  <div class="text-xs font-medium text-gray-900">
-                    <%= link_to type.name, type_path(type), class: 'text-xs hover:text-indigo-900', data: { turbo_frame: '_top' } %>
+                  <div class="text-xs font-medium text-gray-900 dark:text-zinc-100">
+                    <%= link_to type.name, type_path(type), class: 'text-xs hover:text-indigo-900 dark:hover:text-sky-900', data: { turbo_frame: '_top' } %>
                   </div>
-                  <div class="text-xs text-gray-500">
+                  <div class="text-xs text-gray-500 dark:text-zinc-500">
                     <%= type.name %>
                   </div>
                 </div>

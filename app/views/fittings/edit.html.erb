@@ -12,44 +12,44 @@
     <% c.body do %>
       <%= form_with model: @fitting, url: fitting_path do |f| %>
         <div class="space-y-8 divide-y divide-gray">
-          <div class="space-y-8 divide-y divide-gray-200 sm:space-y-5">
+          <div class="space-y-8 divide-y divide-gray-200 dark:divide-zinc-800 sm:space-y-5">
             <div>
               <div>
-                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-zinc-100">
                   General settings
                 </h3>
               </div>
               <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
                 <div class="sm:col-span-6">
-                  <%= f.label :name, class: 'block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2 sm:col-span-2' do %>
+                  <%= f.label :name, class: 'block text-sm font-medium text-gray-700 dark:text-zinc-300 sm:mt-px sm:pt-2 sm:col-span-2' do %>
                     Fitting name
                   <% end %>
                   <div class="mt-1">
-                    <%= f.text_field :name, class: 'block w-full shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm border-gray-300 rounded-md' %>
+                    <%= f.text_field :name, class: 'block w-full shadow-sm dark:bg-zinc-600 focus:ring-sky-500 focus:border-sky-500 sm:text-sm border-gray-300 dark:border-zinc-700 rounded-md dark:text-zinc-100' %>
                   </div>
                 </div>
               </div>
               <div class="mt-6 sm:mt-5 space-y-6 sm:space-y-5">
                 <div class="relative flex items-start">
                   <div class="flex items-center h-5">
-                    <%= f.check_box :pinned, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded' %>
+                    <%= f.check_box :pinned, class: ' dark:bg-zinc-600 focus:ring-indigo-500 dark:focus:ring-sky-500 h-4 w-4 text-indigo-600 dark:text-sky-600 border-gray-300 dark:border-zinc-700 rounded' %>
                   </div>
                   <div class="ml-3 text-sm">
-                    <%= f.label :pinned, class: 'font-medium text-gray-700' do %>
+                    <%= f.label :pinned, class: 'font-medium text-gray-700 dark:text-zinc-300' do %>
                       Priority fitting
                     <% end %>
-                    <p class="text-gray-500">Will appear on the dashboard under Priority Doctrine Fittings.</p>
+                    <p class="text-gray-500 dark:text-zinc-500">Will appear on the dashboard under Priority Doctrine Fittings.</p>
                   </div>
                 </div>
                 <div class="relative flex items-start">
                   <div class="flex items-center h-5">
-                    <%= f.check_box :inventory_enabled, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded' %>
+                    <%= f.check_box :inventory_enabled, class: 'focus:ring-indigo-500 dark:bg-zinc-600 dark:focus:ring-sky-500 h-4 w-4 text-indigo-600 dark:text-sky-600 border-gray-300 dark:border-zinc-700 rounded' %>
                   </div>
                   <div class="ml-3 text-sm">
-                    <%= f.label :inventory_enabled, class: 'font-medium text-gray-700' do %>
+                    <%= f.label :inventory_enabled, class: 'font-medium text-gray-700 dark:text-zinc-300' do %>
                       Inventory tracking
                     <% end %>
-                    <p class="text-gray-500">Stock levels will be calculated.</p>
+                    <p class="text-gray-500 dark:text-zinc-500">Stock levels will be calculated.</p>
                   </div>
                 </div>
               </div>
@@ -57,20 +57,20 @@
 
             <div class="pt-8">
               <div>
-                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-zinc-100">
                   Stocking
                 </h3>
-                <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                <p class="mt-1 max-w-2xl text-sm text-gray-500 dark:text-zinc-500">
                   Settings used for inventory reporting and demand forecasting.
                 </p>
               </div>
               <div class="mt-6 sm:mt-5 space-y-6 sm:space-y-5">
-                <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-                  <%= f.label :safety_stock, class: 'block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2 sm:col-span-2' do %>
+                <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 dark:sm:border-zinc-800 sm:pt-5">
+                  <%= f.label :safety_stock, class: 'block text-sm font-medium text-gray-700 dark:text-zinc-300 sm:mt-px sm:pt-2 sm:col-span-2' do %>
                     Safety stock amount
                   <% end %>
                   <div class="mt-1 sm:mt-0 sm:col-span-1">
-                    <%= f.number_field :safety_stock, min: 0, class: 'block w-full shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm border-gray-300 rounded-md' %>
+                    <%= f.number_field :safety_stock, min: 0, class: 'block w-full dark:bg-zinc-600 shadow-sm focus:ring-sky-500 focus:border-sky-500 sm:text-sm border-gray-300 dark:border-zinc-700 rounded-md dark:text-zinc-100' %>
                   </div>
                 </div>
               </div>
@@ -78,36 +78,36 @@
 
             <div class="pt-8">
               <div>
-                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-zinc-100">
                   Matching
                 </h3>
-                <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                <p class="mt-1 max-w-2xl text-sm text-gray-500 dark:text-zinc-500">
                   Minimum similarity index amounts to use when matching contracts and killmails for the purpose of stocking levels and demand via lossmails.
                 </p>
-                <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                <p class="mt-1 max-w-2xl text-sm text-gray-500 dark:text-zinc-500">
                   The similarity index is the number of items in the contract/killmail with quantities matching the fitting, divided by the number of items in the fitting. Only modules, rigs, and subsystems are used when determining similarity for killmails.
                 </p>
-                <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                <p class="mt-1 max-w-2xl text-sm text-gray-500 dark:text-zinc-500">
                   Defaults to 1.0 (exact match) if unspecified.
                 </p>
               </div>
               <div class="mt-6 sm:mt-5 space-y-6 sm:space-y-5">
-                <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-                  <%= f.label :contract_match_threshold, class: 'block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2 sm:col-span-2' do %>
+                <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 dark:sm:border-zinc-800 sm:pt-5">
+                  <%= f.label :contract_match_threshold, class: 'block text-sm font-medium text-gray-700 dark:text-zinc-300 sm:mt-px sm:pt-2 sm:col-span-2' do %>
                     Contract similarity threshold
                   <% end %>
                   <div class="mt-1 sm:mt-0 sm:col-span-1">
-                    <%= f.number_field :contract_match_threshold, min: 0, max: 1.0, step: 0.1, class: 'max-w-lg shadow-sm block w-full focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border border-gray-300 rounded-md' %>
+                    <%= f.number_field :contract_match_threshold, min: 0, max: 1.0, step: 0.1, class: 'max-w-lg shadow-sm block w-full dark:bg-zinc-600 focus:ring-indigo-500 dark:focus:ring-sky-500 focus:border-indigo-500 dark:focus:border-sky-500 sm:text-sm border border-gray-300 dark:border-zinc-700 rounded-md dark:text-zinc-100' %>
                   </div>
                 </div>
               </div>
               <div class="mt-6 sm:mt-5 space-y-6 sm:space-y-5">
-                <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 sm:pt-5">
-                  <%= f.label :killmail_match_threshold, class: 'block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2 sm:col-span-2' do %>
+                <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:border-t sm:border-gray-200 dark:sm:border-zinc-800 sm:pt-5">
+                  <%= f.label :killmail_match_threshold, class: 'block text-sm font-medium text-gray-700 dark:text-zinc-300 sm:mt-px sm:pt-2 sm:col-span-2' do %>
                     Killmail similarity threshold
                   <% end %>
                   <div class="mt-1 sm:mt-0 sm:col-span-1">
-                    <%= f.number_field :killmail_match_threshold, min: 0, max: 1.0, step: 0.1, class: 'max-w-lg shadow-sm block w-full focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border border-gray-300 rounded-md' %>
+                    <%= f.number_field :killmail_match_threshold, min: 0, max: 1.0, step: 0.1, class: 'max-w-lg shadow-sm block w-full dark:bg-zinc-600 focus:ring-indigo-500 dark:focus:ring-sky-500 focus:border-indigo-500 dark:focus:border-sky-500 sm:text-sm border border-gray-300 dark:border-zinc-700 rounded-md dark:text-zinc-100' %>
                   </div>
                 </div>
               </div>
@@ -116,8 +116,8 @@
 
           <div class="pt-5">
             <div class="flex justify-end">
-              <%= link_to 'Cancel', fitting_path(@fitting), class: 'bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
-              <%= f.submit 'Save', class: 'ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
+              <%= link_to 'Cancel', fitting_path(@fitting), class: 'bg-white dark:bg-zinc-600 py-2 px-4 border border-gray-300 dark:border-zinc-700 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-sky-500' %>
+              <%= f.submit 'Save', class: 'cursor-pointer ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 dark:bg-sky-600 hover:bg-indigo-700 dark:hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-sky-500' %>
             </div>
           </div>
         </div>

@@ -1,19 +1,19 @@
 <%= turbo_frame_tag 'contracts' do %>
   <div class="space-y-3">
-    <div class="border-b border-gray-200">
+    <div class="border-b border-gray-200 dark:border-zinc-800">
       <div class="sm:flex sm:items-baseline">
-        <h3 class="text-lg leading-6 font-medium text-gray-900">
+        <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-zinc-100">
           Open Contracts
         </h3>
         <div class="mt-4 sm:mt-0 sm:ml-10">
           <nav class="-mb-px flex space-x-8">
             <% contract_categories = %w[matching problematic] %>
             <% base_class = 'whitespace-nowrap pb-4 px-1 border-b-2 font-medium text-sm flex' %>
-            <% current_class = 'border-indigo-500 text-indigo-600' %>
-            <% default_class = 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' %>
+            <% current_class = 'border-indigo-500 dark:border-sky-500 text-indigo-600 dark:text-sky-600' %>
+            <% default_class = 'border-transparent text-gray-500 dark:text-zinc-500 hover:text-gray-700 dark:hover:text-zinc-300 hover:border-gray-300 dark:hover:border-zinc-700' %>
             <% base_count_class = 'hidden ml-3 py-0.5 px-2.5 rounded-full text-xs font-medium md:inline-block' %>
-            <% current_count_class = 'bg-indigo-100 text-indigo-600' %>
-            <% default_count_class = 'bg-gray-100 text-gray-900' %>
+            <% current_count_class = 'bg-indigo-100 dark:bg-sky-100 text-indigo-600 dark:text-sky-600' %>
+            <% default_count_class = 'bg-gray-100 dark:bg-zinc-100 text-gray-900 dark:text-zinc-100' %>
 
             <%= link_to fitting_path(fitting), class: "#{contract_categories.exclude?(params[:contract_type]) ? current_class : default_class} #{base_class}", data: { turbo_frame: 'contracts' } do %>
               All
@@ -61,26 +61,26 @@
                 markup_pct = contract.markup_sell_pct(main_alliance.appraisal_market)
                 markup_color =
                   if markup_pct < 30
-                    'green-300'
+                    'bg-green-300 dark:bg-green-700'
                   elsif markup_pct >= 30
-                    'red-300'
+                    'bg-red-300 dark:bg-red-700'
                   end
               %>
-              <% tr.cell classes: "px-2 py-1 text-xs bg-#{markup_color}" do %>
+              <% tr.cell classes: "px-2 py-1 text-xs bg-#{markup_color} dark:saturate-50" do %>
                 <% unless markup_pct.infinite? || markup_pct.nan? %><%= '+' if markup_pct.positive? %><%= number_to_percentage markup_pct, precision: 0 %><% end %>
               <% end %>
               <%
                 quality_pct = contract_fitting.similarity * 100.0
                 quality_color =
                   if quality_pct == 100
-                    'green-300'
+                    'bg-green-300 dark:bg-green-700'
                   elsif quality_pct < 100 && quality_pct >= (fitting.contract_match_threshold || 1.0) * 100
-                    'yellow-400'
+                    'bg-yellow-400 dark:bg-yellow-600'
                   else
-                    'red-300'
+                    'bg-red-300 dark:bg-red-700'
                   end
               %>
-              <% tr.cell classes: "px-2 py-1 text-xs bg-#{quality_color}" do %>
+              <% tr.cell classes: "px-2 py-1 text-xs #{quality_color} dark:saturate-50" do %>
                 <%= number_to_percentage quality_pct, precision: 2 %>
               <% end %>
             <% end %>

@@ -2,7 +2,7 @@
   <% c.body do %>
     <%= render(TableComponent.new(layout: 'auto')) do |t| %>
       <% t.head do %>
-        <%= render(TableRowComponent.new(classes: 'divide-x divide-gray-300 border-b border-gray-300 ')) do |tr| %>
+        <%= render(TableRowComponent.new(classes: 'divide-x divide-gray-300 dark:divide-zinc-700 border-b border-gray-300 dark:border-zinc-700 ')) do |tr| %>
           <% tr.header padding: 'px-4 py-1', colspan: 4 do %><% end %>
           <% tr.header padding: 'px-4 py-1', colspan: 3, align: 'text-center' do %>Contracts<% end %>
         <% end %>
@@ -25,7 +25,7 @@
                 <%= render(CorporationIconComponent.new(corporation: corporation, classes: 'h-10 w-10 rounded-sm')) %>
               </div>
               <div class="ml-4">
-                <div class="text-xs font-medium text-gray-900">
+                <div class="text-xs font-medium text-gray-900 dark:text-zinc-100">
                   <%= link_to corporation.name, admin_corporation_path(corporation), class: 'font-medium', data: { turbo_frame: '_top' } %>
                 </div>
               </div>
@@ -38,7 +38,7 @@
                   <%= render(AllianceIconComponent.new(alliance: corporation.alliance, classes: 'h-10 w-10 rounded-sm')) %>
                 </div>
                 <div class="ml-4">
-                  <div class="text-xs font-medium text-gray-900">
+                  <div class="text-xs font-medium text-gray-900 dark:text-zinc-100">
                     <%= corporation.alliance.name %>
                   </div>
                 </div>
@@ -46,7 +46,7 @@
             <% end %>
           <% end %>
           <% tr.cell padding: 'px-4 py-1' do %>
-            <div class="text-xs font-medium text-gray-900">
+            <div class="text-xs font-medium text-gray-900 dark:text-zinc-100">
               <%= local_time corporation.esi_last_modified_at, format: :db if corporation.esi_last_modified_at %>
             </div>
           <% end %>
@@ -56,18 +56,18 @@
                 Enabled
               </span>
             <% else %>
-              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 dark:bg-zinc-100 text-gray-800 dark:text-zinc-800">
                 Disabled
               </span>
             <% end %>
           <% end %>
           <% tr.cell padding: 'px-4 py-1' do %>
-            <div class="text-xs font-medium text-gray-900">
+            <div class="text-xs font-medium text-gray-900 dark:text-zinc-100">
               <%= local_time(corporation.esi_contracts_last_modified_at, format: :db) if corporation.esi_contracts_last_modified_at %>
             </div>
           <% end %>
           <% tr.cell padding: 'px-4 py-1' do %>
-            <div class="text-xs font-medium text-gray-900">
+            <div class="text-xs font-medium text-gray-900 dark:text-zinc-100">
               <%= local_time(corporation.esi_contracts_expires_at, format: :db) if corporation.esi_contracts_expires_at %>
             </div>
           <% end %>

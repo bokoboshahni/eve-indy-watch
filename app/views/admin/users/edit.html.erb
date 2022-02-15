@@ -7,7 +7,7 @@
 <% end %>
 
 <div class="max-w-3xl mx-auto px-4 sm:px-6 md:px-8">
-  <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+  <div class="bg-white dark:bg-zinc-800 shadow overflow-hidden sm:rounded-lg">
     <div class="px-4 py-5 sm:px-6">
       <div class="-ml-4 -mt-4 flex justify-between items-center flex-wrap sm:flex-nowrap">
         <div class="ml-4 mt-4">
@@ -16,7 +16,7 @@
               <%= image_tag @user.character.portrait_url_256, class: 'h-12 w-12', alt: '' %>
             </div>
             <div class="ml-4">
-              <h3 class="text-lg leading-6 font-medium text-gray-900">
+              <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-zinc-100">
                 <%= @user.character.name %>
               </h3>
             </div>
@@ -26,16 +26,16 @@
         </div>
       </div>
     </div>
-    <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+    <div class="border-t border-gray-200 dark:border-zinc-800 px-4 py-5 sm:px-6">
       <%= form_with model: @user, url: admin_user_path(@user) do |f| %>
         <div class="space-y-8 divide-y divide-gray">
           <div class="space-y-8 divide-y divide-gray">
             <div class="pt-8">
               <div>
-                <h3 class="text-lg leading-6 font-medium text-gray-900">
+                <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-zinc-100">
                   Roles
                 </h3>
-                <p class="mt-1 text-sm text-gray-500">
+                <p class="mt-1 text-sm text-gray-500 dark:text-zinc-500">
                   What the user is allowed to do.
                 </p>
               </div>
@@ -44,74 +44,74 @@
                   <div class="mt-4 space-y-4">
                     <div class="relative flex items-start">
                       <div class="flex items-center h-5">
-                        <%= f.check_box :roles, { multiple: true, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded' }, 'alliance.fittings.editor' %>
+                        <%= f.check_box :roles, { multiple: true, class: 'focus:ring-indigo-500 dark:focus:ring-sky-500 h-4 w-4 text-indigo-600 dark:text-sky-600 border-gray-300 dark:border-zinc-700 rounded' }, 'alliance.fittings.editor' %>
                       </div>
                       <div class="ml-3 text-sm">
-                        <%= f.label :roles, 'Alliance Fittings Editor', class: 'font-medium text-gray-700', value: 'alliance.fittings.editor' %>
-                        <p class="text-gray-500">Manage fittings owned by the user's alliance.</p>
+                        <%= f.label :roles, 'Alliance Fittings Editor', class: 'font-medium text-gray-700 dark:text-zinc-300', value: 'alliance.fittings.editor' %>
+                        <p class="text-gray-500 dark:text-zinc-500">Manage fittings owned by the user's alliance.</p>
                       </div>
                     </div>
                     <div class="relative flex items-start">
                       <div class="flex items-center h-5">
-                        <%= f.check_box :roles, { multiple: true, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded' }, 'alliance.orders.editor' %>
+                        <%= f.check_box :roles, { multiple: true, class: 'focus:ring-indigo-500 dark:focus:ring-sky-500 h-4 w-4 text-indigo-600 dark:text-sky-600 border-gray-300 dark:border-zinc-700 rounded' }, 'alliance.orders.editor' %>
                       </div>
                       <div class="ml-3 text-sm">
-                        <%= f.label :roles, 'Alliance Procurement Orders Editor', class: 'font-medium text-gray-700', value: 'alliance.orders.editor' %>
-                        <p class="text-gray-500">Manage procurement orders assigned to the user's alliance.</p>
+                        <%= f.label :roles, 'Alliance Procurement Orders Editor', class: 'font-medium text-gray-700 dark:text-zinc-300', value: 'alliance.orders.editor' %>
+                        <p class="text-gray-500 dark:text-zinc-500">Manage procurement orders assigned to the user's alliance.</p>
                       </div>
                     </div>
                     <div class="relative flex items-start">
                       <div class="flex items-center h-5">
-                        <%= f.check_box :roles, { multiple: true, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded' }, 'corporation.fittings.editor' %>
+                        <%= f.check_box :roles, { multiple: true, class: 'focus:ring-indigo-500 dark:focus:ring-sky-500 h-4 w-4 text-indigo-600 dark:text-sky-600 border-gray-300 dark:border-zinc-700 rounded' }, 'corporation.fittings.editor' %>
                       </div>
                       <div class="ml-3 text-sm">
-                        <%= f.label :roles, 'Corporation Fittings Editor', class: 'font-medium text-gray-700', value: 'corporation.fittings.editor' %>
-                        <p class="text-gray-500">Manage fittings owned by the user's corporation.</p>
+                        <%= f.label :roles, 'Corporation Fittings Editor', class: 'font-medium text-gray-700 dark:text-zinc-300', value: 'corporation.fittings.editor' %>
+                        <p class="text-gray-500 dark:text-zinc-500">Manage fittings owned by the user's corporation.</p>
                       </div>
                     </div>
                     <div class="relative flex items-start">
                       <div class="flex items-center h-5">
-                        <%= f.check_box :roles, { multiple: true, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded' }, 'corporation.orders.editor' %>
+                        <%= f.check_box :roles, { multiple: true, class: 'focus:ring-indigo-500 dark:focus:ring-sky-500 h-4 w-4 text-indigo-600 dark:text-sky-600 border-gray-300 dark:border-zinc-700 rounded' }, 'corporation.orders.editor' %>
                       </div>
                       <div class="ml-3 text-sm">
-                        <%= f.label :roles, 'Corporation Procurement Orders Editor', class: 'font-medium text-gray-700', value: 'corporation.orders.editor' %>
-                        <p class="text-gray-500">Manage procurement orders assigned to the user's corporation.</p>
+                        <%= f.label :roles, 'Corporation Procurement Orders Editor', class: 'font-medium text-gray-700 dark:text-zinc-300', value: 'corporation.orders.editor' %>
+                        <p class="text-gray-500 dark:text-zinc-500">Manage procurement orders assigned to the user's corporation.</p>
                       </div>
                     </div>
                     <div class="relative flex items-start">
                       <div class="flex items-center h-5">
-                        <%= f.check_box :roles, { multiple: true, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded' }, 'character.orders.supplier' %>
+                        <%= f.check_box :roles, { multiple: true, class: 'focus:ring-indigo-500 dark:focus:ring-sky-500 h-4 w-4 text-indigo-600 dark:text-sky-600 border-gray-300 dark:border-zinc-700 rounded' }, 'character.orders.supplier' %>
                       </div>
                       <div class="ml-3 text-sm">
-                        <%= f.label :roles, 'Procurement Order Supplier', class: 'font-medium text-gray-700', value: 'character.orders.supplier' %>
-                        <p class="text-gray-500">Accept available procurement orders as supplier.</p>
+                        <%= f.label :roles, 'Procurement Order Supplier', class: 'font-medium text-gray-700 dark:text-zinc-300', value: 'character.orders.supplier' %>
+                        <p class="text-gray-500 dark:text-zinc-500">Accept available procurement orders as supplier.</p>
                       </div>
                     </div>
                     <div class="relative flex items-start">
                       <div class="flex items-center h-5">
-                        <%= f.check_box :roles, { multiple: true, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded' }, 'character.orders.editor' %>
+                        <%= f.check_box :roles, { multiple: true, class: 'focus:ring-indigo-500 dark:focus:ring-sky-500 h-4 w-4 text-indigo-600 dark:text-sky-600 border-gray-300 dark:border-zinc-700 rounded' }, 'character.orders.editor' %>
                       </div>
                       <div class="ml-3 text-sm">
-                        <%= f.label :roles, 'Procurement Order Editor', class: 'font-medium text-gray-700', value: 'character.orders.editor' %>
-                        <p class="text-gray-500">Manage personal procurement orders.</p>
+                        <%= f.label :roles, 'Procurement Order Editor', class: 'font-medium text-gray-700 dark:text-zinc-300', value: 'character.orders.editor' %>
+                        <p class="text-gray-500 dark:text-zinc-500">Manage personal procurement orders.</p>
                       </div>
                     </div>
                     <div class="relative flex items-start">
                       <div class="flex items-center h-5">
-                        <%= f.check_box :roles, { multiple: true, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded' }, 'character.orders.viewer' %>
+                        <%= f.check_box :roles, { multiple: true, class: 'focus:ring-indigo-500 dark:focus:ring-sky-500 h-4 w-4 text-indigo-600 dark:text-sky-600 border-gray-300 dark:border-zinc-700 rounded' }, 'character.orders.viewer' %>
                       </div>
                       <div class="ml-3 text-sm">
-                        <%= f.label :roles, 'Procurement Order Viewer', class: 'font-medium text-gray-700', value: 'character.orders.viewer' %>
-                        <p class="text-gray-500">View available procurement orders.</p>
+                        <%= f.label :roles, 'Procurement Order Viewer', class: 'font-medium text-gray-700 dark:text-zinc-300', value: 'character.orders.viewer' %>
+                        <p class="text-gray-500 dark:text-zinc-500">View available procurement orders.</p>
                       </div>
                     </div>
                     <div class="relative flex items-start">
                       <div class="flex items-center h-5">
-                        <%= f.check_box :roles, { multiple: true, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded' }, 'esi.authorizer' %>
+                        <%= f.check_box :roles, { multiple: true, class: 'focus:ring-indigo-500 dark:focus:ring-sky-500 h-4 w-4 text-indigo-600 dark:text-sky-600 border-gray-300 dark:border-zinc-700 rounded' }, 'esi.authorizer' %>
                       </div>
                       <div class="ml-3 text-sm">
-                        <%= f.label :roles, 'ESI Authorizer', class: 'font-medium text-gray-700', value: 'esi.authorizer' %>
-                        <p class="text-gray-500">Authorize characters for API calls to ESI.</p>
+                        <%= f.label :roles, 'ESI Authorizer', class: 'font-medium text-gray-700 dark:text-zinc-300', value: 'esi.authorizer' %>
+                        <p class="text-gray-500 dark:text-zinc-500">Authorize characters for API calls to ESI.</p>
                       </div>
                     </div>
                   </div>
@@ -122,8 +122,8 @@
 
           <div class="pt-5">
             <div class="flex justify-end">
-              <%= link_to 'Cancel', admin_user_path(@user), class: 'bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
-              <%= f.submit 'Save', class: 'ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
+              <%= link_to 'Cancel', admin_user_path(@user), class: 'bg-white dark:bg-zinc-600 py-2 px-4 border border-gray-300 dark:border-zinc-700 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-sky-500' %>
+              <%= f.submit 'Save', class: 'ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 dark:bg-sky-600 hover:bg-indigo-700 dark:hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-sky-500' %>
             </div>
           </div>
         </div>

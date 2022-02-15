@@ -7,27 +7,27 @@
 <% end %>
 
 <div class="bg-white shadow overflow-hidden sm:rounded-lg">
-  <div class="bg-white px-4 py-5 border-b border-gray-200 sm:px-6">
-    <h3 class="text-lg leading-6 font-medium text-gray-900">
+  <div class="bg-white px-4 py-5 border-b border-gray-200 dark:border-zinc-800 sm:px-6">
+    <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-zinc-100">
       Generate new personal access token
     </h3>
   </div>
-  <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+  <div class="border-t border-gray-200 dark:border-zinc-800 px-4 py-5 sm:px-6">
     <%= form_with model: @pat, url: settings_personal_access_tokens_path do |f| %>
       <div class="space-y-8 divide-y divide-gray">
         <div class="space-y-8 divide-y divide-gray">
           <div class="sm:col-span-3">
-            <%= label :description, 'Description (optional)', class: 'block text-sm font-medium text-gray-900' %>
+            <%= label :description, 'Description (optional)', class: 'block text-sm font-medium text-gray-900 dark:text-zinc-100' %>
             <div class="mt-1">
-              <%= f.text_field :description, class: 'shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md' %>
+              <%= f.text_field :description, class: 'shadow-sm focus:ring-indigo-500 dark:focus:ring-sky-500 focus:border-indigo-500 dark:focus:border-sky-500 block w-full sm:text-sm border-gray-300 dark:border-zinc-700 rounded-md' %>
             </div>
           </div>
           <div class="pt-8">
             <div>
-              <h3 class="text-lg leading-6 font-medium text-gray-900">
+              <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-zinc-100">
                 Scopes
               </h3>
-              <p class="mt-1 text-sm text-gray-500">
+              <p class="mt-1 text-sm text-gray-500 dark:text-zinc-500">
                 What the token is allowed to do.
               </p>
             </div>
@@ -36,11 +36,11 @@
                 <div class="mt-4 space-y-4">
                   <div class="relative flex items-start">
                     <div class="flex items-center h-5">
-                      <%= f.check_box :scopes, { multiple: true, class: 'focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded' }, 'account.read' %>
+                      <%= f.check_box :scopes, { multiple: true, class: 'focus:ring-indigo-500 dark:focus:ring-sky-500 h-4 w-4 text-indigo-600 dark:text-sky-600 border-gray-300 dark:border-zinc-700 rounded' }, 'account.read' %>
                     </div>
                     <div class="ml-3 text-sm">
-                      <%= f.label :scopes, 'account.read', class: 'font-medium text-gray-700', value: 'account.read' %>
-                      <p class="text-gray-500">Read the current user's account information.</p>
+                      <%= f.label :scopes, 'account.read', class: 'font-medium text-gray-700 dark:text-zinc-300', value: 'account.read' %>
+                      <p class="text-gray-500 dark:text-zinc-500">Read the current user's account information.</p>
                     </div>
                   </div>
                 </div>
@@ -51,8 +51,8 @@
 
         <div class="pt-5">
           <div class="flex justify-end">
-            <%= link_to 'Cancel', settings_personal_access_tokens_path, class: 'bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
-            <%= f.submit 'Save', class: 'ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500' %>
+            <%= link_to 'Cancel', settings_personal_access_tokens_path, class: 'bg-white py-2 px-4 border border-gray-300 dark:border-zinc-700 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-sky-500' %>
+            <%= f.submit 'Save', class: 'ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 dark:bg-sky-600 hover:bg-indigo-700 dark:hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-sky-500' %>
           </div>
         </div>
       </div>

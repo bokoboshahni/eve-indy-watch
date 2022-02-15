@@ -1,16 +1,16 @@
 <% link = pagy_link_proc(pagy) %>
-<div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+<div class="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 dark:border-zinc-800 sm:px-6">
   <div class="flex-1 flex justify-between sm:hidden">
     <% if pagy.prev %>
-      <%= link.call(pagy.prev, pagy_t('pagy.nav.prev'), 'class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"') %>
+      <%= link.call(pagy.prev, pagy_t('pagy.nav.prev'), 'class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-zinc-700 text-sm font-medium rounded-md text-gray-700 dark:text-zinc-300 bg-white hover:bg-gray-50 dark:hover:bg-zinc-50"') %>
     <% end %>
     <% if pagy.next %>
-      <%= link.call(pagy.next, pagy_t('pagy.nav.next'), 'class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"') %>
+      <%= link.call(pagy.next, pagy_t('pagy.nav.next'), 'class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-zinc-700 text-sm font-medium rounded-md text-gray-700 dark:text-zinc-300 bg-white hover:bg-gray-50 dark:hover:bg-zinc-50"') %>
     <% end %>
   </div>
   <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
     <div>
-      <p class="text-sm text-gray-700">
+      <p class="text-sm text-gray-700 dark:text-zinc-300">
         Showing
         <span class="font-medium"><%= pagy.from %></span>
         to
@@ -23,7 +23,7 @@
     <div>
       <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
         <% if pagy.prev %>
-          <a href="<%= pagy_url_for(pagy, pagy.prev) %>" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+          <a href="<%= pagy_url_for(pagy, pagy.prev) %>" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 dark:border-zinc-700 bg-white text-sm font-medium text-gray-500 dark:text-zinc-500 hover:bg-gray-50 dark:hover:bg-zinc-50">
             <span class="sr-only">Previous</span>
             <!-- Heroicon name: solid/chevron-left -->
             <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -34,20 +34,20 @@
 
         <% pagy.series.each do |item| %>
           <% if item.is_a?(Integer) %>
-            <%= link.call(item, item, 'class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 hidden md:inline-flex relative items-center px-4 py-2 border text-sm font-medium"') %>
+            <%= link.call(item, item, 'class="bg-white border-gray-300 dark:border-zinc-700 text-gray-500 dark:text-zinc-500 hover:bg-gray-50 dark:hover:bg-zinc-50 hidden md:inline-flex relative items-center px-4 py-2 border text-sm font-medium"') %>
           <% elsif item.is_a?(String) %>
-            <a href="#" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+            <a href="#" aria-current="page" class="z-10 bg-indigo-50 dark:bg-sky-50 border-indigo-500 dark:border-sky-500 text-indigo-600 dark:text-sky-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
               <%= item %>
             </a>
           <% elsif item == :gap %>
-            <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">
+            <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 dark:border-zinc-700 bg-white text-sm font-medium text-gray-700 dark:text-zinc-300">
               &hellip;
             </span>
           <% end %>
         <% end %>
 
         <% if pagy.next %>
-          <a href="<%= pagy_url_for(pagy, pagy.next) %>" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+          <a href="<%= pagy_url_for(pagy, pagy.next) %>" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 dark:border-zinc-700 bg-white text-sm font-medium text-gray-500 dark:text-zinc-500 hover:bg-gray-50 dark:hover:bg-zinc-50">
             <span class="sr-only">Next</span>
             <!-- Heroicon name: solid/chevron-right -->
             <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -57,19 +57,19 @@
         <% end %>
 
         <!--
-        <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+        <a href="#" class="bg-white border-gray-300 dark:border-zinc-700 text-gray-500 dark:text-zinc-500 hover:bg-gray-50 dark:hover:bg-zinc-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
           2
         </a>
-        <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 hidden md:inline-flex relative items-center px-4 py-2 border text-sm font-medium">
+        <a href="#" class="bg-white border-gray-300 dark:border-zinc-700 text-gray-500 dark:text-zinc-500 hover:bg-gray-50 dark:hover:bg-zinc-50 hidden md:inline-flex relative items-center px-4 py-2 border text-sm font-medium">
           3
         </a>
-        <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 hidden md:inline-flex relative items-center px-4 py-2 border text-sm font-medium">
+        <a href="#" class="bg-white border-gray-300 dark:border-zinc-700 text-gray-500 dark:text-zinc-500 hover:bg-gray-50 dark:hover:bg-zinc-50 hidden md:inline-flex relative items-center px-4 py-2 border text-sm font-medium">
           8
         </a>
-        <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+        <a href="#" class="bg-white border-gray-300 dark:border-zinc-700 text-gray-500 dark:text-zinc-500 hover:bg-gray-50 dark:hover:bg-zinc-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
           9
         </a>
-        <a href="#" class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+        <a href="#" class="bg-white border-gray-300 dark:border-zinc-700 text-gray-500 dark:text-zinc-500 hover:bg-gray-50 dark:hover:bg-zinc-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
           10
         </a>
         -->

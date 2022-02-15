@@ -1,6 +1,6 @@
 <%= turbo_frame_tag "#{order_type.underscore}_orders" do %>
   <%= render(CardComponent.new(title: "#{order_type.titleize} Orders", body_class_names: '')) do |c| %>
-    <% c.description do %><p class="text-gray-900 text-xs font-italic">Last updated <%= local_time market.orders_updated_at %><% end %>
+    <% c.description do %><p class="text-gray-900 dark:text-zinc-100 text-xs font-italic">Last updated <%= local_time market.orders_updated_at %><% end %>
     <% c.body do %>
       <%= render(TableComponent.new(layout: 'auto')) do |t| %>
         <% t.header width: '1/12', padding: 'px-4 py-2' do %>Market<% end %>

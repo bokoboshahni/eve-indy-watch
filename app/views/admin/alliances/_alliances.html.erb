@@ -12,14 +12,14 @@
                 <%= render(AllianceIconComponent.new(alliance: alliance, classes: 'h-10 w-10 rounded-full')) %>
               </div>
               <div class="ml-4">
-                <div class="text-xs font-medium text-gray-900">
+                <div class="text-xs font-medium text-gray-900 dark:text-zinc-100">
                   <%= link_to alliance.name, admin_alliance_path(alliance), class: 'font-medium', data: { turbo_frame: '_top' } %>
                 </div>
               </div>
             </div>
           <% end %>
           <% tr.cell padding: 'px-4 py-1' do %>
-            <div class="text-xs font-medium text-gray-900">
+            <div class="text-xs font-medium text-gray-900 dark:text-zinc-100">
               <%= local_time alliance.esi_last_modified_at, format: :db %>
             </div>
           <% end %>

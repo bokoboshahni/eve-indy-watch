@@ -10,7 +10,7 @@ module.exports = {
     './app/javascript/**/*.js',
     './spec/stories/**/*.rb'
   ],
-  darkMode: 'media',
+  darkMode: 'class',
   theme: {
     extend: {
       fontFamily: {

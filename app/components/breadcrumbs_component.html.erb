@@ -1,8 +1,8 @@
-<nav class="bg-white border-b border-gray-200 flex" aria-label="Breadcrumb">
+<nav class="bg-white dark:bg-zinc-900 border-b border-gray-200 dark:border-zinc-800 flex" aria-label="Breadcrumb">
   <ol role="list" class="max-w-screen-xl w-full mx-auto px-4 flex space-x-4 sm:px-6 lg:px-8">
     <li class="flex">
       <div class="flex items-center">
-        <%= link_to dashboard_path, class: 'text-gray-400 hover:text-gray-500' do %>
+        <%= link_to dashboard_path, class: 'text-gray-400 dark:text-zinc-400 hover:text-gray-500 dark:hover:text-zinc-500' do %>
           <%= heroicon 'home', variant: :solid, options: { class: 'flex-shrink-0 h-5 w-5' } %>
           <span class="sr-only">Dashboard</span>
         <% end %>

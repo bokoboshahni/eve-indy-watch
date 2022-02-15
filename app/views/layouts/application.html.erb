@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="h-full bg-gray-100">
+<html class="<%= 'dark' if logged_in? && current_user.dark_mode_enabled? %> h-full">
   <head>
     <title><%= "[#{Rails.env.upcase}] " unless Rails.env.production? %><%= site_name %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -14,7 +14,7 @@
     <%= javascript_pack_tag 'application', nonce: true %>
   </head>
 
-  <body class="h-full w-full">
+  <body class="h-full w-full bg-gray-50 dark:bg-zinc-900">
     <% if logged_in? %>
       <div data-controller="toggle">
         <%= render 'application/mobile_nav' %>
