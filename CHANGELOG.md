@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [2.28.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.27.0...v2.28.0) (2022-02-15)
+
+
+### Features
+
+* dark mode beta ([#201](https://github.com/bokoboshahni/eve-indy-watch/issues/201)) ([47ce21f](https://github.com/bokoboshahni/eve-indy-watch/commit/47ce21fa32dd1a1493167a78e43c48e55b8dcd84))
+
 # [2.27.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.26.3...v2.27.0) (2022-02-14)
 
 
