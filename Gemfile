@@ -21,7 +21,7 @@ gem 'bcrypt', '~> 3.1'
 gem 'better_html', '~> 1.0'
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'composite_primary_keys', '~> 14.0'
-gem 'device_detector', '1.0.5'
+gem 'device_detector', '1.0.7'
 gem 'discard', '~> 1.2'
 gem 'doorkeeper', '~> 5.5'
 gem 'down', '~> 5.2'
