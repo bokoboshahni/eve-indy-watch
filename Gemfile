@@ -16,7 +16,7 @@ gem 'after_commit_everywhere', '~> 1.1'
 gem 'ahoy_matey', '~> 4.0'
 gem 'ancestry', '~> 4.1'
 gem 'awesome_print', '~> 1.9'
-gem 'aws-sdk-s3', '~> 1.112'
+gem 'aws-sdk-s3', '~> 1.113'
 gem 'bcrypt', '~> 3.1'
 gem 'better_html', '~> 1.0'
 gem 'bootsnap', '>= 1.4.4', require: false
