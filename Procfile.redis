@@ -1,0 +1,2 @@
+cache: redis-server --port 6378 --maxmemory 1gb --maxmemory-policy allkeys-lru
+data: redis-server --port 6375 --save 60 1 --loglevel warning --maxmemory 4gb --maxmemory-policy volatile-ttl

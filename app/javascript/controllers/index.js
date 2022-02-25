@@ -11,7 +11,7 @@ import {
   Tabs,
   Popover,
   Toggle,
-  Slideover,
+  Slideover
 } from 'tailwindcss-stimulus-components'
 application.register('alert', Alert)
 application.register('autosave', Autosave)

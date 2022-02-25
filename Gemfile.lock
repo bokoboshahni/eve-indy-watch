@@ -216,6 +216,7 @@ GEM
       tzinfo
     ethon (0.15.0)
       ffi (>= 1.15.0)
+    execjs (2.8.1)
     factory_bot (6.2.0)
       activesupport (>= 5.0.0)
     factory_bot_rails (6.2.0)
@@ -452,6 +453,12 @@ GEM
     rb-fsevent (0.11.0)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
+    react_on_rails (13.0.1)
+      addressable
+      connection_pool
+      execjs (~> 2.5)
+      rails (>= 5.2)
+      rainbow (~> 3.0)
     redis (4.6.0)
     redis-prescription (1.0.0)
     regexp_parser (2.2.0)
@@ -702,6 +709,7 @@ DEPENDENCIES
   rails (~> 7.0.1)
   rails-controller-testing
   rails_semantic_logger (~> 4.10)
+  react_on_rails (~> 13.0.1)
   repost (~> 0.3)
   retriable (~> 3.1)
   rollups (~> 0.1)

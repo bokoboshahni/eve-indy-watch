@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html class="<%= 'dark' if logged_in? && current_user.dark_mode_enabled? %> h-full theme">
+  <head>
+    <title><%= "[#{Rails.env.upcase}] " unless Rails.env.production? %><%= site_name %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= favicon_link_tag main_alliance_logo_url %>
+
+    <%= stylesheet_link_tag 'https://rsms.me/inter/inter.css' %>
+    <%= stylesheet_pack_tag 'dashboard' %>
+
+    <%= javascript_pack_tag 'dashboard', nonce: true %>
+  </head>
+
+  <body class="h-full bg-background">
+    <%= yield %>
+  </body>
+</html>

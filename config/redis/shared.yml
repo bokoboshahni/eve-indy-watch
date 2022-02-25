@@ -3,7 +3,7 @@ production: &production
   timeout: 1
 
 development: &development
-  url: <%= ENV.fetch("DATA_REDIS_URL", "redis://127.0.0.1:6378/0") %>
+  url: <%= ENV.fetch("DATA_REDIS_URL", "redis://127.0.0.1:6375/0") %>
   timeout: 1
 
 staging: &staging

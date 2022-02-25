@@ -1,0 +1,49 @@
+@layer utilities {
+  .typescale-display-large {
+    @apply font-display-large text-display-large;
+  }
+
+  .typescale-display-medium {
+    @apply font-display-medium text-display-medium;
+  }
+
+  .typescale-display-small {
+    @apply font-display-small text-display-small;
+  }
+
+  .typescale-title-large {
+    @apply font-title-large text-title-large;
+  }
+
+  .typescale-title-medium {
+    @apply font-title-medium text-title-medium;
+  }
+
+  .typescale-title-small {
+    @apply font-title-small text-title-small;
+  }
+
+  .typescale-label-large {
+    @apply font-label-large text-label-large;
+  }
+
+  .typescale-label-medium {
+    @apply font-label-medium text-label-medium;
+  }
+
+  .typescale-label-small {
+    @apply font-label-small text-label-small;
+  }
+
+  .typescale-body-large {
+    @apply font-body-large text-body-large;
+  }
+
+  .typescale-body-medium {
+    @apply font-body-medium text-body-medium;
+  }
+
+  .typescale-body-small {
+    @apply font-body-small text-body-small;
+  }
+}

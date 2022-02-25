@@ -1,10 +1,22 @@
 module.exports = {
-  stories: [
-    '../spec/stories/**/*.stories.js',
-    '../spec/stories/**/*.stories.json'
+  "stories": [
+    "../stories/**/*.stories.mdx",
+    "../stories/**/*.stories.@(js|jsx|ts|tsx)",
+    "../app/javascript/**/*.stories.mdx",
+    "../app/javascript/**/*.stories.@(js|jsx|ts|tsx)"
   ],
-  addons: [
-    '@storybook/addon-essentials',
-    '@storybook/addon-a11y'
-  ]
+  "addons": [
+    "@storybook/addon-links",
+    "@storybook/addon-essentials",
+    "@storybook/addon-interactions",
+    {
+      name: '@storybook/addon-postcss',
+      options: {
+        postcssLoaderOptions: {
+          implementation: require('postcss'),
+        },
+      },
+    },
+  ],
+  "framework": "@storybook/react"
 }

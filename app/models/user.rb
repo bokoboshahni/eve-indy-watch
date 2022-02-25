@@ -48,6 +48,7 @@ class User < ApplicationRecord
     corporation.fittings.editor
     corporation.orders.editor
     esi.authorizer
+    beta_tester
   ].freeze
 
   belongs_to :character, inverse_of: :user
@@ -70,6 +71,10 @@ class User < ApplicationRecord
   delegate :portrait_url_256, :name, to: :character # rubocop:disable Naming/VariableNumber
   delegate :icon_url_256, :name, to: :corporation, prefix: true # rubocop:disable Naming/VariableNumber
   delegate :icon_url_128, :name, to: :alliance, prefix: true, allow_nil: true # rubocop:disable Naming/VariableNumber
+
+  def beta_tester?
+    role?('beta_tester')
+  end
 
   def roles=(val)
     self[:roles] = val.reject { |v| ROLES.exclude?(v) }

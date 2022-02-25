@@ -1,5 +1,20 @@
+import React from 'react'
+
 export const parameters = {
-  server: {
-    url: 'http://localhost:3000/rails/stories'
+  options: {
+    storySort: {
+      order: [
+        'Foundations',
+        ['Overview']
+      ]
+    }
   }
 }
+
+export const decorators = [
+  (Story) => (
+    <div className="theme">
+      {Story()}
+    </div>
+  )
+]
