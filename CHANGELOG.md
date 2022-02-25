@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+## [2.28.1](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.28.0...v2.28.1) (2022-02-25)
+
+
+### Bug Fixes
+
+* don't set expires or last modified for unknown structures ([#215](https://github.com/bokoboshahni/eve-indy-watch/issues/215)) ([577616c](https://github.com/bokoboshahni/eve-indy-watch/commit/577616c77ac8828910038614e96b128d912873b8))
+
 # [2.28.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.27.0...v2.28.0) (2022-02-15)
 
 
