@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [2.29.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.28.1...v2.29.0) (2022-02-26)
+
+
+### Features
+
+* new dashboard skeleton ([#180](https://github.com/bokoboshahni/eve-indy-watch/issues/180)) ([874f76f](https://github.com/bokoboshahni/eve-indy-watch/commit/874f76f4e17d6a72a79dd62d08c2a9be30513bce))
+
 ## [2.28.1](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.28.0...v2.28.1) (2022-02-25)
 
 
