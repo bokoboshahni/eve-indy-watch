@@ -54,7 +54,7 @@ gem 'pg', '~> 1.3'
 gem 'pghero', '~> 2.8'
 gem 'pg_query', '~> 2.1'
 gem 'pg_search', '~> 2.3'
-gem 'prometheus_exporter', '~> 1.0', require: false
+gem 'prometheus_exporter', '~> 2.0', require: false
 gem 'pry-rails', '~> 0.3'
 gem 'puma', '~> 5.6'
 gem 'pundit', '~> 2.1'

@@ -387,7 +387,7 @@ GEM
       activesupport (>= 5.2)
     pghero (2.8.2)
       activerecord (>= 5)
-    prometheus_exporter (1.0.1)
+    prometheus_exporter (2.0.2)
       webrick
     pry (0.14.1)
       coderay (~> 1.1)
@@ -699,7 +699,7 @@ DEPENDENCIES
   pg_query (~> 2.1)
   pg_search (~> 2.3)
   pghero (~> 2.8)
-  prometheus_exporter (~> 1.0)
+  prometheus_exporter (~> 2.0)
   pry-rails (~> 0.3)
   puma (~> 5.6)
   pundit (~> 2.1)
