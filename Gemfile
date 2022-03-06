@@ -57,7 +57,7 @@ gem 'pg_search', '~> 2.3'
 gem 'prometheus_exporter', '~> 2.0', require: false
 gem 'pry-rails', '~> 0.3'
 gem 'puma', '~> 5.6'
-gem 'pundit', '~> 2.1'
+gem 'pundit', '~> 2.2'
 gem 'rack-attack', '~> 6.6'
 gem 'rack-cors', '~> 1.1'
 gem 'rack-mini-profiler', '~> 3.0'
