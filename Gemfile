@@ -63,7 +63,7 @@ gem 'rack-cors', '~> 1.1'
 gem 'rack-mini-profiler', '~> 3.0'
 gem 'rails', '~> 7.0.1'
 gem 'rails_semantic_logger', '~> 4.10'
-gem 'react_on_rails', '~> 13.0.1'
+gem 'react_on_rails', '~> 13.0.2'
 gem 'repost', '~> 0.3'
 gem 'retriable', '~> 3.1'
 gem 'rollups', '~> 0.1'
@@ -89,7 +89,7 @@ group :development, :test do
   gem 'brakeman', '~> 5.2'
   gem 'byebug', '~> 11.1'
   gem 'factory_bot_rails', '~> 6.2'
-  gem 'faker', '~> 2.19'
+  gem 'faker', '~> 2.20'
   gem 'rspec-rails', '~> 5.1'
 end
 
