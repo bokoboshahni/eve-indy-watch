@@ -285,7 +285,7 @@ GEM
     http-cookie (1.0.4)
       domain_name (~> 0.5)
     http-form_data (2.3.0)
-    httpx (0.19.3)
+    httpx (0.19.4)
       http-2-next (>= 0.4.1)
     i18n (1.10.0)
       concurrent-ruby (~> 1.0)
@@ -605,7 +605,7 @@ GEM
     unicode-display_width (2.1.0)
     unicode_utils (1.4.0)
     vcr (6.0.0)
-    view_component (2.49.0)
+    view_component (2.50.0)
       activesupport (>= 5.0.0, < 8.0)
       method_source (~> 1.0)
     view_component_storybook (0.11.1)
@@ -738,7 +738,7 @@ DEPENDENCIES
   turbo-rails (~> 1.0)
   typhoeus (~> 1.4)
   vcr
-  view_component (~> 2.49)
+  view_component (~> 2.50)
   view_component_storybook (~> 0.11)
   web-console (>= 4.1.0)
   webdrivers
