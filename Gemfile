@@ -107,7 +107,7 @@ group :development do
   gem 'rubocop', '~> 1.25'
   gem 'rubocop-performance', '~> 1.13'
   gem 'rubocop-rails', '~> 2.13'
-  gem 'rubocop-rspec', '~> 2.8'
+  gem 'rubocop-rspec', '~> 2.9'
   gem 'view_component_storybook', '~> 0.11', require: 'view_component/storybook/engine'
   gem 'web-console', '>= 4.1.0'
 end
