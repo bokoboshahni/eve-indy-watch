@@ -2,7 +2,7 @@
 
 class ApplicationController < ActionController::Base
   include Pagy::Backend
-  include Pundit
+  include Pundit::Authorization
 
   before_action :check_rack_mini_profiler
   before_action :set_paper_trail_whodunnit
