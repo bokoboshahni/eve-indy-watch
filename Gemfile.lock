@@ -371,7 +371,7 @@ GEM
       omniauth (~> 2.0)
     pagy (5.10.1)
       activesupport
-    paper_trail (12.2.0)
+    paper_trail (12.3.0)
       activerecord (>= 5.2)
       request_store (~> 1.1)
     parallel (1.21.0)
@@ -694,7 +694,7 @@ DEPENDENCIES
   omniauth-eve_online-sso (~> 0.5)
   omniauth-rails_csrf_protection (~> 1.0)
   pagy (~> 5.10)
-  paper_trail (~> 12.2)
+  paper_trail (~> 12.3)
   pg (~> 1.3)
   pg_query (~> 2.1)
   pg_search (~> 2.3)
