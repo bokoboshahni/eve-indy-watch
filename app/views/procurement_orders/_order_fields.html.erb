@@ -84,7 +84,7 @@
     <div class="sm:col-span-3">
       <%= f.label :location_id, 'Location', class: 'block text-sm font-medium text-gray-700 dark:text-zinc-300' %>
       <div class="mt-1">
-        <%= f.collection_select :location_id, main_alliance.locations.order(:name), :id, :name, { selected: main_alliance.default_location.id }, { class: 'shadow-sm dark:bg-zinc-600 dark:text-zinc-100 focus:ring-indigo-500 dark:focus:ring-sky-500 focus:border-indigo-500 dark:focus:border-sky-500 block w-full sm:text-sm border-gray-300 dark:border-zinc-700 rounded-md' } %>
+        <%= f.collection_select :location_id, main_alliance.locations.order(:name), :id, :name, {}, { class: 'shadow-sm dark:bg-zinc-600 dark:text-zinc-100 focus:ring-indigo-500 dark:focus:ring-sky-500 focus:border-indigo-500 dark:focus:border-sky-500 block w-full sm:text-sm border-gray-300 dark:border-zinc-700 rounded-md' } %>
       </div>
     </div>
 

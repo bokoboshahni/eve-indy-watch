@@ -46,6 +46,7 @@ class ProcurementOrdersController < ApplicationController
 
   def new
     @order = ProcurementOrder.new(visibility: :everyone, requester: current_user.character)
+    @order.location = main_alliance.default_location if main_alliance.default_location
     authorize(@order)
   end
 
