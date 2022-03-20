@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+## [2.29.2](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.29.1...v2.29.2) (2022-03-20)
+
+
+### Bug Fixes
+
+* only use default location if set ([#241](https://github.com/bokoboshahni/eve-indy-watch/issues/241)) ([4226138](https://github.com/bokoboshahni/eve-indy-watch/commit/42261384286d808f45b8755e7a33a88b72005902))
+
 ## [2.29.1](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.29.0...v2.29.1) (2022-03-20)
 
 
