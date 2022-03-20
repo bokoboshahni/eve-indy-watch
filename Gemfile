@@ -96,7 +96,7 @@ end
 group :development do
   gem 'annotate', github: 'dabit/annotate_models', branch: 'rails-7'
   gem 'bcrypt_pbkdf', '~> 1.1'
-  gem 'capistrano', '~> 3.16'
+  gem 'capistrano', '~> 3.17'
   gem 'capistrano3-puma', '~> 5.2'
   gem 'capistrano-bundler', '~> 2.0'
   gem 'capistrano-rails', '~> 1.6'
