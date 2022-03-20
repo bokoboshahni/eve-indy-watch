@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+## [2.29.1](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.29.0...v2.29.1) (2022-03-20)
+
+
+### Bug Fixes
+
+* lock capistrano api to 3.17.0 ([9ff9f8a](https://github.com/bokoboshahni/eve-indy-watch/commit/9ff9f8a349e45ffff4e70367831912a33856eb73))
+
 # [2.29.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.28.1...v2.29.0) (2022-02-26)
 
 

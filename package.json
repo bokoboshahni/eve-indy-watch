@@ -95,5 +95,5 @@
     "build-storybook": "build-storybook"
   },
   "private": true,
-  "version": "2.29.0"
+  "version": "2.29.1"
 }
