@@ -89,7 +89,7 @@ group :development, :test do
   gem 'brakeman', '~> 5.2'
   gem 'byebug', '~> 11.1'
   gem 'factory_bot_rails', '~> 6.2'
-  gem 'faker', '~> 2.19'
+  gem 'faker', '~> 2.20'
   gem 'rspec-rails', '~> 5.1'
 end
 
