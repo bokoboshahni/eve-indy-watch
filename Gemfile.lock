@@ -174,7 +174,7 @@ GEM
     coderay (1.1.3)
     composite_primary_keys (14.0.4)
       activerecord (~> 7.0.2)
-    concurrent-ruby (1.1.9)
+    concurrent-ruby (1.1.10)
     connection_pool (2.2.5)
     crack (0.4.5)
       rexml
@@ -605,7 +605,7 @@ GEM
     unicode-display_width (2.1.0)
     unicode_utils (1.4.0)
     vcr (6.1.0)
-    view_component (2.50.0)
+    view_component (2.52.0)
       activesupport (>= 5.0.0, < 8.0)
       method_source (~> 1.0)
     view_component_storybook (0.11.1)
@@ -738,7 +738,7 @@ DEPENDENCIES
   turbo-rails (~> 1.0)
   typhoeus (~> 1.4)
   vcr
-  view_component (~> 2.50)
+  view_component (~> 2.52)
   view_component_storybook (~> 0.11)
   web-console (>= 4.1.0)
   webdrivers
