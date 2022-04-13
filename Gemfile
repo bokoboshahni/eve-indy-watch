@@ -106,7 +106,7 @@ group :development do
   gem 'erb_lint', '~> 0.1'
   gem 'rubocop', '~> 1.27'
   gem 'rubocop-performance', '~> 1.13'
-  gem 'rubocop-rails', '~> 2.13'
+  gem 'rubocop-rails', '~> 2.14'
   gem 'rubocop-rspec', '~> 2.9'
   gem 'view_component_storybook', '~> 0.11', require: 'view_component/storybook/engine'
   gem 'web-console', '>= 4.1.0'

@@ -20,7 +20,7 @@ class ESIAuthorization < ApplicationRecord
         character = sync_character!
         corporation = sync_corporation!(character.corporation_id)
         sync_alliance!(corporation.alliance_id) if corporation.alliance_id.present?
-        return create_authorization!(character.id)
+        create_authorization!(character.id)
       end
     end
 

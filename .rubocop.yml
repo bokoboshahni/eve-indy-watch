@@ -53,6 +53,9 @@ Style/Documentation:
 Layout/LineLength:
   Max: 180
 
+Rails/I18nLocaleTexts:
+  Enabled: false
+
 Rails/RakeEnvironment:
   Exclude:
     - 'lib/capistrano/**/*.rake'
