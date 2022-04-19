@@ -212,7 +212,7 @@ GEM
       oj (~> 3.13)
       retriable (~> 3.1)
       typhoeus (~> 1.4)
-    et-orbi (1.2.6)
+    et-orbi (1.2.7)
       tzinfo
     ethon (0.15.0)
       ffi (>= 1.15.0)
@@ -254,8 +254,8 @@ GEM
       ffi (>= 1.0.0)
       rake
     flamegraph (0.9.5)
-    fugit (1.5.2)
-      et-orbi (~> 1.1, >= 1.1.8)
+    fugit (1.5.3)
+      et-orbi (~> 1, >= 1.2.7)
       raabro (~> 1.4)
     gelf (3.1.0)
       json
@@ -536,7 +536,7 @@ GEM
       redis (>= 4.2.0)
     sidekiq-batch (0.1.8)
       sidekiq (>= 3)
-    sidekiq-scheduler (3.1.1)
+    sidekiq-scheduler (3.2.0)
       e2mmap
       redis (>= 3, < 5)
       rufus-scheduler (~> 3.2)
@@ -725,7 +725,7 @@ DEPENDENCIES
   shakapacker (~> 6.2)
   sidekiq (~> 6.4)
   sidekiq-batch (~> 0.1)
-  sidekiq-scheduler (~> 3.1)
+  sidekiq-scheduler (~> 3.2)
   sidekiq-throttled (~> 0.13)
   sidekiq-unique-jobs (~> 7.1)
   simplecov
