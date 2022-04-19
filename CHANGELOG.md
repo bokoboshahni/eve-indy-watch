@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+## [2.29.3](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.29.2...v2.29.3) (2022-04-19)
+
+
+### Bug Fixes
+
+* allow newer patch versions of ruby 3.0 ([#269](https://github.com/bokoboshahni/eve-indy-watch/issues/269)) ([0a6db10](https://github.com/bokoboshahni/eve-indy-watch/commit/0a6db10116136daf7115111fda220c7353fd8cc2))
+
 ## [2.29.2](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.29.1...v2.29.2) (2022-03-20)
 
 
