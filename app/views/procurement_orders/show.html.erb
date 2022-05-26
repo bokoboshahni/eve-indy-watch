@@ -5,9 +5,9 @@
   <% end %>
 <% end %>
 
-<div class="max-w-5xl mx-auto px-4 sm:px-6 md:px-8">
+<div class="max-w-5xl px-4 mx-auto sm:px-6 md:px-8">
   <% if @order.discarded? %>
-    <div class="bg-red-50 border-l-4 border-red-400 p-4">
+    <div class="p-4 border-l-4 border-red-400 bg-red-50">
       <div class="flex">
         <div class="flex-shrink-0">
           <%= heroicon 'trash', variant: :solid, options: { class: 'h-5 w-5 text-red-400' } %>
@@ -20,7 +20,7 @@
       </div>
     </div>
   <% elsif @order.delivered? %>
-    <div class="bg-indigo-50 dark:bg-sky-50 border-l-4 border-indigo-400 dark:border-sky-400 p-4">
+    <div class="p-4 border-l-4 border-indigo-400 bg-indigo-50 dark:bg-sky-50 dark:border-sky-400">
       <div class="flex">
         <div class="flex-shrink-0">
           <%= heroicon 'truck', variant: :solid, options: { class: 'h-5 w-5 text-indigo-400 dark:text-sky-400' } %>
@@ -34,35 +34,35 @@
     </div>
   <% elsif @order.available? %>
     <div class="max-w-3xl">
-      <p class="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl text-gray-900 dark:text-zinc-100">Available.</p>
+      <p class="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl dark:text-zinc-100">Available.</p>
       <p class="mt-2 text-base text-gray-500 dark:text-zinc-500">Order #<%= @order.number %> is currently waiting for a supplier.</p>
 
       <% if policy(@order).update? %>
-        <div class="mt-12 flex max-w-md space-x-3">
+        <div class="flex max-w-md mt-12 space-x-3">
           <%= render 'accept_modal', order: @order, table: false unless @order.requester == current_user.character %>
           <%= render 'redraft_modal', order: @order, table: false %>
           <%= render 'cancel_modal', order: @order, table: false %>
         </div>
       <% elsif policy(@order).accept? && @order.requester != current_user.character %>
-        <div class="mt-12 flex max-w-md">
+        <div class="flex max-w-md mt-12">
           <%= render 'accept_modal', order: @order, table: false %>
         </div>
       <% end %>
     </div>
   <% elsif @order.unconfirmed? && current_user.character == @order.supplier %>
     <div class="max-w-3xl">
-      <p class="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl text-gray-900 dark:text-zinc-100">Waiting for confirmation.</p>
+      <p class="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl dark:text-zinc-100">Waiting for confirmation.</p>
       <p class="mt-2 text-base text-gray-500 dark:text-zinc-500">
         You have delivered order #<%= @order.number %>. but it is still waiting for <span class="font-medium text-gray-900 dark:text-zinc-100"><%= @order.requester.is_a?(Alliance) ? @order.requester.procurement_order_requester.name : @order.requester_name %></span> to confirm it.
       </p>
 
-      <div class="mt-12 flex max-w-md">
+      <div class="flex max-w-md mt-12">
         <%= render 'undeliver_modal', order: @order, table: false %>
       </div>
     </div>
   <% elsif @order.in_progress? && current_user.character == @order.supplier %>
     <div class="max-w-3xl">
-      <p class="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl text-gray-900 dark:text-zinc-100">Order accepted.</p>
+      <p class="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl dark:text-zinc-100">Order accepted.</p>
       <p class="mt-2 text-base text-gray-500 dark:text-zinc-500">
         You have agreed to supply order #<%= @order.number %>.
         Once you've completed the order, create an item exchange contract to <span class="font-medium text-gray-900 dark:text-zinc-100"><%= @order.requester.is_a?(Alliance) ? @order.requester.procurement_order_requester.name : @order.requester_name %></span>
@@ -72,7 +72,7 @@
       </p>
 
       <% if @order.target_completion_at && @order.target_completion_at < Time.zone.now %>
-        <div class="mt-4 bg-red-50 border-l-4 border-red-400 p-4">
+        <div class="p-4 mt-4 border-l-4 border-red-400 bg-red-50">
           <div class="flex">
             <div class="flex-shrink-0">
               <%= heroicon 'clock', variant: :solid, options: { class: 'h-5 w-5 text-red-400' } %>
@@ -88,7 +88,7 @@
       <% end %>
 
       <% if @order.estimated_completion_at && @order.estimated_completion_at > Time.zone.now %>
-        <div class="mt-4 bg-orange-50 border-l-4 border-orange-400 p-4">
+        <div class="p-4 mt-4 border-l-4 border-orange-400 bg-orange-50">
           <div class="flex">
             <div class="flex-shrink-0">
               <%= heroicon 'clock', variant: :solid, options: { class: 'h-5 w-5 text-orange-400' } %>
@@ -101,7 +101,7 @@
           </div>
         </div>
       <% elsif @order.estimated_completion_at && @order.estimated_completion_at < Time.zone.now %>
-        <div class="mt-4 bg-red-50 border-l-4 border-red-400 p-4">
+        <div class="p-4 mt-4 border-l-4 border-red-400 bg-red-50">
           <div class="flex">
             <div class="flex-shrink-0">
               <%= heroicon 'clock', variant: :solid, options: { class: 'h-5 w-5 text-red-400' } %>
@@ -116,28 +116,28 @@
         </div>
       <% end %>
 
-      <div class="mt-12 flex max-w-md space-x-3">
+      <div class="flex max-w-md mt-12 space-x-3">
         <%= render 'deliver_modal', order: @order, table: false %>
         <%= render 'release_modal', order: @order, table: false %>
       </div>
     </div>
   <% elsif @order.unconfirmed? && policy(@order).update? %>
     <div class="max-w-3xl">
-      <p class="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl text-gray-900 dark:text-zinc-100">Delivered!</p>
+      <p class="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl dark:text-zinc-100">Delivered!</p>
       <p class="mt-2 text-base text-gray-500 dark:text-zinc-500">Your order #<%= @order.number %> has been delivered by <span class="font-medium"><%= @order.supplier_name %></span>.</p>
       <p class="mt-2 text-base font-bold">Once you've verified and accepted the contract, please confirm the delivery below.</p>
 
-      <div class="mt-12 flex max-w-md">
+      <div class="flex max-w-md mt-12">
         <%= render 'receive_modal', order: @order, table: false %>
       </div>
     </div>
   <% elsif @order.in_progress? && policy(@order).update? %>
     <div class="max-w-3xl">
-      <p class="mt-2 text-4xl font-extrabold tracking-tight sm:text-5xl text-gray-900 dark:text-zinc-100">It's on the way!</p>
+      <p class="mt-2 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl dark:text-zinc-100">It's on the way!</p>
       <p class="mt-2 text-base text-gray-500 dark:text-zinc-500">Your order #<%= @order.number %> has been accepted by <span class="font-medium"><%= @order.supplier_name %></span> and will be with you soon.</p>
 
       <% if @order.target_completion_at && @order.target_completion_at < Time.zone.now %>
-        <div class="mt-4 bg-red-50 border-l-4 border-red-400 p-4">
+        <div class="p-4 mt-4 border-l-4 border-red-400 bg-red-50">
           <div class="flex">
             <div class="flex-shrink-0">
               <%= heroicon 'clock', variant: :solid, options: { class: 'h-5 w-5 text-red-400' } %>
@@ -153,7 +153,7 @@
       <% end %>
 
       <% if @order.estimated_completion_at && @order.estimated_completion_at > Time.zone.now %>
-        <div class="mt-4 bg-orange-50 border-l-4 border-orange-400 p-4">
+        <div class="p-4 mt-4 border-l-4 border-orange-400 bg-orange-50">
           <div class="flex">
             <div class="flex-shrink-0">
               <%= heroicon 'clock', variant: :solid, options: { class: 'h-5 w-5 text-orange-400' } %>
@@ -166,7 +166,7 @@
           </div>
         </div>
       <% elsif @order.estimated_completion_at && @order.estimated_completion_at < Time.zone.now %>
-        <div class="mt-4 bg-red-50 border-l-4 border-red-400 p-4">
+        <div class="p-4 mt-4 border-l-4 border-red-400 bg-red-50">
           <div class="flex">
             <div class="flex-shrink-0">
               <%= heroicon 'clock', variant: :solid, options: { class: 'h-5 w-5 text-red-400' } %>
@@ -183,24 +183,24 @@
     </div>
   <% end %>
 
-  <div class="mt-8 px-4 space-y-2 sm:px-0 sm:flex sm:items-center sm:justify-between sm:space-y-0">
+  <div class="px-4 mt-8 space-y-2 sm:px-0 sm:flex sm:items-center sm:justify-between sm:space-y-0">
     <div>
-      <h1 class="text-lg font-extrabold tracking-tight text-gray-900 dark:text-zinc-100 sm:text-lg block">Order <%= @order.number %></h1>
-      <p class="text-xs text-gray-600 dark:text-zinc-400 block">
+      <h1 class="block text-lg font-extrabold tracking-tight text-gray-900 dark:text-zinc-100 sm:text-lg">Order <%= @order.number %> <% if @order.tracking_number %>(<%= @order.tracking_number %>)<% end %></h1>
+      <p class="block text-xs text-gray-600 dark:text-zinc-400">
         Updated <%= local_time @order.updated_at, class: 'font-medium text-gray-900 dark:text-zinc-100', format: :long_date %>
         <% if policy(@order).update? %>
         by <%= @order.updated_by_name %>
         <% end %>
       </p>
     </div>
-    <div class="flex space-x-3 justify-end">
+    <div class="flex justify-end space-x-3">
       <%= render('delete_modal', order: @order, table: false) if @order.draft? && @order.kept? && policy(@order).destroy? %>
 
       <div data-controller="clipboard" data-clipboard-success-content="Copied!">
         <%= text_area_tag :items_multibuy, @order.items_multibuy, data: { clipboard_target: 'source' }, class: 'absolute -top-[1000px] -left-[1000px]' %>
 
         <button type="button"
-          class="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-zinc-700 shadow-sm text-sm font-medium rounded-md text-gray-700 dark:text-zinc-300 bg-white dark:bg-zinc-800 hover:bg-gray-50 dark:hover:bg-zinc-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-sky-500"
+          class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm dark:border-zinc-700 dark:text-zinc-300 dark:bg-zinc-800 hover:bg-gray-50 dark:hover:bg-zinc-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-sky-500"
           data-action="clipboard#copy"
           data-clipboard-target="button">
           Copy to Clipboard (Multibuy)
@@ -210,7 +210,7 @@
   </div>
 
   <% if @order.draft? && policy(@order).update? %>
-    <div class="bg-white dark:bg-zinc-800 shadow sm:rounded-lg mt-4">
+    <div class="mt-4 bg-white shadow dark:bg-zinc-800 sm:rounded-lg">
       <div class="px-4 py-5 sm:px-6">
         <%= render 'order_form', order: @order %>
       </div>
