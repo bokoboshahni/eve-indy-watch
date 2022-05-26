@@ -104,7 +104,7 @@ group :development do
   gem 'capistrano-sidekiq', github: 'seuros/capistrano-sidekiq'
   gem 'ed25519', '~> 1.3'
   gem 'erb_lint', '~> 0.1'
-  gem 'rubocop', '~> 1.27'
+  gem 'rubocop', '~> 1.30'
   gem 'rubocop-performance', '~> 1.13'
   gem 'rubocop-rails', '~> 2.14'
   gem 'rubocop-rspec', '~> 2.10'
