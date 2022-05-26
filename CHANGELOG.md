@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [2.30.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.29.3...v2.30.0) (2022-05-26)
+
+
+### Features
+
+* add tracking number to unconfirmed orders table ([#299](https://github.com/bokoboshahni/eve-indy-watch/issues/299)) ([525c645](https://github.com/bokoboshahni/eve-indy-watch/commit/525c645c8fcae40de371cea5da51d28e514f77bc))
+
 ## [2.29.3](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.29.2...v2.29.3) (2022-04-19)
 
 
