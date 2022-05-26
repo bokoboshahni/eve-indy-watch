@@ -22,12 +22,12 @@
   <% end %>
 <% end %>
 
-<div class="max-w-7xl mt-4 mx-auto px-4 sm:px-6 md:px-8 space-y-8">
+<div class="px-4 mx-auto mt-4 space-y-8 max-w-7xl sm:px-6 md:px-8">
   <% if @unconfirmed_orders.any? %>
     <section>
       <%= render(CardComponent.new(title: 'Requires Confirmation', ball: true, ball_color: 'bg-yellow-500', body_class_names: 'rounded-lg', footer_padding: 'px-2 py-2')) do |c| %>
         <% c.body do %>
-          <%= render 'orders_dashboard_table', orders: @unconfirmed_orders, status: false, actions: true, supplier: true %>
+          <%= render 'orders_dashboard_table', orders: @unconfirmed_orders, tracking: true, status: false, actions: true, supplier: true %>
         <% end %>
       <% end %>
     </section>
@@ -37,7 +37,7 @@
     <section>
       <%= render(CardComponent.new(title: 'Accepted by Me', ball: true, ball_color: 'bg-blue-500', body_class_names: 'rounded-lg', footer_padding: 'px-2 py-2')) do |c| %>
         <% c.body do %>
-          <%= render 'orders_dashboard_table', orders: @supplied_orders, status: true, actions: true, supplier: false %>
+          <%= render 'orders_dashboard_table', orders: @supplied_orders, tracking: false, status: true, actions: true, supplier: false %>
         <% end %>
       <% end %>
     </section>
@@ -47,7 +47,7 @@
     <section>
       <%= render(CardComponent.new(title: 'In Progress', ball: true, ball_color: 'bg-blue-500', body_class_names: 'rounded-lg', footer_padding: 'px-2 py-2')) do |c| %>
         <% c.body do %>
-          <%= render 'orders_dashboard_table', orders: @in_progress_orders, status: false, actions: false, supplier: true %>
+          <%= render 'orders_dashboard_table', orders: @in_progress_orders, tracking: false, status: false, actions: false, supplier: true %>
         <% end %>
       <% end %>
     </section>
@@ -56,7 +56,7 @@
   <section>
     <%= render(CardComponent.new(title: 'Available Orders', ball: true, ball_color: 'bg-pink-500', body_class_names: 'rounded-lg', footer_padding: 'px-2 py-2')) do |c| %>
       <% c.body do %>
-        <%= render 'orders_dashboard_table', orders: @available_orders, status: false, actions: true, supplier: false %>
+        <%= render 'orders_dashboard_table', orders: @available_orders, tracking: false, status: false, actions: true, supplier: false %>
       <% end %>
       <% if @available_orders.any? %>
         <% c.footer do %>
@@ -70,7 +70,7 @@
     <section>
       <%= render(CardComponent.new(title: 'Drafts', ball: true, ball_color: 'bg-gray-500 dark:bg-zinc-500', body_class_names: 'rounded-lg', footer_padding: 'px-2 py-2')) do |c| %>
         <% c.body do %>
-          <%= render 'orders_dashboard_table', orders: @draft_orders, status: false, actions: true, supplier: false %>
+          <%= render 'orders_dashboard_table', orders: @draft_orders, tracking: false, status: false, actions: true, supplier: false %>
         <% end %>
       <% end %>
     </section>
