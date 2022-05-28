@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [2.31.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.30.0...v2.31.0) (2022-05-28)
+
+
+### Features
+
+* add tracking number to detail view ([#300](https://github.com/bokoboshahni/eve-indy-watch/issues/300)) ([ae5d00e](https://github.com/bokoboshahni/eve-indy-watch/commit/ae5d00e2ad1aa130d06254ec7ad76f5f83ab4b7d))
+
 # [2.30.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.29.3...v2.30.0) (2022-05-26)
 
 
