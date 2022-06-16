@@ -70,6 +70,16 @@ class ApplicationController < ActionController::Base
     main_alliance.main_market
   end
 
+  helper_method :secondary_market_id
+  def secondary_market_id
+    main_alliance.secondary_market_id
+  end
+
+  helper_method :secondary_market
+  def secondary_market
+    main_alliance.secondary_market
+  end
+
   helper_method :app_config
   def app_config
     Rails.application.config.x.app

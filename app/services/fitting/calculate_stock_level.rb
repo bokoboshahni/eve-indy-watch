@@ -20,7 +20,8 @@ class Fitting < ApplicationRecord
         market_id: market_id,
         time: time,
         market_time: market_time,
-        interval: interval
+        interval: interval,
+        reorder_point: fitting.reorder_point
       }
 
       stock_level.merge!(contract_stock_level) if contract_stock_level_enabled?

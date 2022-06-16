@@ -84,6 +84,7 @@ class Alliance < ApplicationRecord
   delegate :name, to: :main_market, prefix: true, allow_nil: true
   delegate :name, to: :appraisal_market, prefix: true, allow_nil: true
   delegate :name, to: :procurement_order_requester, prefix: true, allow_nil: true
+  delegate :name, to: :secondary_market, prefix: true, allow_nil: true
 
   def sync_from_esi!
     Alliance::SyncFromESI.call(id)

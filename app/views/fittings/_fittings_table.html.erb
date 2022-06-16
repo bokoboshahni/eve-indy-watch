@@ -1,9 +1,20 @@
 <%= render(TableComponent.new(layout: 'auto')) do |t| %>
   <% t.head do %>
     <%= render(TableRowComponent.new(classes: 'divide-x divide-gray-300 dark:divide-zinc-700 border-b border-gray-300 dark:border-zinc-700 ')) do |tr| %>
+      <% tr.header padding: 'px-4 py-1', colspan: 1 do %><% end %>
+      <% tr.header padding: 'px-4 py-1', colspan: 6, align: 'text-center' do %><%= current_alliance.main_market_name %><% end %>
+      <% if current_alliance.secondary_market %><% tr.header padding: 'px-4 py-1', colspan: 6, align: 'text-center' do %><%= current_alliance.secondary_market_name %><% end %><% end %>
+    <% end %>
+
+    <%= render(TableRowComponent.new(classes: 'divide-x divide-gray-300 dark:divide-zinc-700 border-b border-gray-300 dark:border-zinc-700 ')) do |tr| %>
       <% tr.header padding: 'px-4 py-1', colspan: 2 do %><% end %>
       <% tr.header padding: 'px-4 py-1', colspan: 3, align: 'text-center' do %>Contracts<% end %>
-      <% tr.header padding: 'px-4 py-1', colspan: 2, align: 'text-center' do %><%= current_alliance.main_market_name %><% end %>
+      <% tr.header padding: 'px-4 py-1', colspan: 2, align: 'text-center' do %>Market<% end %>
+      <% if current_alliance.secondary_market %>
+        <% tr.header padding: 'px-4 py-1', colspan: 1 do %><% end %>
+        <% tr.header padding: 'px-4 py-1', colspan: 3, align: 'text-center' do %>Contracts<% end %>
+        <% tr.header padding: 'px-4 py-1', colspan: 2, align: 'text-center' do %>Market<% end %>
+      <% end %>
     <% end %>
 
     <%= render(TableRowComponent.new) do |tr| %>
@@ -14,6 +25,14 @@
       <% tr.header padding: 'px-4 py-1', width: 'w-24' do %>Price<% end %>
       <% tr.header padding: 'px-4 py-1', width: 'w-24' do %>Qty<% end %>
       <% tr.header padding: 'px-4 py-1', width: 'w-24' do %>Price<% end %>
+      <% if current_alliance.secondary_market %>
+        <% tr.header padding: 'px-4 py-1', width: 'w-24' do %>Total<% end %>
+        <% tr.header padding: 'px-4 py-1', width: 'w-24' do %>Qty<% end %>
+        <% tr.header padding: 'px-4 py-1', width: 'w-24' do %>Quality<% end %>
+        <% tr.header padding: 'px-4 py-1', width: 'w-24' do %>Price<% end %>
+        <% tr.header padding: 'px-4 py-1', width: 'w-24' do %>Qty<% end %>
+        <% tr.header padding: 'px-4 py-1', width: 'w-24' do %>Price<% end %>
+      <% end %>
     <% end %>
   <% end %>
 

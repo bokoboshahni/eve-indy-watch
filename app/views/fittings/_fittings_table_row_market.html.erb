@@ -1,0 +1,31 @@
+<% stock = fitting.current_stock_level(market) %>
+<% if stock %>
+  <% tr.cell padding: 'px-4 py-1' do %>
+    <% if stock.reorder_point || fitting.reorder_point %>
+      <% total_available = stock.total_quantity %>
+      <% color = total_available >= (stock.reorder_point || fitting.reorder_point) ? 'green' : 'red' %>
+      <span class="text-<%= color %>-500 dark:saturate-50"><%= total_available %> / <%= stock.reorder_point || fitting.reorder_point %></span>
+    <% else %>
+      <%= total_available %>
+    <% end %>
+  <% end %>
+  <% tr.cell padding: 'px-4 py-1' do %>
+    <%= stock.contract_match_quantity || 'N/A' %>
+  <% end %>
+  <% tr.cell padding: 'px-4 py-1' do %>
+    <%= stock.contract_quality ? number_to_percentage(stock.contract_quality, precision: 0) : 'N/A' %>
+  <% end %>
+  <% tr.cell padding: 'px-4 py-1' do %>
+    <%= number_to_isk stock.contract_price_avg || 'N/A' %>
+  <% end %>
+  <% tr.cell padding: 'px-4 py-1' do %>
+    <%= stock.market_quantity || 'N/A' %>
+  <% end %>
+  <% tr.cell padding: 'px-4 py-1' do %>
+    <%= number_to_isk stock.market_sell_price || 'N/A' %>
+  <% end %>
+<% else %>
+  <% tr.cell padding: 'px-4 py-1', colspan: 6 do %>
+    <div class="italic text-center">Stock level currently unavailable for this fitting.</div>
+  <% end %>
+<% end %>

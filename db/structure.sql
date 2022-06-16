@@ -871,7 +871,8 @@ CREATE TABLE public.fitting_stock_levels (
     market_buy_price numeric,
     market_quantity integer,
     market_sell_price numeric,
-    market_time timestamp without time zone
+    market_time timestamp without time zone,
+    reorder_point integer
 );
 
 
@@ -4332,6 +4333,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220125213027'),
 ('20220125222823'),
 ('20220214190522'),
-('20220528192545');
+('20220528192545'),
+('20220616012255');
 
 

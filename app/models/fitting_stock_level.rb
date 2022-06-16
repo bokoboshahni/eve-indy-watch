@@ -25,6 +25,7 @@
 # **`market_quantity`**           | `integer`          |
 # **`market_sell_price`**         | `decimal(, )`      |
 # **`market_time`**               | `datetime`         |
+# **`reorder_point`**             | `integer`          |
 # **`time`**                      | `datetime`         | `not null, primary key`
 # **`fitting_id`**                | `bigint`           | `not null, primary key`
 # **`market_id`**                 | `bigint`           | `not null, primary key`
