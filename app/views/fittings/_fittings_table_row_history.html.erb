@@ -1,0 +1,28 @@
+<div class="grow">
+  <div class="text-center text-[0.625rem] dark:saturate:50">
+    <%= market.name %>
+  </div>
+  <div class="flex divide-x divide-gray-200 grow dark:divide-zinc-800">
+    <% levels_last_7_days = fitting.stock_levels.by_market(market.id).end_of_day.last_7_days.to_a %>
+    <% (7.days.ago.beginning_of_day.to_date..Time.zone.now.beginning_of_day.to_date).to_a.each do |date| %>
+      <% level = levels_last_7_days.find { |r| r.time.to_date == date } %>
+      <%
+        color =
+          if level&.at_stock?
+            'bg-green-400'
+          elsif level&.under_stock?
+            'bg-red-400'
+          elsif level&.out_of_stock?
+            'bg-red-400'
+          else
+            'bg-gray-100 dark:bg-zinc-800'
+          end
+      %>
+      <div class="flex-1 p-1 <%= color %> text-center text-[0.625rem] dark:saturate-50">
+        <%= level&.total_quantity || 'N/A' %>
+        <br>
+        <%= local_time date, format: '%b %d' %>
+      </div>
+    <% end %>
+  </div>
+</div>

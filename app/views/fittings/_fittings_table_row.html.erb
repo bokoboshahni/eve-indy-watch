@@ -1,7 +1,7 @@
 <%= render(TableRowComponent.new(classes: 'divide-x divide-gray-200 dark:divide-zinc-800')) do |tr| %>
   <% tr.cell padding: 'px-4 py-1' do %>
     <div class="flex items-center">
-      <div class="flex-shrink-0 h-8 w-8">
+      <div class="flex-shrink-0 w-8 h-8">
         <%= image_tag fitting.type.icon_url, class: 'h-8 w-8 rounded-md' %>
       </div>
       <div class="ml-4">
@@ -15,77 +15,26 @@
     </div>
   <% end %>
   <% if fitting.inventory_enabled? %>
-    <% stock = fitting.current_stock_level(main_market) %>
-    <% if stock %>
-      <% tr.cell padding: 'px-4 py-1' do %>
-        <% if fitting.reorder_point %>
-          <% total_available = stock.total_quantity %>
-          <% color = total_available >= fitting.reorder_point ? 'green' : 'red' %>
-          <span class="text-<%= color %>-500 dark:saturate-50"><%= total_available %> / <%= fitting.reorder_point %></span>
-        <% else %>
-          <%= total_available %>
-        <% end %>
-      <% end %>
-      <% tr.cell padding: 'px-4 py-1' do %>
-        <%= stock.contract_match_quantity || 'N/A' %>
-      <% end %>
-      <% tr.cell padding: 'px-4 py-1' do %>
-        <%= stock.contract_quality ? number_to_percentage(stock.contract_quality, precision: 0) : 'N/A' %>
-      <% end %>
-      <% tr.cell padding: 'px-4 py-1' do %>
-        <%= number_to_isk stock.contract_price_avg || 'N/A' %>
-      <% end %>
-      <% tr.cell padding: 'px-4 py-1' do %>
-        <% if fitting.main_market %>
-          <%= stock.market_quantity || 'N/A' %>
-        <% end %>
-      <% end %>
-      <% tr.cell padding: 'px-4 py-1' do %>
-        <% if fitting.main_market %>
-          <%= number_to_isk stock.market_sell_price || 'N/A' %>
-        <% end %>
-      <% end %>
-    <% else %>
-      <% tr.cell padding: 'px-4 py-1', colspan: 6 do %>
-        <div class="text-center italic">Stock level currently unavailable for this fitting.</div>
-      <% end %>
-    <% end %>
+    <%= render partial: 'fittings/fittings_table_row_market', locals: { fitting: fitting, market: main_market, tr: tr } %>
+    <%= render partial: 'fittings/fittings_table_row_market', locals: { fitting: fitting, market: secondary_market, tr: tr } %>
   <% else %>
     <% tr.cell padding: 'px-4 py-1', colspan: 6 do %>
-      <div class="text-center italic">Inventory tracking is not enabled for this fitting.</div>
+      <div class="italic text-center">Inventory tracking is not enabled for this fitting.</div>
     <% end %>
   <% end %>
 <% end %>
 <% if fitting.inventory_enabled? %>
   <%= render(TableRowComponent.new(classes: 'divide-x divide-gray-200 dark:divide-zinc-800')) do |tr| %>
-    <%= tr.cell classes: 'p-0 border-b-4 border-b-gray-400 dark:border-b-zinc-600', colspan: 7 do %>
+    <%= tr.cell padding: 'px-4 py-1', colspan: 1 do %><% end %>
+    <%= tr.cell classes: 'p-0 border-b-4 border-b-gray-400 dark:border-b-zinc-600', colspan: 12 do %>
       <div data-controller="toggle">
         <div class="bg-gray-100 dark:bg-zinc-700 cursor-pointer uppercase text-center text-gray-400 dark:text-zinc-400 text-[0.625rem] flex justify-center hover:text-gray-500 dark:hover:text-zinc-500" data-action="click->toggle#toggle touch->toggle#toggle">
           7 Day History
           <%= heroicon 'chevron-down', variant: :solid, options: { class: 'flex-shrink-0 -mr-1 ml-1 h-3 w-3' } %>
         </div>
-        <div class="flex divide-x divide-gray-200 dark:divide-zinc-800 hidden" data-toggle-target="toggleable">
-          <% levels_last_7_days = fitting.stock_levels.by_market(main_market_id).end_of_day.last_7_days.to_a %>
-          <% (7.days.ago.beginning_of_day.to_date..Time.zone.now.beginning_of_day.to_date).to_a.each do |date| %>
-            <% level = levels_last_7_days.find { |r| r.time.to_date == date } %>
-            <%
-              color =
-                if level&.at_stock?
-                  'bg-green-400'
-                elsif level&.under_stock?
-                  'bg-red-400'
-                elsif level&.out_of_stock?
-                  'bg-red-400'
-                else
-                  'bg-gray-100 dark:bg-zinc-800'
-                end
-            %>
-            <div class="flex-1 p-1 <%= color %> text-center text-[0.625rem] dark:saturate-50">
-              <%= level&.total_quantity || 'N/A' %>
-              <br>
-              <%= local_time date, format: '%b %d' %>
-            </div>
-          <% end %>
+        <div class="flex hidden divide-x-2 divide-gray-200 dark:divide-zinc-800" data-toggle-target="toggleable">
+          <%= render partial: 'fittings/fittings_table_row_history', locals: { fitting: fitting, market: main_market } %>
+          <%= render partial: 'fittings/fittings_table_row_history', locals: { fitting: fitting, market: secondary_market } if secondary_market %>
         </div>
       </div>
     <% end %>

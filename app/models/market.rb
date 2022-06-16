@@ -55,6 +55,7 @@ class Market < ApplicationRecord
 
   has_many :alliances_as_appraisal_market, class_name: 'Alliance', inverse_of: :appraisal_market, foreign_key: :appraisal_market_id
   has_many :alliances_as_main_market, class_name: 'Alliance', inverse_of: :main_market, foreign_key: :main_market_id
+  has_many :alliances_as_secondary_market, class_name: 'Alliance', inverse_of: :secondary_market, foreign_key: :secondary_market_id
   has_many :appraisals, inverse_of: :market, dependent: :destroy
   has_many :fitting_markets, inverse_of: :market
   has_many :fitting_stock_levels, inverse_of: :market

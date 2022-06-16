@@ -9,6 +9,9 @@ class Contract < ApplicationRecord
       data = Oj.load(json)
 
       contract = Contract::SyncFromESI.call(corporation, data)
+
+      return if contract.status == 'deleted'
+
       contract.sync_items_from_esi_async
     end
   end

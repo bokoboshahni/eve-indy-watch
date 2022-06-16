@@ -27,6 +27,14 @@ namespace :bootstrap do
     end
     alliance_structure_id = ENV['MAIN_ALLIANCE_MARKET_STRUCTURE_ID'].to_i
 
+    unless ENV['SECONDARY_ALLIANCE_MARKET_STRUCTURE_ID']
+      abort(
+        'No alliance structure ID found. Specify alliance market structure ' \
+        'ID in .env with MAIN_ALLIANCE_MARKET_STRUCTURE_ID'
+      )
+    end
+    alliance_secondary_structure_id = ENV['SECONDARY_ALLIANCE_MARKET_STRUCTURE_ID'].to_i
+
     Market.transaction do
       jita = Market.create!(
         name: 'Jita',
@@ -52,6 +60,21 @@ namespace :bootstrap do
 
       alliance.update!(appraisal_market: jita, main_market: market)
       alliance.alliance_locations.create!(location: Location.find(structure.id), default: true)
+
+      structure = Structure::SyncFromESI.call(alliance_secondary_structure_id, admin_auth)
+
+      market = Market.create!(
+        name: structure.solar_system_name,
+        owner: alliance,
+        private: true,
+        source_location: Location.find_by!(name: structure.region_name),
+        type_history_region: structure.region
+      )
+      market.structures << structure
+      market.update(active: true)
+
+      alliance.update!(secondary_market: market)
+      alliance.alliance_locations.create!(location: Location.find(structure.id))
     end
 
     Market::IngestAllWorker.perform_async

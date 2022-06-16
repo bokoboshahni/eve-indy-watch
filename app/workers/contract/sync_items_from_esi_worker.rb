@@ -7,6 +7,9 @@ class Contract < ApplicationRecord
 
     def perform(contract_id)
       contract = Contract.find(contract_id)
+
+      return if contract.status == 'deleted'
+
       contract.sync_items_from_esi!
       contract.discover_fittings!
     rescue ActiveRecord::RecordNotFound

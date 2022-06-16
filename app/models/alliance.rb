@@ -24,6 +24,7 @@
 # **`appraisal_market_id`**               | `bigint`           |
 # **`main_market_id`**                    | `bigint`           |
 # **`procurement_order_requester_id`**    | `bigint`           |
+# **`secondary_market_id`**               | `bigint`           |
 #
 # ### Indexes
 #
@@ -34,6 +35,8 @@
 # * `index_alliances_on_procurement_order_assignee`:
 #     * **`procurement_order_requester_type`**
 #     * **`procurement_order_requester_id`**
+# * `index_alliances_on_secondary_market_id`:
+#     * **`secondary_market_id`**
 #
 # ### Foreign Keys
 #
@@ -56,6 +59,7 @@ class Alliance < ApplicationRecord
   belongs_to :main_market, class_name: 'Market', inverse_of: :alliances_as_main_market, optional: true
   belongs_to :appraisal_market, class_name: 'Market', inverse_of: :alliances_as_appraisal_market, optional: true
   belongs_to :procurement_order_requester, polymorphic: true, optional: true
+  belongs_to :secondary_market, class_name: 'Market', inverse_of: :alliances_as_secondary_market, optional: true
 
   has_one :default_alliance_location, -> { where(default: true) }, class_name: 'AllianceLocation'
   has_one :default_location, class_name: 'Location', through: :default_alliance_location, source: :location
@@ -80,6 +84,7 @@ class Alliance < ApplicationRecord
   delegate :name, to: :main_market, prefix: true, allow_nil: true
   delegate :name, to: :appraisal_market, prefix: true, allow_nil: true
   delegate :name, to: :procurement_order_requester, prefix: true, allow_nil: true
+  delegate :name, to: :secondary_market, prefix: true, allow_nil: true
 
   def sync_from_esi!
     Alliance::SyncFromESI.call(id)

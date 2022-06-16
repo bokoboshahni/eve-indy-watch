@@ -237,7 +237,8 @@ CREATE TABLE public.alliances (
     zkb_fetched_at timestamp without time zone,
     zkb_sync_enabled boolean,
     procurement_order_requester_type character varying,
-    procurement_order_requester_id bigint
+    procurement_order_requester_id bigint,
+    secondary_market_id bigint
 );
 
 
@@ -870,7 +871,8 @@ CREATE TABLE public.fitting_stock_levels (
     market_buy_price numeric,
     market_quantity integer,
     market_sell_price numeric,
-    market_time timestamp without time zone
+    market_time timestamp without time zone,
+    reorder_point integer
 );
 
 
@@ -2890,6 +2892,13 @@ CREATE INDEX index_alliances_on_procurement_order_assignee ON public.alliances U
 
 
 --
+-- Name: index_alliances_on_secondary_market_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_alliances_on_secondary_market_id ON public.alliances USING btree (secondary_market_id);
+
+
+--
 -- Name: index_appraisal_items_on_appraisal_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -4323,6 +4332,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20220125212154'),
 ('20220125213027'),
 ('20220125222823'),
-('20220214190522');
+('20220214190522'),
+('20220528192545'),
+('20220616012255');
 
 

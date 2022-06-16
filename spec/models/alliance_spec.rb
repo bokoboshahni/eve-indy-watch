@@ -24,6 +24,7 @@
 # **`appraisal_market_id`**               | `bigint`           |
 # **`main_market_id`**                    | `bigint`           |
 # **`procurement_order_requester_id`**    | `bigint`           |
+# **`secondary_market_id`**               | `bigint`           |
 #
 # ### Indexes
 #
@@ -34,6 +35,8 @@
 # * `index_alliances_on_procurement_order_assignee`:
 #     * **`procurement_order_requester_type`**
 #     * **`procurement_order_requester_id`**
+# * `index_alliances_on_secondary_market_id`:
+#     * **`secondary_market_id`**
 #
 # ### Foreign Keys
 #
