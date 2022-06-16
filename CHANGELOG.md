@@ -1,5 +1,12 @@
 # EVE Indy Watch Changelog
 
+# [2.32.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.31.0...v2.32.0) (2022-06-16)
+
+
+### Features
+
+* secondary alliance market ([7e936cb](https://github.com/bokoboshahni/eve-indy-watch/commit/7e936cb0a61348d1a248a97f7d50ec16c40f46b5))
+
 # [2.31.0](https://github.com/bokoboshahni/eve-indy-watch/compare/v2.30.0...v2.31.0) (2022-05-28)
 
 
