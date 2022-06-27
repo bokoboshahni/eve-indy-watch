@@ -33,8 +33,8 @@ class Market < ApplicationRecord
         high: high_price,
         open: open_price,
         close: close_price,
-        volume: volume,
-        count: count
+        volume:,
+        count:
       }
     end
 

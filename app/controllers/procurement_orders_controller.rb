@@ -169,9 +169,9 @@ class ProcurementOrdersController < ApplicationController
     price = type.market_sell_price(main_alliance.appraisal_market)
     if order_id.present?
       order = ProcurementOrder.find(order_id)
-      @item = order.items.build(type: type, price: price, quantity_required: 1)
+      @item = order.items.build(type:, price:, quantity_required: 1)
     else
-      @item = ProcurementOrderItem.new(type: type, price: price, quantity_required: 1)
+      @item = ProcurementOrderItem.new(type:, price:, quantity_required: 1)
     end
 
     render partial: 'new_item', item: @item

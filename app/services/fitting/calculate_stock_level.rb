@@ -17,10 +17,10 @@ class Fitting < ApplicationRecord
       @time = time.prev_day.beginning_of_day unless interval == :live
 
       stock_level = {
-        market_id: market_id,
-        time: time,
-        market_time: market_time,
-        interval: interval,
+        market_id:,
+        time:,
+        market_time:,
+        interval:,
         reorder_point: fitting.reorder_point
       }
 
@@ -78,7 +78,7 @@ class Fitting < ApplicationRecord
                                    .transform_values! { |j| Oj.load(j) if j.present? }
 
       result[:items_attributes] = compact_items.each_with_object({}) do |(item_id, fitting_qty), h|
-        stock_item = { fitting_id: fitting_id, market_id: market_id, type_id: item_id, interval: interval, time: time }
+        stock_item = { fitting_id:, market_id:, type_id: item_id, interval:, time: }
         market_item = market_stats[item_id]
 
         if market_item

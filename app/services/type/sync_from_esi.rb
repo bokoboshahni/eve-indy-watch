@@ -40,7 +40,7 @@ class Type < ApplicationRecord
     attr_reader :type_id, :ignore_not_found
 
     def type_attrs_from_esi
-      resp = esi.get_universe_type_raw(type_id: type_id)
+      resp = esi.get_universe_type_raw(type_id:)
       expires = DateTime.parse(resp.headers['expires'])
       last_modified = DateTime.parse(resp.headers['last-modified'])
       data = Oj.load(resp.body)

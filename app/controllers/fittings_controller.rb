@@ -51,7 +51,7 @@ class FittingsController < ApplicationController
     }
 
     data = raw[:price].each_with_object([]) do |(date, price), a|
-      a << { date: date, price: price.to_f || 0.0, volume: raw[:volume][date].to_i }
+      a << { date:, price: price.to_f || 0.0, volume: raw[:volume][date].to_i }
     end
 
     render json: data

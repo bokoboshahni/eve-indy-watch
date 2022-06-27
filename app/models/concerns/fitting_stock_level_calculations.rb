@@ -5,7 +5,7 @@ module FittingStockLevelCalculations
 
   def as_json(_options = nil)
     super.merge(
-      total_quantity: total_quantity
+      total_quantity:
     )
   end
 

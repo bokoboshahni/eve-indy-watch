@@ -10,6 +10,6 @@ class ActionButtonComponent < ApplicationComponent
   end
 
   def call
-    render(LinkButtonComponent.new(href: @href, size: :md, color: @color, margin: margin).with_content(content))
+    render(LinkButtonComponent.new(href: @href, size: :md, color: @color, margin:).with_content(content))
   end
 end

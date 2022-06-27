@@ -29,7 +29,7 @@ class Group < ApplicationRecord
     attr_reader :group_id, :ignore_not_found
 
     def group_attrs_from_esi
-      resp = esi.get_universe_group_raw(group_id: group_id)
+      resp = esi.get_universe_group_raw(group_id:)
       expires = DateTime.parse(resp.headers['expires'])
       last_modified = DateTime.parse(resp.headers['last-modified'])
       data = Oj.load(resp.body)

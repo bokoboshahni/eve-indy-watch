@@ -14,7 +14,7 @@ module SDE
 
     def after_import
       locations = SolarSystem.pluck(:id, :name).each_with_object([]) do |(locatable_id, name), a|
-        a << { locatable_id: locatable_id, locatable_type: 'SolarSystem', name: name }
+        a << { locatable_id:, locatable_type: 'SolarSystem', name: }
       end
 
       Location.import!(

@@ -18,7 +18,7 @@ class Fitting < ApplicationRecord
           record.items.destroy_all
           record.attributes = record.attributes.merge(fitting)
         else
-          record.attributes = fitting.merge(owner: owner)
+          record.attributes = fitting.merge(owner:)
         end
         record.save
       end

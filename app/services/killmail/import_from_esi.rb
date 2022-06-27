@@ -18,14 +18,14 @@ class Killmail < ApplicationRecord
         return killmail_record
       end
 
-      esi_data = esi.get_killmail(killmail_hash: killmail_hash, killmail_id: killmail_id)
+      esi_data = esi.get_killmail(killmail_hash:, killmail_id:)
 
       victim = esi_data['victim']
-      attackers = esi_data['attackers'].map { |a| a.merge(killmail_id: killmail_id) }
+      attackers = esi_data['attackers'].map { |a| a.merge(killmail_id:) }
 
       killmail = {
         id: killmail_id,
-        killmail_hash: killmail_hash,
+        killmail_hash:,
         awox: zkb_data['zkb']['awox'],
         solo: zkb_data['zkb']['solo'],
         npc: zkb_data['zkb']['npc'],

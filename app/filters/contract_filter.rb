@@ -37,8 +37,8 @@ class ContractFilter < ApplicationFilter
         scope = scope.includes(contract_fittings: :fitting)
         scope = scope.joins('INNER JOIN corporations ic1 ON ic1.id = contracts.issuer_corporation_id')
         scope = scope.search_by_all(query) if query.present?
-        scope = scope.where(end_location_id: end_location_id) if end_location_id.any?
-        scope = scope.where(issuer_corporation_id: issuer_corporation_id) if issuer_corporation_id.any?
+        scope = scope.where(end_location_id:) if end_location_id.any?
+        scope = scope.where(issuer_corporation_id:) if issuer_corporation_id.any?
         scope = scope.where('price >= ?', price) if min_price.present?
         scope = scope.where('price <= ?', price) if max_price.present?
         scope = scope.where('volume >= ?', price) if min_price.present?

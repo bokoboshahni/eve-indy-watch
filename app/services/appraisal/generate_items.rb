@@ -42,8 +42,8 @@ class Appraisal < ApplicationRecord
             sell_attrs = type_stats[:sell]&.transform_keys! { |k| :"sell_#{k}" } || {}
 
             h[type_id] = {
-              time: time,
-              market_id: market_id,
+              time:,
+              market_id:,
               type_id: type_stats[:type_id],
               buy_sell_spread: type_stats[:buy_sell_spread],
               mid_price: type_stats[:mid_price]

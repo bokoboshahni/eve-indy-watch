@@ -88,7 +88,7 @@ class Market < ApplicationRecord
     if regional?
       scope = MarketOrder.joins(solar_system: { constellation: :region }).where(regions: { id: regions.pluck(:id) })
       time = scope.maximum(:time)
-      scope.where(time: time)
+      scope.where(time:)
     else
       orders.where(time: orders.maximum(:time))
     end
@@ -135,7 +135,7 @@ class Market < ApplicationRecord
   end
 
   def calculate_type_statistics_async(time, force: false)
-    CalculateTypeStatisticsQueuer.call(self, time, force: force)
+    CalculateTypeStatisticsQueuer.call(self, time, force:)
   end
 
   def orders_last_modified

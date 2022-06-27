@@ -42,7 +42,7 @@ class User < ApplicationRecord
     end
 
     def create_user!
-      User.create!(admin: character_admin?, character: character)
+      User.create!(admin: character_admin?, character:)
     end
   end
 end

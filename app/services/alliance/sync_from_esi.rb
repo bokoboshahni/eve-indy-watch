@@ -32,7 +32,7 @@ class Alliance < ApplicationRecord
     attr_reader :alliance_id
 
     def alliance_attrs_from_esi
-      resp = esi.get_alliance_raw(alliance_id: alliance_id)
+      resp = esi.get_alliance_raw(alliance_id:)
       expires = DateTime.parse(resp.headers['expires'])
       last_modified = DateTime.parse(resp.headers['last-modified'])
       data = Oj.load(resp.body)
@@ -46,7 +46,7 @@ class Alliance < ApplicationRecord
     end
 
     def alliance_icon_attrs_from_esi
-      data = esi.get_alliance_icons(alliance_id: alliance_id)
+      data = esi.get_alliance_icons(alliance_id:)
 
       {
         icon_url_128: data['px128x128'], # rubocop:disable Naming/VariableNumber

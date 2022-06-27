@@ -20,7 +20,7 @@ class CorporationFilter < ApplicationFilter
       begin
         scope = scope.joins('LEFT OUTER JOIN alliances a1 ON a1.id = corporations.alliance_id')
         scope = scope.search_by_all(query) if query.present?
-        scope = scope.where(alliance_id: alliance_id) if alliance_id.any?
+        scope = scope.where(alliance_id:) if alliance_id.any?
         scope = scope.order(sorters[sort][:column] => sorters[sort][:direction]) if sorters[sort]
         scope
       end

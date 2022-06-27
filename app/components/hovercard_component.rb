@@ -9,7 +9,7 @@ class HovercardComponent < ApplicationComponent
   end
 
   def call
-    content_tag :div, content, class: class_name, data: data
+    content_tag :div, content, class: class_name, data:
   end
 
   private

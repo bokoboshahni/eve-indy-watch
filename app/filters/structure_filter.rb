@@ -30,9 +30,9 @@ class StructureFilter < ApplicationFilter
         scope = scope.joins('LEFT OUTER JOIN alliances a1 ON a1.id = co1.alliance_id')
         scope = scope.joins('LEFT OUTER JOIN types t1 ON t1.id = structures.type_id')
         scope = scope.search_by_all(query) if query.present?
-        scope = scope.where(owner_id: owner_id) if owner_id.any?
+        scope = scope.where(owner_id:) if owner_id.any?
         scope = scope.where('co1.alliance_id': alliance_id) if alliance_id.any?
-        scope = scope.where(type_id: type_id) if type_id.any?
+        scope = scope.where(type_id:) if type_id.any?
         scope = scope.order(sorters[sort][:column] => sorters[sort][:direction]) if sorters[sort]
         scope
       end

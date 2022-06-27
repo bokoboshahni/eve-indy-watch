@@ -164,7 +164,7 @@ class ProcurementOrder < ApplicationRecord
 
   def valuation(market)
     @valuation ||= {}
-    @valuation[market.id] ||= Appraisal.new(market: market).generate_items(compact_items)
+    @valuation[market.id] ||= Appraisal.new(market:).generate_items(compact_items)
   end
 
   def valuation_sell(market)
@@ -230,7 +230,7 @@ class ProcurementOrder < ApplicationRecord
 
       after do
         subscription = requester.notification_subscriptions.find_by(notification_type: 'ProcurementOrder::OrderPublishedNotification')
-        subscription.notification_class.with(order: self, subscription: subscription).deliver_later(requester) if subscription
+        subscription.notification_class.with(order: self, subscription:).deliver_later(requester) if subscription
       end
     end
 
@@ -252,7 +252,7 @@ class ProcurementOrder < ApplicationRecord
 
       after do
         subscription = requester.notification_subscriptions.find_by(notification_type: 'ProcurementOrder::OrderAcceptedNotification')
-        subscription.notification_class.with(order: self, subscription: subscription).deliver_later(requester) if subscription
+        subscription.notification_class.with(order: self, subscription:).deliver_later(requester) if subscription
       end
     end
 
@@ -274,7 +274,7 @@ class ProcurementOrder < ApplicationRecord
 
       after do
         subscription = requester.notification_subscriptions.find_by(notification_type: 'ProcurementOrder::OrderDeliveredNotification')
-        subscription.notification_class.with(order: self, subscription: subscription).deliver_later(requester) if subscription
+        subscription.notification_class.with(order: self, subscription:).deliver_later(requester) if subscription
       end
     end
 

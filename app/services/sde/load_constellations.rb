@@ -13,13 +13,13 @@ module SDE
         constellation = yaml(path)
         region_path = File.expand_path('../../region.staticdata', path)
         region_id = region_ids[region_path] || (region_ids[region_path] = yaml(region_path)['region_id'])
-        record(constellation, :constellation_id, %w[name], extra: { region_id: region_id })
+        record(constellation, :constellation_id, %w[name], extra: { region_id: })
       end
     end
 
     def after_import
       locations = Constellation.pluck(:id, :name).each_with_object([]) do |(locatable_id, name), a|
-        a << { locatable_id: locatable_id, locatable_type: 'Constellation', name: name }
+        a << { locatable_id:, locatable_type: 'Constellation', name: }
       end
 
       Location.import!(

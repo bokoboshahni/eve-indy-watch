@@ -16,7 +16,7 @@ class Corporation < ApplicationRecord
 
       esi_authorize!(corporation.esi_authorization)
       auth = { Authorization: "Bearer #{corporation.esi_authorization.access_token}" }
-      resps = esi.get_corporation_contracts_raw(corporation_id: corporation_id, headers: auth)
+      resps = esi.get_corporation_contracts_raw(corporation_id:, headers: auth)
       first_resp = resps.first
       expires = DateTime.parse(first_resp.headers['expires'])
       last_modified = DateTime.parse(first_resp.headers['last-modified'])

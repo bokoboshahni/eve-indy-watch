@@ -49,7 +49,7 @@ class Structure < ApplicationRecord
     def structure_attrs_from_esi # rubocop:disable Metrics/MethodLength
       esi_authorize!(authorization)
       auth = { Authorization: "Bearer #{authorization.access_token}" }
-      resp = esi.get_universe_structure_raw(structure_id: structure_id, headers: auth)
+      resp = esi.get_universe_structure_raw(structure_id:, headers: auth)
       expires = DateTime.parse(resp.headers['expires'])
       last_modified = DateTime.parse(resp.headers['last-modified'])
       data = Oj.load(resp.body)

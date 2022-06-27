@@ -33,7 +33,7 @@ class Character < ApplicationRecord
     attr_reader :character_id
 
     def character_attrs_from_esi
-      resp = esi.get_character_raw(character_id: character_id)
+      resp = esi.get_character_raw(character_id:)
       expires = DateTime.parse(resp.headers['expires'])
       last_modified = DateTime.parse(resp.headers['last-modified'])
       data = Oj.load(resp.body)
@@ -48,7 +48,7 @@ class Character < ApplicationRecord
     end
 
     def portrait_attrs_from_esi
-      data = esi.get_character_portrait(character_id: character_id)
+      data = esi.get_character_portrait(character_id:)
 
       {
         portrait_url_128: data['px128x128'], # rubocop:disable Naming/VariableNumber

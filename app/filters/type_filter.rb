@@ -21,9 +21,9 @@ class TypeFilter < ApplicationFilter
     @scope ||=
       begin
         scope = scope.search_by_all(query) if query.present?
-        scope = scope.where(group_id: group_id) if group_id.any?
-        scope = scope.where(market_group_id: market_group_id) if market_group_id.any?
-        scope = scope.joins(:group).where(groups: { category_id: category_id }) if category_id.any?
+        scope = scope.where(group_id:) if group_id.any?
+        scope = scope.where(market_group_id:) if market_group_id.any?
+        scope = scope.joins(:group).where(groups: { category_id: }) if category_id.any?
         scope = scope.order(sorters[sort][:column] => sorters[sort][:direction]) if sorters[sort]
         scope
       end

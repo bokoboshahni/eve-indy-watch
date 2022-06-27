@@ -82,13 +82,13 @@ class Fitting < ApplicationRecord
 
   def current_stock_level_time(market, interval: :live)
     @current_stock_level_time ||= {}
-    @current_stock_level_time[market.id] ||= stock_levels.where(market_id: market.id, interval: interval).maximum(:time)
+    @current_stock_level_time[market.id] ||= stock_levels.where(market_id: market.id, interval:).maximum(:time)
   end
 
   def current_stock_level(market, interval: :live)
     @current_stock_level ||= {}
     @current_stock_level[market.id] ||= stock_levels.find_by(market_id: market.id,
-                                                             time: current_stock_level_time(market, interval: interval))
+                                                             time: current_stock_level_time(market, interval:))
   end
 
   def type_ids

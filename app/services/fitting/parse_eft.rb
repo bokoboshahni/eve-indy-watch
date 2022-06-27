@@ -20,7 +20,7 @@ class Fitting < ApplicationRecord
 
       fitting = {
         type_id: type.id,
-        name: name,
+        name:,
         original: raw,
         items_attributes: items
       }
@@ -62,9 +62,9 @@ class Fitting < ApplicationRecord
         if match
           type = find_type(match[:type])
 
-          ((errors << { line: line, message: :invalid_type }) && next) unless type
+          ((errors << { line:, message: :invalid_type }) && next) unless type
 
-          item = { type: type, quantity: match[:amount].to_i }
+          item = { type:, quantity: match[:amount].to_i }
           a << item
           debug "Added item: #{item}"
           next
@@ -74,22 +74,22 @@ class Fitting < ApplicationRecord
         if match
           type = find_type(match[:type])
 
-          ((errors << { line: line, message: :invalid_type }) && next) unless type
+          ((errors << { line:, message: :invalid_type }) && next) unless type
 
-          item = { type: type, quantity: 1, offline: match[:offline] }
+          item = { type:, quantity: 1, offline: match[:offline] }
           a << item
           debug "Added item: #{item}"
           next
         end
 
-        errors << { line: line, message: :parse_error }
+        errors << { line:, message: :parse_error }
         debug("Parse error: #{line}")
         return
       end
     end
 
     def find_type(name)
-      Type.find_by(name: name)
+      Type.find_by(name:)
     end
   end
 end

@@ -3,7 +3,7 @@
 module RetriableHelpers
   extend ActiveSupport::Concern
 
-  def with_retries(opts = {}, &block)
-    Retriable.retriable(opts, &block)
+  def with_retries(opts = {}, &)
+    Retriable.retriable(opts, &)
   end
 end

@@ -6,7 +6,7 @@ class Alliance < ApplicationRecord
 
     def perform(alliance_id, year = nil, month = nil)
       alliance = Alliance.find(alliance_id)
-      data = alliance.fetch_killmails_from_zkb(year: year, month: month)
+      data = alliance.fetch_killmails_from_zkb(year:, month:)
 
       if data&.count&.positive?
         args = data.reject { |k| Killmail.exists?(k['killmail_id']) }.map { |k| [k.to_json] }

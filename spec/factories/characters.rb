@@ -45,7 +45,7 @@ FactoryBot.define do
 
     trait :with_alliance do
       alliance
-      corporation { association :corporation, alliance: alliance }
+      corporation { association :corporation, alliance: }
     end
   end
 end

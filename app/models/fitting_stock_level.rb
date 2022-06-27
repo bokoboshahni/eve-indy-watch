@@ -67,5 +67,5 @@ class FittingStockLevel < ApplicationRecord
   scope :by_fitting, ->(id) { where(fitting_id: id) }
   scope :by_market, ->(id) { where(market_id: id) }
 
-  scope :by_fitting_and_market, ->(fitting_id, market_id) { where(fitting_id: fitting_id, market_id: market_id) }
+  scope :by_fitting_and_market, ->(fitting_id, market_id) { where(fitting_id:, market_id:) }
 end

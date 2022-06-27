@@ -20,7 +20,7 @@ class Fitting < ApplicationRecord
 
       {
         items: killmail_item_ids,
-        similarity: similarity
+        similarity:
       }
     end
 

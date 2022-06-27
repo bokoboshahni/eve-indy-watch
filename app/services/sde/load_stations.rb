@@ -28,7 +28,7 @@ module SDE
 
     def after_import
       locations = Station.pluck(:id, :name).each_with_object([]) do |(locatable_id, name), a|
-        a << { locatable_id: locatable_id, locatable_type: 'Station', name: name }
+        a << { locatable_id:, locatable_type: 'Station', name: }
       end
 
       Location.import!(

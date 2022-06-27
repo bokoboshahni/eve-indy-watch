@@ -31,7 +31,7 @@ class Fitting < ApplicationRecord
       {
         items: match_items,
         quantity: full_matches.max,
-        similarity: similarity
+        similarity:
       }
     end
 

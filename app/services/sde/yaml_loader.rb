@@ -28,7 +28,7 @@ module SDE
 
     def import_records
       results = record_class.import(records, track_validation_failures: true,
-                                             on_duplicate_key_update: { conflict_target: conflict_target, columns: :all })
+                                             on_duplicate_key_update: { conflict_target:, columns: :all })
       table = TTY::Table.new(header: %w[Table Processed Inserts Failures Total]) do |t|
         t << [record_class.name, records.count, results.num_inserts, results.failed_instances.count, record_class.count]
       end

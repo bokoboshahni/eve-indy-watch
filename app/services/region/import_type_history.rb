@@ -18,7 +18,7 @@ class Region < ApplicationRecord
       records = []
 
       Retriable.retriable tries: 10, base_interval: 1.0, multiplier: 2.0 do
-        req = Typhoeus::Request.new(history_url, params: { type_id: type_id }, headers: default_headers)
+        req = Typhoeus::Request.new(history_url, params: { type_id: }, headers: default_headers)
         req.on_complete do |res|
           next if res.code == 404
 
@@ -30,7 +30,7 @@ class Region < ApplicationRecord
 
           raise "##{res.code}: (empty body)" if res.body.strip.empty?
 
-          records.push(*Oj.load(res.body).map { |r| r.symbolize_keys!.merge!(region_id: region_id, type_id: type_id) })
+          records.push(*Oj.load(res.body).map { |r| r.symbolize_keys!.merge!(region_id:, type_id:) })
         end
         hydra.queue(req)
         hydra.run

@@ -21,14 +21,14 @@ class CardComponentStories < ApplicationStories
 
   story :ball do
     ball_color = select(%w[bg-blue-500 bg-green-500 bg-red-500 bg-yellow-500], 'bg-blue-500')
-    constructor(title: text(Faker::Lorem.sentence.titleize).name('Title'), ball: true, ball_color: ball_color)
+    constructor(title: text(Faker::Lorem.sentence.titleize).name('Title'), ball: true, ball_color:)
 
     body.content(text(Faker::Lorem.paragraph).name('Body'))
   end
 
   story :footer do
     footer_bg = select(%w[bg-white bg-gray-50 dark:bg-zinc-50 dark:bg-zinc-800], 'bg-gray-50 dark:bg-zinc-50 dark:bg-zinc-800')
-    constructor(title: text(Faker::Lorem.sentence.titleize).name('Title'), footer_bg: footer_bg)
+    constructor(title: text(Faker::Lorem.sentence.titleize).name('Title'), footer_bg:)
 
     body do
       content_tag :p, text(Faker::Lorem.paragraph).name('Body')

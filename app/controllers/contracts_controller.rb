@@ -22,7 +22,7 @@ class ContractsController < ApplicationController
 
   def show
     fitting_id = params[:fitting_id] || @contract.contract_fittings.joins(:fitting).order('similarity desc, fittings.name asc').first
-    @contract_fitting = @contract.contract_fittings.find_by(fitting_id: fitting_id)
+    @contract_fitting = @contract.contract_fittings.find_by(fitting_id:)
   end
 
   def list_fittings_card

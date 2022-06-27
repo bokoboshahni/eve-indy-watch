@@ -18,7 +18,7 @@ RSpec.describe ProcurementOrderPolicy, type: :policy do
 
     it 'does not include orders not supplied by the user' do
       supplier = create(:character, corporation: user.corporation, alliance: user.alliance)
-      create_list(:in_progress_order, 2, supplier: supplier)
+      create_list(:in_progress_order, 2, supplier:)
 
       expect(policy.resolve).to be_empty
     end
@@ -87,28 +87,28 @@ RSpec.describe ProcurementOrderPolicy, type: :policy do
 
     it "includes available orders with alliance visibility when the requester is in the user's alliance" do
       requester = create(:character, alliance: user.alliance)
-      orders = create_list(:available_order, 2, requester: requester, visibility: :alliance)
+      orders = create_list(:available_order, 2, requester:, visibility: :alliance)
 
       expect(policy.resolve).to match_array(orders)
     end
 
     it "does not include available orders with alliance visibility when the requester is not in the user's alliance" do
       requester = create(:character)
-      create_list(:available_order, 2, requester: requester, visibility: :alliance)
+      create_list(:available_order, 2, requester:, visibility: :alliance)
 
       expect(policy.resolve).to be_empty
     end
 
     it "includes available orders with corporation visibility when the requester is in the user's corporation" do
       requester = create(:character, corporation: user.corporation)
-      orders = create_list(:available_order, 2, requester: requester, visibility: :corporation)
+      orders = create_list(:available_order, 2, requester:, visibility: :corporation)
 
       expect(policy.resolve).to match_array(orders)
     end
 
     it "does not include available orders with corporation visibility when the requester is not in the user's corporation" do
       requester = create(:character)
-      create_list(:available_order, 2, requester: requester, visibility: :corporation)
+      create_list(:available_order, 2, requester:, visibility: :corporation)
 
       expect(policy.resolve).to be_empty
     end

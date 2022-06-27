@@ -17,11 +17,11 @@ class ApplicationReport
 
     report_run = ReportRun.create!(
       report: report_name,
-      user: user,
-      status: status,
+      user:,
+      status:,
       exception: exception.as_json,
       duration: duration.seconds,
-      started_at: started_at
+      started_at:
     )
 
     raise exception if exception

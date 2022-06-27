@@ -21,8 +21,8 @@ class FittingFilter < ApplicationFilter
         scope = scope.joins('INNER JOIN types t1 ON t1.id = fittings.type_id')
         scope = scope.joins('INNER JOIN groups g1 ON g1.id = t1.group_id')
         scope = scope.search_by_all(query) if query.present?
-        scope = scope.joins(:type).where(types: { group_id: group_id }) if group_id.any?
-        scope = scope.where(type_id: type_id) if type_id.any?
+        scope = scope.joins(:type).where(types: { group_id: }) if group_id.any?
+        scope = scope.where(type_id:) if type_id.any?
         scope = scope.order(sorters[sort][:column] => sorters[sort][:direction]) if sorters[sort]
         scope
       end

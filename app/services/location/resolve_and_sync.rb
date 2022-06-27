@@ -11,7 +11,7 @@ class Location < ApplicationRecord
 
     def call
       if id < 10_000_000_000
-        return if Station.exists?(id: id)
+        return if Station.exists?(id:)
 
         Station::SyncFromESI.call(id)
       else

@@ -165,7 +165,7 @@ class Contract < ApplicationRecord
   def sync_items_from_esi!(force: false)
     return unless esi_items_unsynced? || force
 
-    Contract::SyncItemsFromESI.call(self, force: force)
+    Contract::SyncItemsFromESI.call(self, force:)
   end
 
   def sync_items_from_esi_async
@@ -247,7 +247,7 @@ class Contract < ApplicationRecord
   end
 
   def valuation(market)
-    @valuation ||= Appraisal.new(market: market).generate_items(compact_items)
+    @valuation ||= Appraisal.new(market:).generate_items(compact_items)
   end
 
   def valuation_sell(market)

@@ -47,7 +47,7 @@ class Station < ApplicationRecord
     attr_reader :station_id
 
     def station_attrs_from_esi
-      resp = esi.get_universe_station_raw(station_id: station_id)
+      resp = esi.get_universe_station_raw(station_id:)
       expires = DateTime.parse(resp.headers['expires'])
       last_modified = DateTime.parse(resp.headers['last-modified'])
       data = Oj.load(resp.body)

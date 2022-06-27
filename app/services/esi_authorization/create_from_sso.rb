@@ -33,7 +33,7 @@ class ESIAuthorization < ApplicationRecord
     def available?
       return true if user.esi_authorizations.exists?(character_id: uid)
 
-      return false if ESIAuthorization.exists?(character_id: uid, user_id: user_id)
+      return false if ESIAuthorization.exists?(character_id: uid, user_id:)
 
       true
     end
@@ -44,9 +44,9 @@ class ESIAuthorization < ApplicationRecord
         expires_at: Time.zone.at(auth_info.credentials.expires_at).to_datetime,
         refresh_token: auth_info.credentials.refresh_token,
         scopes: auth_info.info.scopes.split,
-        user: user
+        user:
       }
-      authorization = ESIAuthorization.where(character_id: character_id).first_or_create!(authorization_attrs)
+      authorization = ESIAuthorization.where(character_id:).first_or_create!(authorization_attrs)
       authorization.update!(authorization_attrs)
       authorization
     end

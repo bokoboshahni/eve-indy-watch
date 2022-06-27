@@ -8,7 +8,7 @@ namespace :fittings do
     dir = ENV.fetch('DIR', Rails.root.join('tmp/fittings'))
     paths = Dir[File.join(dir, '*.txt')]
     paths.each do |path|
-      Fitting::ImportFromEFTFile.call(path, owner: owner)
+      Fitting::ImportFromEFTFile.call(path, owner:)
     end
 
     puts "Imported #{paths.count} fitting(s) from #{dir}"

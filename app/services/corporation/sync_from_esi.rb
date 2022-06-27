@@ -32,7 +32,7 @@ class Corporation < ApplicationRecord
 
     def corporation_attrs_from_esi
       Retriable.retriable on: [ESI::Errors::ClientError] do
-        resp = esi.get_corporation_raw(corporation_id: corporation_id)
+        resp = esi.get_corporation_raw(corporation_id:)
         expires = DateTime.parse(resp.headers['expires'])
         last_modified = DateTime.parse(resp.headers['last-modified'])
         data = Oj.load(resp.body)
@@ -51,7 +51,7 @@ class Corporation < ApplicationRecord
     end
 
     def corporation_icon_attrs_from_esi
-      data = esi.get_corporation_icons(corporation_id: corporation_id)
+      data = esi.get_corporation_icons(corporation_id:)
 
       {
         icon_url_128: data['px128x128'], # rubocop:disable Naming/VariableNumber

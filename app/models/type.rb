@@ -131,19 +131,19 @@ class Type < ApplicationRecord
   end
 
   def market_buy_price(market, time: nil)
-    market_stats(market, time: time).dig(:buy, :price_max)
+    market_stats(market, time:).dig(:buy, :price_max)
   end
 
   def market_sell_price(market, time: nil)
-    market_stats(market, time: time).dig(:sell, :price_min)
+    market_stats(market, time:).dig(:sell, :price_min)
   end
 
   def market_split_price(market, time: nil)
-    market_stats(market, time: time)[:mid_price]
+    market_stats(market, time:)[:mid_price]
   end
 
   def market_volume(market, time: nil)
-    market_stats(market, time: time).dig(:sell, :volume_sum)
+    market_stats(market, time:).dig(:sell, :volume_sum)
   end
 
   def icon_url

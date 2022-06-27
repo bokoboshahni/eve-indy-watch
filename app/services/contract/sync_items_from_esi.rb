@@ -58,7 +58,7 @@ class Contract < ApplicationRecord
 
       esi_authorize!(authorization)
       auth = { Authorization: "Bearer #{authorization.access_token}" }
-      resp = esi.get_corporation_contract_items_raw(corporation_id: corporation_id, contract_id: contract_id, headers: auth)
+      resp = esi.get_corporation_contract_items_raw(corporation_id:, contract_id:, headers: auth)
 
       expires = resp.headers['expires']
       last_modified = resp.headers['last-modified']
@@ -66,7 +66,7 @@ class Contract < ApplicationRecord
 
       items = data.map do |item|
         item[:id] = item.delete('record_id')
-        item.merge(contract_id: contract_id)
+        item.merge(contract_id:)
       end
 
       contract.transaction do

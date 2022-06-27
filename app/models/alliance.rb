@@ -103,7 +103,7 @@ class Alliance < ApplicationRecord
   end
 
   def fetch_killmails_from_zkb(year: nil, month: nil)
-    Alliance::FetchKillmailsFromZKB.call(self, year: year, month: month)
+    Alliance::FetchKillmailsFromZKB.call(self, year:, month:)
   end
 
   def fetch_killmails_from_zkb_async(year: nil, month: nil)

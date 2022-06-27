@@ -51,7 +51,7 @@ class Location < ApplicationRecord
 
     def fetch_page_count
       Retriable.retriable tries: 10 do
-        req =  Typhoeus::Request.new(location_url, method: :head, headers: headers)
+        req =  Typhoeus::Request.new(location_url, method: :head, headers:)
         req.on_headers do |response|
           raise "Request for HEAD #{location_url} failed" unless response.code == 200
         end
@@ -79,7 +79,7 @@ class Location < ApplicationRecord
         fetch_duration = Benchmark.realtime do
           while pending_pages.any?
             pending_pages.each do |page|
-              req = Typhoeus::Request.new(location_url, params: { page: page }, headers: headers.merge(etag: etag))
+              req = Typhoeus::Request.new(location_url, params: { page: }, headers: headers.merge(etag:))
               req.on_complete do |res|
                 if res.code == 420
                   sleep(1)

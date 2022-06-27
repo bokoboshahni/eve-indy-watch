@@ -14,7 +14,7 @@ class TabLinkComponent < ApplicationComponent
 
   def call
     options = { class: class_name }
-    options[:data] = { turbo_frame: turbo_frame } if turbo_frame
+    options[:data] = { turbo_frame: } if turbo_frame
     link_to(href, options) { content }
   end
 end

@@ -15,7 +15,7 @@ module SDE
 
       yaml(source_path).each do |(blueprint_type_id, blueprint)|
         blueprint['activities'].each do |(activity_name, activity)|
-          activity_key = { blueprint_type_id: blueprint_type_id, activity: activity_name }
+          activity_key = { blueprint_type_id:, activity: activity_name }
 
           Array(activity['materials']).each do |m|
             materials << { material_type_id: m['type_id'], quantity: m['quantity'] }.merge(activity_key)

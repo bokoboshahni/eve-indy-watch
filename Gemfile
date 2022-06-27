@@ -3,7 +3,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '~> 3.0.3'
+ruby '~> 3.1'
 
 gem 'dotenv-rails', '~> 2.7'
 
@@ -43,6 +43,7 @@ gem 'local_time', '~> 2.1'
 gem 'lockbox', '~> 0.6'
 gem 'memory_profiler', '~> 1.0'
 gem 'nanoid', '~> 2.0'
+gem 'net-ssh', '~> 7.0.0.beta'
 gem 'noticed', '~> 1.5'
 gem 'oauth2', '~> 1.4'
 gem 'oj', '~> 3.13'
@@ -101,7 +102,7 @@ group :development do
   gem 'capistrano-bundler', '~> 2.0'
   gem 'capistrano-rails', '~> 1.6'
   gem 'capistrano-rails-console', '~> 2.3'
-  gem 'capistrano-sidekiq', github: 'seuros/capistrano-sidekiq'
+  gem 'capistrano-sidekiq', '~> 2.3'
   gem 'ed25519', '~> 1.3'
   gem 'erb_lint', '~> 0.1'
   gem 'rubocop', '~> 1.27'

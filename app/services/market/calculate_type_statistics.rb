@@ -131,7 +131,7 @@ class Market < ApplicationRecord
           end
 
           h[side] = {
-            depth: depth,
+            depth:,
             five_pct_price_avg: five_pct_prices.mean.round(2),
             five_pct_price_max: five_pct_prices.max,
             five_pct_price_med: five_pct_prices.median,
@@ -192,8 +192,8 @@ class Market < ApplicationRecord
           end
 
           h[side] = {
-            levels: levels,
-            trade_count: trade_count,
+            levels:,
+            trade_count:,
             volume_traded_avg: volume_traded.mean.round(2),
             volume_traded_max: volume_traded.max,
             volume_traded_med: volume_traded.median,
